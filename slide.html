@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="header">
+            <h1>2048 Game</h1>
+            <div id="score">Score: 0</div>
+        </div>
+        <div id="grid-container">
+            <!-- Grid cells (16 tiles) will be dynamically inserted here -->
+        </div>
+        <div id="game-over" class="hidden">
+            <h2>Game Over</h2>
+            <button onclick="restartGame()">Restart</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
