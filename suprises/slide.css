@@ -1,0 +1,182 @@
+/* Global reset and font styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #2c3e50; /* Dark blue-grey background */
+}
+
+/* Main content container */
+#content {
+    text-align: center;
+}
+
+/* Surprise button styling */
+.surprise-button {
+    background-color: #2c3e50; /* Dark button background */
+    color: #ecf0f1; /* Light text color */
+    font-size: 20px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.surprise-button:hover {
+    background-color: #34495e; /* Darker button background on hover */
+}
+
+/* Game container */
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Header styling */
+#header {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ecf0f1; /* Light gray for text */
+}
+
+#score {
+    font-size: 18px;
+    color: #ecf0f1; /* Light gray for score */
+    margin-top: 10px;
+}
+
+/* Grid container styling */
+#grid-container {
+    position: relative;
+    width: 360px;
+    height: 360px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+    background-color: #34495e; /* Darker grid background */
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Container shadow */
+}
+
+/* Tile Styling */
+.grid-cell {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+    line-height: 80px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease; /* Smooth transition for background, text, and position */
+    position: absolute; /* Absolute positioning for fluid movement */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Soft shadow for tiles */
+    color: #fff;
+}
+
+/* Tile colors for different values (Dark Theme) */
+.grid-cell[data-value="2"] {
+    background-color: #7f8c8d; /* Dark grey */
+    color: #ecf0f1;
+}
+.grid-cell[data-value="4"] {
+    background-color: #95a5a6; /* Lighter grey */
+    color: #ecf0f1;
+}
+.grid-cell[data-value="8"] {
+    background-color: #e67e22; /* Orange */
+    color: white;
+}
+.grid-cell[data-value="16"] {
+    background-color: #d35400; /* Darker Orange */
+    color: white;
+}
+.grid-cell[data-value="32"] {
+    background-color: #e74c3c; /* Red */
+    color: white;
+}
+.grid-cell[data-value="64"] {
+    background-color: #c0392b; /* Darker Red */
+    color: white;
+}
+.grid-cell[data-value="128"] {
+    background-color: #f39c12; /* Yellow */
+    color: white;
+}
+.grid-cell[data-value="256"] {
+    background-color: #f1c40f; /* Bright Yellow */
+    color: white;
+}
+.grid-cell[data-value="512"] {
+    background-color: #f39c12; /* Yellow */
+    color: white;
+}
+.grid-cell[data-value="1024"] {
+    background-color: #f39c12; /* Yellow */
+    color: white;
+}
+.grid-cell[data-value="2048"] {
+    background-color: #f39c12; /* Yellow */
+    color: white;
+}
+
+/* Game Over screen */
+#game-over {
+    display: none;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+#game-over.hidden {
+    display: none;
+}
+
+#game-over button {
+    background-color: #e67e22; /* Orange */
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#game-over button:hover {
+    background-color: #d35400; /* Darker Orange */
+}
+
+/* Styling for the back to home link */
+.back-to-home {
+    font-size: 18px;
+    color: #ecf0f1;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-home:hover {
+    background-color: #34495e; /* Darker background on hover */
+}
