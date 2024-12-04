@@ -4,23 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048 Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles.css"> <!-- Link to your main CSS file -->
 </head>
 <body>
     <div id="game-container">
         <div id="header">
-            <h1>2048 Game</h1>
             <div id="score">Score: 0</div>
         </div>
+        
         <div id="grid-container">
-            <!-- Grid cells (16 tiles) will be dynamically inserted here -->
+            <!-- Dynamically generated game grid will go here -->
         </div>
-        <div id="game-over" class="hidden">
-            <h2>Game Over</h2>
-            <button onclick="restartGame()">Restart</button>
-        </div>
+
+        <!-- Back to Home Link -->
+        <a href="../index.html" class="back-to-home">Back to Home</a>
     </div>
 
-    <script src="script.js"></script>
+    <script src="../game.js"></script> <!-- Link to your JavaScript game file -->
 </body>
 </html>
