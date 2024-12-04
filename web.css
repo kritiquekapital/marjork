@@ -413,3 +413,51 @@ body {
     transform: translate(-50%, -50%) scale(1.5);
   }
 } 
+/* Surprise Button (Joystick) */
+.surprise {
+  background-color: #333;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.joystick {
+  background-color: #555;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.stick {
+  background-color: #222;
+  width: 10px;
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+}
+
+.surprise:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+
+.surprise:active .joystick {
+  transform: scale(0.9);
+  background-color: #666;
+}
+
+.surprise:active .stick {
+  transform: translateX(-50%) translateY(15px);
+}
