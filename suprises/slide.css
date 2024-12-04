@@ -6,13 +6,35 @@
 }
 
 body {
-    background: #2c3e50; /* Dark blue-grey background */
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    background: #2c3e50; /* Dark blue-grey background */
+}
+
+/* Main content container */
+#content {
+    text-align: center;
+}
+
+/* Surprise button styling */
+.surprise-button {
+    background-color: #2c3e50; /* Dark button background */
+    color: #ecf0f1; /* Light text color */
+    font-size: 20px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.surprise-button:hover {
+    background-color: #34495e; /* Darker button background on hover */
 }
 
 /* Game container */
@@ -114,26 +136,6 @@ body {
     color: white;
 }
 
-/* Merge animation */
-@keyframes mergeAnimation {
-    0% {
-        transform: scale(1);
-        background-color: #f1c40f;
-    }
-    50% {
-        transform: scale(1.2);
-        background-color: #f39c12;
-    }
-    100% {
-        transform: scale(1);
-        background-color: inherit;
-    }
-}
-
-.merged {
-    animation: mergeAnimation 0.5s ease;
-}
-
 /* Game Over screen */
 #game-over {
     display: none;
@@ -160,4 +162,21 @@ body {
 
 #game-over button:hover {
     background-color: #d35400; /* Darker Orange */
+}
+
+/* Styling for the back to home link */
+.back-to-home {
+    font-size: 18px;
+    color: #ecf0f1;
+    text-decoration: none;
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-home:hover {
+    background-color: #34495e; /* Darker background on hover */
 }
