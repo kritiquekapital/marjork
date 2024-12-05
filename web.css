@@ -30,7 +30,7 @@ body {
   max-width: 500px;
   margin-top: 20px;
   justify-content: space-evenly;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: repeat(4,120px);
 }
 
 /* Invisible placeholder */
@@ -461,33 +461,75 @@ body {
 .surprise:active .stick {
   transform: translateX(-50%) translateY(15px);
 }
-/* Globe Image */
-.globe img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+
+.propaganda {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  animation: rotateGlobe 10s infinite linear; /* Apply rotation */
+  background: radial-gradient(circle, #ff0000 50%, #8b0000 80%);
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+/* Reset styles for the hyperlink */
+.propaganda-link {
+  text-decoration: none;
+  display: inline-block;
 }
 
-/* 3D Rotation Animation */
-@keyframes rotateGlobe {
+.propaganda::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, transparent 60%, rgba(255, 0, 0, 0.3) 80%);
+  border-radius: 50%;
+  animation: pulseEffect 1.5s infinite;
+}
+
+@keyframes pulseEffect {
   0% {
-    transform: rotate(0deg);
+    transform: scale(1);
+    opacity: 0.8;
   }
   100% {
-    transform: rotate(360deg); /* Rotating effect for the globe */
+    transform: scale(1.5);
+    opacity: 0;
   }
 }
 
-/* Hover effect - Zoom in on hover */
-.globe:hover {
-  transform: scale(1.1); /* Slight zoom in */
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.7); /* Glow effect */
+.propaganda:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
 }
 
-/* Hover effect for globe image (zoom in effect) */
-.globe:hover img {
-  transform: scale(1.2); /* Slight zoom for the image */
+.propaganda:active {
+  animation: shake 0.3s linear;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+/* Styling for the propaganda button text */
+.propaganda .symbol {
+  font-size: 18px; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #ff4c4c; /* Bright red to emphasize "LIVE" */
+  text-transform: uppercase; /* Makes the text all caps */
+  text-align: center;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
