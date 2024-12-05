@@ -413,9 +413,9 @@ body {
     transform: translate(-50%, -50%) scale(1.5);
   }
 } 
-/* Surprise Button (Joystick) */
+/* Surprise Button (Retro Joystick) */
 .surprise {
-  background-color: #333;
+  background-color: #222; /* Dark base to resemble a classic arcade console */
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -424,42 +424,66 @@ body {
   align-items: center;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Slight glow effect */
 }
 
 .joystick {
-  background-color: #555;
+  background-color: #ff9e00; /* Neon orange for the joystick base */
   width: 70px;
   height: 70px;
   border-radius: 50%;
   position: absolute;
   top: 10px;
   left: 10px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 158, 0, 0.7); /* Glow effect on joystick */
+  z-index: 2; /* Ensure the joystick is above the base but below the stick */
 }
 
+/* Joystick Stick */
 .stick {
-  background-color: #222;
-  width: 10px;
-  height: 40px;
+  background-color: #00bcd4; /* Retro blue for the stick */
+  width: 10px; /* Narrower for realism */
+  height: 40px; /* Slightly taller for the correct effect */
   position: absolute;
-  top: 10px;
+  top: 50%; /* This keeps the stick aligned with the center */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%) translateY(15px) rotate(-25deg); /* Raised stick, more aligned */
   border-radius: 5px;
+  z-index: 1; /* Stick is behind the ball */
+}
+
+/* Ball on Top of Stick */
+.stick-ball {
+  background-color: #ff0000; /* Bright red for the ball */
+  width: 24px; /* Size of the ball */
+  height: 24px;
+  position: absolute;
+  top: -12px; /* Positioned at the top of the stick */
+  left: -6px; /* Move the ball slightly to the left */
+  transform: translateX(50%) translateY(18px); /* Move down and left */
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Ball glow effect */
 }
 
 .surprise:hover {
   transform: scale(1.1);
-  background-color: #444;
+  background-color: #444; /* Slightly lighter base on hover */
 }
 
 .surprise:active .joystick {
   transform: scale(0.9);
-  background-color: #666;
+  background-color: #ff6f00; /* Darker neon orange on press */
 }
 
 .surprise:active .stick {
-  transform: translateX(-50%) translateY(15px);
+  transform: translate(-50%, -50%) translateY(18px) rotate(-40deg); /* More rotation when pressed */
+}
+
+/* Glow effect when hovering */
+.surprise:hover .stick {
+  box-shadow: 0 0 10px #00bcd4;
 }
 
 .propaganda {
