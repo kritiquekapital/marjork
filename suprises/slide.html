@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2048 Game</title>
-<link rel="stylesheet" href="slide.css">
+    <link rel="stylesheet" href="slide.css">
 </head>
 <body>
+    <!-- Main Game Container -->
     <div id="game-container">
+        <!-- Header Section for Score -->
         <div id="header">
             <div id="score">Score: 0</div>
         </div>
-        
+
+        <!-- Game Grid Container -->
         <div id="grid-container">
             <!-- Dynamically generated game grid will go here -->
         </div>
+
+        <!-- Game Over Message -->
+        <div id="game-over" class="hidden">Game Over! Press 'R' to restart.</div>
 
         <!-- Back to Home Link -->
         <a href="../index.html" class="back-to-home">Back to Home</a>
     </div>
 
-<script src="slide.js"></script>
+    <!-- Game Logic Script -->
+    <script src="slide.js"></script>
 </body>
 </html>
