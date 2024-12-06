@@ -1,103 +1,67 @@
-/* Global reset and font styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #2c3e50; /* Dark blue-grey background */
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-/* Game container */
-#game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-/* Header styling */
-#header {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #ecf0f1; /* Light gray text */
-}
-
-#score {
-    font-size: 18px;
-    color: #ecf0f1;
-}
-
-/* Grid container */
+/* General game container */
 #grid-container {
-    position: relative;
-    width: 360px;
-    height: 360px;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 10px;
-    background-color: #34495e; /* Darker grid background */
-    border-radius: 10px;
-    padding: 5px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-wrap: wrap;
+  width: 400px;
+  height: 400px;
+  border: 2px solid #333;
+  margin: 10px auto;
 }
 
-/* Tile Styling */
+/* General Grid Cell */
 .grid-cell {
-    width: 80px;
-    height: 80px;
-    display: inline-block;
-    margin: 5px;
-    text-align: center;
-    line-height: 80px;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 5px;
-    position: absolute;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    transition: all 0.3s ease;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  font-size: 20px;
+  font-weight: bold;
+  
+  /* Animate smooth sliding */
+  transition: transform 0.2s ease-in-out;
 }
 
-/* Tile colors for different values */
-.grid-cell[data-value="2"] { background-color: #7f8c8d; }
-.grid-cell[data-value="4"] { background-color: #95a5a6; }
-.grid-cell[data-value="8"] { background-color: #e67e22; }
-.grid-cell[data-value="16"] { background-color: #d35400; }
-.grid-cell[data-value="32"] { background-color: #e74c3c; }
-.grid-cell[data-value="64"] { background-color: #c0392b; }
-.grid-cell[data-value="128"] { background-color: #f39c12; }
-.grid-cell[data-value="256"] { background-color: #f1c40f; }
-.grid-cell[data-value="512"] { background-color: #f39c12; }
-.grid-cell[data-value="1024"] { background-color: #f39c12; }
-.grid-cell[data-value="2048"] { background-color: #f39c12; }
+/* Style for game-over message */
+.hidden {
+  display: none;
+}
 
-/* Game Over screen */
 #game-over {
-    display: none;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 50px;
-    border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: red;
+  margin: 10px 0;
 }
 
-#game-over button {
-    background-color: #e67e22;
-    color: white;
-    font-size: 18px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+/* Colors for different tile values */
+.tile-2 {
+  background-color: #eee;
 }
 
-#game-over button:hover {
-    background-color: #d35400;
+.tile-4 {
+  background-color: #f2b705;
+}
+
+.tile-8 {
+  background-color: #f05e30;
+}
+
+.tile-16 {
+  background-color: #0f0;
+}
+
+.tile-32 {
+  background-color: #00f;
+}
+
+.tile-64 {
+  background-color: #000;
+  color: white;
+}
+
+/* Example for smooth transitions of blocks sliding */
+.tile-moving {
+  transform: translate(5px, 0);
 }
