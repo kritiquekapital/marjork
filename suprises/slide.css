@@ -1,67 +1,60 @@
-/* General game container */
-#grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  width: 400px;
-  height: 400px;
-  border: 2px solid #333;
-  margin: 10px auto;
-}
-
-/* General Grid Cell */
+/* General Grid and Tile Styling */
 .grid-cell {
+  position: absolute;
   width: 80px;
   height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ddd;
-  font-size: 20px;
-  font-weight: bold;
-  
-  /* Animate smooth sliding */
-  transition: transform 0.2s ease-in-out;
-}
-
-/* Style for game-over message */
-.hidden {
-  display: none;
-}
-
-#game-over {
+  line-height: 80px;
   text-align: center;
-  font-size: 18px;
-  color: red;
-  margin: 10px 0;
+  font-size: 24px;
+  border-radius: 8px;
+  background-color: #ddd;
+  transition: transform 0.2s ease-in-out; /* Smooth slide effect */
+  will-change: transform;
 }
 
-/* Colors for different tile values */
+/* Add styles for different tile values (you can customize colors for aesthetics) */
 .tile-2 {
   background-color: #eee;
 }
-
 .tile-4 {
-  background-color: #f2b705;
+  background-color: #f2d600;
 }
-
 .tile-8 {
-  background-color: #f05e30;
+  background-color: #f59563;
 }
-
 .tile-16 {
-  background-color: #0f0;
+  background-color: #f67c5f;
 }
-
 .tile-32 {
-  background-color: #00f;
+  background-color: #f65e3b;
 }
-
 .tile-64 {
-  background-color: #000;
-  color: white;
+  background-color: #edcf72;
+}
+.tile-128,
+.tile-256,
+.tile-512,
+.tile-1024,
+.tile-2048 {
+  background-color: #edc53f;
 }
 
-/* Example for smooth transitions of blocks sliding */
-.tile-moving {
-  transform: translate(5px, 0);
+/* Game Over Screen Animation */
+#game-over {
+  text-align: center;
+  font-size: 20px;
+  color: #d00;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px 25px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
 }
