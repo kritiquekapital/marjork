@@ -1,31 +1,32 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const kissButton = document.querySelector(".kiss-button");
-  kissButton.addEventListener("click", () => {
-    // Create a new div for the message
-    const loveMessage = document.createElement("div");
-    loveMessage.textContent = "I love you!";
-    loveMessage.style.position = "absolute";
-    loveMessage.style.color = "#FF1493";
-    loveMessage.style.fontSize = "1.5rem";
-    loveMessage.style.fontWeight = "bold";
-    loveMessage.style.top = "50%";
-    loveMessage.style.left = "50%";
-    loveMessage.style.transform = "translate(-50%, -50%)";
-    loveMessage.style.opacity = "1";
-    loveMessage.style.transition = "opacity 1s ease, transform 1s ease";
+function showLoveMessage(event) {
+  const messages = ["I love you!", "я тебя люблю!", "☀️ solnyshko ☀️"];
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    // Append the message to the button
-    kissButton.appendChild(loveMessage);
+  const loveContainer = document.getElementById('loveContainer');
+  const loveMessage = document.createElement('div');
+  loveMessage.classList.add('love-message');
+  loveMessage.innerText = randomMessage;
 
-    // Animate the message
-    setTimeout(() => {
-      loveMessage.style.opacity = "0";
-      loveMessage.style.transform = "translate(-50%, -100%)";
-    }, 100);
+  const buttonRect = event.target.getBoundingClientRect();
+  const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+  const buttonCenterY = buttonRect.top + buttonRect.height / 2;
 
-    // Remove the message after the animation
-    setTimeout(() => {
-      kissButton.removeChild(loveMessage);
-    }, 1100);
-  });
-});
+  loveMessage.style.left = buttonCenterX + 'px';
+  loveMessage.style.top = buttonCenterY + 'px';
+
+  const randomX = Math.random() * window.innerWidth - buttonCenterX;
+  const randomY = Math.random() * window.innerHeight - buttonCenterY;
+
+  loveMessage.style.setProperty('--dx', randomX + 'px');
+  loveMessage.style.setProperty('--dy', randomY + 'px');
+
+  loveContainer.appendChild(loveMessage);
+
+  loveMessage.style.transition = 'transform 2s ease, opacity 2s ease';
+  loveMessage.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  loveMessage.style.opacity = '0';
+
+  setTimeout(() => {
+    loveMessage.remove();
+  }, 2000);
+}
