@@ -559,14 +559,17 @@ body {
 }
 
 .kiss-button {
-  background: none;
+  background: url('pic/solavi.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   border: none;
   cursor: pointer;
   position: relative; /* Keep it within the grid */
   font-size: 20px;
   width: 120px; /* Set dimensions */
   height: 120px;
-  display: flex;
+  display: inline-block;
   align-items: center;
   justify-content: center;
   border-radius: 50%; /* Makes the button a perfect circle */
