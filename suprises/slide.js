@@ -131,22 +131,26 @@ function handleKeyPress(e) {
     if (gameOver) return;
 
     switch (e.key) {
-        case 'ArrowLeft, A':
+        case 'ArrowLeft':
+        case 'a':
             moveLeft();
             addRandomTile();
             checkGameOver();
             break;
-        case 'ArrowRight, D':
+        case 'ArrowRight':
+        case 'd':
             moveRight();
             addRandomTile();
             checkGameOver();
             break;
-        case 'ArrowUp, W':
+        case 'ArrowUp':
+        case 'w':
             moveUp();
             addRandomTile();
             checkGameOver();
             break;
-        case 'ArrowDown, D':
+        case 'ArrowDown':
+        case 's':
             moveDown();
             addRandomTile();
             checkGameOver();
