@@ -1,145 +1,144 @@
 let board = Array(16).fill(0);
-let gameOver = false;
 let score = 0;
+let gameOver = false;
 
-// Initialize the game by adding two random tiles
-function initializeGame() {
-  addRandomTile();
-  addRandomTile();
-  updateGrid();
+// Update score display
+function updateScore(newScore) {
+    score = newScore;
+    document.getElementById("score").textContent = `Score: ${score}`;
 }
 
-// Add a random tile (2 or 4) to an empty space
+// Function to add random tiles to the grid
 function addRandomTile() {
-  const emptyIndexes = [];
-  board.forEach((tile, index) => {
-    if (tile === 0) emptyIndexes.push(index);
-  });
-  if (emptyIndexes.length > 0) {
-    const randomIndex = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
-    board[randomIndex] = Math.random() < 0.9 ? 2 : 4;
-    updateGrid();
-  }
+    const emptyIndexes = [];
+    board.forEach((tile, index) => {
+        if (tile === 0) emptyIndexes.push(index);
+    });
+    if (emptyIndexes.length > 0) {
+        const randomIndex = emptyIndexes[Math.floor(Math.random() * emptyIndexes.length)];
+        board[randomIndex] = Math.random() < 0.9 ? 2 : 4;
+        updateScore(score + (board[randomIndex] === 4 ? 4 : 2));
+        updateGrid();
+    }
 }
 
-// Render the game grid to the DOM
+// Function to slide all cells visually with animation
 function updateGrid() {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = ''; // Clear old tiles
+    const gridContainer = document.getElementById("grid-container");
+    gridContainer.innerHTML = "";
 
-  board.forEach((tile, index) => {
-    const cell = document.createElement('div');
-    cell.classList.add('grid-cell');
-    
-    // Set background classes based on the tile value
-    if (tile === 2) cell.classList.add('tile-2');
-    if (tile === 4) cell.classList.add('tile-4');
-    if (tile === 8) cell.classList.add('tile-8');
+    board.forEach((tile, index) => {
+        const tileElement = document.createElement("div");
+        tileElement.classList.add("grid-cell");
+        
+        if (tile !== 0) {
+            tileElement.textContent = tile;
+            tileElement.classList.add(`tile-${tile}`);
+        }
 
-    cell.textContent = tile === 0 ? '' : tile;
-    gameContainer.appendChild(cell);
-  });
+        const x = (index % 4) * 90 + 10;
+        const y = Math.floor(index / 4) * 90 + 10;
+
+        // Animate the position
+        tileElement.style.transform = `translate(${x}px, ${y}px)`;
+
+        gridContainer.appendChild(tileElement);
+    });
 }
 
-// Check for moves in specific directions
-function checkLeft() {
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 3; j++) {
-      if (board[i * 4 + j] !== 0 && board[i * 4 + j] === board[i * 4 + j + 1]) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function checkRight() {
-  for (let i = 0; i < 4; i++) {
-    for (let j = 3; j > 0; j--) {
-      if (board[i * 4 + j] !== 0 && board[i * 4 + j] === board[i * 4 + j - 1]) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function checkUp() {
-  for (let j = 0; j < 4; j++) {
-    for (let i = 0; i < 3; i++) {
-      if (board[i * 4 + j] !== 0 && board[i * 4 + j] === board[(i + 1) * 4 + j]) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function checkDown() {
-  for (let j = 0; j < 4; j++) {
-    for (let i = 3; i > 0; i--) {
-      if (board[i * 4 + j] !== 0 && board[i * 4 + j] === board[(i - 1) * 4 + j]) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-// Check for game-over conditions
+// Handle game over logic
 function checkGameOver() {
-  if (
-    board.every(value => value !== 0) && 
-    !checkLeft() && 
-    !checkRight() && 
-    !checkUp() && 
-    !checkDown()
-  ) {
-    document.getElementById("game-over").classList.remove("hidden");
-    gameOver = true;
-  }
-}
-
-// Handle keyboard events
-function handleKeyPress(e) {
-  if (gameOver) {
-    if (e.key === 'r' || e.key === 'R') {
-      restartGame();
+    if (
+        board.every(tile => tile !== 0) &&
+        !canMakeMove()
+    ) {
+        document.getElementById("game-over").classList.remove("hidden");
+        gameOver = true;
     }
-    return;
-  }
+}
 
-  let moved = false;
-  switch (e.key) {
-    case 'ArrowLeft':
-    case 'a':
-      moved = true;
-      break;
-    case 'ArrowRight':
-    case 'd':
-      moved = true;
-      break;
-    case 'ArrowUp':
-    case 'w':
-      moved = true;
-      break;
-    case 'ArrowDown':
-    case 's':
-      moved = true;
-      break;
-  }
+function canMakeMove() {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            const index = i * 4 + j;
+            if (
+                (j < 3 && board[index] === board[index + 1]) || 
+                (i < 3 && board[index] === board[index + 4])
+            ) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
-  if (moved) {
+// Restart Game
+function handleRestart() {
+    board = Array(16).fill(0);
+    score = 0;
+    gameOver = false;
+    document.getElementById("game-over").classList.add("hidden");
+    updateScore(score);
     addRandomTile();
-    checkGameOver();
-  }
+    addRandomTile();
+    updateGrid();
 }
 
-function restartGame() {
-  board = Array(16).fill(0);
-  gameOver = false;
-  initializeGame();
+// Handle user keyboard input
+function handleKeyPress(e) {
+    if (gameOver) {
+        if (e.key.toLowerCase() === "r") {
+            handleRestart();
+        }
+        return;
+    }
+
+    let moved = false;
+
+    // Swapped controls
+    if (e.key === "ArrowDown" || e.key === "s") {
+        moveUp();
+        moved = true;
+    }
+    if (e.key === "ArrowUp" || e.key === "w") {
+        moveDown();
+        moved = true;
+    }
+    if (e.key === "ArrowRight" || e.key === "d") {
+        moveLeft();
+        moved = true;
+    }
+    if (e.key === "ArrowLeft" || e.key === "a") {
+        moveRight();
+        moved = true;
+    }
+
+    if (moved) {
+        addRandomTile();
+        checkGameOver();
+    }
 }
 
-document.addEventListener('keydown', handleKeyPress);
-initializeGame();
+// Placeholder movement functions
+function moveLeft() {
+    console.log("Moved left");
+}
+
+function moveRight() {
+    console.log("Moved right");
+}
+
+function moveUp() {
+    console.log("Moved up");
+}
+
+function moveDown() {
+    console.log("Moved down");
+}
+
+document.addEventListener("keydown", handleKeyPress);
+
+// Initialize game
+addRandomTile();
+addRandomTile();
+updateGrid();
