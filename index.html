@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Work In Prajork</title>
-  <link rel="stylesheet" href="web.css">
+  <link rel="stylesheet" href="css/web.css">
 </head>
 <body>
 <div class="grid-container">
@@ -32,12 +32,12 @@
   <a href="https://www.duolingo.com/profile/marjork?via=share_profile_qr" target="_blank" class="duolingo">
     <img src="https://simg-ssl.duolingo.com/ssr-avatars/825995047/SSR-KngIoLV5cH/xlarge" alt="Duolingo">
   </a>
-
-  <a href="https://letterboxd.com/marjork/" target="_blank" class="letterboxd"></a>
   
   <a href="https://picsum.photos/2000/2000" target="_blank" class="photo">
     <div class="lens"></div>
   </a>
+  
+  <a href="https://letterboxd.com/marjork/" target="_blank" class="letterboxd"></a>
   
   <a href="https://github.com/kritiquekapital/marjork/suprises/slide.html" target="_blank" class="surprise">
     <div class="joystick"></div>
@@ -55,45 +55,9 @@
   
   <!-- Container for the animated "I love you" message -->
   <div id="loveContainer"></div>
-
 </div>
 
-<!-- Add this at the bottom for the script -->
-<script>
-  function showLoveMessage(event) {
-    var loveContainer = document.getElementById('loveContainer');
-    
-    // Create a new element for the "I love you" message
-    var loveMessage = document.createElement('div');
-    loveMessage.classList.add('love-message');
-    loveMessage.innerText = "I love you!";
-
-    // Get the button's position relative to the viewport
-    var buttonRect = event.target.getBoundingClientRect();
-    var buttonCenterX = buttonRect.left + buttonRect.width / 2;
-    var buttonCenterY = buttonRect.top + buttonRect.height / 2;
-
-    // Set the starting position of the love message to the center of the button
-    loveMessage.style.left = buttonCenterX + 'px';
-    loveMessage.style.top = buttonCenterY + 'px';
-
-    // Append the message to the container
-    loveContainer.appendChild(loveMessage);
-
-    // Get random positions on the borders of the screen
-    var randomX = Math.random() > 0.5 ? window.innerWidth : -50;
-    var randomY = Math.random() > 0.5 ? window.innerHeight : -50;
-
-    // Animate the message to explode from the button center to a random border point
-    loveMessage.style.transition = 'transform 2s ease, opacity 2s ease';
-    loveMessage.style.transform = `translate(${randomX - buttonCenterX}px, ${randomY - buttonCenterY}px)`;
-    loveMessage.style.opacity = '0';
-
-    // Remove the message after the animation is complete
-    setTimeout(function() {
-        loveMessage.remove();
-    }, 2000); // The message will disappear after 2 seconds
-}
-</script>
+<!-- Link the external JavaScript file -->
+<script src="js/script.js"></script>
 </body>
 </html>
