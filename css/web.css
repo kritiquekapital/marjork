@@ -564,8 +564,8 @@ body {
   cursor: pointer;
   position: relative; /* Keep it within the grid */
   font-size: 20px;
-  width: 60px; /* Set dimensions */
-  height: 60px;
+  width: 120px; /* Set dimensions */
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -581,11 +581,6 @@ body {
 
 .kiss-button:active {
   transform: scale(0.9);
-}
-
-.kiss-button::before {
-  content: "💋";
-  font-size: 2rem;
 }
 
 .love-message {
