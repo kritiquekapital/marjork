@@ -557,47 +557,43 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
-/* Circular Kiss Button */
+
 .kiss-button {
-    grid-row: 4;  /* Place in the 4th row */
-    grid-column: 3; /* Place in the 3rd column */
-    background-color: #ff69b4; /* Pink color */
-    color: white;
-    border: none;
-    padding: 20px; /* Adjust size */
-    font-size: 20px;
-    border-radius: 50%; /* Circular button */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    position: relative;
-    overflow: hidden;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative; /* Keep it within the grid */
+  font-size: 20px;
+  width: 60px; /* Set dimensions */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Makes the button a perfect circle */
+  background-color: #ffdddd; /* Light pink for visibility */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 .kiss-button:hover {
-    background-color: #ff1493;
+  background-color: #ff9999;
+}
+
+.kiss-button:active {
+  transform: scale(0.9);
+}
+
+.kiss-button::before {
+  content: "💋";
+  font-size: 2rem;
 }
 
 .love-message {
-    position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ff69b4;
-    opacity: 1;
-}
-
-@keyframes expandAndDisappear {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(2);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(3);
-        opacity: 0;
-        top: 100%;
-        left: 100%;
-    }
+  position: absolute;
+  color: red;
+  font-size: 20px;
+  pointer-events: none;
+  transform: translate(0, 0);
+  transition: transform 2s ease, opacity 2s ease;
+  opacity: 1;
 }
