@@ -61,9 +61,10 @@ function canMakeMove() {
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             const index = i * 4 + j;
+            const currentTile = board[index];
             if (
-                (j < 3 && board[index] === board[index + 1]) || 
-                (i < 3 && board[index] === board[index + 4])
+                (j < 3 && currentTile === board[index + 1]) || 
+                (i < 3 && currentTile === board[index + 4])
             ) {
                 return true;
             }
@@ -93,47 +94,18 @@ function handleKeyPress(e) {
         return;
     }
 
-    let moved = false;
-
-    // Swapped controls
-    if (e.key === "ArrowDown" || e.key === "s") {
-        moveUp();
-        moved = true;
-    }
-    if (e.key === "ArrowUp" || e.key === "w") {
-        moveDown();
-        moved = true;
+    if (e.key === "ArrowLeft" || e.key === "a") {
+        console.log("left");
     }
     if (e.key === "ArrowRight" || e.key === "d") {
-        moveLeft();
-        moved = true;
+        console.log("right");
     }
-    if (e.key === "ArrowLeft" || e.key === "a") {
-        moveRight();
-        moved = true;
+    if (e.key === "ArrowUp" || e.key === "w") {
+        console.log("up");
     }
-
-    if (moved) {
-        addRandomTile();
-        checkGameOver();
+    if (e.key === "ArrowDown" || e.key === "s") {
+        console.log("down");
     }
-}
-
-// Placeholder movement functions
-function moveLeft() {
-    console.log("Moved left");
-}
-
-function moveRight() {
-    console.log("Moved right");
-}
-
-function moveUp() {
-    console.log("Moved up");
-}
-
-function moveDown() {
-    console.log("Moved down");
 }
 
 document.addEventListener("keydown", handleKeyPress);
