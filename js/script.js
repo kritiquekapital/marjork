@@ -35,7 +35,7 @@ const liveLinks2 = [
 let currentLinkIndex2 = 0;
 
 // Handle click on the "vinyl" button
-document.querySelector(".vinyl-link").addEventListener("click", (event) => {
+document.querySelector(".vinyl").addEventListener("click", (event) => {
   event.preventDefault(); // Prevent default anchor link behavior
   window.open(liveLinks[currentLinkIndex], '_blank'); // Open link in a new tab
   currentLinkIndex = (currentLinkIndex + 1) % liveLinks.length; // Rotate to the next link
