@@ -657,6 +657,55 @@ body {
   z-index: 20;
 }
 
+/* Record (Vinyl) */
+.record {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #000 60%, #111 85%, #000 100%);
+  border-radius: 50%;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Vinyl grooves */
+.record::before {
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 3px solid rgba(255, 255, 255, 0.05); /* Subtle groove lines */
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05), 
+              0 0 0 10px rgba(255, 255, 255, 0.02), 
+              0 0 0 20px rgba(255, 255, 255, 0.01);
+}
+
+/* Center label */
+.record::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #d4d4d4 40%, #a6a6a6 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Optional - A small hole in the center */
+.record .center-hole {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: black;
+  border-radius: 10%;
+  z-index: 3;
+}
+
+
 /* Record spinning effects */
 .vinyl .record {
   position: absolute;
@@ -707,6 +756,7 @@ body {
   background: repeating-conic-gradient(black 0deg 45deg, transparent 45deg 90deg, black 90deg 135deg);
   opacity: 0.6;
   pointer-events: none;
+  z-index: 15;
 }
 
 /* Hover effects */
