@@ -80,9 +80,9 @@ vinylButton.addEventListener('mouseleave', () => {
   const stylusBase = document.querySelector('.vinyl .stylus-base');
 
   // Fade out effect
-  woodenBox.style.transition = 'opacity 1s ease-out';
-  arm.style.transition = 'opacity 1s ease-out';
-  stylusBase.style.transition = 'opacity 1s ease-out';
+  woodenBox.style.transition = 'opacity 3s ease-out';
+  arm.style.transition = 'opacity 3s ease-out';
+  stylusBase.style.transition = 'opacity 3s ease-out';
 
   woodenBox.style.opacity = '0';
   arm.style.opacity = '0';
