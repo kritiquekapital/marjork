@@ -634,6 +634,14 @@ body {
   z-index: 5;
 }
 
+.vinyl-link {
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make it a block-level element for proper alignment */
+  position: relative; /* Ensures positioning doesn't break layout */
+  width: 100%; /* Inherit width from parent container */
+  height: 100%; /* Inherit height from parent container */
+}
+
 /* Vinyl clickable button */
 .vinyl {
   position: absolute;
