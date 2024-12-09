@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Handle click on the "VINYL" button
-  const vinylLink = document.querySelector(".vinyl-link");
+  const vinylLink = document.querySelector(".vinyl");
   if (vinylLink) {
     vinylLink.addEventListener("click", (event) => {
       event.preventDefault();
