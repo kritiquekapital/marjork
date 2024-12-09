@@ -41,18 +41,17 @@ const liveLinks2 = [
 
 let currentLinkIndex2 = 0;
 
-// Handle click on the vinyl button
-document.addEventListener("DOMContentLoaded", () => {
-  const vinylButton = document.querySelector(".vinyl");
-
-  if (vinylButton) {
-    vinylButton.addEventListener("click", (event) => {
+if (vinylLink) {
+    vinylLink.addEventListener("click", (event) => {
       event.preventDefault();
-      window.open(liveLinks2[currentLinkIndex2], '_blank');
+      // Open the link in a new tab in the background
+      const newTab = window.open(liveLinks2[currentLinkIndex2], '_blank');
+      if (newTab) newTab.blur(); // Move the focus back to the current tab
       currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
     });
   }
 });
+
 const vinylButton = document.querySelector('.vinyl');
 const arm = document.querySelector('.vinyl .arm');
 
