@@ -65,7 +65,7 @@ vinylButton.addEventListener('mouseover', () => {
   setTimeout(() => {
     arm.style.transition = 'transform 5s ease-out';
     arm.style.transform = 'rotate(328deg)';
-  }, 3000);
+  }, 2000);
 });
 
 vinylButton.addEventListener('mouseleave', () => {
@@ -79,7 +79,7 @@ vinylButton.addEventListener('mouseleave', () => {
   const arm = document.querySelector('.vinyl .arm');
   const stylusBase = document.querySelector('.vinyl .stylus-base');
 
-  // Fade out effect
+  // Fade-out effect with opacity
   woodenBox.style.transition = 'opacity 3s ease-out';
   arm.style.transition = 'opacity 3s ease-out';
   stylusBase.style.transition = 'opacity 3s ease-out';
@@ -89,19 +89,19 @@ vinylButton.addEventListener('mouseleave', () => {
   stylusBase.style.opacity = '0';
 
   setTimeout(() => {
-    // Reset after the fade-out
+    // Reset to initial state after fading out
     woodenBox.style.transition = '';
     arm.style.transition = '';
     stylusBase.style.transition = '';
 
-    woodenBox.style.opacity = '0';
-    arm.style.opacity = '0';
-    stylusBase.style.opacity = '0';
+    woodenBox.style.opacity = '1';
+    arm.style.opacity = '1';
+    stylusBase.style.opacity = '1';
 
     woodenBox.style.transform = 'translate(0, 0)';
     arm.style.transform = 'rotate(270deg)';
     stylusBase.style.transform = 'translate(-50%, -50%) rotate(270deg)';
-  }, 1000); // Delay duration matches the fade-out
+  }, 3000); // Match the fade-out effect timing
 });
 
 // Handle kiss button's random message
