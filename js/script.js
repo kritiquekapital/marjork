@@ -1,10 +1,10 @@
 // Hardcoded list of live links
 const liveLinks = [
   "https://www.youtube.com/watch?v=EGAzxO851c4&ab_channel=Fernanda",
-	"https://archive.org/details/LaSoufriere",  
-	"https://archive.org/details/burden-of-dreams",  
-	"https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",  
-	"https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"  
+  "https://archive.org/details/LaSoufriere",  
+  "https://archive.org/details/burden-of-dreams",  
+  "https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",  
+  "https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"  
 ];
 
 let currentLinkIndex = 0;
@@ -12,7 +12,7 @@ let currentLinkIndex = 0;
 // Handle click on the "LIVE" button
 document.querySelector(".propaganda-link").addEventListener("click", (event) => {
   event.preventDefault(); // Prevent default anchor link behavior
-  window.location.href = liveLinks[currentLinkIndex];
+  window.open(liveLinks[currentLinkIndex], '_blank'); // Open link in a new tab
   currentLinkIndex = (currentLinkIndex + 1) % liveLinks.length; // Rotate to the next link
 });
 
