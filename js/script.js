@@ -65,3 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1600);
   });
 });
+
+const vinylButton = document.querySelector('.vinyl');
+const arm = document.querySelector('.vinyl .arm');
+
+vinylButton.addEventListener('mouseover', () => {
+  // First, make it quickly jump to 290°.
+  arm.style.transition = 'transform 1.5s ease-in';
+  arm.style.transform = 'rotate(290deg)';
+
+  // After 200ms, smoothly rotate to 320°.
+  setTimeout(() => {
+    arm.style.transition = 'transform 7s ease-out';
+    arm.style.transform = 'rotate(328deg)';
+  }, 3000);
+});
+
+vinylButton.addEventListener('mouseleave', () => {
+  // Return to initial state when mouse leaves
+  arm.style.transition = 'transform 0.5s ease-in';
+  arm.style.transform = 'rotate(270deg)';
+});
