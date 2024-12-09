@@ -1,9 +1,11 @@
 // Hardcoded list of live links
 const liveLinks = [
+  "https://archive.org/details/playtime-jacques-tati-1967",
+  "https://archive.org/details/burden-of-dreams",
+  "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",    
+  "https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",
   "https://www.youtube.com/watch?v=EGAzxO851c4&ab_channel=Fernanda",
-  "https://archive.org/details/LaSoufriere",  
-  "https://archive.org/details/burden-of-dreams",  
-  "https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",  
+  "https://www.youtube.com/watch?v=T2IaJwkqgPk&ab_channel=AdityaShukla",
   "https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"  
 ];
 
