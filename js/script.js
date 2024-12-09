@@ -34,7 +34,8 @@ const liveLinks2 = [
   "https://www.youtube.com/watch?v=7xxgRUyzgs0",
   "https://www.youtube.com/watch?v=G4CKmzBf5Cs",
   "https://www.youtube.com/watch?v=_mjDnMy2sL8",  
-  "https://www.youtube.com/watch?v=UtcxL4XXUGk",  
+  "https://www.youtube.com/watch?v=UtcxL4XXUGk",
+  "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
   "https://archive.org/details/16-millers-blues-alternate-take-previously-unissued/08+-+Three-Four.mp3"
 ];
 
