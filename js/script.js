@@ -26,16 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Hardcoded list of live links for the vinyl button
 const liveLinks2 = [
-  "https://www.youtube.com/watch?v=6riDJMI-Y8U&ab_channel=Crunchyroll",
-  "https://www.youtube.com/watch?v=y1TNuHPSBXI&list=WL&index=82&ab_channel=e-dubble",
-  "https://www.youtube.com/watch?v=G4CKmzBf5Cs&list=WL&index=3&ab_channel=MetaBeats",
-  "https://www.youtube.com/watch?v=taCRBFkUqdM&ab_channel=e-dubble",
-  "https://www.youtube.com/watch?v=taCRBFkUqdM&ab_channel=RhythmRadar",
-  "https://www.youtube.com/watch?v=PPoH0Gn50Nc&list=WL&index=65&ab_channel=RhythmRadar",
-  "https://www.youtube.com/watch?v=FNKPYhXmzoE&rco=1&ab_channel=GreenDay",
-  "https://www.youtube.com/watch?v=7xxgRUyzgs0&list=WL&index=23&ab_channel=LivingColourVEVO",
-  "https://www.youtube.com/watch?v=_mjDnMy2sL8&ab_channel=ChrisLongFilms",
-  "https://www.youtube.com/watch?v=UtcxL4XXUGk&ab_channel=ChrisLongFilms",
+  "https://www.youtube.com/watch?v=6riDJMI-Y8U",  
+  "https://www.youtube.com/watch?v=y1TNuHPSBXI",  
+  "https://www.youtube.com/watch?v=G4CKmzBf5Cs",  
+  "https://www.youtube.com/watch?v=taCRBFkUqdM",  
+  "https://www.youtube.com/watch?v=taCRBFkUqdM",  
+  "https://www.youtube.com/watch?v=PPoH0Gn50Nc",  
+  "https://www.youtube.com/watch?v=FNKPYhXmzoE",  
+  "https://www.youtube.com/watch?v=7xxgRUyzgs0",  
+  "https://www.youtube.com/watch?v=_mjDnMy2sL8",  
+  "https://www.youtube.com/watch?v=UtcxL4XXUGk",  
   "https://archive.org/details/16-millers-blues-alternate-take-previously-unissued/08+-+Three-Four.mp3"
 ];
 
