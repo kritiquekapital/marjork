@@ -94,9 +94,9 @@ vinylButton.addEventListener('mouseleave', () => {
     arm.style.transition = '';
     stylusBase.style.transition = '';
 
-    woodenBox.style.opacity = '1';
-    arm.style.opacity = '1';
-    stylusBase.style.opacity = '1';
+    woodenBox.style.opacity = '0';
+    arm.style.opacity = '0';
+    stylusBase.style.opacity = '0';
 
     woodenBox.style.transform = 'translate(0, 0)';
     arm.style.transform = 'rotate(270deg)';
