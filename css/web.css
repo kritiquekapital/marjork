@@ -641,7 +641,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow: visible;
   cursor: pointer;
   border-radius: 50%;
   background: radial-gradient(circle, #333, #555);
