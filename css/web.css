@@ -607,7 +607,7 @@ body {
 }
 /* Outer container */
 .outer-container {
-  position: absolute;
+  position: relative;
   width: 150px;
   height: 150px;
   display: flex;
@@ -619,7 +619,7 @@ body {
 
 /* Wooden box backdrop */
 .wood-box {
-  position: relative;
+  position: absolute;
   width: 150px;
   height: 150px;
   background: linear-gradient(135deg, #5d3a2e 25%, #8e5a34 25%, #8e5a34 50%, #5d3a2e 50%, #5d3a2e 75%, #8e5a34 75%);
@@ -627,6 +627,7 @@ body {
   border-radius: 20px;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -641,7 +642,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: visible;
   cursor: pointer;
   border-radius: 50%;
   background: radial-gradient(circle, #333, #555);
