@@ -607,7 +607,7 @@ body {
 }
 /* Outer container */
 .outer-container {
-  position: relative;
+  position: absolute;
   width: 150px;
   height: 150px;
   display: flex;
@@ -619,7 +619,7 @@ body {
 
 /* Wooden box backdrop */
 .wood-box {
-  position: absolute;
+  position: relative;
   width: 150px;
   height: 150px;
   background: linear-gradient(135deg, #5d3a2e 25%, #8e5a34 25%, #8e5a34 50%, #5d3a2e 50%, #5d3a2e 75%, #8e5a34 75%);
