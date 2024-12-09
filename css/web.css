@@ -607,7 +607,7 @@ body {
 }
 /* Outer container */
 .outer-container {
-  position: relative;
+  position: absolute;
   width: 150px;
   height: 150px;
   display: flex;
