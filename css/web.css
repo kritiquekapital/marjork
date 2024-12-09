@@ -605,47 +605,113 @@ body {
   transition: transform 2s ease, opacity 2s ease;
   opacity: 1;
 }
-/* Vinyl Button Style */
-.vinyl {
+/* Outer container */
+.outer-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Wooden box backdrop */
+.wood-box {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #5d3a2e 25%, #8e5a34 25%, #8e5a34 50%, #5d3a2e 50%, #5d3a2e 75%, #8e5a34 75%);
+  border: 3px solid #3e2c1c;
+  border-radius: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+/* Vinyl clickable button */
+.vinyl {
+  position: absolute;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  background-color: #000; /* Black background */
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.vinyl .record {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #333 40%, #000 60%);
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
-  position: relative;
-}
-
-.vinyl .record .label {
-  width: 30px;
-  height: 30px;
+  cursor: pointer;
   border-radius: 50%;
-  background-color: #f00; /* Red label */
-  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  background: radial-gradient(circle, #333, #555);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  z-index: 20;
 }
 
-.vinyl:hover .record {
-  animation: spin 2s linear infinite; /* Spin effect on hover */
+/* Record spinning effects */
+.vinyl .record {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: inset 0 0 6px #555;
+  transition: transform 0.5s ease-in-out;
+  z-index: 15;
 }
 
-@keyframes spin {
-  100% {
-    transform: rotate(360deg);
-  }
+/* Arm movement */
+.arm {
+  position: absolute;
+  width: 80px;
+  height: 15px;
+  background: #666;
+  border-radius: 4px;
+  transform-origin: center right;
+  transition: transform 0.3s ease-in-out;
+  right: -10px;
+  top: 2%;
+  opacity: 0;
+  z-index: 15;
+}
+
+/* Stylus base hover effects */
+.stylus-base {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  top: 50%;
+  opacity: 0;
+  z-index: 15;
+}
+
+/* Grooves effect */
+.grooves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(black 0deg 45deg, transparent 45deg 90deg, black 90deg 135deg);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Hover effects */
+.vinyl:hover .wood-box {
+  opacity: 1;
+}
+
+.vinyl:hover .arm {
+  opacity: 1;
+  transform: rotate(320deg);
+}
+
+.vinyl:hover .stylus-base {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(320deg);
 }
