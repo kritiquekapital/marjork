@@ -64,8 +64,8 @@ vinylButton.addEventListener('mouseover', () => {
   // After 2000ms, smoothly rotate to 320°.
   setTimeout(() => {
     arm.style.transition = 'transform 5s ease-out';
-    arm.style.transform = 'rotate(328deg)';
-  }, 2000);
+    arm.style.transform = 'rotate(322deg)';
+  }, 1500);
 });
 
 vinylButton.addEventListener('mouseleave', () => {
