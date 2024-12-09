@@ -58,12 +58,12 @@ const arm = document.querySelector('.vinyl .arm');
 
 vinylButton.addEventListener('mouseover', () => {
   // First, make it quickly jump to 290°.
-  arm.style.transition = 'transform 1.5s ease-in';
+  arm.style.transition = 'transform';
   arm.style.transform = 'rotate(290deg)';
 
-  // After 200ms, smoothly rotate to 320°.
+  // After 2000ms, smoothly rotate to 320°.
   setTimeout(() => {
-    arm.style.transition = 'transform 7s ease-out';
+    arm.style.transition = 'transform 5s ease-out';
     arm.style.transform = 'rotate(328deg)';
   }, 3000);
 });
