@@ -614,7 +614,7 @@ body {
   justify-content: center;
   align-items: flex-end;
   background-color: #333;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* Wooden box backdrop */
