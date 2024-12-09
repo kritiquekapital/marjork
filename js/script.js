@@ -74,6 +74,36 @@ vinylButton.addEventListener('mouseleave', () => {
   arm.style.transform = 'rotate(270deg)';
 });
 
+vinylButton.addEventListener('mouseleave', () => {
+  const woodenBox = document.querySelector('.vinyl .wood-box');
+  const arm = document.querySelector('.vinyl .arm');
+  const stylusBase = document.querySelector('.vinyl .stylus-base');
+
+  // Fade out effect
+  woodenBox.style.transition = 'opacity 1s ease-out';
+  arm.style.transition = 'opacity 1s ease-out';
+  stylusBase.style.transition = 'opacity 1s ease-out';
+
+  woodenBox.style.opacity = '0';
+  arm.style.opacity = '0';
+  stylusBase.style.opacity = '0';
+
+  setTimeout(() => {
+    // Reset after the fade-out
+    woodenBox.style.transition = '';
+    arm.style.transition = '';
+    stylusBase.style.transition = '';
+
+    woodenBox.style.opacity = '1';
+    arm.style.opacity = '1';
+    stylusBase.style.opacity = '1';
+
+    woodenBox.style.transform = 'translate(0, 0)';
+    arm.style.transform = 'rotate(270deg)';
+    stylusBase.style.transform = 'translate(-50%, -50%) rotate(270deg)';
+  }, 1000); // Delay duration matches the fade-out
+});
+
 // Handle kiss button's random message
 document.addEventListener("DOMContentLoaded", () => {
   const kissButton = document.querySelector(".kiss-button");
