@@ -1,6 +1,6 @@
 // Hardcoded list of live links for the first button
 const liveLinks1 = [
-  "https://archive.org/details/playtime-jacques-tati-1967",
+  "https://www.kanopy.com/en/product/playtime,
   "https://archive.org/details/burden-of-dreams",
   "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",    
   "https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",
