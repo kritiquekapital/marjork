@@ -1,5 +1,5 @@
 // Hardcoded list of live links
-const liveLinks = [
+const liveLinks1 = [
   "https://archive.org/details/playtime-jacques-tati-1967",
   "https://archive.org/details/burden-of-dreams",
   "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",    
@@ -9,7 +9,7 @@ const liveLinks = [
   "https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"  
 ];
 
-let currentLinkIndex = 0;
+let currentLinkIndex1 = 0;
 
 // Handle click on the "LIVE" button
 document.querySelector(".propaganda-link").addEventListener("click", (event) => {
@@ -17,6 +17,30 @@ document.querySelector(".propaganda-link").addEventListener("click", (event) => 
   window.open(liveLinks[currentLinkIndex], '_blank'); // Open link in a new tab
   currentLinkIndex = (currentLinkIndex + 1) % liveLinks.length; // Rotate to the next link
 });
+
+// Hardcoded list of live links2
+const liveLinks2 = [
+"https://www.youtube.com/watch?v=6riDJMI-Y8U&ab_channel=Crunchyroll",  
+"https://archive.org/details/16-millers-blues-alternate-take-previously-unissued/08+-+Three-Four.mp3",   
+"https://www.youtube.com/watch?v=y1TNuHPSBXI&list=WL&index=82&ab_channel=e-dubble",   
+"https://www.youtube.com/watch?v=taCRBFkUqdM&ab_channel=e-dubble",   
+"https://www.youtube.com/watch?v=taCRBFkUqdM&ab_channel=RhythmRadar",   
+"https://www.youtube.com/watch?v=PPoH0Gn50Nc&list=WL&index=65&ab_channel=RhythmRadar",   
+"https://www.youtube.com/watch?v=FNKPYhXmzoE&rco=1&ab_channel=GreenDay",   
+"https://www.youtube.com/watch?v=7xxgRUyzgs0&list=WL&index=23&ab_channel=LivingColourVEVO",   
+"https://www.youtube.com/watch?v=_mjDnMy2sL8&ab_channel=ChrisLongFilms",  
+"https://www.youtube.com/watch?v=UtcxL4XXUGk&ab_channel=ChrisLongFilms"   
+];
+
+let currentLinkIndex2 = 0;
+
+// Handle click on the "vinyl" button
+document.querySelector(".vinyl-link").addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent default anchor link behavior
+  window.open(liveLinks[currentLinkIndex], '_blank'); // Open link in a new tab
+  currentLinkIndex = (currentLinkIndex + 1) % liveLinks.length; // Rotate to the next link
+});
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const kissButton = document.querySelector(".kiss-button");
