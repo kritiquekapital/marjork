@@ -1,5 +1,6 @@
 // Hardcoded lists of live links for buttons
 const liveLinks1 = [
+  "https://www.diagonalthoughts.com/?p=1728"
   "https://www.kanopy.com/en/product/playtime",
   "https://archive.org/details/burden-of-dreams",
   "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",
