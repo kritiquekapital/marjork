@@ -3,11 +3,11 @@ const liveLinks1 = [
   "https://www.diagonalthoughts.com/?p=1728",
   "https://www.kanopy.com/en/product/playtime",
   "https://archive.org/details/burden-of-dreams",
-  "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",
-  "https://www.youtube.com/watch?v=-DoaUyMGPWI&t=1480s&ab_channel=SecretBase",
-  "https://www.youtube.com/watch?v=EGAzxO851c4&ab_channel=Fernanda",
-  "https://www.youtube.com/watch?v=T2IaJwkqgPk&ab_channel=AdityaShukla",
-  "https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"
+  "https://www.youtube.com/embed/2NWdFWp0XKE",
+  "https://www.youtube.com/embed/-DoaUyMGPWI",
+  "https://www.youtube.com/embed/EGAzxO851c4",
+  "https://www.youtube.com/embed/T2IaJwkqgPk",
+  "https://www.youtube.com/embed/lvh6NLqKRfs"
 ];
 
 const liveLinks2 = [
