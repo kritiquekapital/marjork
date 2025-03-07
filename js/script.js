@@ -1,6 +1,6 @@
 // Hardcoded lists of live links for buttons
 const liveLinks1 = [
-  "https://www.diagonalthoughts.com/?p=1728"
+  "https://www.diagonalthoughts.com/?p=1728",
   "https://www.kanopy.com/en/product/playtime",
   "https://archive.org/details/burden-of-dreams",
   "https://www.youtube.com/watch?v=2NWdFWp0XKE&ab_channel=Abdala%27sPirataria",
@@ -9,6 +9,7 @@ const liveLinks1 = [
   "https://www.youtube.com/watch?v=T2IaJwkqgPk&ab_channel=AdityaShukla",
   "https://www.youtube.com/watch?v=lvh6NLqKRfs&t=913s&ab_channel=SecretBase"
 ];
+
 const liveLinks2 = [
   "https://www.youtube.com/watch?v=6riDJMI-Y8U",
   "https://www.youtube.com/watch?v=y1TNuHPSBXI",
@@ -26,18 +27,70 @@ const liveLinks2 = [
 let currentLinkIndex1 = 0;
 let currentLinkIndex2 = 0;
 
-// DOMContentLoaded to ensure DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+  // Inject modal HTML structure
+  document.body.insertAdjacentHTML("beforeend", `
+    <div id="liveModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <iframe id="liveFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        <div class="modal-controls">
+          <button id="prevChannel">Previous</button>
+          <button id="nextChannel">Next</button>
+        </div>
+      </div>
+    </div>
+  `);
+
+  const liveModal = document.getElementById("liveModal");
+  const liveFrame = document.getElementById("liveFrame");
+  const closeButton = document.querySelector(".close-button");
+  const prevButton = document.getElementById("prevChannel");
+  const nextButton = document.getElementById("nextChannel");
+
+  // Function to update iframe source
+  function updateLiveStream() {
+    let url = liveLinks1[currentLinkIndex1];
+    if (url.includes("youtube.com/watch?v=")) {
+      url = url.replace("watch?v=", "embed/");
+    }
+    liveFrame.src = url;
+  }
+
   // Handle click on the "LIVE" button
   const propagandaLink = document.querySelector(".propaganda-link");
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
       event.preventDefault();
-      const newTab = window.open(liveLinks1[currentLinkIndex1], "_blank");
-      if (newTab) newTab.blur(); // Open in the background
-      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+      updateLiveStream();
+      liveModal.style.display = "block";
     });
   }
+
+  // Close modal
+  closeButton.addEventListener("click", () => {
+    liveModal.style.display = "none";
+    liveFrame.src = ""; // Stop playback when closing
+  });
+
+  // Switch channels manually
+  prevButton.addEventListener("click", () => {
+    currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+    updateLiveStream();
+  });
+
+  nextButton.addEventListener("click", () => {
+    currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+    updateLiveStream();
+  });
+
+  // Close modal when clicking outside of content
+  window.addEventListener("click", (event) => {
+    if (event.target === liveModal) {
+      liveModal.style.display = "none";
+      liveFrame.src = "";
+    }
+  });
 
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
