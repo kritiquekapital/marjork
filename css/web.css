@@ -839,22 +839,37 @@ body {
   background-color: #A57846; /* Darker wood tone */
 }
 
-.video-container iframe {
-    width: 100%; /* Makes iframe responsive */
-    height: auto;
-    max-width: 1000px; /* Maximum width you want */
-    aspect-ratio: 16 / 9; /* Ensures correct aspect ratio */
-    border-radius: 10px; /* Optional: adds rounded corners */
-    overflow: hidden;
+/* Video container (with flexbox centering) */
+.video-container {
+    position: fixed; /* Fix to the screen */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full screen width */
+    height: 100vh; /* Full screen height */
+    display: none; /* Hidden initially */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    visibility: hidden; /* Ensures the video container starts hidden */
 }
 
-.video-container {
-    display: none;
-    position: relative;
-    display: block;
-    padding-top: 56.25%; /* This is the 16:9 aspect ratio */
+/* Video popup (the iframe container) */
+.video-popup {
+    width: 80%;
+    height: 80%;
+    max-width: 1000px; /* Max width constraint */
+    background: #fff; /* Background color */
+    border-radius: 10px; /* Optional: adds rounded corners */
+    overflow: hidden; /* Ensures content stays within the box */
+    display: flex; /* Flex to center the iframe */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+/* Responsive iframe inside the popup */
+.video-container iframe {
     width: 100%;
-    max-width: 1000px;
-    margin: auto;
-    border: none; /* Optional: border around the player */
+    height: 100%;
+    aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
+    border-radius: 10px;
 }
