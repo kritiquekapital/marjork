@@ -159,9 +159,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fixing the issue with duplicate IDs on label elements
   const badgeLabels = document.querySelectorAll("label.ytp-suggested-action-badge-title");
-
   badgeLabels.forEach((badge, index) => {
     badge.id = `ytp-suggested-action-badge-title-${Date.now()}-${index}`;
-    console.log("Modified element ID:", badge.id);
+    console.log("Modified label element ID:", badge.id);
+  });
+
+  // Fixing the issue with duplicate IDs on input elements
+  const playlistCheckboxes = document.querySelectorAll("input.ytp-share-panel-include-playlist-checkbox");
+  playlistCheckboxes.forEach((checkbox, index) => {
+    checkbox.id = `ytp-share-panel-include-playlist-checkbox-${Date.now()}-${index}`;
+    console.log("Modified input element ID:", checkbox.id);
   });
 });
