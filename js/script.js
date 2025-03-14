@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
 
-   function updateLiveStream() {
+  function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
       url = url.replace("watch?v=", "embed/") + "?autoplay=1";
@@ -74,10 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
       liveFrame.src = ""; // Stop playback
     }
   });
-
-  const prevButton = document.getElementById("prevChannel");
-  const nextButton = document.getElementById("nextChannel");
-  console.log(prevButton, nextButton); // Check if buttons are found
 
   // Switch channels manually
   prevButton.addEventListener("click", () => {
