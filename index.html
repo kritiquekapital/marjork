@@ -70,15 +70,17 @@
   <div class="invisible"></div>
 </div>
 
-<div class="video-container">
-    <iframe width="500" height="300" 
-        src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen>
-    </iframe>
-    <div class="tv-knob"></div>
-    <div class="tv-screen"></div>
+<a href="#" class="propaganda-link" target="_blank" onclick="showPopup()">
+  <div class="propaganda">
+    <span class="symbol">LIVE</span>
+  </div>
+</a>
+
+<!-- Popup container (hidden by default) -->
+<div class="popup-player-container" onclick="closePopup(event)">
+  <div class="popup-frame" onclick="event.stopPropagation()"> <!-- Prevents click on the video from closing the popup -->
+    <iframe id="video-player" src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
 </div>
 <!-- External JavaScript File -->
 <script src="js/script.js" defer></script>
