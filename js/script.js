@@ -1,5 +1,8 @@
 // Hardcoded lists of live links for buttons
 const liveLinks1 = [
+  "https://www.diagonalthoughts.com/?p=1728",
+  "https://www.kanopy.com/en/product/playtime?autoplay=1",
+  "https://archive.org/details/burden-of-dreams",
   "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
   "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
   "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
@@ -54,15 +57,27 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  // Handle click on the "LIVE" button
-  const propagandaLink = document.querySelector(".propaganda-link");
-  if (propagandaLink) {
-    propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      updateLiveStream();
-      liveModal.style.display = "block";
-    });
+// Handle click on the "LIVE" button
+const propagandaLink = document.querySelector(".propaganda-link");
+if (propagandaLink) {
+  propagandaLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    updateLiveStream();
+    liveModal.style.display = "block";
+  });
+}
+
+// Function to update iframe source
+function updateLiveStream() {
+  let url = liveLinks1[currentLinkIndex1];
+  if (url.includes("youtube.com/watch?v=")) {
+    url = url.replace("watch?v=", "embed/") + "?autoplay=1&mute=1";
+  } else if (url.includes("kanopy.com") || url.includes("archive.org")) {
+    // Handle other link types with autoplay
+    url += "?autoplay=1";
   }
+  liveFrame.src = url;
+}
 
   // Close modal
   closeButton.addEventListener("click", () => {
