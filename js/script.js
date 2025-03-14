@@ -12,6 +12,7 @@ const liveLinks1 = [
 
 const liveLinks2 = [
   "https://www.youtube.com/watch?v=6riDJMI-Y8U",
+  "https://www.youtube.com/watch?v=V7IUtUsfARA",
   "https://www.youtube.com/watch?v=y1TNuHPSBXI",
   "https://www.youtube.com/watch?v=taCRBFkUqdM",
   "https://www.youtube.com/watch?v=PPoH0Gn50Nc",
