@@ -156,3 +156,181 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+Key updates:
+Ensure the updateLiveStream is called: I made sure that the updateLiveStream function is called when the previous and next buttons are clicked. This will refresh the iframe with the new URL based on the updated index.
+
+Event listeners for prevButton and nextButton: The buttons now properly cycle through the liveLinks1 array using the modulo operation, and updateLiveStream() is triggered to update the video source accordingly.
+
+Test:
+Click "Previous" or "Next": It will now properly cycle through the channels in liveLinks1.
+Modal Close: Clicking outside the modal still closes it, and video stops.
+Let me know if this resolves the issue or if further adjustments are needed!
+
+
+
+
+
+
+
+You said:
+they are still not funtioning correctly
+ChatGPT said:
+I see. It sounds like there may still be an issue with how the buttons are updating the iframe. Let’s break down the issue and ensure everything is working correctly.
+
+Here are the main potential causes:
+
+Event Listeners: The event listeners may not be properly binding or firing correctly.
+Index Update: The way the index is being updated might not be correctly reflected in the iframe.
+Channel Array: Ensure that the list you're cycling through is correctly referenced.
+Let’s simplify and ensure the flow is correct. I’ll provide a fresh approach to the next and previous button functionality, ensuring the iframe updates and the cycling works properly.
+
+Full Code with Debugging
+javascript
+Copy
+Edit
+// Hardcoded lists of live links for buttons
+const liveLinks1 = [
+  "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
+  "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
+  "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
+  "https://www.youtube.com/embed/T2IaJwkqgPk?autoplay=1",
+  "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
+];
+
+let currentLinkIndex1 = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Inject modal HTML structure
+  document.body.insertAdjacentHTML("beforeend", `
+    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
+      <div class="video-popup">
+        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+        <div class="modal-controls">
+          <button id="prevChannel">Previous</button>
+          <button id="nextChannel">Next</button>
+        </div>
+      </div>
+    </div>
+  `);
+
+  const liveModal = document.getElementById("liveModal");
+  const liveFrame = document.getElementById("liveFrame");
+  const prevButton = document.getElementById("prevChannel");
+  const nextButton = document.getElementById("nextChannel");
+  const propagandaLink = document.querySelector(".propaganda-link");
+
+  // Function to update iframe source
+  function updateLiveStream() {
+    let url = liveLinks1[currentLinkIndex1];
+    if (url.includes("watch?v=")) {
+      url = url.replace("watch?v=", "embed/") + "?autoplay=1";
+    }
+    liveFrame.src = url;
+  }
+
+  // Handle click on the "LIVE" button
+  if (propagandaLink) {
+    propagandaLink.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent opening a new tab
+      updateLiveStream(); // Update the live stream link
+      liveModal.style.visibility = "visible"; 
+      liveModal.style.display = "flex"; 
+    });
+  }
+
+  // Close modal (removed 'x' close button for simplicity)
+  window.addEventListener("click", (event) => {
+    if (event.target === liveModal) {
+      liveModal.style.visibility = "hidden";
+      liveModal.style.display = "none";
+      liveFrame.src = ""; // Stop playback
+    }
+  });
+
+  // Switch channels manually
+  prevButton.addEventListener("click", () => {
+    console.log('Previous button clicked');
+    currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+    console.log(`Current Link Index after prev: ${currentLinkIndex1}`);
+    updateLiveStream(); // Ensure that the video updates
+  });
+
+  nextButton.addEventListener("click", () => {
+    console.log('Next button clicked');
+    currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+    console.log(`Current Link Index after next: ${currentLinkIndex1}`);
+    updateLiveStream(); // Ensure that the video updates
+  });
+
+  // Handle click on the "VINYL" button
+  const vinylLink = document.querySelector(".vinyl-link");
+  if (vinylLink) {
+    vinylLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      const newTab = window.open(liveLinks2[currentLinkIndex2], "_blank");
+      if (newTab) newTab.blur(); // Open in the background
+      currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
+    });
+  }
+
+  // Vinyl button arm animation
+  const vinylButton = document.querySelector(".vinyl");
+  const arm = document.querySelector(".vinyl .arm");
+  if (vinylButton && arm) {
+    vinylButton.addEventListener("mouseover", () => {
+      arm.style.transition = "transform 0.2s";
+      arm.style.transform = "rotate(290deg)"; // Quick jump
+
+      setTimeout(() => {
+        arm.style.transition = "transform 5s ease-out";
+        arm.style.transform = "rotate(322deg)"; // Smooth rotation
+      }, 200);
+    });
+
+    vinylButton.addEventListener("mouseleave", () => {
+      arm.style.transition = "transform 0.5s ease-in";
+      arm.style.transform = "rotate(270deg)"; // Reset position
+    });
+  }
+
+  // Kiss button random message animation
+  const kissButton = document.querySelector(".kiss-button");
+  if (kissButton) {
+    const messages = [
+      "i love you!",
+      "я тебя люблю!",
+      "☀️ solnyshko ☀️"
+    ];
+
+    kissButton.addEventListener("click", () => {
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      const loveMessage = document.createElement("div");
+
+      loveMessage.textContent = randomMessage;
+      loveMessage.style.position = "absolute";
+      loveMessage.style.color = "#FF1493";
+      loveMessage.style.fontSize = "1.5rem";
+      loveMessage.style.fontWeight = "bold";
+      loveMessage.style.top = "50%";
+      loveMessage.style.left = "50%";
+      loveMessage.style.transform = "translate(-50%, -50%)";
+      loveMessage.style.opacity = "1";
+      loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
+
+      setTimeout(() => {
+        const randomX = Math.random() * 200 - 100;
+        const randomY = Math.random() * 200 - 100;
+        loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+        loveMessage.style.opacity = "0";
+      }, 100);
+
+      kissButton.appendChild(loveMessage);
+
+      setTimeout(() => {
+        kissButton.removeChild(loveMessage);
+      }, 1600);
+    });
+  }
+});
+  }
+});
