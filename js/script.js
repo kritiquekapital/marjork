@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.insertAdjacentHTML("beforeend", `
     <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
-        <span class="close-button">&times;</span>
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         <div class="modal-controls">
           <button id="prevChannel">Previous</button>
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
-  const closeButton = document.querySelector(".close-button");
   const prevButton = document.getElementById("prevChannel");
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
@@ -65,11 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Close modal
-  closeButton.addEventListener("click", () => {
-    liveModal.style.visibility = "hidden";
-    liveModal.style.display = "none";
-    liveFrame.src = ""; // Stop playback when closing
+  // Close modal (removed 'x' close button for simplicity)
+  window.addEventListener("click", (event) => {
+    if (event.target === liveModal) {
+      liveModal.style.visibility = "hidden";
+      liveModal.style.display = "none";
+      liveFrame.src = ""; // Stop playback
+    }
   });
 
   // Switch channels manually
@@ -81,15 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
   nextButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
     updateLiveStream();
-  });
-
-  // Close modal when clicking outside of content
-  window.addEventListener("click", (event) => {
-    if (event.target === liveModal) {
-      liveModal.style.visibility = "hidden";
-      liveModal.style.display = "none";
-      liveFrame.src = ""; // Stop playback
-    }
   });
 
   // Handle click on the "VINYL" button
