@@ -78,12 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Switch channels manually
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-    updateLiveStream();
+    updateLiveStream(); // Ensure that the video updates
   });
 
   nextButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-    updateLiveStream();
+    updateLiveStream(); // Ensure that the video updates
   });
 
   // Handle click on the "VINYL" button
