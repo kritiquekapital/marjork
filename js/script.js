@@ -12,7 +12,6 @@ const liveLinks1 = [
 
 const liveLinks2 = [
   "https://www.youtube.com/watch?v=6riDJMI-Y8U",
-  "https://www.youtube.com/watch?v=V7IUtUsfARA",
   "https://www.youtube.com/watch?v=y1TNuHPSBXI",
   "https://www.youtube.com/watch?v=taCRBFkUqdM",
   "https://www.youtube.com/watch?v=PPoH0Gn50Nc",
@@ -76,17 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-	prevButton.addEventListener("click", () => {
-  	console.log("Prev button clicked");
-  	currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-  	updateLiveStream();
-	});
+  // Switch channels manually
+  prevButton.addEventListener("click", () => {
+    currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+    updateLiveStream(); // Ensure that the video updates
+  });
 
-	nextButton.addEventListener("click", () => {
-  	console.log("Next button clicked");
-  	currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-  	updateLiveStream();
-	});
+  nextButton.addEventListener("click", () => {
+    currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+    updateLiveStream(); // Ensure that the video updates
+  });
 
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
@@ -157,6 +155,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1600);
     });
   }
-});
-
 });
