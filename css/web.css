@@ -773,13 +773,61 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   display: flex;
-  justify-content: center; /* Ensure centering */
+  justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8); /* Darken background */
+  z-index: 1000; /* Ensure it appears on top */
+  visibility: hidden; /* Initially hidden */
+}
+
+.video-popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%; /* Increased width for larger player */
+    max-width: 1200px; /* Increased max width */
+    height: auto;
+    max-height: 675px; /* Adjusted max height based on 16:9 ratio */
+    background-color: rgba(0, 0, 0, 0.8); /* Background with opacity */
+    border-radius: 15px;
+    padding: 20px;
+    z-index: 999; /* Ensure it is above other content */
+    overflow: hidden;
+}
+
+.video-popup iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+.modal-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#prevChannel, #nextChannel {
+  background-color: #C98F5E; /* Lighter wood tone for buttons */
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#prevChannel:hover, #nextChannel:hover {
+  background-color: #A57846; /* Darker wood tone */
 }
 
 /* Video container (with flexbox centering) */
@@ -798,82 +846,21 @@ body {
 
 /* Video popup (the iframe container) */
 .video-popup {
-  position: fixed; /* Ensure full viewport anchoring */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  max-width: 1000px;
-  height: auto;
-  max-height: 562px;
-  background-color: rgba(0, 0, 0, 0.9);
-  border-radius: 15px;
-  padding: 20px;
-  z-index: 1001;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column; /* Stack next/prev buttons properly */
-  align-items: center;
-  justify-content: center;
+    width: 85%; /* Larger size */
+    height: 85%; /* Larger size */
+    max-width: 1200px; /* Increased max width */
+    background: #fff; /* Background color */
+    border-radius: 10px; /* Optional: adds rounded corners */
+    overflow: hidden; /* Ensures content stays within the box */
+    display: flex; /* Flex to center the iframe */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
 /* Responsive iframe inside the popup */
-.video-popup iframe {
+.video-container iframe {
     width: 100%;
-    height: auto;
-    max-height: 400px;
+    height: 100%;
     aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
     border-radius: 10px;
-    border: none;
-}
-
-/* Close button */
-.video-popup .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-/* Modal controls (Next and Previous buttons) */
-.modal-controls {
-  display: flex;
-  justify-content: center;
-  gap: 15px; /* Adds spacing between buttons */
-  margin-top: 10px;
-  width: 100%;
-}
-
-#prevChannel, #nextChannel {
-  background-color: #C98F5E; /* Lighter wood tone for buttons */
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-#prevChannel:hover, #nextChannel:hover {
-  background-color: #A57846; /* Darker wood tone */
-}
-
-@media (max-width: 768px) {
-    .video-popup {
-        width: 90%;
-        max-width: 600px;
-    }
-
-    .modal-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #prevChannel, #nextChannel {
-        width: 80%;
-        margin: 5px 0;
-    }
 }
