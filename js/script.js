@@ -21,7 +21,7 @@ const liveLinks2 = [
   "https://www.youtube.com/watch?v=_mjDnMy2sL8",
   "https://www.youtube.com/watch?v=UtcxL4XXUGk",
   "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
-  "https://archive.org/details/16-millers-blues-alternate-take-previously-unissued/08+-+Three-Four.mp3"
+  "https://www.youtube.com/watch?v=V7IUtUsfARA",
 ];
 
 let currentLinkIndex1 = 0;
