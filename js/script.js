@@ -1,9 +1,12 @@
 // Hardcoded lists of live links for buttons
 const liveLinks1 = [
+  "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
   "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
+  "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",
   "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
   "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
   "https://www.youtube.com/embed/T2IaJwkqgPk?autoplay=1",
+  "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",
   "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
 ];
 
