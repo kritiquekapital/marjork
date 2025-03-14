@@ -822,3 +822,73 @@ body {
   opacity: 1;
   transform: translate(-50%, -50%) rotate(320deg);
 }
+
+.video-container {
+    width: 500px;
+    height: 350px;
+    margin: 50px auto; /* Centers it and adds spacing */
+    padding: 20px;
+    background: #5a3e1b; /* Dark brown wood color */
+    border: 10px solid #422b12; /* Outer border to define the frame */
+    border-radius: 20px;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.5); /* Adds depth */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Add a metallic speaker-like effect */
+.video-container::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 100px;
+    background: linear-gradient(45deg, #a1a1a1, #6d6d6d);
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 5px;
+}
+
+/* Style the iframe to fit inside */
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+    
+}
+
+.tv-knob {
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #4d4d4d, #222);
+    border-radius: 50%;
+    position: absolute;
+    right: 15px;
+    top: 20%;
+    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2), 
+                inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+}
+@keyframes tv-static {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+.tv-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/3/3f/TV_Static.gif');
+    background-size: cover;
+    opacity: 0.6;
+    animation: tv-static 0.2s linear infinite;
+    z-index: 2;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Hide the static when video starts */
+.video-container.playing .tv-screen {
+    opacity: 0;
+}
