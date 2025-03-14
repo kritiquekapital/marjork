@@ -47,12 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
 
-  // Function to update iframe source
-  function updateLiveStream() {
+   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
       url = url.replace("watch?v=", "embed/") + "?autoplay=1";
     }
+    console.log("Updating iframe src to:", url); // Log the URL update
     liveFrame.src = url;
   }
 
@@ -74,6 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
       liveFrame.src = ""; // Stop playback
     }
   });
+
+  const prevButton = document.getElementById("prevChannel");
+  const nextButton = document.getElementById("nextChannel");
+  console.log(prevButton, nextButton); // Check if buttons are found
 
   // Switch channels manually
   prevButton.addEventListener("click", () => {
