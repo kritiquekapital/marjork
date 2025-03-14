@@ -28,9 +28,12 @@ let currentLinkIndex1 = 0;
 let currentLinkIndex2 = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Inject modal HTML structure
+  // Generate a unique ID for the modal to avoid conflicts
+  const modalId = `liveModal-${Date.now()}`; // Using current timestamp for uniqueness
+
+  // Inject modal HTML structure with the unique ID
   document.body.insertAdjacentHTML("beforeend", `
-    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
+    <div id="${modalId}" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         <div class="modal-controls">
@@ -41,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `);
 
-  const liveModal = document.getElementById("liveModal");
+  const liveModal = document.getElementById(modalId); // Use dynamic modal ID
   const liveFrame = document.getElementById("liveFrame");
   const prevButton = document.getElementById("prevChannel");
   const nextButton = document.getElementById("nextChannel");
