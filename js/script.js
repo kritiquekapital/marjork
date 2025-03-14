@@ -49,32 +49,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("youtube.com/watch?v=")) {
-      url = url.replace("watch?v=", "embed/");
+      url = url.replace("watch?v=", "embed/") + "?autoplay=1&mute=1";
+    } else if (url.includes("kanopy.com") || url.includes("archive.org")) {
+      // Handle other link types with autoplay
+      url += "?autoplay=1";
     }
     liveFrame.src = url;
   }
 
-// Handle click on the "LIVE" button
-const propagandaLink = document.querySelector(".propaganda-link");
-if (propagandaLink) {
-  propagandaLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    updateLiveStream();
-    liveModal.style.display = "block";
-  });
-}
-
-// Function to update iframe source
-function updateLiveStream() {
-  let url = liveLinks1[currentLinkIndex1];
-  if (url.includes("youtube.com/watch?v=")) {
-    url = url.replace("watch?v=", "embed/") + "?autoplay=1&mute=1";
-  } else if (url.includes("kanopy.com") || url.includes("archive.org")) {
-    // Handle other link types with autoplay
-    url += "?autoplay=1";
+  // Handle click on the "LIVE" button
+  const propagandaLink = document.querySelector(".propaganda-link");
+  if (propagandaLink) {
+    propagandaLink.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent opening a new tab
+      updateLiveStream(); // Update the live stream link
+      liveModal.style.display = "block"; // Show the modal with the live stream
+    });
   }
-  liveFrame.src = url;
-}
 
   // Close modal
   closeButton.addEventListener("click", () => {
@@ -97,13 +88,9 @@ function updateLiveStream() {
   window.addEventListener("click", (event) => {
     if (event.target === liveModal) {
       liveModal.style.display = "none";
-      liveFrame.src = "";
+      liveFrame.src = ""; // Stop playback
     }
   });
-  
-  document.querySelector("iframe").addEventListener("load", function() {
-    document.querySelector(".video-container").classList.add("playing");
-	});
 
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
