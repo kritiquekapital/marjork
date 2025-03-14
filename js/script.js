@@ -1,39 +1,46 @@
-// Hardcoded lists of live links for buttons
-const liveLinks1 = [
-  "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
-  "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
-  "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",
-  "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
-  "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
-  "https://www.youtube.com/embed/T2IaJwkqgPk?autoplay=1",
-  "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",
-  "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
-];
-
-const liveLinks2 = [
-  "https://www.youtube.com/watch?v=6riDJMI-Y8U",
-  "https://www.youtube.com/watch?v=y1TNuHPSBXI",
-  "https://www.youtube.com/watch?v=taCRBFkUqdM",
-  "https://www.youtube.com/watch?v=PPoH0Gn50Nc",
-  "https://www.youtube.com/watch?v=FNKPYhXmzoE",
-  "https://www.youtube.com/watch?v=7xxgRUyzgs0",
-  "https://www.youtube.com/watch?v=G4CKmzBf5Cs",
-  "https://www.youtube.com/watch?v=_mjDnMy2sL8",
-  "https://www.youtube.com/watch?v=UtcxL4XXUGk",
-  "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
-  "https://www.youtube.com/watch?v=V7IUtUsfARA",
-];
-
-let currentLinkIndex1 = 0;
-let currentLinkIndex2 = 0;
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Generate a unique ID for the modal to avoid conflicts
-  const modalId = `liveModal-${Date.now()}`; // Using current timestamp for uniqueness
+  // Hardcoded lists of live links for buttons
+  const liveLinks1 = [
+    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
+    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
+    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",
+    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
+    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
+    "https://www.youtube.com/embed/T2IaJwkqgPk?autoplay=1",
+    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",
+    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
+  ];
 
-  // Inject modal HTML structure with the unique ID
+  const liveLinks2 = [
+    "https://www.youtube.com/watch?v=6riDJMI-Y8U",
+    "https://www.youtube.com/watch?v=y1TNuHPSBXI",
+    "https://www.youtube.com/watch?v=taCRBFkUqdM",
+    "https://www.youtube.com/watch?v=PPoH0Gn50Nc",
+    "https://www.youtube.com/watch?v=FNKPYhXmzoE",
+    "https://www.youtube.com/watch?v=7xxgRUyzgs0",
+    "https://www.youtube.com/watch?v=G4CKmzBf5Cs",
+    "https://www.youtube.com/watch?v=_mjDnMy2sL8",
+    "https://www.youtube.com/watch?v=UtcxL4XXUGk",
+    "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
+    "https://www.youtube.com/watch?v=V7IUtUsfARA",
+  ];
+
+  let currentLinkIndex1 = 0;
+  let currentLinkIndex2 = 0;
+
+  // Function to update live stream
+  function updateLiveStream() {
+    let url = liveLinks1[currentLinkIndex1];
+    if (url.includes("watch?v=")) {
+      url = url.replace("watch?v=", "embed/") + "?autoplay=1";
+    }
+    console.log("Updating iframe src to:", url); // Log the URL update
+    liveFrame.src = url;
+  }
+
+  // Inject modal HTML structure
   document.body.insertAdjacentHTML("beforeend", `
-    <div id="${modalId}" class="popup-player-container" style="visibility: hidden;">
+    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         <div class="modal-controls">
@@ -44,20 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `);
 
-  const liveModal = document.getElementById(modalId); // Use dynamic modal ID
+  const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
   const prevButton = document.getElementById("prevChannel");
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
-
-  function updateLiveStream() {
-    let url = liveLinks1[currentLinkIndex1];
-    if (url.includes("watch?v=")) {
-      url = url.replace("watch?v=", "embed/") + "?autoplay=1";
-    }
-    console.log("Updating iframe src to:", url); // Log the URL update
-    liveFrame.src = url;
-  }
 
   // Handle click on the "LIVE" button
   if (propagandaLink) {
@@ -158,4 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 1600);
     });
   }
+
+  // Fixing the issue with duplicate IDs on label elements
+  const badgeLabels = document.querySelectorAll("label.ytp-suggested-action-badge-title");
+
+  badgeLabels.forEach((badge, index) => {
+    badge.id = `ytp-suggested-action-badge-title-${Date.now()}-${index}`;
+    console.log("Modified element ID:", badge.id);
+  });
 });
