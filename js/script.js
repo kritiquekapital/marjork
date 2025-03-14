@@ -1,13 +1,13 @@
 // Hardcoded lists of live links for buttons
 const liveLinks1 = [
   "https://www.diagonalthoughts.com/?p=1728",
-  "https://www.kanopy.com/en/product/playtime",
+  "https://www.kanopy.com/en/product/playtime?autoplay=1",
   "https://archive.org/details/burden-of-dreams",
-  "https://www.youtube.com/embed/2NWdFWp0XKE",
-  "https://www.youtube.com/embed/-DoaUyMGPWI",
-  "https://www.youtube.com/embed/EGAzxO851c4",
-  "https://www.youtube.com/embed/T2IaJwkqgPk",
-  "https://www.youtube.com/embed/lvh6NLqKRfs"
+  "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
+  "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
+  "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
+  "https://www.youtube.com/embed/T2IaJwkqgPk?autoplay=1",
+  "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
 ];
 
 const liveLinks2 = [
@@ -91,6 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
       liveFrame.src = "";
     }
   });
+  
+  document.querySelector("iframe").addEventListener("load", function() {
+    document.querySelector(".video-container").classList.add("playing");
+	});
 
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
