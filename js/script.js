@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded lists of live links for buttons
   const liveLinks1 = [
-    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1", //hairpin
-    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1", //la souf
-    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1", //crack
-    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1", //fight
-    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1", //fata
-    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1", //tokyo
-    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"  //bob
+    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",           //hairpin circus
+    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",           //crack
+    "https://www.youtube.com/embed/ze9-ARjL-ZA?si=SGBYO5SXw0k1CuA-",  //overwhelming and collective harmony
+    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",           //la souf
+    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",           //fight
+    "https://www.youtube.com/watch?v=rgiC8YfytDw",                    //SocWen
+    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",           //fata
+    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",           //tokyo
+    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"            //bob
   ];
 
   const liveLinks2 = [
