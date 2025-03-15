@@ -1,7 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
-  // Hardcoded lists of live links for buttons
+  const prevButton = document.getElementById("prevButton");
+  const nextButton = document.getElementById("nextButton");
+  
+  if (!liveModal || !liveFrame) {
+    console.error("Live modal or iframe not found!");
+    return;
+  }
+
   const liveLinks1 = [
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
     "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&mute=1",
@@ -13,22 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
   ];
 
-  const liveLinks2 = [
-    "https://www.youtube.com/watch?v=6riDJMI-Y8U",
-    "https://www.youtube.com/watch?v=y1TNuHPSBXI",
-    "https://www.youtube.com/watch?v=taCRBFkUqdM",
-    "https://www.youtube.com/watch?v=PPoH0Gn50Nc",
-    "https://www.youtube.com/watch?v=FNKPYhXmzoE",
-    "https://www.youtube.com/watch?v=7xxgRUyzgs0",
-    "https://www.youtube.com/watch?v=G4CKmzBf5Cs",
-    "https://www.youtube.com/watch?v=_mjDnMy2sL8",
-    "https://www.youtube.com/watch?v=UtcxL4XXUGk",
-    "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
-    "https://www.youtube.com/watch?v=V7IUtUsfARA",
-  ];
-
   let currentLinkIndex1 = 0;
-  let currentLinkIndex2 = 0;
 
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
@@ -39,18 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  document.body.insertAdjacentHTML("beforeend", `
-    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
-      <div class="video-popup">
-        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        <div class="modal-controls">
-          <button id="prevChannel">Previous</button>
-          <button id="nextChannel">Next</button>
-        </div>
-      </div>
-    </div>
-  `);
-
+  // Modal open functionality
   const propagandaLink = document.querySelector(".propaganda-link");
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
@@ -61,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Close modal when clicking outside
   window.addEventListener("click", (event) => {
     if (event.target === liveModal) {
       liveModal.style.visibility = "hidden";
@@ -69,10 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Adding dynamic buttons handling inside the DOMContentLoaded
-  const prevButton = document.getElementById("prevChannel");
-  const nextButton = document.getElementById("nextChannel");
-
+  // Previous and Next buttons for cycling through streams
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
     updateLiveStream();
@@ -83,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLiveStream();
   });
 
+  // Vinyl Button interactions
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
     vinylLink.addEventListener("click", (event) => {
@@ -112,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Kiss Button functionality
   const kissButton = document.querySelector(".kiss-button");
   if (kissButton) {
     const messages = [
