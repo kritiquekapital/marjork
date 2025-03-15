@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
     updateLiveStream();
