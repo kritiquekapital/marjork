@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
-  const prevButton = document.getElementById("prevButton");
-  const nextButton = document.getElementById("nextButton");
   // Hardcoded lists of live links for buttons
   const liveLinks1 = [
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
@@ -54,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
   `);
 
   const propagandaLink = document.querySelector(".propaganda-link");
-
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
       event.preventDefault();
@@ -72,7 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  
+  // Adding dynamic buttons handling inside the DOMContentLoaded
+  const prevButton = document.getElementById("prevChannel");
+  const nextButton = document.getElementById("nextChannel");
+
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
     updateLiveStream();
