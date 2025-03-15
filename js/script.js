@@ -53,8 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `);
 
-  const liveModal = document.getElementById("liveModal");
-  const liveFrame = document.getElementById("liveFrame");
   const propagandaLink = document.querySelector(".propaganda-link");
 
   if (propagandaLink) {
