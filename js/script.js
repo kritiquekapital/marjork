@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const liveModal = document.getElementById("liveModal");
+  const liveFrame = document.getElementById("liveFrame");
   const prevButton = document.getElementById("prevButton");
   const nextButton = document.getElementById("nextButton");
   // Hardcoded lists of live links for buttons
