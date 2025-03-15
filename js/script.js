@@ -51,9 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
-  const prevButton = document.getElementById("prevChannel");
-  const nextButton = document.getElementById("nextChannel");
+  const prevButton = document.getElementById("prevButton");
+    console.log(prevButton, nextButton);
+  const nextButton = document.getElementById("nextButton");
   const propagandaLink = document.querySelector(".propaganda-link");
+
 
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
