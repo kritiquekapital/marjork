@@ -28,17 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
 
-  // Function to update live stream
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
       url = url.replace("watch?v=", "embed/") + "?autoplay=1";
     }
-    console.log("Updating iframe src to:", url); // Log the URL update
+    console.log("Updating iframe src to:", url);
     liveFrame.src = url;
   }
 
-  // Inject modal HTML structure
   document.body.insertAdjacentHTML("beforeend", `
     <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
@@ -57,68 +55,62 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
 
-  // Handle click on the "LIVE" button
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent opening a new tab
-      updateLiveStream(); // Update the live stream link
-      liveModal.style.visibility = "visible"; 
-      liveModal.style.display = "flex"; 
+      event.preventDefault();
+      updateLiveStream();
+      liveModal.style.visibility = "visible";
+      liveModal.style.display = "flex";
     });
   }
 
-  // Close modal (removed 'x' close button for simplicity)
   window.addEventListener("click", (event) => {
     if (event.target === liveModal) {
       liveModal.style.visibility = "hidden";
       liveModal.style.display = "none";
-      liveFrame.src = ""; // Stop playback
+      liveFrame.src = "";
     }
   });
 
-  // Switch channels manually
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-    updateLiveStream(); // Ensure that the video updates
+    updateLiveStream();
   });
 
   nextButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-    updateLiveStream(); // Ensure that the video updates
+    updateLiveStream();
   });
 
-  // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
     vinylLink.addEventListener("click", (event) => {
       event.preventDefault();
       const newTab = window.open(liveLinks2[currentLinkIndex2], "_blank");
-      if (newTab) newTab.blur(); // Open in the background
+      if (newTab) newTab.blur();
       currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
     });
   }
 
-  // Vinyl button arm animation
   const vinylButton = document.querySelector(".vinyl");
   const arm = document.querySelector(".vinyl .arm");
   if (vinylButton && arm) {
     vinylButton.addEventListener("mouseover", () => {
       arm.style.transition = "transform 0.2s";
-      arm.style.transform = "rotate(290deg)"; // Quick jump
+      arm.style.transform = "rotate(290deg)";
 
       setTimeout(() => {
         arm.style.transition = "transform 5s ease-out";
-        arm.style.transform = "rotate(322deg)"; // Smooth rotation
+        arm.style.transform = "rotate(322deg)";
       }, 200);
     });
 
     vinylButton.addEventListener("mouseleave", () => {
       arm.style.transition = "transform 0.5s ease-in";
-      arm.style.transform = "rotate(270deg)"; // Reset position
+      arm.style.transform = "rotate(270deg)";
     });
   }
 
-  // Kiss button random message animation
   const kissButton = document.querySelector(".kiss-button");
   if (kissButton) {
     const messages = [
@@ -130,44 +122,20 @@ document.addEventListener("DOMContentLoaded", () => {
     kissButton.addEventListener("click", () => {
       const randomMessage = messages[Math.floor(Math.random() * messages.length)];
       const loveMessage = document.createElement("div");
-
       loveMessage.textContent = randomMessage;
-      loveMessage.style.position = "absolute";
-      loveMessage.style.color = "#FF1493";
-      loveMessage.style.fontSize = "1.5rem";
-      loveMessage.style.fontWeight = "bold";
-      loveMessage.style.top = "50%";
-      loveMessage.style.left = "50%";
-      loveMessage.style.transform = "translate(-50%, -50%)";
-      loveMessage.style.opacity = "1";
-      loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
-
-      setTimeout(() => {
-        const randomX = Math.random() * 200 - 100;
-        const randomY = Math.random() * 200 - 100;
-        loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-        loveMessage.style.opacity = "0";
-      }, 100);
-
+      loveMessage.classList.add("kiss-message");
       kissButton.appendChild(loveMessage);
-
-      setTimeout(() => {
-        kissButton.removeChild(loveMessage);
-      }, 1600);
+      setTimeout(() => kissButton.removeChild(loveMessage), 1600);
     });
   }
 
-  // Fixing the issue with duplicate IDs on label elements
   const badgeLabels = document.querySelectorAll("label.ytp-suggested-action-badge-title");
   badgeLabels.forEach((badge, index) => {
     badge.id = `ytp-suggested-action-badge-title-${Date.now()}-${index}`;
-    console.log("Modified label element ID:", badge.id);
   });
 
-  // Fixing the issue with duplicate IDs on input elements
   const playlistCheckboxes = document.querySelectorAll("input.ytp-share-panel-include-playlist-checkbox");
   playlistCheckboxes.forEach((checkbox, index) => {
     checkbox.id = `ytp-share-panel-include-playlist-checkbox-${Date.now()}-${index}`;
-    console.log("Modified input element ID:", checkbox.id);
   });
 });
