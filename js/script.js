@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const prevButton = document.getElementById("prevButton");
+  const nextButton = document.getElementById("nextButton");
   // Hardcoded lists of live links for buttons
   const liveLinks1 = [
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
@@ -51,11 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
-  const prevButton = document.getElementById("prevButton");
-    console.log(prevButton, nextButton);
-  const nextButton = document.getElementById("nextButton");
   const propagandaLink = document.querySelector(".propaganda-link");
-
 
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
