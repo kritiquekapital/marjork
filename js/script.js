@@ -41,6 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
+  // Add event listener to automatically switch video when current one ends
+  liveFrame.addEventListener("load", () => {
+    const player = liveFrame.contentWindow;
+    player.addEventListener("ended", () => {
+      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length; // Switch to next video
+      updateLiveStream();
+    });
+  });
+
   // Inject modal HTML structure
   document.body.insertAdjacentHTML("beforeend", `
     <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
