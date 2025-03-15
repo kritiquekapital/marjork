@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
 
-  // Function to update live stream
+document.addEventListener("DOMContentLoaded", () => {
+  const liveFrame = document.getElementById("liveFrame");
+  
+  // Function to update the live stream source
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
@@ -41,14 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  // Add event listener to automatically switch video when current one ends
+  // Ensure that the video playback and end event listener are added after the DOM is ready
   liveFrame.addEventListener("load", () => {
     const player = liveFrame.contentWindow;
     player.addEventListener("ended", () => {
-      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length; // Switch to next video
+      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length; // Switch to the next video
       updateLiveStream();
     });
   });
+
 
   // Inject modal HTML structure
   document.body.insertAdjacentHTML("beforeend", `
