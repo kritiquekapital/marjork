@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded lists of live links for buttons
   const liveLinks1 = [
-    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",
-    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",
-    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",
-    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",
-    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",
-    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",
-    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"
+    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1", //hairpin
+    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1", //la souf
+    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1", //crack
+    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1", //fight
+    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1", //fata
+    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1", //tokyo
+    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"  //bob
   ];
 
   const liveLinks2 = [
