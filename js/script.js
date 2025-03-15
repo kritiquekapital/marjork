@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",           //hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",           //crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?si=SGBYO5SXw0k1CuA-",  //overwhelming and collective harmony
+    "https://www.youtube.com/watch?v=QgyW9qjgIf4",                    //JRJRJRJRJRJRJRJRJRJRJRJRJR
     "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",           //la souf
     "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",           //fight
     "https://www.youtube.com/watch?v=rgiC8YfytDw",                    //SocWen
