@@ -25,37 +25,40 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/watch?v=_mjDnMy2sL8",
     "https://www.youtube.com/watch?v=UtcxL4XXUGk",
     "https://www.youtube.com/watch?v=BpqOWO6ctsg&ab_channel=emanuelpereyra",
-    "https://www.youtube.com/watch?v=V7IUtUsfARA",
+    "https://www.youtube.com/watch?v=V7IUtUsfARA"
   ];
 
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
-  let manualOverride = false; // Disables auto-next when manual navigation is used
+  let manualOverride = false; // Disables auto-next when manual navigation occurs
 
-  // Function to update live stream, ensuring enablejsapi=1 is present
+  // Function to update live stream and always append enablejsapi=1 & autoplay=1
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
-    // Ensure enablejsapi is added (whether the URL is embed or needs conversion)
+    // Convert watch?v= links to embed form if needed.
     if (url.includes("watch?v=")) {
-      url = url.replace("watch?v=", "embed/") + "?autoplay=1&enablejsapi=1";
-    } else {
-      if (url.indexOf("enablejsapi") === -1) {
-        url += "&enablejsapi=1";
-      }
-      url += "&autoplay=1";
+      url = url.replace("watch?v=", "embed/");
+    }
+    // Append autoplay=1 if not already present
+    if (url.indexOf("autoplay=1") === -1) {
+      url += (url.indexOf("?") === -1 ? "?" : "&") + "autoplay=1";
+    }
+    // Append enablejsapi=1 if not already present
+    if (url.indexOf("enablejsapi=1") === -1) {
+      url += (url.indexOf("?") === -1 ? "?" : "&") + "enablejsapi=1";
     }
     console.log("Updating iframe src to:", url);
-    showTVFuzz();  // Show TV fuzz overlay during transition
+    showTVFuzz();  // Display TV fuzz overlay during transition
     liveFrame.src = url;
   }
 
-  // TV Fuzz Overlay: displays a solid overlay confined within .video-popup for 2 seconds
+  // TV Fuzz Overlay: displays a solid overlay within the video popup for 2 seconds
   function showTVFuzz() {
     const videoPopup = document.querySelector(".video-popup");
     if (!videoPopup) return;
     const fuzzOverlay = document.createElement("div");
     fuzzOverlay.classList.add("tv-fuzz-overlay");
-    // Style the overlay so it covers only the video area (within the popup)
+    // Style the overlay so it covers only the video area within the popup
     fuzzOverlay.style.position = "absolute";
     fuzzOverlay.style.top = "0";
     fuzzOverlay.style.left = "0";
@@ -70,11 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => { fuzzOverlay.remove(); }, 2000);
   }
 
-  // Inject modal HTML structure and minimal CSS for the overlay
+  // Inject modal HTML structure and some inline CSS for positioning
   document.body.insertAdjacentHTML("beforeend", `
     <div id="liveModal" class="popup-player-container" style="visibility: hidden; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; justify-content: center; align-items: center; background: rgba(0,0,0,0.8); z-index: 1000;">
       <div class="video-popup" style="position: relative; width: 80%; max-width: 800px; aspect-ratio: 16/9; background: #000; overflow: hidden;">
-        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen style=\"position: relative; z-index: 1;\"></iframe>\n        <div class=\"modal-controls\" style=\"position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20;\">\n          <button id=\"prevChannel\">Previous</button>\n          <button id=\"nextChannel\">Next</button>\n        </div>\n      </div>\n    </div>\n    <style>\n      .tv-fuzz-overlay { /* base styles applied inline by showTVFuzz() */ }\n    </style>\n  `);
+        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen style=\"position: relative; z-index: 1;\"></iframe>
+        <div class="modal-controls" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20;">\n          <button id=\"prevChannel\">Previous</button>\n          <button id=\"nextChannel\">Next</button>\n        </div>\n      </div>\n    </div>\n    <style>\n      .tv-fuzz-overlay { /* Additional styles can be added if needed */ }\n    </style>\n  `);
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
@@ -118,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLiveStream();
   });
 
-  // Auto-next: when the video ends, load the next video (if not manually overridden)
+  // Auto-next: when the video ends, load next video if not manually overridden
   liveFrame.addEventListener("load", () => {
     console.log("Iframe loaded; sending postMessage to YouTube player");
     liveFrame.contentWindow.postMessage('{"event":"listening","id":1}', '*');
@@ -129,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const data = JSON.parse(event.data);
         console.log("Received onStateChange:", data);
-        // Auto-advance if video ended (info === 0) and manualOverride is false
+        // If video ended (state info 0) and no manual override, auto-advance
         if (!manualOverride && data.event === "onStateChange" && data.info === 0) {
           console.log("Video ended; auto-advancing");
           currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
