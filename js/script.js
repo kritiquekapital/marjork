@@ -30,26 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
-  let manualOverride = false; // Flag to disable auto-next when manual navigation occurs
+  let manualOverride = false; // flag to disable auto-next if user manually navigates
 
-  // Function to update live stream
+  // Function to update live stream and show TV fuzz overlay
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
       url = url.replace("watch?v=", "embed/") + "?autoplay=1";
     }
     console.log("Updating iframe src to:", url);
-    showTVFuzz();  // Show TV fuzz overlay during transition
+    showTVFuzz(); // Display TV fuzz overlay during transition
     liveFrame.src = url;
   }
 
-  // TV Fuzz Overlay: displays an overlay over the video area (inside .video-popup) for 2 seconds
+  // TV Fuzz Overlay: displays a solid overlay over the video area (confined to .video-popup)
   function showTVFuzz() {
     const videoPopup = document.querySelector(".video-popup");
     if (!videoPopup) return;
     const fuzzOverlay = document.createElement("div");
     fuzzOverlay.classList.add("tv-fuzz-overlay");
-    // Style to cover the video area only
+    // Ensure the overlay covers only the video area
     fuzzOverlay.style.position = "absolute";
     fuzzOverlay.style.top = "0";
     fuzzOverlay.style.left = "0";
@@ -66,16 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Inject modal HTML structure
   document.body.insertAdjacentHTML("beforeend", `
-    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
-      <div class="video-popup" style="position: relative;">
+    <div id="liveModal" class="popup-player-container" style="visibility: hidden; display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; justify-content: center; align-items: center; background: rgba(0,0,0,0.8); z-index: 1000;">
+      <div class="video-popup" style="position: relative; width: 80%; max-width: 800px; aspect-ratio: 16/9; background: #000; overflow: hidden;">
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        <div class="modal-controls">
-          <button id="prevChannel">Previous</button>
-          <button id="nextChannel">Next</button>
-        </div>
-      </div>
-    </div>
-    <style>\n      /* TV Fuzz Overlay base style (if needed, additional CSS can go here) */\n      .tv-fuzz-overlay { }\n    </style>\n  `);
+        <div class="modal-controls" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 20;">\n          <button id=\"prevChannel\">Previous</button>\n          <button id=\"nextChannel\">Next</button>\n        </div>\n      </div>\n    </div>\n    <style>\n      .tv-fuzz-overlay { /* Additional styles if needed */ }\n    </style>\n  `);
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
@@ -102,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Manual channel switching with manual override flag
+  // Manual channel switching with override
   prevButton.addEventListener("click", () => {
     manualOverride = true;
     setTimeout(() => { manualOverride = false; }, 3000);
@@ -117,16 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLiveStream();
   });
 
-  // Auto-next: when the video ends, load the next video (if not manually overridden)
+  // Auto-next: when video ends, load next video (if not manually overridden)
   liveFrame.addEventListener("load", () => {
+    // Tell the YouTube player to start sending state events
     liveFrame.contentWindow.postMessage('{"event":"listening","id":1}', '*');
   });
-
+  
   window.addEventListener("message", (event) => {
     if (typeof event.data === "string" && event.data.includes('"event":"onStateChange"')) {
       try {
         const data = JSON.parse(event.data);
-        // Only auto-next if video ended (state 0) and manualOverride is false
+        // Auto-next if video ended (state info 0) and no manual override
         if (!manualOverride && data.event === "onStateChange" && data.info === 0) {
           currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
           updateLiveStream();
