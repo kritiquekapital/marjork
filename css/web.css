@@ -423,7 +423,7 @@ body {
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   position: relative;
