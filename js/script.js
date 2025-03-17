@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1",           //drive
     "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",           //fight
     "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",           //la souf
+    "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1",           //Prix
     "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1",           //SocWen
     "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",           //fata
     "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",           //tokyo
