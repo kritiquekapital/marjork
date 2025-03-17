@@ -136,64 +136,44 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prevent scrollbars from appearing
   document.body.style.overflow = "hidden";
 
-  function createFloatingImage(imageURL) {
-    const img = document.createElement("img");
-    img.src = imageURL;
-    img.crossOrigin = "anonymous"; // Handle CORS
-    img.style.position = "fixed"; // Use fixed positioning to keep within viewport
-    img.style.width = "150px"; // Initial size
-    img.style.opacity = "0.9";
-    img.style.pointerEvents = "none";
-    img.style.transition = "transform 2s linear, width 2s linear, opacity 2s ease-in-out";
+function createFloatingImage(imageURL) {
+  const img = document.createElement("img");
+  img.src = imageURL;
+  img.crossOrigin = "anonymous";  // Add this line to handle CORS
+  img.style.position = "absolute";
+  img.style.width = "75px";  // Halve the image size
+  img.style.opacity = "1"; // Start fully visible
+  img.style.pointerEvents = "none";
+  img.style.transition = "transform 10s ease-in-out, opacity 10s ease-out"; // Slower movement and fade out
 
-    // Append the image to the body
-    document.body.appendChild(img);
+  // Random starting position
+  const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
+  const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
+  img.style.transform = `translate(${startX}px, ${startY}px)`; 
 
-    // Function to move and expand the image
-    function animateImage() {
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-      const imgWidth = img.offsetWidth;
-      const imgHeight = img.offsetHeight;
+  document.body.appendChild(img);
 
-      // Calculate random start and end positions within the viewport bounds
-      const startX = Math.random() * (viewportWidth - imgWidth);
-      const startY = Math.random() * (viewportHeight - imgHeight);
-      const endX = Math.random() * (viewportWidth - imgWidth);
-      const endY = Math.random() * (viewportHeight - imgHeight);
+  // Function to move the image slowly
+  function moveImage() {
+    const x = Math.random() * (window.innerWidth - 75); // Keep it within bounds
+    const y = Math.random() * (window.innerHeight - 75); // Keep it within bounds
 
-      // Set initial position
-      img.style.transform = `translate(${startX}px, ${startY}px)`;
+    img.style.transform = `translate(${x}px, ${y}px)`; // Move the image
 
-      // Gradually expand the image to 125% of its original size
-      img.style.width = "125%";
-
-      // Move the image to the end position
-      setTimeout(() => {
-        img.style.transform = `translate(${endX}px, ${endY}px)`;
-      }, 50);
-
-      // Fade out the image
-      setTimeout(() => {
-        img.style.opacity = "0";
-      }, 6000); // Start fading out after 6 seconds
-    }
-
-    // Start the animation
-    animateImage();
-
-    // Remove the image after 8 seconds
-    setTimeout(() => {
-      img.remove(); // Remove the image from the DOM
-    }, 8000);
+    // Gradually fade out the image while moving
+    img.style.opacity = "0";
   }
 
-  photoButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    const imageURL = imageFolderURL + imageList[currentIndex]; 
-    createFloatingImage(imageURL);
-    currentIndex = (currentIndex + 1) % imageList.length;
-  });
+  // Start moving and fading the image
+  moveImage();
+  setInterval(moveImage, 10000); // Slow movement (every 10 seconds)
+
+  // Remove image after 15 seconds
+  setTimeout(() => {
+    img.remove();
+  }, 15000);
+}
+
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
