@@ -140,16 +140,19 @@ document.addEventListener("DOMContentLoaded", () => {
     img.src = imageURL;
     img.crossOrigin = "anonymous";
     img.style.position = "fixed";
-    img.style.width = "75px"; // Halved size
+    img.style.width = "75px";
     img.style.opacity = "1";
     img.style.pointerEvents = "none";
     img.style.transition = "transform 8s linear, opacity 8s ease-out";
     img.style.zIndex = "1000";
 
-    // Random starting position
-    const startX = Math.random() * (window.innerWidth - 75);
-    const startY = Math.random() * (window.innerHeight - 75);
+    // Ensure the image is within the viewport
+    const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
+    const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
     img.style.transform = `translate(${startX}px, ${startY}px)`;
+
+    // Debugging: Add a border to the image
+    img.style.border = "2px solid red";
 
     document.body.appendChild(img);
 
