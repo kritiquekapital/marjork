@@ -92,7 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const photoButton = document.querySelector(".photo");
-  const imageFolderURL = "https://github.com/kritiquekapital/marjork/tree/main/suprises/roll_03";
+  const imageFolderURL = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/";
+  const imageURL = imageFolderURL + imageList[currentIndex]; 
+
   
   const imageList = [
       "roll_3_(01).jpg",
