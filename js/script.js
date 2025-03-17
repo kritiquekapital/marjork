@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded lists of live links for buttons
   const liveLinks1 = [
-    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",           //hairpin circus
-    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",           //crack
-    "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1",           //overwhelming and collective harmony
-    "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1",           //JRJRJRJRJRJRJRJRJRJRJRJRJR
-    "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1",           //drive
-    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",           //fight
-    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",           //la souf
-    "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1",           //Prix
-    "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1",           //SocWen
-    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",           //fata
-    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",           //tokyo
-    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"            //bob
+    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1",           // hairpin circus
+    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1",           // crack
+    "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1",           // overwhelming and collective harmony
+    "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1",           // JRJRJRJRJRJRJRJRJRJRJRJRJR
+    "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1",           // drive
+    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1",           // fight
+    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1",           // la souf
+    "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1",           // Prix
+    "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1",           // SocWen
+    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1",           // fata
+    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1",           // tokyo
+    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"            // bob
   ];
 
   const liveLinks2 = [
@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
 
-  // List of images (Move this up here to avoid undefined issue)
-   const imageList = [
+  // List of images
+  const imageList = [
     "roll_03_01.jpg",
     "roll_03_(02).jpg",
     "roll_03_(03).jpg",
@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (url.includes("watch?v=")) {
       url = url.replace("watch?v=", "embed/") + "?autoplay=1";
     }
-    console.log("Updating iframe src to:", url); // Log the URL update
     liveFrame.src = url;
   }
 
@@ -103,77 +102,80 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle click on the "LIVE" button
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent opening a new tab
-      updateLiveStream(); // Update the live stream link
-      liveModal.style.visibility = "visible"; 
-      liveModal.style.display = "flex"; 
+      event.preventDefault();
+      updateLiveStream();
+      liveModal.style.visibility = "visible";
+      liveModal.style.display = "flex";
     });
   }
 
-  // Close modal (removed 'x' close button for simplicity)
+  // Close modal
   window.addEventListener("click", (event) => {
     if (event.target === liveModal) {
       liveModal.style.visibility = "hidden";
       liveModal.style.display = "none";
-      liveFrame.src = ""; // Stop playback
+      liveFrame.src = "";
     }
   });
 
   // Switch channels manually
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-    updateLiveStream(); // Ensure that the video updates
+    updateLiveStream();
   });
 
   nextButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-    updateLiveStream(); // Ensure that the video updates
+    updateLiveStream();
   });
 
   const photoButton = document.querySelector(".photo");
-  const imageFolderURL = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/"; 
+  const imageFolderURL = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/";
 
   // Prevent scrollbars from appearing
   document.body.style.overflow = "hidden";
 
-function createFloatingImage(imageURL) {
-  const img = document.createElement("img");
-  img.src = imageURL;
-  img.crossOrigin = "anonymous";  // Add this line to handle CORS
-  img.style.position = "absolute";
-  img.style.width = "75px";  // Halve the image size
-  img.style.opacity = "1"; // Start fully visible
-  img.style.pointerEvents = "none";
-  img.style.transition = "transform 10s ease-in-out, opacity 10s ease-out"; // Slower movement and fade out
-  img.style.zIndex = "1000";
+  function createFloatingImage(imageURL) {
+    const img = document.createElement("img");
+    img.src = imageURL;
+    img.crossOrigin = "anonymous";
+    img.style.position = "fixed";
+    img.style.width = "75px"; // Halved size
+    img.style.opacity = "1";
+    img.style.pointerEvents = "none";
+    img.style.transition = "transform 8s linear, opacity 8s ease-out";
+    img.style.zIndex = "1000";
 
-  // Random starting position
-  const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
-  const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
-  img.style.transform = `translate(${startX}px, ${startY}px)`; 
+    // Random starting position
+    const startX = Math.random() * (window.innerWidth - 75);
+    const startY = Math.random() * (window.innerHeight - 75);
+    img.style.transform = `translate(${startX}px, ${startY}px)`;
 
-  document.body.appendChild(img);
+    document.body.appendChild(img);
 
-  // Function to move the image slowly
-  function moveImage() {
-    const x = Math.random() * (window.innerWidth - 75); // Keep it within bounds
-    const y = Math.random() * (window.innerHeight - 75); // Keep it within bounds
+    // Function to move the image
+    function moveImage() {
+      const endX = Math.random() * (window.innerWidth - 75);
+      const endY = Math.random() * (window.innerHeight - 75);
+      img.style.transform = `translate(${endX}px, ${endY}px)`;
+      img.style.opacity = "0";
+    }
 
-    img.style.transform = `translate(${x}px, ${y}px)`; // Move the image
+    // Start moving and fading the image
+    moveImage();
 
-    // Gradually fade out the image while moving
-    img.style.opacity = "0";
+    // Remove image after 8 seconds
+    setTimeout(() => {
+      img.remove();
+    }, 8000);
   }
 
-  // Start moving and fading the image
-  moveImage();
-  setInterval(moveImage, 10000); // Slow movement (every 10 seconds)
-
-  // Remove image after 15 seconds
-  setTimeout(() => {
-    img.remove();
-  }, 15000);
-}
+  photoButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    const imageURL = imageFolderURL + imageList[currentIndex];
+    createFloatingImage(imageURL);
+    currentIndex = (currentIndex + 1) % imageList.length;
+  });
 
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
@@ -181,7 +183,7 @@ function createFloatingImage(imageURL) {
     vinylLink.addEventListener("click", (event) => {
       event.preventDefault();
       const newTab = window.open(liveLinks2[currentLinkIndex2], "_blank");
-      if (newTab) newTab.blur(); // Open in the background
+      if (newTab) newTab.blur();
       currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
     });
   }
@@ -192,17 +194,17 @@ function createFloatingImage(imageURL) {
   if (vinylButton && arm) {
     vinylButton.addEventListener("mouseover", () => {
       arm.style.transition = "transform 0.2s";
-      arm.style.transform = "rotate(290deg)"; // Quick jump
+      arm.style.transform = "rotate(290deg)";
 
       setTimeout(() => {
         arm.style.transition = "transform 5s ease-out";
-        arm.style.transform = "rotate(322deg)"; // Smooth rotation
+        arm.style.transform = "rotate(322deg)";
       }, 200);
     });
 
     vinylButton.addEventListener("mouseleave", () => {
       arm.style.transition = "transform 0.5s ease-in";
-      arm.style.transform = "rotate(270deg)"; // Reset position
+      arm.style.transform = "rotate(270deg)";
     });
   }
 
@@ -244,18 +246,4 @@ function createFloatingImage(imageURL) {
       }, 1600);
     });
   }
-
-  // Fixing the issue with duplicate IDs on label elements
-  const badgeLabels = document.querySelectorAll("label.ytp-suggested-action-badge-title");
-  badgeLabels.forEach((badge, index) => {
-    badge.id = `ytp-suggested-action-badge-title-${Date.now()}-${index}`;
-    console.log("Modified label element ID:", badge.id);
-  });
-
-  // Fixing the issue with duplicate IDs on input elements
-  const playlistCheckboxes = document.querySelectorAll("input.ytp-share-panel-include-playlist-checkbox");
-  playlistCheckboxes.forEach((checkbox, index) => {
-    checkbox.id = `ytp-share-panel-include-playlist-checkbox-${Date.now()}-${index}`;
-    console.log("Modified input element ID:", checkbox.id);
-  });
 });
