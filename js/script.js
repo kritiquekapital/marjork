@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // List of images (Move this up here to avoid undefined issue)
    const imageList = [
-    "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/roll_3_01.jpg",
+    "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/roll_03_01.jpg",
     "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/roll_3_(02).jpg",
     "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/roll_3_(03).jpg",
     "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/roll_3_(04).jpg",
