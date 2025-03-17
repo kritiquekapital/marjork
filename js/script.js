@@ -133,32 +133,60 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoButton = document.querySelector(".photo");
   const imageFolderURL = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/"; 
 
+  // Prevent scrollbars from appearing
+  document.body.style.overflow = "hidden";
+
   function createFloatingImage(imageURL) {
     const img = document.createElement("img");
     img.src = imageURL;
-    img.crossOrigin = "anonymous";  // Add this line to handle CORS
-    img.style.position = "absolute";
-    img.style.width = "150px";
+    img.crossOrigin = "anonymous"; // Handle CORS
+    img.style.position = "fixed"; // Use fixed positioning to keep within viewport
+    img.style.width = "150px"; // Initial size
     img.style.opacity = "0.9";
     img.style.pointerEvents = "none";
-    img.style.transition = "transform 3s ease-in-out";
+    img.style.transition = "transform 2s linear, width 2s linear, opacity 2s ease-in-out";
 
+    // Append the image to the body
     document.body.appendChild(img);
 
-    function moveImage() {
-      const x = Math.random() * (window.innerWidth - 150);
-      const y = Math.random() * (window.innerHeight - 150);
-      img.style.transform = `translate(${x}px, ${y}px)`;
+    // Function to move and expand the image
+    function animateImage() {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const imgWidth = img.offsetWidth;
+      const imgHeight = img.offsetHeight;
+
+      // Calculate random start and end positions within the viewport bounds
+      const startX = Math.random() * (viewportWidth - imgWidth);
+      const startY = Math.random() * (viewportHeight - imgHeight);
+      const endX = Math.random() * (viewportWidth - imgWidth);
+      const endY = Math.random() * (viewportHeight - imgHeight);
+
+      // Set initial position
+      img.style.transform = `translate(${startX}px, ${startY}px)`;
+
+      // Gradually expand the image to 125% of its original size
+      img.style.width = "125%";
+
+      // Move the image to the end position
+      setTimeout(() => {
+        img.style.transform = `translate(${endX}px, ${endY}px)`;
+      }, 50);
+
+      // Fade out the image
+      setTimeout(() => {
+        img.style.opacity = "0";
+      }, 6000); // Start fading out after 6 seconds
     }
 
-  moveImage();
-  setInterval(moveImage, 4000);
+    // Start the animation
+    animateImage();
 
-  setTimeout(() => {
-    img.remove();
-  }, 15000);
-}
-
+    // Remove the image after 8 seconds
+    setTimeout(() => {
+      img.remove(); // Remove the image from the DOM
+    }, 8000);
+  }
 
   photoButton.addEventListener("click", (event) => {
     event.preventDefault();
@@ -166,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     createFloatingImage(imageURL);
     currentIndex = (currentIndex + 1) % imageList.length;
   });
-
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
