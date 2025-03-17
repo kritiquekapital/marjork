@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("DOMContentLoaded", () => {
   const photoButton = document.querySelector(".photo");
-  const imageFolderURL = "https://raw.githubusercontent.com/your-username/your-repo/main/images/";
+  const imageFolderURL = "https://raw.githubusercontent.comkritiquekapital/marjork/main/suprises/roll_03/";
   
   const imageList = [
       "roll_3_(01).jpg",
