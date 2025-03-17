@@ -145,6 +145,7 @@ function createFloatingImage(imageURL) {
   img.style.opacity = "1"; // Start fully visible
   img.style.pointerEvents = "none";
   img.style.transition = "transform 10s ease-in-out, opacity 10s ease-out"; // Slower movement and fade out
+  img.style.zIndex = "1000";
 
   // Random starting position
   const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
