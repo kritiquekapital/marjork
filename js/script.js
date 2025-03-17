@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createFloatingImage(imageURL) {
     const img = document.createElement("img");
     img.src = imageURL;
+    img.crossOrigin = "anonymous";  // Add this line to handle CORS
     img.style.position = "absolute";
     img.style.width = "150px";
     img.style.opacity = "0.9";
@@ -150,13 +151,14 @@ document.addEventListener("DOMContentLoaded", () => {
       img.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    moveImage();
-    setInterval(moveImage, 4000);
-    
-    setTimeout(() => {
-      img.remove();
-    }, 15000);
-  }
+  moveImage();
+  setInterval(moveImage, 4000);
+
+  setTimeout(() => {
+    img.remove();
+  }, 15000);
+}
+
 
   photoButton.addEventListener("click", (event) => {
     event.preventDefault();
