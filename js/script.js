@@ -91,6 +91,81 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLiveStream(); // Ensure that the video updates
   });
 
+  document.addEventListener("DOMContentLoaded", () => {
+  const photoButton = document.querySelector(".photo");
+  const imageFolderURL = "https://raw.githubusercontent.com/your-username/your-repo/main/images/";
+  
+  const imageList = [
+      "roll_3_(01).jpg",
+      "roll_3_(02).jpg",
+      "roll_3_(03).jpg",
+      "roll_3_(04).jpg",
+      "roll_3_(05).jpg",
+      "roll_3_(06).jpg",
+      "roll_3_(07).jpg",
+      "roll_3_(08).jpg",
+      "roll_3_(09).jpg",
+      "roll_3_(10).jpg",
+      "roll_3_(11).jpg",
+      "roll_3_(12).jpg",
+      "roll_3_(13).jpg",
+      "roll_3_(14).jpg",
+      "roll_3_(15).jpg",
+      "roll_3_(16).jpg",
+      "roll_3_(17).jpg",
+      "roll_3_(18).jpg",
+      "roll_3_(19).jpg",
+      "roll_3_(20).jpg",
+      "roll_3_(21).jpg",
+      "roll_3_(22).jpg",
+      "roll_3_(23).jpg",
+      "roll_3_(24).jpg",
+      "roll_3_(25).jpg",
+      "roll_3_(26).jpg",
+      "roll_3_(27).jpg",
+      "roll_3_(28).jpg",
+      "roll_3_(29).jpg",
+      "roll_3_(30).jpg",
+      "roll_3_(31).jpg",
+      "roll_3_(32).jpg",
+      "roll_3_(33).jpg"
+  ];
+
+  let currentIndex = 0;
+
+  function createFloatingImage(imageURL) {
+      const img = document.createElement("img");
+      img.src = imageURL;
+      img.style.position = "absolute";
+      img.style.width = "150px";
+      img.style.opacity = "0.9";
+      img.style.pointerEvents = "none";
+      img.style.transition = "transform 3s ease-in-out";
+      
+      document.body.appendChild(img);
+
+      function moveImage() {
+          const x = Math.random() * (window.innerWidth - 150);
+          const y = Math.random() * (window.innerHeight - 150);
+          img.style.transform = `translate(${x}px, ${y}px)`;
+      }
+
+      moveImage();
+      setInterval(moveImage, 4000);
+      
+      setTimeout(() => {
+          img.remove();
+      }, 15000);
+  }
+
+  photoButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const imageURL = imageFolderURL + imageList[currentIndex]; 
+      createFloatingImage(imageURL);
+      currentIndex = (currentIndex + 1) % imageList.length;
+  });
+});
+
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
