@@ -167,44 +167,46 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prevent scrollbars from appearing
   document.body.style.overflow = "hidden";
 
-  function createFloatingImage(imageURL) {
-    const img = document.createElement("img");
-    img.src = imageURL;
-    img.crossOrigin = "anonymous";
-    img.style.position = "fixed";
-    img.style.width = "75px";
-    img.style.opacity = "1";
-    img.style.pointerEvents = "none";
-    img.style.transition = "transform 8s linear, opacity 8s ease-out";
-    img.style.zIndex = "1000";
+ function createFloatingImage(imageURL) {
+  const img = document.createElement("img");
+  img.src = imageURL;
+  img.crossOrigin = "anonymous";
+  img.style.position = "fixed";
+  img.style.width = "75px";
+  img.style.height = "auto"; // Ensure aspect ratio is maintained
+  img.style.opacity = "1";
+  img.style.pointerEvents = "none";
+  img.style.transition = "transform 8s linear, opacity 8s ease-out";
+  img.style.zIndex = "1000";
+  img.style.border = "2px solid black"; // Debugging: Add a border
 
-    // Ensure the image is within the viewport
-    const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
-    const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
-    img.style.transform = `translate(${startX}px, ${startY}px)`;
+  // Ensure the image is within the viewport
+  const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
+  const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
+  img.style.transform = `translate(${startX}px, ${startY}px)`;
 
-    // Debugging: Add a border to the image
-    img.style.border = "2px solid red";
+  console.log("Image created at:", imageURL, "Position:", startX, startY);
 
-    document.body.appendChild(img);
+  document.body.appendChild(img);
 
-    // Function to move the image
-    function moveImage() {
-      const endX = Math.random() * (window.innerWidth - 75);
-      const endY = Math.random() * (window.innerHeight - 75);
-      img.style.transform = `translate(${endX}px, ${endY}px)`;
-      img.style.opacity = "0";
-    }
-
-    // Start moving and fading the image
-    moveImage();
-
-    // Remove image after 8 seconds
-    setTimeout(() => {
-      img.remove();
-    }, 8000);
+  // Function to move the image
+  function moveImage() {
+    const endX = Math.random() * (window.innerWidth - 75);
+    const endY = Math.random() * (window.innerHeight - 75);
+    img.style.transform = `translate(${endX}px, ${endY}px)`;
+    img.style.opacity = "0";
+    console.log("Moving image to:", endX, endY);
   }
 
+  // Start moving and fading the image
+  moveImage();
+
+  // Remove image after 8 seconds
+  setTimeout(() => {
+    console.log("Removing image:", imageURL);
+    img.remove();
+  }, 8000);
+}
   photoButton.addEventListener("click", (event) => {
     event.preventDefault();
     const imageURL = imageFolderURL + imageList[currentIndex];
