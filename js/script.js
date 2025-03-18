@@ -266,7 +266,7 @@ const body = document.body;
 
 // Define the available themes and their display names
 const themes = [
-  { name: "classic", displayName: "🌓" }, // Moon icon for Classic
+  { name: "classic", displayName: "😎" }, // Moon icon for Classic
   { name: "modern", displayName: "🌚" }, // Sun icon for Modern
   { name: "nature", displayName: "🌞" }, // Film icon for Roll theme
 ];
