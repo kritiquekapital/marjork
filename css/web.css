@@ -80,20 +80,20 @@ body.theme-modern p {
 }
 
 /* Third theme (background image) */
-body.theme-roll {
-  background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/your-image.jpg'); /* Replace with the correct image path */
+body.theme-nature {
+  background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
   background-size: cover;
   background-position: center;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body.theme-roll h1 {
+body.theme-nature h1 {
   font-size: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-body.theme-roll p {
+body.theme-nature p {
   font-size: 1.2rem;
   line-height: 1.6;
 }
