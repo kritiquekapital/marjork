@@ -169,7 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function createFloatingImage(imageURL) {
 
-function createFloatingImage(imageURL) {
   // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
