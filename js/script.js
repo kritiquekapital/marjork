@@ -167,100 +167,100 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prevent scrollbars from appearing
   document.body.style.overflow = "hidden";
 
-function createFloatingImage(imageURL) {
-  // Create the image element
-  const img = document.createElement("img");
-  img.src = imageURL;
-  img.crossOrigin = "anonymous"; // Handle CORS for external images
-  img.style.position = "fixed";
-  img.style.width = "150px"; // Initial size
-  img.style.height = "auto"; // Maintain aspect ratio
-  img.style.opacity = "1"; // Start fully visible
-  img.style.pointerEvents = "none";
-  img.style.transition = "left 8s linear, top 8s linear, opacity 8s ease-out, transform 8s ease-out"; // Smooth transitions
-  img.style.zIndex = "1000";
-  img.style.border = "2px solid black"; // Add a black border
-  img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
+  function createFloatingImage(imageURL) {
+    // Create the image element
+    const img = document.createElement("img");
+    img.src = imageURL;
+    img.crossOrigin = "anonymous"; // Handle CORS for external images
+    img.style.position = "fixed";
+    img.style.width = "150px"; // Initial size
+    img.style.height = "auto"; // Maintain aspect ratio
+    img.style.opacity = "1"; // Start fully visible
+    img.style.pointerEvents = "none";
+    img.style.transition = "left 8s linear, top 8s linear, opacity 8s ease-out, transform 8s ease-out"; // Smooth transitions
+    img.style.zIndex = "1000";
+    img.style.border = "2px solid black"; // Add a black border
+    img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
 
-  // Ensure the image is within the viewport and never starts offscreen
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+    // Ensure the image is within the viewport and never starts offscreen
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-  // Calculate the maximum allowed starting positions to ensure the image stays within the viewport
-  const maxX = viewportWidth - 150; // Ensure the image doesn't go offscreen horizontally
-  const maxY = viewportHeight - 150; // Ensure the image doesn't go offscreen vertically
+    // Calculate the maximum allowed starting positions to ensure the image stays within the viewport
+    const maxX = viewportWidth - 150; // Ensure the image doesn't go offscreen horizontally
+    const maxY = viewportHeight - 150; // Ensure the image doesn't go offscreen vertically
 
-  // Randomly position the image within the entire viewport
-  const startX = Math.random() * maxX; // Random X position within the viewport
-  const startY = Math.random() * maxY; // Random Y position within the viewport
+    // Randomly position the image within the entire viewport
+    const startX = Math.random() * maxX; // Random X position within the viewport
+    const startY = Math.random() * maxY; // Random Y position within the viewport
 
-  // Apply the position directly to the image
-  img.style.left = `${startX}px`;
-  img.style.top = `${startY}px`;
+    // Apply the position directly to the image
+    img.style.left = `${startX}px`;
+    img.style.top = `${startY}px`;
 
-  console.log("Creating floating image:", imageURL, "at position:", startX, startY);
+    console.log("Creating floating image:", imageURL, "at position:", startX, startY);
 
-  // Append the image to the DOM
-  document.body.appendChild(img);
+    // Append the image to the DOM
+    document.body.appendChild(img);
 
-  // Debugging: Confirm the image is in the DOM
-  console.log("Image appended to DOM:", document.body.contains(img));
+    // Debugging: Confirm the image is in the DOM
+    console.log("Image appended to DOM:", document.body.contains(img));
 
-  // Function to move the image
-  function moveImage() {
-    // Calculate the maximum allowed ending positions to ensure the image stays within the viewport
-    const endX = Math.random() * maxX; // Random X position within the viewport
-    const endY = Math.random() * maxY; // Random Y position within the viewport
+    // Function to move the image
+    function moveImage() {
+      // Calculate the maximum allowed ending positions to ensure the image stays within the viewport
+      const endX = Math.random() * maxX; // Random X position within the viewport
+      const endY = Math.random() * maxY; // Random Y position within the viewport
 
-    // Apply the new position directly to the image
-    img.style.left = `${endX}px`;
-    img.style.top = `${endY}px`;
+      // Apply the new position directly to the image
+      img.style.left = `${endX}px`;
+      img.style.top = `${endY}px`;
 
-    // Gradually expand the image
-    img.style.transform = "scale(2)"; // Double the size
+      // Gradually expand the image
+      img.style.transform = "scale(2)"; // Double the size
 
-    // Gradually fade out the image
-    img.style.opacity = "0";
+      // Gradually fade out the image
+      img.style.opacity = "0";
 
-    console.log("Moving image to:", endX, endY);
+      console.log("Moving image to:", endX, endY);
+    }
+
+    // Wait for the image to load before moving it
+    img.onload = () => {
+      console.log("Image loaded successfully:", imageURL);
+      console.log("Image dimensions:", img.naturalWidth, "x", img.naturalHeight);
+      moveImage(); // Start moving the image after it's fully loaded
+    };
+
+    img.onerror = () => {
+      console.error("Failed to load image:", imageURL);
+    };
+
+    // Remove image after 8 seconds
+    setTimeout(() => {
+      console.log("Removing image:", imageURL);
+      img.remove();
+    }, 8000);
   }
 
-  // Wait for the image to load before moving it
-  img.onload = () => {
-    console.log("Image loaded successfully:", imageURL);
-    console.log("Image dimensions:", img.naturalWidth, "x", img.naturalHeight);
-    moveImage(); // Start moving the image after it's fully loaded
-  };
+  photoButton.addEventListener("click", (event) => {
+    event.preventDefault();
 
-  img.onerror = () => {
-    console.error("Failed to load image:", imageURL);
-  };
+    // Construct the image URL
+    const imageURL = imageFolderURL + imageList[currentIndex];
+    console.log("Loading image:", imageURL);
 
-  // Remove image after 8 seconds
-  setTimeout(() => {
-    console.log("Removing image:", imageURL);
-    img.remove();
-  }, 8000);
-}
-  
-photoButton.addEventListener("click", (event) => {
-  event.preventDefault();
+    // Test with a local image (for debugging)
+    // const imageURL = "path/to/local/image.jpg";
 
-  // Construct the image URL
-  const imageURL = imageFolderURL + imageList[currentIndex];
-  console.log("Loading image:", imageURL);
+    // Create and display the floating image
+    createFloatingImage(imageURL);
 
-  // Test with a local image (for debugging)
-  // const imageURL = "path/to/local/image.jpg";
+    // Cycle to the next image
+    currentIndex = (currentIndex + 1) % imageList.length;
+  });
 
-  // Create and display the floating image
-  createFloatingImage(imageURL);
-
-  // Cycle to the next image
-  currentIndex = (currentIndex + 1) % imageList.length;
-});
-
-document.addEventListener("DOMContentLoaded", () => {
+  // Theme Switcher
   const themeButton = document.getElementById("themeButton");
   const body = document.body;
 
@@ -281,15 +281,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Switch to the next theme when the button is clicked
-  themeButton.addEventListener("click", () => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Cycle through themes
-    applyTheme(); // Apply the new theme
-  });
+  if (themeButton) {
+    themeButton.addEventListener("click", () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Cycle through themes
+      applyTheme(); // Apply the new theme
+    });
 
-  // Apply the default theme on page load
-  applyTheme();
-});
-  
+    // Apply the default theme on page load
+    applyTheme();
+  }
+
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
