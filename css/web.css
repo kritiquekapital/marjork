@@ -34,38 +34,54 @@ body {
   grid-template-rows: repeat(4,120px);
 }
 
-/* Classic Theme (Default) */
-.theme-classic {
-  background: linear-gradient(to right, #2b3a3e, #3f5b5d); /* Existing gradient */
-  color: white; /* Default text color */
+/* Existing Classic Theme */
+body.theme-classic {
+  background-color: #f4f4f4;
+  color: #333; 
+  font-family: Arial, sans-serif
 }
 
-/* Modern Theme */
-.theme-modern {
-  background: linear-gradient(to right, #1e1e2f, #2a2a40); /* Darker gradient */
-  color: #e0e0e0; /* Light text color */
+/* Base button styles */
+#theme-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3498db; /* Classic theme color */
+  color: white;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out, background-color 0.5s ease-in-out;
+}
+/* Spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Theme Button Styling */
-.theme-button {
-  grid-column: 2; /* Middle column */
-  grid-row: 5; /* Fifth row */
-  width: 120px; /* Same size as other buttons */
-  height: 120px; /* Same size as other buttons */
-  border-radius: 50%; /* Circular shape */
-  background-color: #444; /* Default background color */
-  color: white; /* Text color */
-  border: none; /* Remove default border */
-  cursor: pointer; /* Pointer cursor on hover */
-  display: flex; /* Center the icon */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  font-size: 24px; /* Icon size */
-  transition: background-color 0.3s ease; /* Smooth background transition */
+/* Modern theme button appearance */
+#theme-button.modern {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  color: #1e3c72;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
 }
 
-.theme-button:hover {
-  background-color: #555; /* Darker background on hover */
+/* Modern theme enhancements */
+body.modern {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.modern h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.modern p {
+  font-size: 1.2rem;
+  line-height: 1.6;
 }
 
 /* Invisible Placeholder Style */
