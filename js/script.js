@@ -167,27 +167,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prevent scrollbars from appearing
   document.body.style.overflow = "hidden";
 
- function createFloatingImage(imageURL) {
+function createFloatingImage(imageURL) {
+  // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
-  img.crossOrigin = "anonymous";
+  img.crossOrigin = "anonymous"; // Handle CORS for external images
   img.style.position = "fixed";
   img.style.width = "75px";
-  img.style.height = "auto"; // Ensure aspect ratio is maintained
+  img.style.height = "auto"; // Maintain aspect ratio
   img.style.opacity = "1";
   img.style.pointerEvents = "none";
   img.style.transition = "transform 8s linear, opacity 8s ease-out";
   img.style.zIndex = "1000";
-  img.style.border = "2px solid black"; // Debugging: Add a border
+  img.style.border = "2px solid red"; // Debugging: Add a border to make the image visible
 
   // Ensure the image is within the viewport
   const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
   const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
   img.style.transform = `translate(${startX}px, ${startY}px)`;
 
-  console.log("Image created at:", imageURL, "Position:", startX, startY);
+  console.log("Creating floating image:", imageURL, "at position:", startX, startY);
 
+  // Append the image to the DOM
   document.body.appendChild(img);
+
+  // Debugging: Confirm the image is in the DOM
+  console.log("Image appended to DOM:", document.body.contains(img));
 
   // Function to move the image
   function moveImage() {
@@ -198,8 +203,15 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Moving image to:", endX, endY);
   }
 
-  // Start moving and fading the image
-  moveImage();
+  // Wait for the image to load before moving it
+  img.onload = () => {
+    console.log("Image loaded successfully:", imageURL);
+    moveImage(); // Start moving and fading the image after it's fully loaded
+  };
+
+  img.onerror = () => {
+    console.error("Failed to load image:", imageURL);
+  };
 
   // Remove image after 8 seconds
   setTimeout(() => {
@@ -207,13 +219,24 @@ document.addEventListener("DOMContentLoaded", () => {
     img.remove();
   }, 8000);
 }
-  photoButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    const imageURL = imageFolderURL + imageList[currentIndex];
-    createFloatingImage(imageURL);
-    currentIndex = (currentIndex + 1) % imageList.length;
-  });
+  
+ photoButton.addEventListener("click", (event) => {
+  event.preventDefault();
 
+  // Construct the image URL
+  const imageURL = imageFolderURL + imageList[currentIndex];
+  console.log("Loading image:", imageURL);
+
+  // Test with a static image (for debugging)
+  // const imageURL = "https://via.placeholder.com/75";
+
+  // Create and display the floating image
+  createFloatingImage(imageURL);
+
+  // Cycle to the next image
+  currentIndex = (currentIndex + 1) % imageList.length;
+});
+  
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
