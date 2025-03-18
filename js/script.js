@@ -169,18 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function createFloatingImage(imageURL) {
 
+function createFloatingImage(imageURL) {
   // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
   img.crossOrigin = "anonymous"; // Handle CORS for external images
   img.style.position = "fixed";
-  img.style.width = "150px"; // Double the size (from 75px to 150px)
+  img.style.width = "150px"; // Twice as big (from 75px to 150px)
   img.style.height = "auto"; // Maintain aspect ratio
   img.style.opacity = "1";
   img.style.pointerEvents = "none";
   img.style.transition = "transform 8s linear"; // Disable opacity transition for debugging
   img.style.zIndex = "1000";
-  img.style.border = "1px solid black"; // Add a black border
+  img.style.border = "2px solid black"; // Add a black border
   img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
 
   // Ensure the image is within the viewport and never starts offscreen
@@ -191,9 +192,9 @@ function createFloatingImage(imageURL) {
   const maxX = viewportWidth - 150; // Ensure the image doesn't go offscreen horizontally
   const maxY = viewportHeight - 150; // Ensure the image doesn't go offscreen vertically
 
-  // Randomly position the image within the viewport
-  const startX = Math.random() * maxX;
-  const startY = Math.random() * maxY;
+  // Randomly position the image within the entire viewport
+  const startX = Math.random() * maxX; // Random X position within the viewport
+  const startY = Math.random() * maxY; // Random Y position within the viewport
 
   img.style.transform = `translate(${startX}px, ${startY}px)`;
 
@@ -208,8 +209,8 @@ function createFloatingImage(imageURL) {
   // Function to move the image
   function moveImage() {
     // Calculate the maximum allowed ending positions to ensure the image stays within the viewport
-    const endX = Math.random() * maxX;
-    const endY = Math.random() * maxY;
+    const endX = Math.random() * maxX; // Random X position within the viewport
+    const endY = Math.random() * maxY; // Random Y position within the viewport
 
     img.style.transform = `translate(${endX}px, ${endY}px)`;
     console.log("Moving image to:", endX, endY);
