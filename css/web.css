@@ -75,6 +75,15 @@ body.theme-modern {
   );
 }
 
+/* Modern Theme Grid Container */
+body.theme-modern .grid-container {
+  background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
+}
+
 /* Modern Theme Button */
 body.theme-modern #themeButton {
   background: none; /* Transparent background */
@@ -105,15 +114,6 @@ body.theme-modern .letterboxd {
   z-index: 2; /* Ensure it stays above other elements */
 }
 
-/* Modern Theme Shadows and Depth */
-body.theme-modern .grid-container {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
-  border-radius: 20px;
-  padding: 20px;
-}
-
 /* Modern Theme Animations */
 @keyframes float {
   0% {
@@ -131,7 +131,7 @@ body.theme-modern .grid-container a:hover {
   animation: float 2s ease-in-out infinite;
 }
 
-/* Third theme (background image) */
+/* Nature Theme */
 body.theme-nature {
   background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
   background-size: 90%; /* Zoom out further */
@@ -140,14 +140,57 @@ body.theme-nature {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body.theme-nature h1 {
-  font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+/* Nature Theme Grid Container */
+body.theme-nature .grid-container {
+  background: rgba(128, 128, 128, 0.1); /* Semi-transparent grayish background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
 }
 
-body.theme-nature p {
-  font-size: 1.2rem;
-  line-height: 1.6;
+/* Nature Theme Grid Buttons */
+body.theme-nature .grid-container a {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  border-radius: 50%;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.theme-nature .grid-container a:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Classic Theme */
+body.theme-classic {
+  background-color: #f4f4f4;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+/* Classic Theme Grid Container */
+body.theme-classic .grid-container {
+  background: rgba(244, 244, 244, 0.8); /* Semi-transparent background matching classic theme */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Subtle container shadow */
+}
+
+/* Classic Theme Grid Buttons */
+body.theme-classic .grid-container a {
+  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+  border-radius: 50%;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.theme-classic .grid-container a:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Invisible Placeholder Style */
