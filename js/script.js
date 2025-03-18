@@ -168,22 +168,33 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.style.overflow = "hidden";
 
 function createFloatingImage(imageURL) {
+
   // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
   img.crossOrigin = "anonymous"; // Handle CORS for external images
   img.style.position = "fixed";
-  img.style.width = "75px";
+  img.style.width = "150px"; // Double the size (from 75px to 150px)
   img.style.height = "auto"; // Maintain aspect ratio
   img.style.opacity = "1";
   img.style.pointerEvents = "none";
   img.style.transition = "transform 8s linear"; // Disable opacity transition for debugging
   img.style.zIndex = "1000";
-  img.style.border = "2px solid red"; // Debugging: Add a border to make the image visible
+  img.style.border = "2px solid black"; // Add a black border
+  img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
 
-  // Ensure the image is within the viewport
-  const startX = Math.random() * (window.innerWidth - 75); // 75 is the image width
-  const startY = Math.random() * (window.innerHeight - 75); // 75 is the image height
+  // Ensure the image is within the viewport and never starts offscreen
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Calculate the maximum allowed starting positions to ensure the image stays within the viewport
+  const maxX = viewportWidth - 150; // Ensure the image doesn't go offscreen horizontally
+  const maxY = viewportHeight - 150; // Ensure the image doesn't go offscreen vertically
+
+  // Randomly position the image within the viewport
+  const startX = Math.random() * maxX;
+  const startY = Math.random() * maxY;
+
   img.style.transform = `translate(${startX}px, ${startY}px)`;
 
   console.log("Creating floating image:", imageURL, "at position:", startX, startY);
@@ -196,10 +207,11 @@ function createFloatingImage(imageURL) {
 
   // Function to move the image
   function moveImage() {
-    const endX = Math.random() * (window.innerWidth - 75);
-    const endY = Math.random() * (window.innerHeight - 75);
+    // Calculate the maximum allowed ending positions to ensure the image stays within the viewport
+    const endX = Math.random() * maxX;
+    const endY = Math.random() * maxY;
+
     img.style.transform = `translate(${endX}px, ${endY}px)`;
-    // img.style.opacity = "0"; // Disable fading for debugging
     console.log("Moving image to:", endX, endY);
   }
 
