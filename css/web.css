@@ -225,6 +225,69 @@ body.theme-classic .photo .lens::before {
   z-index: -1; /* Keep the ring behind the lens */
 }
 
+/* Ensure Spotify Green Button is Visible */
+body.theme-modern .spotify,
+body.theme-nature .spotify,
+body.theme-classic .spotify {
+  background-color: #1DB954 !important; /* Spotify green */
+  z-index: 2; /* Ensure it stays above other elements */
+}
+
+/* Ensure Letterboxd Green Circle is Visible */
+body.theme-modern .letterboxd,
+body.theme-nature .letterboxd,
+body.theme-classic .letterboxd {
+  background: linear-gradient(135deg, #00e054, #00b248) !important; /* Letterboxd green */
+  z-index: 2; /* Ensure it stays above other elements */
+}
+
+/* Ensure Outer Back Ring of Photo Button is Visible */
+body.theme-modern .photo .lens::before,
+body.theme-nature .photo .lens::before,
+body.theme-classic .photo .lens::before {
+  border: 4px solid #444 !important; /* Thin dark border for the ring */
+  z-index: -1; /* Keep the ring behind the lens */
+}
+
+/* Override Theme-Specific Styles for These Elements */
+body.theme-modern .letterboxd,
+body.theme-nature .letterboxd,
+body.theme-classic .letterboxd,
+body.theme-modern .spotify,
+body.theme-nature .spotify,
+body.theme-classic .spotify,
+body.theme-modern .photo,
+body.theme-nature .photo,
+body.theme-classic .photo {
+  /* Reset any theme-specific overrides */
+  background: initial !important;
+  border: initial !important;
+  box-shadow: initial !important;
+}
+
+/* Ensure Spotify Bars Stay Black */
+.spotify .bar {
+  background-color: black !important;
+}
+
+/* Ensure Spotify Bars Change Color on Hover */
+.spotify:hover .bar {
+  background-color: green !important;
+}
+
+/* Ensure Letterboxd Circles Stay Visible on Hover */
+.letterboxd:hover::before,
+.letterboxd:hover::after {
+  visibility: visible !important;
+  z-index: -1 !important;
+}
+
+/* Ensure Photo Flash Effect Works */
+.photo:hover::before {
+  background: rgba(255, 255, 255, 0.6) !important; /* Flash of light */
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8) !important; /* Glow effect */
+}
+
 /* Invisible Placeholder Style */
 .invisible,
 .placeholder-42 {
