@@ -180,7 +180,7 @@ function createFloatingImage(imageURL) {
   img.style.pointerEvents = "none";
   img.style.transition = "transform 8s linear"; // Disable opacity transition for debugging
   img.style.zIndex = "1000";
-  img.style.border = "2px solid black"; // Add a black border
+  img.style.border = "1px solid black"; // Add a black border
   img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
 
   // Ensure the image is within the viewport and never starts offscreen
