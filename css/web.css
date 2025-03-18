@@ -46,7 +46,7 @@ body.theme-classic {
   background: none; /* Remove background */
   border: none; /* Remove border */
   padding: 0; /* Remove padding */
-  font-size: 64px; /* Adjusted emoji size */
+  font-size: 120px; /* Larger emoji size */
   cursor: pointer;
   transition: transform 0.5s ease-in-out;
   display: flex;
@@ -78,7 +78,7 @@ body.theme-modern {
 /* Modern Theme Button */
 body.theme-modern #themeButton {
   background: none; /* Transparent background */
-  font-size: 64px; /* Larger emoji size */
+  font-size: 120px; /* Larger emoji size */
 }
 
 /* Modern Theme Grid Buttons */
@@ -102,7 +102,7 @@ body.theme-modern .letterboxd {
     #00e054, /* Letterboxd green */
     #00b248 /* Darker Letterboxd green */
   );
-  z-index: 1; /* Ensure it stays above other elements */
+  z-index: 2; /* Ensure it stays above other elements */
 }
 
 /* Modern Theme Shadows and Depth */
@@ -134,7 +134,7 @@ body.theme-modern .grid-container a:hover {
 /* Third theme (background image) */
 body.theme-nature {
   background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
-  background-size: 110%; /* Zoom out slightly */
+  background-size: 90%; /* Zoom out further */
   background-position: center;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
