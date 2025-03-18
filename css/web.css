@@ -33,6 +33,8 @@ body {
   max-width: 500px;
   margin-top: 20px;
   justify-content: space-evenly;
+  position: relative; /* Ensure grid container is positioned for z-index */
+  z-index: 1; /* Lower z-index for grid container background */
 }
 
 /* ==================== */
@@ -142,6 +144,7 @@ body.theme-nature .grid-container a:hover {
   transform: translate(0, 0);
   grid-row: 5;
   grid-column: 2;
+  z-index: 2; /* Ensure it stays above the grid container */
 }
 
 /* Spin Animation */
@@ -169,6 +172,7 @@ body.theme-nature .grid-container a:hover {
   overflow: hidden;
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
+  z-index: 2; /* Ensure it stays above the grid container */
 }
 
 .spotify .bar {
@@ -265,7 +269,7 @@ body.theme-nature .grid-container a:hover {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 2;
+  z-index: 2; /* Ensure it stays above the grid container */
 }
 
 .letterboxd::before, .letterboxd::after {
@@ -320,6 +324,7 @@ body.theme-nature .grid-container a:hover {
   grid-row: 3;
   position: relative;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  z-index: 2; /* Ensure it stays above the grid container */
 }
 
 .lens {
@@ -889,4 +894,137 @@ body.theme-nature .grid-container a:hover {
   height: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 10px;
+}
+
+/* ==================== */
+/* Stats.fm Button */
+/* ==================== */
+.statsfm {
+  background-color: #2b3a3e;
+  color: limegreen;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  grid-row: 2;
+  overflow: hidden;
+  z-index: 2; /* Ensure it stays above the grid container */
+}
+
+.statsfm img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.statsfm .overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.statsfm:hover .overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.statsfm .overlay img {
+  width: 50%;
+  height: auto;
+  object-fit: contain;
+}
+
+.statsfm:hover img {
+  opacity: 1;
+}
+
+/* ==================== */
+/* Twitter Button */
+/* ==================== */
+.twitter {
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  z-index: 2; /* Ensure it stays above the grid container */
+}
+
+.twitter img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.twitter:hover {
+  animation: spin 3s linear infinite;
+  background-color: black;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==================== */
+/* Ensure Buttons Stay Above Grid Container Background */
+/* ==================== */
+body.theme-modern .grid-container a,
+body.theme-nature .grid-container a,
+body.theme-classic .grid-container a {
+  position: relative;
+  z-index: 2; /* Higher than the grid container background */
+}
+
+/* Ensure Specific Buttons Stay Visible */
+body.theme-modern .spotify,
+body.theme-nature .spotify,
+body.theme-classic .spotify,
+body.theme-modern .letterboxd,
+body.theme-nature .letterboxd,
+body.theme-classic .letterboxd,
+body.theme-modern .photo,
+body.theme-nature .photo,
+body.theme-classic .photo {
+  z-index: 3; /* Even higher z-index for specific buttons */
+}
+
+/* Ensure Grid Container Background Doesn't Overlap Buttons */
+body.theme-modern .grid-container,
+body.theme-nature .grid-container,
+body.theme-classic .grid-container {
+  z-index: 1; /* Lower z-index for the grid container background */
+}
+
+/* Ensure Photo Outer Ring is Visible */
+body.theme-modern .photo .lens::before,
+body.theme-nature .photo .lens::before,
+body.theme-classic .photo .lens::before {
+  border: 4px solid #444 !important;
+  z-index: -1 !important;
 }
