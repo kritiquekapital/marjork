@@ -264,10 +264,14 @@ photoButton.addEventListener("click", (event) => {
   const themeButton = document.getElementById("themeButton");
   const body = document.body;
 
+document.addEventListener("DOMContentLoaded", () => {
+  const themeButton = document.getElementById("themeButton");
+  const body = document.body;
+
   // Define the available themes and their display names
   const themes = [
-    { name: "classic", displayName: "Switch to Modern" },
-    { name: "modern", displayName: "Switch to Classic" },
+    { name: "classic", displayName: "🌓" }, // Moon icon for Classic
+    { name: "modern", displayName: "🌞" }, // Sun icon for Modern
   ];
 
   // Initialize the current theme
