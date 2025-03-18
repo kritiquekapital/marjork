@@ -260,44 +260,44 @@ document.addEventListener("DOMContentLoaded", () => {
     currentIndex = (currentIndex + 1) % imageList.length;
   });
 
-    // Theme Switcher
-    const themeButton = document.getElementById("themeButton");
-    const body = document.body;
+// Theme Switcher
+const themeButton = document.getElementById("themeButton");
+const body = document.body;
 
-    // Define the available themes and their display names
-    const themes = [
-      { name: "classic", displayName: "🌓" }, // Moon icon for Classic
-      { name: "modern", displayName: "🌞" }, // Sun icon for Modern
-    ];
+// Define the available themes and their display names
+const themes = [
+  { name: "classic", displayName: "🌓" }, // Moon icon for Classic
+  { name: "modern", displayName: "🌞" }, // Sun icon for Modern
+  { name: "nature", displayName: "🎞️" }, // Film icon for Roll theme
+];
 
-    // Initialize the current theme
-    let currentThemeIndex = 0;
+// Initialize the current theme
+let currentThemeIndex = 0;
 
-    // Function to apply the current theme
-    function applyTheme() {
-      const currentTheme = themes[currentThemeIndex];
-      body.className = `theme-${currentTheme.name}`; // Apply the theme class
-      themeButton.textContent = currentTheme.displayName; // Update the button text
-    }
+// Function to apply the current theme
+function applyTheme() {
+  const currentTheme = themes[currentThemeIndex];
+  body.className = `theme-${currentTheme.name}`; // Apply the theme class
+  themeButton.textContent = currentTheme.displayName; // Update the button text
+}
 
-    // Add spin animation and theme switching
-    if (themeButton) {
-      themeButton.addEventListener("click", () => {
-        // Add spin animation
-        themeButton.style.animation = "spin 0.5s ease-in-out";
+// Add spin animation and theme switching
+if (themeButton) {
+  themeButton.addEventListener("click", () => {
+    // Add spin animation
+    themeButton.style.animation = "spin 0.5s ease-in-out";
 
-        // Switch to the next theme after the spin animation completes
-        setTimeout(() => {
-          currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Cycle through themes
-          applyTheme(); // Apply the new theme
-          themeButton.style.animation = ""; // Reset animation
-        }, 500); // Match the duration of the spin animation
-      });
+    // Switch to the next theme after the spin animation completes
+    setTimeout(() => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Cycle through themes
+      applyTheme(); // Apply the new theme
+      themeButton.style.animation = ""; // Reset animation
+    }, 500); // Match the duration of the spin animation
+  });
 
-      // Apply the default theme on page load
-      applyTheme(); 
-    }
-
+  // Apply the default theme on page load
+  applyTheme();
+}
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
