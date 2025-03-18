@@ -285,43 +285,72 @@ body.theme-nature .photo .lens::before {
   z-index: -1 !important; /* Keep the ring behind the lens */
 }
 
-/* Ensure Spotify Button Styling is Consistent */
-body.theme-classic .spotify,
-body.theme-modern .spotify,
-body.theme-nature .spotify {
-  background-color: #1DB954 !important; /* Spotify green */
-  z-index: 2 !important; /* Ensure it stays above other elements */
+/* Ensure Letterboxd Element is Not Hidden Behind Adjacent Buttons on Hover */
+.letterboxd:hover {
+  z-index: 10 !important; /* Higher z-index to ensure it stays above other buttons */
 }
 
-/* Ensure Letterboxd Green Circle is Visible */
-body.theme-classic .letterboxd,
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd {
-  background: linear-gradient(135deg, #00e054, #00b248) !important; /* Letterboxd green */
-  z-index: 2 !important; /* Ensure it stays above other elements */
-}
-
-/* Ensure Spotify Bars Stay Black */
-.spotify .bar {
-  background-color: black !important;
-}
-
-/* Ensure Spotify Bars Change Color on Hover */
-.spotify:hover .bar {
-  background-color: green !important;
-}
-
-/* Ensure Letterboxd Circles Stay Visible on Hover */
 .letterboxd:hover::before,
 .letterboxd:hover::after {
-  visibility: visible !important;
-  z-index: -1 !important;
+  z-index: -1 !important; /* Keep the circles behind the green button */
 }
 
-/* Ensure Photo Flash Effect Works */
-.photo:hover::before {
-  background: rgba(255, 255, 255, 0.6) !important; /* Flash of light */
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8) !important; /* Glow effect */
+/* Ensure Photo Outer Ring is Dark and Consistent Across Themes */
+.photo .lens::before {
+  border: 4px solid #000 !important; /* Dark outer ring for the camera */
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 75%) !important;
+}
+
+/* Kiss Button Hover Effect */
+.kiss-button {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kiss-button:hover {
+  transform: scale(1.2); /* Expand on hover */
+  z-index: 10 !important; /* Higher z-index to ensure it stays above other buttons */
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); /* Glow effect */
+}
+
+/* Squiggly Rays of Sun */
+.kiss-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255, 223, 0, 0.3) 10%, transparent 50%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  z-index: -1;
+}
+
+.kiss-button:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  animation: squiggle 2s infinite linear;
+}
+
+@keyframes squiggle {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(-10deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
 }
 
 /* Invisible Placeholder Style */
