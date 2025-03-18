@@ -98,10 +98,9 @@ body.theme-modern .grid-container a:hover {
 /* Nature Theme */
 body.theme-nature {
   background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
-  background-size: 90%;
-  background-position: stretch;
-  color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-size: cover; /* Ensure the image covers the entire screen */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 
 body.theme-nature .grid-container {
@@ -172,7 +171,7 @@ body.theme-nature .grid-container a:hover {
   overflow: hidden;
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
-  z-index: 2; /* Ensure it stays above the grid container */
+  z-index: 3; /* Ensure it stays above the grid container */
 }
 
 .spotify .bar {
@@ -269,7 +268,7 @@ body.theme-nature .grid-container a:hover {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 2; /* Ensure it stays above the grid container */
+  z-index: 3; /* Ensure it stays above the grid container */
 }
 
 .letterboxd::before, .letterboxd::after {
@@ -1008,6 +1007,9 @@ body.theme-classic .spotify,
 body.theme-modern .letterboxd,
 body.theme-nature .letterboxd,
 body.theme-classic .letterboxd,
+body.theme-classic .statsfm {
+  background-color: #2b3a3e !important; /* Dark grey background */
+}
 body.theme-modern .photo,
 body.theme-nature .photo,
 body.theme-classic .photo {
@@ -1025,6 +1027,6 @@ body.theme-classic .grid-container {
 body.theme-modern .photo .lens::before,
 body.theme-nature .photo .lens::before,
 body.theme-classic .photo .lens::before {
-  border: 4px solid #444 !important;
-  z-index: -1 !important;
+  border: 4px solid #444 !important; /* Ensure the border is visible */
+  z-index: -1 !important; /* Keep the ring behind the lens */
 }
