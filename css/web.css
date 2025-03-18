@@ -24,19 +24,6 @@
 }
 
 /* ==================== */
-/* Ensure Specific Buttons Stay Visible */
-/* ==================== */
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .spotify,
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd,
-body.theme-classic .letterboxd,
-body.theme-classic .statsfm {
-  z-index: 10; /* Higher than the grid container */
-}
-
-/* ==================== */
 /* Theme Styles */
 /* ==================== */
 
@@ -1011,12 +998,7 @@ body.theme-modern .letterboxd,
 body.theme-nature .letterboxd,
 body.theme-classic .letterboxd,
 body.theme-classic .statsfm {
-  background-color: #2b3a3e !important; /* Dark grey background */
-}
-body.theme-modern .photo,
-body.theme-nature .photo,
-body.theme-classic .photo {
-  z-index: 3; /* Even higher z-index for specific buttons */
+  z-index: 10; /* Higher than the grid container */
 }
 
 /* Ensure Grid Container Background Doesn't Overlap Buttons */
