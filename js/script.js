@@ -259,6 +259,36 @@ photoButton.addEventListener("click", (event) => {
   // Cycle to the next image
   currentIndex = (currentIndex + 1) % imageList.length;
 });
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const themeButton = document.getElementById("themeButton");
+  const body = document.body;
+
+  // Define the available themes and their display names
+  const themes = [
+    { name: "classic", displayName: "Switch to Modern" },
+    { name: "modern", displayName: "Switch to Classic" },
+  ];
+
+  // Initialize the current theme
+  let currentThemeIndex = 0;
+
+  // Function to apply the current theme
+  function applyTheme() {
+    const currentTheme = themes[currentThemeIndex];
+    body.className = `theme-${currentTheme.name}`; // Apply the theme class
+    themeButton.textContent = currentTheme.displayName; // Update the button text
+  }
+
+  // Switch to the next theme when the button is clicked
+  themeButton.addEventListener("click", () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Cycle through themes
+    applyTheme(); // Apply the new theme
+  });
+
+  // Apply the default theme on page load
+  applyTheme();
+});
   
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
