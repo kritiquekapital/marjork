@@ -416,7 +416,35 @@ body {
     opacity: 0;
     transform: translate(-50%, -50%) scale(1.5);
   }
-} 
+}
+
+.news-button {
+    background-color: var(--primary-color, #d32f2f); /* Uses site theme colors */
+    color: var(--text-on-primary, white);
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.news-button:hover {
+    background-color: var(--hover-color, #b71c1c); /* Slightly darker hover */
+    transform: scale(1.05); /* Slight hover effect */
+}
+
+/* Optional: Add a news icon */
+.news-button::before {
+    content: "📰"; /* Unicode icon */
+    font-size: 1.2em;
+}
+
 /* Surprise Button (Retro Joystick) */
 .surprise {
   background-color: #222; /* Dark base to resemble a classic arcade console */
