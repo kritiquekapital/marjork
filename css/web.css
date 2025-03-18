@@ -46,29 +46,20 @@ body.theme-classic {
   background: none; /* Remove background */
   border: none; /* Remove border */
   padding: 0; /* Remove padding */
-  font-size: 24px; /* Match the size of other buttons */
+  font-size: 48px; /* Increase emoji size */
   cursor: pointer;
   transition: transform 0.5s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px; /* Match the size of other buttons */
-  height: 40px; /* Match the size of other buttons */
+  width: 60px; /* Match the size of other buttons */
+  height: 60px; /* Match the size of other buttons */
 }
 
 /* Spin animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-/* Modern theme button appearance */
-#theme-button.modern {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  color: #1e3c72;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
 }
 
 /* Modern theme enhancements */
@@ -88,13 +79,23 @@ body.theme-modern p {
   line-height: 1.6;
 }
 
-/* Modern theme button appearance */
-#themeButton.theme-modern {
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  color: #1e3c72;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  font-weight: bold;
+/* Third theme (background image) */
+body.theme-roll {
+  background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/your-image.jpg'); /* Replace with the correct image path */
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.theme-roll h1 {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.theme-roll p {
+  font-size: 1.2rem;
+  line-height: 1.6;
 }
 
 /* Invisible Placeholder Style */
