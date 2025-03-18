@@ -177,7 +177,7 @@ function createFloatingImage(imageURL) {
   img.style.height = "auto"; // Maintain aspect ratio
   img.style.opacity = "1";
   img.style.pointerEvents = "none";
-  img.style.transition = "transform 8s linear, opacity 8s ease-out";
+  img.style.transition = "transform 8s linear"; // Disable opacity transition for debugging
   img.style.zIndex = "1000";
   img.style.border = "2px solid red"; // Debugging: Add a border to make the image visible
 
@@ -199,14 +199,15 @@ function createFloatingImage(imageURL) {
     const endX = Math.random() * (window.innerWidth - 75);
     const endY = Math.random() * (window.innerHeight - 75);
     img.style.transform = `translate(${endX}px, ${endY}px)`;
-    img.style.opacity = "0";
+    // img.style.opacity = "0"; // Disable fading for debugging
     console.log("Moving image to:", endX, endY);
   }
 
   // Wait for the image to load before moving it
   img.onload = () => {
     console.log("Image loaded successfully:", imageURL);
-    moveImage(); // Start moving and fading the image after it's fully loaded
+    console.log("Image dimensions:", img.naturalWidth, "x", img.naturalHeight);
+    moveImage(); // Start moving the image after it's fully loaded
   };
 
   img.onerror = () => {
@@ -220,15 +221,15 @@ function createFloatingImage(imageURL) {
   }, 8000);
 }
   
- photoButton.addEventListener("click", (event) => {
+photoButton.addEventListener("click", (event) => {
   event.preventDefault();
 
   // Construct the image URL
   const imageURL = imageFolderURL + imageList[currentIndex];
   console.log("Loading image:", imageURL);
 
-  // Test with a static image (for debugging)
-  // const imageURL = "https://via.placeholder.com/75";
+  // Test with a local image (for debugging)
+  // const imageURL = "path/to/local/image.jpg";
 
   // Create and display the floating image
   createFloatingImage(imageURL);
