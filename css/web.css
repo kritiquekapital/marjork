@@ -418,31 +418,56 @@ body {
   }
 }
 
+/* News Button */
 .news-button {
-    background-color: var(--primary-color, #d32f2f); /* Uses site theme colors */
-    color: var(--text-on-primary, white);
-    font-weight: bold;
-    padding: 12px 20px;
-    border-radius: 6px;
-    border: none;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  background-color: #d32f2f; /* Red color for news theme */
+  color: white;
+  border-radius: 50%; /* Circular shape */
+  width: 120px; /* Same size as other buttons */
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  cursor: pointer;
 }
 
-.news-button:hover {
-    background-color: var(--hover-color, #b71c1c); /* Slightly darker hover */
-    transform: scale(1.05); /* Slight hover effect */
-}
-
-/* Optional: Add a news icon */
+/* News Icon (Unicode newspaper icon) */
 .news-button::before {
-    content: "📰"; /* Unicode icon */
-    font-size: 1.2em;
+  content: "📰"; /* Unicode newspaper icon */
+  font-size: 2.5em; /* Larger icon size */
+  position: absolute;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect */
+.news-button:hover {
+  background-color: #b71c1c; /* Darker red on hover */
+  transform: scale(1.1); /* Slight scale-up effect */
+}
+
+.news-button:hover::before {
+  transform: rotate(360deg); /* Rotate the icon on hover */
+}
+
+/* Optional: Add a subtle animation for the icon */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.news-button:hover::before {
+  animation: float 1.5s ease-in-out infinite; /* Floating effect */
 }
 
 /* Surprise Button (Retro Joystick) */
