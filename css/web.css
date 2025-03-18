@@ -295,10 +295,11 @@ body.theme-nature .photo .lens::before {
   z-index: -1 !important; /* Keep the circles behind the green button */
 }
 
-/* Ensure Photo Outer Ring is Dark and Consistent Across Themes */
+/* Photo Button Outer Ring - Solid Camera Lens Look */
 .photo .lens::before {
-  border: 4px solid #000 !important; /* Dark outer ring for the camera */
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 75%) !important;
+  border: 4px solid #000 !important; /* Solid dark outer ring */
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 90%) !important; /* Dark gradient for depth */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important; /* Subtle shadow for realism */
 }
 
 /* Kiss Button Hover Effect */
@@ -951,6 +952,7 @@ body.theme-nature .photo .lens::before {
   grid-row: 4; /* 4th row */
   grid-column: 2; /* Middle column */
 }
+
 .kiss-button img {
   width: 100%;
   height: 100%;
@@ -958,12 +960,88 @@ body.theme-nature .photo .lens::before {
   object-position: center;
   border-radius: 50%;
 }
+
+/* Rays of Sun - Protruding Squiggly Lines */
+.kiss-button::after {
+  content: '';
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(255, 223, 0, 0.3) 10%, transparent 50%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  z-index: -1;
+}
+
 .kiss-button:hover {
-  background-color: #ff9999;
+  transform: scale(1.1); /* Slow expansion */
+  z-index: 10 !important; /* Higher z-index to stay above other buttons */
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); /* Glow effect */
 }
 
 .kiss-button:active {
-  transform: scale(0.9);
+  transform: scale(0.95); /* Slight compression when clicked */
+}
+
+.kiss-button:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  animation: squiggle 4s infinite linear;
+}
+
+/* Squiggly Lines */
+.kiss-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, transparent 50%, rgba(255, 223, 0, 0.3) 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  z-index: -1;
+}
+
+.kiss-button:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  animation: rotate-sunbeams 6s infinite linear;
+}
+
+/* Keyframes for Rotating Sunbeams */
+@keyframes rotate-sunbeams {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  }
+}
+
+/* Keyframes for Squiggly Lines */
+@keyframes squiggle {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(-10deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
 }
 
 .love-message {
