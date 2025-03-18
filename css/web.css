@@ -46,7 +46,7 @@ body.theme-classic {
   background: none; /* Remove background */
   border: none; /* Remove border */
   padding: 0; /* Remove padding */
-  font-size: 144px; /* 3x larger emoji (48px * 3 = 144px) */
+  font-size: 120px; /
   cursor: pointer;
   transition: transform 0.5s ease-in-out;
   display: flex;
