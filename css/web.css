@@ -79,6 +79,8 @@ body.theme-classic .grid-container a:hover {
   height: 120px; /* Uniform size with other buttons */
   position: relative; /* Ensure it stays in the grid */
   transform: translate(0, 0); /* Reset any unwanted translation */
+  grid-row: 5; /* 5th row */
+  grid-column: 2; /* Middle column */
 }
 
 /* Spin animation */
@@ -127,31 +129,40 @@ body.theme-modern .grid-container a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Ensure Letterboxd Green Circle is Visible */
-body.theme-modern .letterboxd {
-  background: linear-gradient(
-    135deg,
-    #00e054, /* Letterboxd green */
-    #00b248 /* Darker Letterboxd green */
-  );
-  z-index: 2; /* Ensure it stays above other elements */
+/* Ensure Buttons Stay Above Grid Container Background */
+body.theme-modern .grid-container a,
+body.theme-nature .grid-container a,
+body.theme-classic .grid-container a {
+  position: relative; /* Ensure buttons can use z-index */
+  z-index: 2; /* Higher than the grid container background */
 }
 
-/* Modern Theme Animations */
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+/* Ensure Specific Buttons Stay Visible */
+body.theme-modern .spotify,
+body.theme-nature .spotify,
+body.theme-classic .spotify,
+body.theme-modern .letterboxd,
+body.theme-nature .letterboxd,
+body.theme-classic .letterboxd,
+body.theme-modern .photo,
+body.theme-nature .photo,
+body.theme-classic .photo {
+  z-index: 3; /* Even higher z-index for specific buttons */
 }
 
-body.theme-modern .grid-container a:hover {
-  animation: float 2s ease-in-out infinite;
+/* Ensure Grid Container Background Doesn't Overlap Buttons */
+body.theme-modern .grid-container,
+body.theme-nature .grid-container,
+body.theme-classic .grid-container {
+  z-index: 1; /* Lower z-index for the grid container background */
+}
+
+/* Ensure Photo Outer Ring is Visible */
+body.theme-modern .photo .lens::before,
+body.theme-nature .photo .lens::before,
+body.theme-classic .photo .lens::before {
+  border: 4px solid #444; /* Thin dark border for the ring */
+  z-index: -1; /* Keep the ring behind the lens */
 }
 
 /* Nature Theme */
@@ -213,6 +224,7 @@ body.theme-classic .photo .lens::before {
   border: 4px solid #444; /* Thin dark border for the ring */
   z-index: -1; /* Keep the ring behind the lens */
 }
+
 /* Invisible Placeholder Style */
 .invisible,
 .placeholder-42 {
@@ -315,7 +327,6 @@ body.theme-classic .photo .lens::before {
 .statsfm:hover img {
   opacity: 1; /* Make the image visible when hovered */
 }
-
 
 /* Spotify Button */
 .spotify {
@@ -438,7 +449,6 @@ body.theme-classic .photo .lens::before {
   }
 }
 
-
 /* Keyframes for smooth spin and slow stop */
 @keyframes spinOnce {
   0% {
@@ -451,7 +461,6 @@ body.theme-classic .photo .lens::before {
     transform: rotate(360000deg); /* Maintain final position */
   }
 }
-
 
 /* Letterboxd Button (now green) */
 .letterboxd {
@@ -662,6 +671,10 @@ body.theme-classic .photo .lens::before {
   overflow: hidden;
   transition: transform 0.3s ease, background-color 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Slight glow effect */
+  grid-row: 5; /* 5th row */
+  grid-column: 1; /* First column */
+  background-color: transparent; /* Invisible */
+  z-index: 2; /* Ensure it doesn't overlap other buttons */
 }
 
 .joystick {
@@ -807,6 +820,8 @@ body.theme-classic .photo .lens::before {
   background-color: transparent; /* Light pink for visibility */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
+  grid-row: 4; /* 4th row */
+  grid-column: 2; /* Middle column */
 }
 .kiss-button img {
   width: 100%;
@@ -931,7 +946,6 @@ body.theme-classic .photo .lens::before {
   border-radius: 10%;
   z-index: 3;
 }
-
 
 /* Record spinning effects */
 .vinyl .record {
