@@ -168,17 +168,16 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.style.overflow = "hidden";
 
 function createFloatingImage(imageURL) {
-
   // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
   img.crossOrigin = "anonymous"; // Handle CORS for external images
   img.style.position = "fixed";
-  img.style.width = "150px"; // Twice as big (from 75px to 150px)
+  img.style.width = "150px"; // Initial size
   img.style.height = "auto"; // Maintain aspect ratio
-  img.style.opacity = "1";
+  img.style.opacity = "1"; // Start fully visible
   img.style.pointerEvents = "none";
-  img.style.transition = "transform 8s linear"; // Disable opacity transition for debugging
+  img.style.transition = "left 8s linear, top 8s linear, opacity 8s ease-out, transform 8s ease-out"; // Smooth transitions
   img.style.zIndex = "1000";
   img.style.border = "2px solid black"; // Add a black border
   img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
@@ -195,7 +194,7 @@ function createFloatingImage(imageURL) {
   const startX = Math.random() * maxX; // Random X position within the viewport
   const startY = Math.random() * maxY; // Random Y position within the viewport
 
-  // Apply the position directly to the image (no translate)
+  // Apply the position directly to the image
   img.style.left = `${startX}px`;
   img.style.top = `${startY}px`;
 
@@ -213,9 +212,15 @@ function createFloatingImage(imageURL) {
     const endX = Math.random() * maxX; // Random X position within the viewport
     const endY = Math.random() * maxY; // Random Y position within the viewport
 
-    // Apply the new position directly to the image (no translate)
+    // Apply the new position directly to the image
     img.style.left = `${endX}px`;
     img.style.top = `${endY}px`;
+
+    // Gradually expand the image
+    img.style.transform = "scale(2)"; // Double the size
+
+    // Gradually fade out the image
+    img.style.opacity = "0";
 
     console.log("Moving image to:", endX, endY);
   }
