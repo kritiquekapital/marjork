@@ -1,4 +1,6 @@
+/* ==================== */
 /* Global Reset and Basic Styles */
+/* ==================== */
 * {
   margin: 0;
   padding: 0;
@@ -24,37 +26,38 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 120px); /* Adjusted grid to 3 columns */
-  grid-template-rows: repeat(5, auto); /* 4 rows */
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(4, 120px);
   gap: 20px;
   width: 100%;
   max-width: 500px;
   margin-top: 20px;
   justify-content: space-evenly;
-  grid-template-rows: repeat(4,120px);
 }
 
-/* Existing Classic Theme */
+/* ==================== */
+/* Theme Styles */
+/* ==================== */
+
+/* Classic Theme */
 body.theme-classic {
   background-color: #f4f4f4;
-  color: #333; 
+  color: #333;
   font-family: Arial, sans-serif;
 }
 
-/* Classic Theme Grid Container */
 body.theme-classic .grid-container {
-  background: rgba(43, 58, 62, 0.8); /* Semi-transparent grey-blue background */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background: rgba(43, 58, 62, 0.8);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); /* Subtle container shadow */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Classic Theme Grid Buttons */
 body.theme-classic .grid-container a {
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -64,62 +67,23 @@ body.theme-classic .grid-container a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Theme button styling */
-#themeButton {
-  background: none; /* Remove background */
-  border: none; /* Remove border */
-  padding: 0; /* Remove padding */
-  font-size: 120px; /* Larger emoji size */
-  cursor: pointer;
-  transition: transform 0.5s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px; /* Uniform size with other buttons */
-  height: 120px; /* Uniform size with other buttons */
-  position: relative; /* Ensure it stays in the grid */
-  transform: translate(0, 0); /* Reset any unwanted translation */
-  grid-row: 5; /* 5th row */
-  grid-column: 2; /* Middle column */
-}
-
-/* Spin animation */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Modern Theme Overhaul */
+/* Modern Theme */
 body.theme-modern {
-  background: linear-gradient(
-    135deg,
-    #1a1a2e, /* Deep navy */
-    #16213e, /* Dark blue */
-    #0f3460, /* Midnight blue */
-    #533483 /* Purple accent */
-  );
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
 }
 
-/* Modern Theme Grid Container */
 body.theme-modern .grid-container {
-  background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-/* Modern Theme Button */
-body.theme-modern #themeButton {
-  background: none; /* Transparent background */
-  font-size: 120px; /* Larger emoji size */
-}
-
-/* Modern Theme Grid Buttons */
 body.theme-modern .grid-container a {
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -129,78 +93,27 @@ body.theme-modern .grid-container a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Ensure Buttons Stay Above Grid Container Background */
-body.theme-modern .grid-container a,
-body.theme-nature .grid-container a,
-body.theme-classic .grid-container a {
-  position: relative; /* Ensure buttons can use z-index */
-  z-index: 2; /* Higher than the grid container background */
-}
-
-/* Ensure Specific Buttons Stay Visible */
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .spotify,
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd,
-body.theme-classic .letterboxd,
-body.theme-modern .photo,
-body.theme-nature .photo,
-body.theme-classic .photo {
-  z-index: 3; /* Even higher z-index for specific buttons */
-}
-
-/* Ensure Grid Container Background Doesn't Overlap Buttons */
-body.theme-modern .grid-container,
-body.theme-nature .grid-container,
-body.theme-classic .grid-container {
-  z-index: 1; /* Lower z-index for the grid container background */
-}
-
-/* Ensure Photo Outer Ring is Visible */
-body.theme-modern .photo .lens::before,
-body.theme-nature .photo .lens::before,
-body.theme-classic .photo .lens::before {
-  border: 4px solid #444; /* Thin dark border for the ring */
-  z-index: -1; /* Keep the ring behind the lens */
-}
-
-/* Stats.fm Button - Classic Theme */
-body.theme-classic .statsfm {
-  background-color: rgba(43, 58, 62, 0.8) !important; /* Match grid container background */
-  color: limegreen !important; /* Keep text color consistent */
-}
-
-/* Stats.fm Button - Modern and Nature Themes */
-body.theme-modern .statsfm,
-body.theme-nature .statsfm {
-  background-color: rgba(255, 255, 255, 0.05) !important; /* Match grid container background */
-  color: limegreen !important; /* Keep text color consistent */
-}
-
 /* Nature Theme */
 body.theme-nature {
   background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
-  background-size: 90%; /* Zoom out further */
+  background-size: 90%;
   background-position: stretch;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Nature Theme Grid Container */
 body.theme-nature .grid-container {
-  background: rgba(128, 128, 128, 0.05); /* Reduced opacity for a less solid look */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background: rgba(128, 128, 128, 0.05);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-/* Nature Theme Grid Buttons */
 body.theme-nature .grid-container a {
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -210,257 +123,40 @@ body.theme-nature .grid-container a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Ensure Spotify Green Button is Visible */
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .spotify {
-  background-color: #1DB954; /* Spotify green */
-  z-index: 2; /* Ensure it stays above other elements */
-}
-
-/* Ensure Letterboxd Green Circle is Visible */
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd,
-body.theme-classic .letterboxd {
-  background: linear-gradient(
-    135deg,
-    #00e054, /* Letterboxd green */
-    #00b248 /* Darker Letterboxd green */
-  );
-  z-index: 2; /* Ensure it stays above other elements */
-}
-
-/* Ensure Outer Back Ring of Photo Button is Visible */
-body.theme-modern .photo .lens::before,
-body.theme-nature .photo .lens::before,
-body.theme-classic .photo .lens::before {
-  border: 4px solid #444; /* Thin dark border for the ring */
-  z-index: -1; /* Keep the ring behind the lens */
-}
-
-/* Ensure Spotify Green Button is Visible */
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .spotify {
-  background-color: #1DB954 !important; /* Spotify green */
-  z-index: 2; /* Ensure it stays above other elements */
-}
-
-/* Ensure Letterboxd Green Circle is Visible */
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd,
-body.theme-classic .letterboxd {
-  background: linear-gradient(135deg, #00e054, #00b248) !important; /* Letterboxd green */
-  z-index: 2; /* Ensure it stays above other elements */
-}
-
-/* Ensure Outer Back Ring of Photo Button is Visible */
-body.theme-modern .photo .lens::before,
-body.theme-nature .photo .lens::before,
-body.theme-classic .photo .lens::before {
-  border: 4px solid #444 !important; /* Thin dark border for the ring */
-  z-index: -1; /* Keep the ring behind the lens */
-}
-
-/* Ensure Photo, Spotify, and Letterboxd Elements Are Always Visible */
-body.theme-classic .photo,
-body.theme-modern .photo,
-body.theme-nature .photo,
-body.theme-classic .spotify,
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .letterboxd,
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd {
-  visibility: visible !important; /* Force visibility */
-  opacity: 1 !important; /* Ensure full opacity */
-  z-index: 3 !important; /* Ensure they stay above other elements */
-}
-
-/* Ensure Photo Outer Ring is Visible */
-body.theme-classic .photo .lens::before,
-body.theme-modern .photo .lens::before,
-body.theme-nature .photo .lens::before {
-  border: 4px solid #444 !important; /* Thin dark border for the ring */
-  z-index: -1 !important; /* Keep the ring behind the lens */
-}
-
-/* Ensure Letterboxd Element is Not Hidden Behind Adjacent Buttons on Hover */
-.letterboxd:hover {
-  z-index: 10 !important; /* Higher z-index to ensure it stays above other buttons */
-}
-
-.letterboxd:hover::before,
-.letterboxd:hover::after {
-  z-index: -1 !important; /* Keep the circles behind the green button */
-}
-
-/* Photo Button Outer Ring - Solid Camera Lens Look */
-.photo .lens::before {
-  border: 4px solid #000 !important; /* Solid dark outer ring */
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 90%) !important; /* Dark gradient for depth */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important; /* Subtle shadow for realism */
-}
-
-/* Kiss Button Hover Effect */
-.kiss-button {
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.kiss-button:hover {
-  transform: scale(1.2); /* Expand on hover */
-  z-index: 10 !important; /* Higher z-index to ensure it stays above other buttons */
-  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); /* Glow effect */
-}
-
-/* Squiggly Rays of Sun */
-.kiss-button::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(255, 223, 0, 0.3) 10%, transparent 50%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  z-index: -1;
-}
-
-.kiss-button:hover::after {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  animation: squiggle 2s infinite linear;
-}
-
-@keyframes squiggle {
-  0% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  25% {
-    transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  75% {
-    transform: translate(-50%, -50%) scale(1.1) rotate(-10deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-}
-
-/* Invisible Placeholder Style */
-.invisible,
-.placeholder-42 {
-  width: 120px;
-  height: 120px;
-  background: transparent;
-}
-
-/* Twitter Button */
-.twitter {
-  background-color: black;
-  color: white;
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
+/* ==================== */
+/* Theme Button */
+/* ==================== */
+#themeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 120px;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  transform: translate(0, 0);
+  grid-row: 5;
+  grid-column: 2;
 }
 
-.twitter img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-}
-
-.twitter:hover {
-  animation: spin 3s linear infinite;
-  background-color: black;
-}
-
+/* Spin Animation */
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Stats.fm Button */
-.statsfm {
-  background-color: #2b3a3e;
-  color: limegreen;
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  grid-row: 2;
-  overflow: hidden;
-}
-
-.statsfm img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
-  z-index: 2; /* Ensure the goose stays in the foreground */
-  opacity: 0; /* Initially set the image to be invisible */
-  transition: opacity 1s ease-in-out; /* Apply a fade-in effect */
-}
-
-/* Stats.fm Button Overlay */
-.statsfm .overlay {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-  transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  opacity: 0;
-}
-
-.statsfm:hover .overlay {
-  visibility: visible;
-  opacity: 1;
-}
-
-.statsfm .overlay img {
-  width: 50%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Image Fade-In on Hover */
-.statsfm:hover img {
-  opacity: 1; /* Make the image visible when hovered */
-}
+/* ==================== */
+/* Button Styles */
+/* ==================== */
 
 /* Spotify Button */
 .spotify {
   background-color: #1DB954;
-  color: black;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -472,10 +168,9 @@ body.theme-nature .photo .lens::before {
   position: relative;
   overflow: hidden;
   transition: transform 0.6s ease, background-color 0.6s ease;
-  grid-row: 2;  /* Places it in the second row */
+  grid-row: 2;
 }
 
-/* Bars inside the Spotify button */
 .spotify .bar {
   background-color: black;
   height: 8px;
@@ -505,34 +200,21 @@ body.theme-nature .photo .lens::before {
   transform: translateX(-50%);
 }
 
-/* Hover effect - Boom Box Pulsing */
 .spotify:hover {
   background-color: black;
-  transform: scale(1.2); /* Expand slightly */
+  transform: scale(1.2);
   box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
-  animation: boomBoxPulse 1s ease-in-out infinite; /* Quick pulsing animation */
+  animation: boomBoxPulse 1s ease-in-out infinite;
 }
 
-/* Pulsing Boom Box Animation (with irregular shrinking) */
 @keyframes boomBoxPulse {
-  0% {
-    transform: scale(1); /* Original size */
-  }
-  25% {
-    transform: scale(1.3); /* Expand slightly */
-  }
-  50% {
-    transform: scale(1.1); /* Irregular shrinking */
-  }
-  75% {
-    transform: scale(1.25); /* Expand slightly again */
-  }
-  100% {
-    transform: scale(1); /* Return to original size */
-  }
+  0% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1.1); }
+  75% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
-/* Hover bars change color */
 .spotify:hover .bar {
   background-color: green;
 }
@@ -547,9 +229,9 @@ body.theme-nature .photo .lens::before {
   justify-content: center;
   align-items: center;
   position: relative;
-  grid-row: 2;  /* Places it in the second row */
-  border: 3px solid darkgrey; /* Thin black border */
-  animation: none; /* Ensures no animation runs by default */
+  grid-row: 2;
+  border: 3px solid darkgrey;
+  animation: none;
 }
 
 .duolingo img {
@@ -561,40 +243,19 @@ body.theme-nature .photo .lens::before {
 }
 
 .duolingo:hover {
-  animation: spinOnce 5s ease-in-out forwards; /* Activates spin animation */
+  animation: spinOnce 5s ease-in-out forwards;
   background-color: black;
 }
 
-/* Keyframes for spinning 100,000 times (36,000 degrees) */
 @keyframes spinOnce {
-  0% {
-    transform: rotate(0deg);
-  }
-  99% {
-    transform: rotate(360000deg); /* 36,000 degrees (100,000 rotations) */
-  }
-  100% {
-    transform: rotate(360000deg); /* Final position (ensure it stops at 36,000 degrees) */
-  }
+  0% { transform: rotate(0deg); }
+  99% { transform: rotate(360000deg); }
+  100% { transform: rotate(360000deg); }
 }
 
-/* Keyframes for smooth spin and slow stop */
-@keyframes spinOnce {
-  0% {
-    transform: rotate(0deg);
-  }
-  90% {
-    transform: rotate(360000deg); /* Complete 360 rotation */
-  }
-  100% {
-    transform: rotate(360000deg); /* Maintain final position */
-  }
-}
-
-/* Letterboxd Button (now green) */
+/* Letterboxd Button */
 .letterboxd {
   background-color: #00e054;
-  color: #00e054;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -604,77 +265,74 @@ body.theme-nature .photo .lens::before {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 2; /* Ensure the green circle stays on top */
+  z-index: 2;
 }
 
-/* Orange and Blue Circles */
 .letterboxd::before, .letterboxd::after {
   content: '';
   position: absolute;
-  width: 120px; /* Same size as the button */
-  height: 120px; /* Same size as the button */
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, right 0.3s ease, visibility 0.3s ease;
-  visibility: hidden; /* Invisible by default */
+  visibility: hidden;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1; /* Ensure the circles stay behind the green button */
+  z-index: 1;
 }
 
 .letterboxd::before {
-  left: -0px; /* Position it to the left of the button */
-  background-color: #FF8000; /* Orange for the left circle */
+  left: -0px;
+  background-color: #FF8000;
 }
 
 .letterboxd::after {
-  right: -0px; /* Position it to the right of the button */
-  background-color: #40BCF4; /* Blue for the right circle */
+  right: -0px;
+  background-color: #40BCF4;
 }
 
 .letterboxd:hover {
-  transform: scale(1.1); /* Slightly expand on hover */
+  transform: scale(1.1);
 }
 
 .letterboxd:hover::before, .letterboxd:hover::after {
-  width: 120px; /* Keep the same size as the original button */
-  height: 120px; /* Keep the same size as the original button */
-  visibility: visible; /* Make the circles visible when hovered */
-  z-index: -1; /* Ensure the circles are behind the green circle */
+  width: 120px;
+  height: 120px;
+  visibility: visible;
+  z-index: -1;
 }
 
 .letterboxd:hover::before {
-  left: -95px; /* Position to the left */
+  left: -95px;
 }
 
 .letterboxd:hover::after {
-  right: -95px; /* Position to the right */
+  right: -95px;
 }
 
-/* Photo Button (styled as a camera lens) */
+/* Photo Button */
 .photo {
   background-color: black;
   border-radius: 50%;
   width: 120px;
   height: 120px;
   transition: transform 0.3s ease-in-out;
-  grid-row: 3;  /* Now in the third row */
+  grid-row: 3;
   position: relative;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6); /* Shadow around the button */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
 }
 
-/* Inner Lens (detailed look of the lens) */
 .lens {
-  background: radial-gradient(circle, #444 10%, #222 60%); /* Inner lens appearance with gradient */
+  background: radial-gradient(circle, #444 10%, #222 60%);
   border-radius: 50%;
   width: 80%;
   height: 80%;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* Stronger shadow for depth */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   position: absolute;
   top: 10%;
   left: 10%;
 }
 
-/* Outer Ring (more detailed segmented lens look) */
 .lens::before {
   content: '';
   position: absolute;
@@ -682,15 +340,14 @@ body.theme-nature .photo .lens::before {
   height: 100%;
   border-radius: 50%;
   background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 75%);
-  border: 4px solid #444; /* Thin dark border for the ring */
+  border: 4px solid #444;
   top: 0;
   left: 0;
   box-sizing: border-box;
-  z-index: -1; /* Keep the ring behind the lens */
-  background-size: 10px 10px; /* Create the segmented effect */
+  z-index: -1;
+  background-size: 10px 10px;
 }
 
-/* Lens reflection detail for a more realistic effect */
 .lens::after {
   content: '';
   position: absolute;
@@ -698,49 +355,38 @@ body.theme-nature .photo .lens::before {
   left: 25%;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%); /* Reflection inside the lens */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
   border-radius: 50%;
   z-index: 1;
 }
 
-/* Flash Effect on Hover - Reduced size and time to avoid interference */
 .photo:hover::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 150%; /* Make the flash smaller */
-  height: 150%; /* Make the flash smaller */
-  background: rgba(255, 255, 255, 0.6); /* Flash of light */
+  width: 150%;
+  height: 150%;
+  background: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); /* Glow effect */
-  transform: translate(-50%, -50%); /* Center the flash */
-  animation: flashEffect 0.3s ease-out forwards; /* Reduced time for quicker animation */
-  z-index: 2; /* Ensure it appears above the lens */
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  transform: translate(-50%, -50%);
+  animation: flashEffect 0.3s ease-out forwards;
+  z-index: 2;
 }
 
-/* Animation for Flash Effect - Quick animation */
 @keyframes flashEffect {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.5);
-  }
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
 }
 
 /* News Button */
 .news-button {
-  background-color: #d32f2f; /* Red color for news theme */
+  background-color: #d32f2f;
   color: white;
-  border-radius: 50%; /* Circular shape */
-  width: 120px; /* Same size as other buttons */
+  border-radius: 50%;
+  width: 120px;
   height: 120px;
   display: flex;
   justify-content: center;
@@ -748,48 +394,39 @@ body.theme-nature .photo .lens::before {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, background-color 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
 
-/* News Icon (Unicode newspaper icon) */
 .news-button::before {
-  content: "📰"; /* Unicode newspaper icon */
-  font-size: 2.5em; /* Larger icon size */
+  content: "📰";
+  font-size: 2.5em;
   position: absolute;
   transition: transform 0.3s ease;
 }
 
-/* Hover Effect */
 .news-button:hover {
-  background-color: #b71c1c; /* Darker red on hover */
-  transform: scale(1.1); /* Slight scale-up effect */
+  background-color: #b71c1c;
+  transform: scale(1.1);
 }
 
 .news-button:hover::before {
-  transform: rotate(360deg); /* Rotate the icon on hover */
+  transform: rotate(360deg);
 }
 
-/* Optional: Add a subtle animation for the icon */
 @keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
 }
 
 .news-button:hover::before {
-  animation: float 1.5s ease-in-out infinite; /* Floating effect */
+  animation: float 1.5s ease-in-out infinite;
 }
 
-/* Surprise Button (Retro Joystick) */
+/* Surprise Button */
 .surprise {
-  background-color: #222; /* Dark base to resemble a classic arcade console */
+  background-color: #222;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -799,15 +436,15 @@ body.theme-nature .photo .lens::before {
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, background-color 0.3s ease;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); /* Slight glow effect */
-  grid-row: 5; /* 5th row */
-  grid-column: 1; /* First column */
-  background-color: transparent; /* Invisible */
-  z-index: 2; /* Ensure it doesn't overlap other buttons */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  grid-row: 5;
+  grid-column: 1;
+  background-color: transparent;
+  z-index: 2;
 }
 
 .joystick {
-  background-color: #ff9e00; /* Neon orange for the joystick base */
+  background-color: #ff9e00;
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -815,55 +452,53 @@ body.theme-nature .photo .lens::before {
   top: 10px;
   left: 10px;
   transition: background-color 0.3s ease;
-  box-shadow: 0 0 15px rgba(255, 158, 0, 0.7); /* Glow effect on joystick */
-  z-index: 2; /* Ensure the joystick is above the base but below the stick */
+  box-shadow: 0 0 15px rgba(255, 158, 0, 0.7);
+  z-index: 2;
 }
 
-/* Joystick Stick */
 .stick {
-  background-color: #00bcd4; /* Retro blue for the stick */
-  width: 10px; /* Narrower for realism */
-  height: 40px; /* Slightly taller for the correct effect */
+  background-color: #00bcd4;
+  width: 10px;
+  height: 40px;
   position: absolute;
-  top: 50%; /* This keeps the stick aligned with the center */
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(15px) rotate(-25deg); /* Raised stick, more aligned */
+  transform: translate(-50%, -50%) translateY(15px) rotate(-25deg);
   border-radius: 5px;
-  z-index: 1; /* Stick is behind the ball */
+  z-index: 1;
 }
 
-/* Ball on Top of Stick */
 .stick-ball {
-  background-color: #ff0000; /* Bright red for the ball */
-  width: 24px; /* Size of the ball */
+  background-color: #ff0000;
+  width: 24px;
   height: 24px;
   position: absolute;
-  top: -12px; /* Positioned at the top of the stick */
-  left: -6px; /* Move the ball slightly to the left */
-  transform: translateX(50%) translateY(18px); /* Move down and left */
+  top: -12px;
+  left: -6px;
+  transform: translateX(50%) translateY(18px);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.7); /* Ball glow effect */
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
 }
 
 .surprise:hover {
   transform: scale(1.1);
-  background-color: #444; /* Slightly lighter base on hover */
+  background-color: #444;
 }
 
 .surprise:active .joystick {
   transform: scale(0.9);
-  background-color: #ff6f00; /* Darker neon orange on press */
+  background-color: #ff6f00;
 }
 
 .surprise:active .stick {
-  transform: translate(-50%, -50%) translateY(18px) rotate(-40deg); /* More rotation when pressed */
+  transform: translate(-50%, -50%) translateY(18px) rotate(-40deg);
 }
 
-/* Glow effect when hovering */
 .surprise:hover .stick {
   box-shadow: 0 0 10px #00bcd4;
 }
 
+/* Propaganda Button */
 .propaganda {
   display: flex;
   justify-content: center;
@@ -878,7 +513,7 @@ body.theme-nature .photo .lens::before {
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-/* Reset styles for the hyperlink */
+
 .propaganda-link {
   text-decoration: none;
   display: inline-block;
@@ -895,14 +530,8 @@ body.theme-nature .photo .lens::before {
 }
 
 @keyframes pulseEffect {
-  0% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .propaganda:hover {
@@ -922,15 +551,15 @@ body.theme-nature .photo .lens::before {
   100% { transform: translateX(0); }
 }
 
-/* Styling for the propaganda button text */
 .propaganda .symbol {
-  font-size: 18px; /* Adjust font size as needed */
+  font-size: 18px;
   font-weight: bold;
-  color: #ff4c4c; /* Bright red to emphasize "LIVE" */
-  text-transform: uppercase; /* Makes the text all caps */
+  color: #ff4c4c;
+  text-transform: uppercase;
   text-align: center;
 }
 
+/* Kiss Button */
 .kiss-button {
   background: url('pic/solavi.png');
   background-size: contain;
@@ -938,19 +567,19 @@ body.theme-nature .photo .lens::before {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: relative; /* Keep it within the grid */
+  position: relative;
   font-size: 20px;
-  width: 120px; /* Set dimensions */
+  width: 120px;
   height: 120px;
   display: inline-block;
   align-items: center;
   justify-content: center;
-  border-radius: 50%; /* Makes the button a perfect circle */
-  background-color: transparent; /* Light pink for visibility */
+  border-radius: 50%;
+  background-color: transparent;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
-  grid-row: 4; /* 4th row */
-  grid-column: 2; /* Middle column */
+  grid-row: 4;
+  grid-column: 2;
 }
 
 .kiss-button img {
@@ -961,7 +590,6 @@ body.theme-nature .photo .lens::before {
   border-radius: 50%;
 }
 
-/* Rays of Sun - Protruding Squiggly Lines */
 .kiss-button::after {
   content: '';
   position: relative;
@@ -978,13 +606,13 @@ body.theme-nature .photo .lens::before {
 }
 
 .kiss-button:hover {
-  transform: scale(1.1); /* Slow expansion */
-  z-index: 10 !important; /* Higher z-index to stay above other buttons */
-  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8); /* Glow effect */
+  transform: scale(1.1);
+  z-index: 10 !important;
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
 }
 
 .kiss-button:active {
-  transform: scale(0.95); /* Slight compression when clicked */
+  transform: scale(0.95);
 }
 
 .kiss-button:hover::after {
@@ -993,7 +621,6 @@ body.theme-nature .photo .lens::before {
   animation: squiggle 4s infinite linear;
 }
 
-/* Squiggly Lines */
 .kiss-button::before {
   content: '';
   position: absolute;
@@ -1015,33 +642,17 @@ body.theme-nature .photo .lens::before {
   animation: rotate-sunbeams 6s infinite linear;
 }
 
-/* Keyframes for Rotating Sunbeams */
 @keyframes rotate-sunbeams {
-  0% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1) rotate(360deg);
-  }
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
 }
 
-/* Keyframes for Squiggly Lines */
 @keyframes squiggle {
-  0% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  25% {
-    transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
-  75% {
-    transform: translate(-50%, -50%) scale(1.1) rotate(-10deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
-  }
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); }
+  50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  75% { transform: translate(-50%, -50%) scale(1.1) rotate(-10deg); }
+  100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
 }
 
 .love-message {
@@ -1053,44 +664,19 @@ body.theme-nature .photo .lens::before {
   transition: transform 2s ease, opacity 2s ease;
   opacity: 1;
 }
-/* Outer container */
-.outer-container {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  background-color: #333;
-  overflow: hidden;
-}
 
-/* Wooden box backdrop */
-.wood-box {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: linear-gradient(135deg, #5d3a2e 25%, #8e5a34 25%, #8e5a34 50%, #5d3a2e 50%, #5d3a2e 75%, #8e5a34 75%);
-  border: 3px solid #3e2c1c;
-  border-radius: 20px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  z-index: 5;
-}
+/* ==================== */
+/* Vinyl and Video Popup Styles */
+/* ==================== */
 
 .vinyl-link {
-  text-decoration: none; /* Remove underline */
-  display: block; /* Make it a block-level element for proper alignment */
-  position: relative; /* Ensures positioning doesn't break layout */
-  width: 100%; /* Inherit width from parent container */
-  height: 100%; /* Inherit height from parent container */
+  text-decoration: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* Vinyl clickable button */
 .vinyl {
   position: absolute;
   width: 120px;
@@ -1105,7 +691,6 @@ body.theme-nature .photo .lens::before {
   z-index: 20;
 }
 
-/* Record (Vinyl) */
 .record {
   position: relative;
   width: 280px;
@@ -1119,20 +704,18 @@ body.theme-nature .photo .lens::before {
   align-items: center;
 }
 
-/* Vinyl grooves */
 .record::before {
   content: '';
   position: absolute;
   width: 90%;
   height: 90%;
-  border: 3px solid rgba(255, 255, 255, 0.05); /* Subtle groove lines */
+  border: 3px solid rgba(255, 255, 255, 0.05);
   border-radius: 50%;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05), 
               0 0 0 10px rgba(255, 255, 255, 0.02), 
               0 0 0 20px rgba(255, 255, 255, 0.01);
 }
 
-/* Center label */
 .record::after {
   content: '';
   position: absolute;
@@ -1143,7 +726,6 @@ body.theme-nature .photo .lens::before {
   box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Optional - A small hole in the center */
 .record .center-hole {
   position: absolute;
   width: 2px;
@@ -1153,7 +735,6 @@ body.theme-nature .photo .lens::before {
   z-index: 3;
 }
 
-/* Record spinning effects */
 .vinyl .record {
   position: absolute;
   width: 100%;
@@ -1165,7 +746,6 @@ body.theme-nature .photo .lens::before {
   z-index: 15;
 }
 
-/* Arm movement */
 .arm {
   position: absolute;
   width: 80px;
@@ -1180,7 +760,6 @@ body.theme-nature .photo .lens::before {
   z-index: 15;
 }
 
-/* Stylus base hover effects */
 .stylus-base {
   position: absolute;
   width: 10px;
@@ -1194,7 +773,6 @@ body.theme-nature .photo .lens::before {
   z-index: 15;
 }
 
-/* Grooves effect */
 .grooves {
   position: absolute;
   width: 100%;
@@ -1206,7 +784,6 @@ body.theme-nature .photo .lens::before {
   z-index: 15;
 }
 
-/* Hover effects */
 .vinyl:hover .wood-box {
   opacity: 1;
 }
@@ -1230,33 +807,33 @@ body.theme-nature .photo .lens::before {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8); /* Darken background */
-  z-index: 1000; /* Ensure it appears on top */
-  visibility: hidden; /* Initially hidden */
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  visibility: hidden;
 }
 
 .video-popup {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%; /* Increased width for larger player */
-    max-width: 1200px; /* Increased max width */
-    height: auto;
-    max-height: 675px; /* Adjusted max height based on 16:9 ratio */
-    background-color: rgba(0, 0, 0, 0.8); /* Background with opacity */
-    border-radius: 15px;
-    padding: 20px;
-    z-index: 999; /* Ensure it is above other content */
-    overflow: hidden;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  max-width: 1200px;
+  height: auto;
+  max-height: 675px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  z-index: 999;
+  overflow: hidden;
 }
 
 .video-popup iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
 }
 
 .modal-controls {
@@ -1270,7 +847,7 @@ body.theme-nature .photo .lens::before {
 }
 
 #prevChannel, #nextChannel {
-  background-color: #C98F5E; /* Lighter wood tone for buttons */
+  background-color: #C98F5E;
   color: white;
   border: none;
   padding: 5px 15px;
@@ -1279,40 +856,37 @@ body.theme-nature .photo .lens::before {
 }
 
 #prevChannel:hover, #nextChannel:hover {
-  background-color: #A57846; /* Darker wood tone */
+  background-color: #A57846;
 }
 
-/* Video container (with flexbox centering) */
 .video-container {
-    position: fixed; /* Fix to the screen */
-    top: 0;
-    left: 0;
-    width: 100vw; /* Full screen width */
-    height: 100vh; /* Full screen height */
-    display: none; /* Hidden initially */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    visibility: hidden; /* Ensures the video container starts hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
 }
 
-/* Video popup (the iframe container) */
 .video-popup {
-    width: 85%; /* Larger size */
-    height: 85%; /* Larger size */
-    max-width: 1200px; /* Increased max width */
-    background: #fff; /* Background color */
-    border-radius: 10px; /* Optional: adds rounded corners */
-    overflow: hidden; /* Ensures content stays within the box */
-    display: flex; /* Flex to center the iframe */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+  width: 85%;
+  height: 85%;
+  max-width: 1200px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Responsive iframe inside the popup */
 .video-container iframe {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
-    border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
 }
