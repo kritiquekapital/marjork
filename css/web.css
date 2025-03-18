@@ -68,20 +68,29 @@ body.theme-classic {
 }
 
 /* Modern theme enhancements */
-body.modern {
+body.theme-modern {
   background: linear-gradient(135deg, #1e3c72, #2a5298);
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body.modern h1 {
+body.theme-modern h1 {
   font-size: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-body.modern p {
+body.theme-modern p {
   font-size: 1.2rem;
   line-height: 1.6;
+}
+
+/* Modern theme button appearance */
+#themeButton.theme-modern {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  color: #1e3c72;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
 }
 
 /* Invisible Placeholder Style */
