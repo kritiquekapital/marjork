@@ -41,17 +41,21 @@ body.theme-classic {
   font-family: Arial, sans-serif
 }
 
-/* Base button styles */
-#theme-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  background-color: #3498db; /* Classic theme color */
-  color: white;
+/* Theme button styling */
+#themeButton {
+  background: none; /* Remove background */
+  border: none; /* Remove border */
+  padding: 0; /* Remove padding */
+  font-size: 24px; /* Match the size of other buttons */
   cursor: pointer;
-  transition: transform 0.5s ease-in-out, background-color 0.5s ease-in-out;
+  transition: transform 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Match the size of other buttons */
+  height: 40px; /* Match the size of other buttons */
 }
+
 /* Spin animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }
