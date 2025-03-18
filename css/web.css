@@ -62,21 +62,121 @@ body.theme-classic {
   100% { transform: rotate(360deg); }
 }
 
-/* Modern theme enhancements */
+/* Modern Theme Overhaul */
 body.theme-modern {
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #1a1a2e, /* Deep navy */
+    #16213e, /* Dark blue */
+    #0f3460, /* Midnight blue */
+    #533483 /* Purple accent */
+  );
 }
 
-body.theme-modern h1 {
-  font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+/* Modern Theme Button */
+body.theme-modern #themeButton {
+  background: linear-gradient(
+    135deg,
+    #00bcd4, /* Cyan */
+    #0097a7 /* Darker cyan */
+  );
+  border: none;
+  border-radius: 50%;
+  font-size: 48px; /* Adjusted to match other buttons */
+  width: 120px; /* Uniform size with other buttons */
+  height: 120px; /* Uniform size with other buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4); /* Subtle glow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-body.theme-modern p {
-  font-size: 1.2rem;
-  line-height: 1.6;
+body.theme-modern #themeButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 188, 212, 0.6); /* Enhanced glow on hover */
+}
+
+/* Modern Theme Grid Buttons */
+body.theme-modern .grid-container a {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+  border-radius: 50%;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.theme-modern .grid-container a:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Modern Theme Specific Button Enhancements */
+body.theme-modern .twitter {
+  background: linear-gradient(
+    135deg,
+    #1da1f2, /* Twitter blue */
+    #1991db /* Darker Twitter blue */
+  );
+}
+
+body.theme-modern .statsfm {
+  background: linear-gradient(
+    135deg,
+    #1db954, /* Spotify green */
+    #1aa34a /* Darker Spotify green */
+  );
+}
+
+body.theme-modern .spotify {
+  background: linear-gradient(
+    135deg,
+    #1db954, /* Spotify green */
+    #1aa34a /* Darker Spotify green */
+  );
+}
+
+body.theme-modern .duolingo {
+  background: linear-gradient(
+    135deg,
+    #58cc02, /* Duolingo green */
+    #4bb302 /* Darker Duolingo green */
+  );
+}
+
+body.theme-modern .letterboxd {
+  background: linear-gradient(
+    135deg,
+    #00e054, /* Letterboxd green */
+    #00b248 /* Darker Letterboxd green */
+  );
+}
+
+/* Modern Theme Shadows and Depth */
+body.theme-modern .grid-container {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); /* Subtle container shadow */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* Modern Theme Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+body.theme-modern .grid-container a:hover {
+  animation: float 2s ease-in-out infinite;
 }
 
 /* Third theme (background image) */
