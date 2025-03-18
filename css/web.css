@@ -48,20 +48,24 @@ body {
 
 /* Theme Button Styling */
 .theme-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 1001; /* Ensure it's above other elements */
+  grid-column: 2; /* Middle column */
+  grid-row: 5; /* Fifth row */
+  width: 120px; /* Same size as other buttons */
+  height: 120px; /* Same size as other buttons */
+  border-radius: 50%; /* Circular shape */
+  background-color: #444; /* Default background color */
+  color: white; /* Text color */
+  border: none; /* Remove default border */
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Center the icon */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  font-size: 24px; /* Icon size */
+  transition: background-color 0.3s ease; /* Smooth background transition */
 }
 
 .theme-button:hover {
-  background-color: #555;
+  background-color: #555; /* Darker background on hover */
 }
 
 /* Invisible Placeholder Style */
