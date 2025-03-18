@@ -997,7 +997,7 @@ body.theme-modern .grid-container a,
 body.theme-nature .grid-container a,
 body.theme-classic .grid-container a {
   position: relative;
-  z-index: 2; /* Higher than the grid container background */
+  z-index: 1; /* Higher than the grid container background */
 }
 
 /* Ensure Specific Buttons Stay Visible */
