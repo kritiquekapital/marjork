@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function createFloatingImage(imageURL) {
 
+function createFloatingImage(imageURL) {
   // Create the image element
   const img = document.createElement("img");
   img.src = imageURL;
@@ -195,7 +196,9 @@ function createFloatingImage(imageURL) {
   const startX = Math.random() * maxX; // Random X position within the viewport
   const startY = Math.random() * maxY; // Random Y position within the viewport
 
-  img.style.transform = `translate(${startX}px, ${startY}px)`;
+  // Apply the position directly to the image (no translate)
+  img.style.left = `${startX}px`;
+  img.style.top = `${startY}px`;
 
   console.log("Creating floating image:", imageURL, "at position:", startX, startY);
 
@@ -211,7 +214,10 @@ function createFloatingImage(imageURL) {
     const endX = Math.random() * maxX; // Random X position within the viewport
     const endY = Math.random() * maxY; // Random Y position within the viewport
 
-    img.style.transform = `translate(${endX}px, ${endY}px)`;
+    // Apply the new position directly to the image (no translate)
+    img.style.left = `${endX}px`;
+    img.style.top = `${endY}px`;
+
     console.log("Moving image to:", endX, endY);
   }
 
