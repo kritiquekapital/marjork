@@ -29,8 +29,16 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/watch?v=V7IUtUsfARA",
   ];
 
+  // List of links for the news button
+  const newsLinks = [
+    "https://www.salon.com/2001/10/16/susans/",
+    "https://www.diagonalthoughts.com/?p=1728",
+    "https://mirror.xyz/sartoshi.eth/QukjtL1076-1SEoNJuqyc-x4Ut2v8_TocKkszo-S_nU"
+  ];
+
   let currentLinkIndex1 = 0;
   let currentLinkIndex2 = 0;
+  let currentNewsLinkIndex = 0;
 
   // List of images
   const imageList = [
@@ -98,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevButton = document.getElementById("prevChannel");
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
+  const newsButton = document.querySelector(".news-button");
 
   // Handle click on the "LIVE" button
   if (propagandaLink) {
@@ -106,6 +115,29 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLiveStream();
       liveModal.style.visibility = "visible";
       liveModal.style.display = "flex";
+    });
+  }
+
+  // Handle click on the "NEWS" button
+  if (newsButton) {
+    newsButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const link = newsLinks[currentNewsLinkIndex];
+      const newTab = window.open(link, "_blank");
+
+      // Scroll to the specific section if it's the first link
+      if (currentNewsLinkIndex === 0 && link.includes("#")) {
+        const sectionId = link.split("#")[1];
+        newTab.onload = () => {
+          const section = newTab.document.getElementById(sectionId);
+          if (section) {
+            section.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+      }
+
+      // Cycle to the next link
+      currentNewsLinkIndex = (currentNewsLinkIndex + 1) % newsLinks.length;
     });
   }
 
