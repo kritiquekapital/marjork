@@ -34,6 +34,36 @@ body {
   grid-template-rows: repeat(4,120px);
 }
 
+/* Classic Theme (Default) */
+.theme-classic {
+  background: linear-gradient(to right, #2b3a3e, #3f5b5d); /* Existing gradient */
+  color: white; /* Default text color */
+}
+
+/* Modern Theme */
+.theme-modern {
+  background: linear-gradient(to right, #1e1e2f, #2a2a40); /* Darker gradient */
+  color: #e0e0e0; /* Light text color */
+}
+
+/* Theme Button Styling */
+.theme-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1001; /* Ensure it's above other elements */
+}
+
+.theme-button:hover {
+  background-color: #555;
+}
+
 /* Invisible Placeholder Style */
 .invisible,
 .placeholder-42 {
