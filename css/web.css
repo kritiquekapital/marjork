@@ -73,29 +73,33 @@ body.theme-modern {
   );
 }
 
-/* Modern Theme Button */
-body.theme-modern #themeButton {
+/* Modern Theme Overhaul */
+body.theme-modern {
   background: linear-gradient(
     135deg,
-    #00bcd4, /* Cyan */
-    #0097a7 /* Darker cyan */
+    #1a1a2e, /* Deep navy */
+    #16213e, /* Dark blue */
+    #0f3460, /* Midnight blue */
+    #533483 /* Purple accent */
   );
+}
+
+/* Modern Theme Button */
+body.theme-modern #themeButton {
+  background: none; /* Transparent background */
   border: none;
   border-radius: 50%;
-  font-size: 48px; /* Adjusted to match other buttons */
+  font-size: 64px; /* Larger emoji size */
   width: 120px; /* Uniform size with other buttons */
   height: 120px; /* Uniform size with other buttons */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(0, 188, 212, 0.4); /* Subtle glow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-}
-
-body.theme-modern #themeButton:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 188, 212, 0.6); /* Enhanced glow on hover */
+  position: absolute; /* Ensure proper positioning */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  transform: translate(0, 0); /* Reset any unwanted translation */
 }
 
 /* Modern Theme Grid Buttons */
@@ -112,45 +116,14 @@ body.theme-modern .grid-container a:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Modern Theme Specific Button Enhancements */
-body.theme-modern .twitter {
-  background: linear-gradient(
-    135deg,
-    #1da1f2, /* Twitter blue */
-    #1991db /* Darker Twitter blue */
-  );
-}
-
-body.theme-modern .statsfm {
-  background: linear-gradient(
-    135deg,
-    #1db954, /* Spotify green */
-    #1aa34a /* Darker Spotify green */
-  );
-}
-
-body.theme-modern .spotify {
-  background: linear-gradient(
-    135deg,
-    #1db954, /* Spotify green */
-    #1aa34a /* Darker Spotify green */
-  );
-}
-
-body.theme-modern .duolingo {
-  background: linear-gradient(
-    135deg,
-    #58cc02, /* Duolingo green */
-    #4bb302 /* Darker Duolingo green */
-  );
-}
-
+/* Ensure Letterboxd Green Circle is Visible */
 body.theme-modern .letterboxd {
   background: linear-gradient(
     135deg,
     #00e054, /* Letterboxd green */
     #00b248 /* Darker Letterboxd green */
   );
+  z-index: 1; /* Ensure it stays above other elements */
 }
 
 /* Modern Theme Shadows and Depth */
@@ -160,6 +133,23 @@ body.theme-modern .grid-container {
   background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
   border-radius: 20px;
   padding: 20px;
+}
+
+/* Modern Theme Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+body.theme-modern .grid-container a:hover {
+  animation: float 2s ease-in-out infinite;
 }
 
 /* Modern Theme Animations */
