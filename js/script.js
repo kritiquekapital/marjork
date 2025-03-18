@@ -260,10 +260,6 @@ photoButton.addEventListener("click", (event) => {
   currentIndex = (currentIndex + 1) % imageList.length;
 });
 
-  document.addEventListener("DOMContentLoaded", () => {
-  const themeButton = document.getElementById("themeButton");
-  const body = document.body;
-
 document.addEventListener("DOMContentLoaded", () => {
   const themeButton = document.getElementById("themeButton");
   const body = document.body;
