@@ -32,14 +32,21 @@ body {
   grid-template-columns: repeat(3, 120px);
   grid-template-rows: repeat(4, 120px);
   gap: 20px;
+  position: relative; /* Required for backdrop positioning */
+  z-index: 0; /* Lower than buttons */
+}
+
+/* Backdrop Element */
+.grid-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 500px;
-  margin-top: 20px;
-  justify-content: space-evenly;
-  position: relative; /* Ensure grid container is positioned for z-index */
-  z-index: 1; /* Lower z-index for grid container background */
-  overflow: visible !important;
-  isolation: auto;
+  height: 100%;
+  backdrop-filter: blur(10px); /* Apply backdrop-filter here */
+  background: rgba(43, 58, 62, 0.8); /* Background color for classic theme */
+  border-radius: 20px; /* Match the grid container's border radius */
+  z-index: -1; /* Place it behind the grid container's content */
 }
 
 /* ==================== */
@@ -53,26 +60,14 @@ body.theme-classic {
   font-family: Arial, sans-serif;
 }
 
+body.theme-classic .grid-backdrop {
+  background: rgba(43, 58, 62, 0.8); /* Classic theme background */
+}
+
 body.theme-classic .grid-container {
-  background: rgba(43, 58, 62, 0.8);
-  border-radius: 20px;
+  /* Remove backdrop-filter */
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-body.theme-classic .grid-container a {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  z-index: 1;
-}
-
-body.theme-classic .grid-container a:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  z-index: 1;
 }
 
 /* Modern Theme */
@@ -80,25 +75,14 @@ body.theme-modern {
   background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
 }
 
+body.theme-modern .grid-backdrop {
+  background: rgba(255, 255, 255, 0.05); /* Modern theme background */
+}
+
 body.theme-modern .grid-container {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  /* Remove backdrop-filter */
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-body.theme-modern .grid-container a {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-body.theme-modern .grid-container a:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Nature Theme */
@@ -109,25 +93,14 @@ body.theme-nature {
   background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 
+body.theme-nature .grid-backdrop {
+  background: rgba(128, 128, 128, 0.05); /* Nature theme background */
+}
+
 body.theme-nature .grid-container {
-  background: rgba(128, 128, 128, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
+  /* Remove backdrop-filter */
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-body.theme-nature .grid-container a {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-body.theme-nature .grid-container a:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ==================== */
@@ -177,11 +150,11 @@ body.theme-nature .grid-container a:hover {
   left: auto !important;
   position: absolute;
   overflow: hidden;
-  opacity: 1 !important;
-  visibility: visible !important;
+  opacity: 1 !important; /* Force visibility */
+  visibility: visible !important; /* Force visibility */
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
-  z-index: 9999; /* Ensure it stays above the grid container */
+  z-index: 10; /* Ensure it stays above the grid container */
   mix-blend-mode: normal !important;
 }
 
@@ -431,17 +404,14 @@ body.theme-nature .grid-container a:hover {
 
 .news-button:hover::before {
   transform: rotate(360deg);
+  animation: float 1.5s ease-in-out infinite;
 }
 
 @keyframes float {
   0% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
   100% { transform: translateY(0); }
-}
-
-.news-button:hover::before {
-  animation: float 1.5s ease-in-out infinite;
-}
+}  
 
 /* Surprise Button */
 .surprise {
@@ -599,6 +569,7 @@ body.theme-nature .grid-container a:hover {
   transition: background-color 0.3s ease;
   grid-row: 4;
   grid-column: 2;
+  z-index: 10;
 }
 
 .kiss-button img {
@@ -621,7 +592,7 @@ body.theme-nature .grid-container a:hover {
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
   transition: transform 0.5s ease, box-shadow 0.5s ease;
-  z-index: -1;
+  z-index: 10;
 }
 
 .kiss-button:hover {
@@ -652,7 +623,7 @@ body.theme-nature .grid-container a:hover {
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
   transition: transform 0.5s ease, opacity 0.5s ease;
-  z-index: -1;
+  z-index: 10;
 }
 
 .kiss-button:hover::before {
@@ -1028,14 +999,14 @@ body.theme-classic .statsfm {
 body.theme-modern .photo,
 body.theme-nature .photo,
 body.theme-classic .photo {
-  z-index: 3; /* Even higher z-index for specific buttons */
+  z-index: 2; /* Even higher z-index for specific buttons */
 }
 
 /* Ensure Grid Container Background Doesn't Overlap Buttons */
 body.theme-modern .grid-container,
 body.theme-nature .grid-container,
 body.theme-classic .grid-container {
-  z-index: 1; /* Lower z-index for the grid container background */
+  z-index: 0; /* Lower z-index for the grid container background */
 }
 
 /* Ensure Photo Outer Ring is Visible */
@@ -1048,6 +1019,6 @@ body.theme-classic .photo .lens::before {
 
 .spotify, .letterboxd {
     display: flex !important;
-    opacity: 1 !important;
+    opacity: 10 !important;
     visibility: visible !important;
 }
