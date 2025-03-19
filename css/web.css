@@ -137,7 +137,7 @@ body.theme-nature .grid-container {
 
 /* Spotify Button */
 .spotify {
-  background-color: #1DB954;
+  background-color: #1DB954 !important;
   border-radius: 50%;
   width: 120px;
   height: 120px;
