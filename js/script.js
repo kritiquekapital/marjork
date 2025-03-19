@@ -263,22 +263,43 @@ document.body.insertAdjacentHTML("beforeend", `
 const themeButton = document.getElementById("themeButton");
 const body = document.body;
 
-// Define the available themes and their display names
 const themes = [
-  { name: "classic", displayName: "😎" }, // Moon icon for Classic
-  { name: "modern", displayName: "🌚" }, // Sun icon for Modern
-  { name: "nature", displayName: "🌞" }, // Film icon for Roll theme
+  { name: "classic", displayName: "😎" }, // Classic theme
+  { name: "modern", displayName: "🌚" }, // Modern theme
+  { name: "nature", displayName: "🌞" }, // Nature theme
+  { name: "retro", displayName: "🕹️" }, // Retro theme
+  { name: "space", displayName: "🚀" }  // Space theme
 ];
 
-// Initialize the current theme
 let currentThemeIndex = 0;
+const spaceBackground = document.getElementById("space-background");
 
-// Function to apply the current theme
 function applyTheme() {
   const currentTheme = themes[currentThemeIndex];
-  body.className = `theme-${currentTheme.name}`; // Apply the theme class
-  themeButton.textContent = currentTheme.displayName; // Update the button text
+  document.body.className = `theme-${currentTheme.name}`;
+  themeButton.textContent = currentTheme.displayName;
+
+  // Handle Space Theme background
+  if (currentTheme.name === "space") {
+    // Add the live stream if it doesn't already exist
+    if (!spaceBackground.querySelector("iframe")) {
+      spaceBackground.innerHTML = `
+        <iframe
+          src="https://www.youtube.com/embed/xRPjKQtRXR8?autoplay=1&mute=1&controls=0&loop=1&playlist=xRPjKQtRXR8"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+      `;
+    }
+    spaceBackground.style.display = "block"; // Show the background
+  } else {
+    spaceBackground.style.display = "none"; // Hide the background
+  }
 }
+
+// Apply the default theme on page load
+applyTheme();
 
 // Add spin animation and theme switching
 if (themeButton) {
@@ -328,53 +349,42 @@ if (themeButton) {
     });
   }
 
-// Kiss button random message animation
-const kissButton = document.querySelector(".kiss-button");
-if (kissButton) {
-  const messages = [
-    "i love you!",
-    "я тебя люблю!",
-    "☀️ solnyshko ☀️"
-  ];
+  // Kiss button random message animation
+  const kissButton = document.querySelector(".kiss-button");
+  if (kissButton) {
+    const messages = [
+      "i love you!",
+      "я тебя люблю!",
+      "☀️ solnyshko ☀️"
+    ];
 
-  const rays = document.querySelectorAll('.ray');
+    kissButton.addEventListener("click", () => {
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      const loveMessage = document.createElement("div");
 
-  kissButton.addEventListener("click", () => {
-    // Random message animation
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    const loveMessage = document.createElement("div");
+      loveMessage.textContent = randomMessage;
+      loveMessage.style.position = "absolute";
+      loveMessage.style.color = "#FF1493";
+      loveMessage.style.fontSize = "1.5rem";
+      loveMessage.style.fontWeight = "bold";
+      loveMessage.style.top = "50%";
+      loveMessage.style.left = "50%";
+      loveMessage.style.transform = "translate(-50%, -50%)";
+      loveMessage.style.opacity = "1";
+      loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
 
-    loveMessage.textContent = randomMessage;
-    loveMessage.style.position = "absolute";
-    loveMessage.style.color = "#FF1493";
-    loveMessage.style.fontSize = "1.5rem";
-    loveMessage.style.fontWeight = "bold";
-    loveMessage.style.top = "50%";
-    loveMessage.style.left = "50%";
-    loveMessage.style.transform = "translate(-50%, -50%)";
-    loveMessage.style.opacity = "1";
-    loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
+      setTimeout(() => {
+        const randomX = Math.random() * 200 - 100;
+        const randomY = Math.random() * 200 - 100;
+        loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+        loveMessage.style.opacity = "0";
+      }, 100);
 
-    setTimeout(() => {
-      const randomX = Math.random() * 200 - 100;
-      const randomY = Math.random() * 200 - 100;
-      loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-      loveMessage.style.opacity = "0";
-    }, 100);
+      kissButton.appendChild(loveMessage);
 
-    kissButton.appendChild(loveMessage);
-
-    setTimeout(() => {
-      kissButton.removeChild(loveMessage);
-    }, 1600);
-
-    // Ray animation
-    rays.forEach((ray) => {
-      const randomHeight = Math.random() * 150 + 100; // Random height between 100px and 250px
-      const randomDelay = Math.random() * 0.5; // Random delay between 0s and 0.5s
-      ray.style.setProperty('--ray-height', `${randomHeight}px`);
-      ray.style.animation = `ray-expand 0.5s ease-out ${randomDelay}s forwards`;
+      setTimeout(() => {
+        kissButton.removeChild(loveMessage);
+      }, 1600);
     });
-  });
-}
+  }
 });
