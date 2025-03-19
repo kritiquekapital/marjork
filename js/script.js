@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Inject modal HTML structure
-  document.body.insertAdjacentHTML("beforeend",
+  document.body.insertAdjacentHTML("beforeend", 
     <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
