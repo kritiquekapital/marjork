@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // List of links for the news button
   const newsLinks = [
-    "https://www.documentcloud.org/documents/25592020-letter-from-a-palestinian-political-prisoner-in-louisiana-march-18-2025/",
     "https://www.salon.com/2001/10/16/susans/",
     "https://www.diagonalthoughts.com/?p=1728",
     "https://mirror.xyz/sartoshi.eth/QukjtL1076-1SEoNJuqyc-x4Ut2v8_TocKkszo-S_nU"
@@ -90,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Inject modal HTML structure
-  document.body.insertAdjacentHTML("beforeend", `
+  document.body.insertAdjacentHTML("beforeend",
     <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
       <div class="video-popup">
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
@@ -100,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     </div>
-  `);
+  );
 
   const liveModal = document.getElementById("liveModal");
   const liveFrame = document.getElementById("liveFrame");
@@ -299,12 +298,6 @@ if (themeButton) {
   // Apply the default theme on page load
   applyTheme();
 }
-
-  setTimeout(() => {
-  console.log("Spotify:", getComputedStyle(document.querySelector(".spotify")).opacity);
-  console.log("Letterboxd:", getComputedStyle(document.querySelector(".letterboxd")).opacity);
-}, 3000); // Delays check to ensure JS has loaded
-
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
