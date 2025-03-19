@@ -571,6 +571,7 @@ body.theme-nature .grid-container {
   grid-row: 4;
   grid-column: 2;
   z-index: 10;
+  overflow: hidden; /* Hide overflowing rays */
 }
 
 .kiss-button img {
@@ -581,69 +582,67 @@ body.theme-nature .grid-container {
   border-radius: 50%;
 }
 
-.kiss-button::after {
-  content: '';
-  position: relative;
+/* Rays Container */
+.rays {
+  position: absolute;
   top: 50%;
   left: 50%;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(255, 223, 0, 0.3) 10%, transparent 50%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
-  z-index: 10;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* Ensure rays don't interfere with button clicks */
 }
 
+/* Individual Ray */
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 0;
+  background: rgba(255, 223, 0, 0.8);
+  transform-origin: top center;
+  opacity: 0;
+  animation: none; /* Disable animation by default */
+}
+
+/* Ray Animation */
+@keyframes ray-expand {
+  0% {
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    height: 150px;
+    opacity: 0;
+  }
+}
+
+/* Position Rays Non-Uniformly */
+.ray:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg); }
+.ray:nth-child(2) { transform: translate(-50%, -50%) rotate(45deg); }
+.ray:nth-child(3) { transform: translate(-50%, -50%) rotate(90deg); }
+.ray:nth-child(4) { transform: translate(-50%, -50%) rotate(135deg); }
+.ray:nth-child(5) { transform: translate(-50%, -50%) rotate(180deg); }
+.ray:nth-child(6) { transform: translate(-50%, -50%) rotate(225deg); }
+.ray:nth-child(7) { transform: translate(-50%, -50%) rotate(270deg); }
+.ray:nth-child(8) { transform: translate(-50%, -50%) rotate(315deg); }
+
+/* Hover Effect */
 .kiss-button:hover {
   transform: scale(1.1);
   z-index: 10 !important;
   box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
 }
 
+/* Active Effect */
 .kiss-button:active {
   transform: scale(0.95);
 }
 
-.kiss-button:hover::after {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  animation: squiggle 4s infinite linear;
-}
-
-.kiss-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, transparent 50%, rgba(255, 223, 0, 0.3) 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  z-index: 10;
-}
-
-.kiss-button:hover::before {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-  animation: rotate-sunbeams 6s infinite linear;
-}
-
-@keyframes rotate-sunbeams {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
-}
-
-@keyframes squiggle {
-  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  25% { transform: translate(-50%, -50%) scale(1.1) rotate(10deg); }
-  50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-  75% { transform: translate(-50%, -50%) scale(1.1) rotate(-10deg); }
-  100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+/* Trigger Ray Animation on Click */
+.kiss-button:active .ray {
+  animation: ray-expand 0.5s ease-out forwards;
 }
 
 .love-message {
