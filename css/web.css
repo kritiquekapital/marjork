@@ -176,7 +176,7 @@ body.theme-nature .grid-container a:hover {
   overflow: hidden;
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
-  z-index: 10; /* Ensure it stays above the grid container */
+  z-index: 100; /* Ensure it stays above the grid container */
 }
 
 .spotify .bar {
@@ -274,7 +274,7 @@ body.theme-nature .grid-container a:hover {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 2; /* Ensure the green circle is above pseudo-elements */
+  z-index: 100; /* Ensure the green circle is above pseudo-elements */
 }
 
 .letterboxd::before, .letterboxd::after {
@@ -288,7 +288,7 @@ body.theme-nature .grid-container a:hover {
   opacity: 0;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1; /* Ensure pseudo-elements are behind the green circle */
+  z-index: 10; /* Ensure pseudo-elements are behind the green circle */
 }
 
 .letterboxd::before {
@@ -310,7 +310,7 @@ body.theme-nature .grid-container a:hover {
   height: 120px;
   visibility: visible;
   opacity: 1;
-  z-index: 1; /* Ensure pseudo-elements stay behind the green circle */
+  z-index: 10; /* Ensure pseudo-elements stay behind the green circle */
 }
 
 .letterboxd:hover::before {
