@@ -37,7 +37,7 @@ body {
   margin-top: 20px;
   justify-content: space-evenly;
   position: relative; /* Ensure grid container is positioned for z-index */
-  z-index: 0; /* Lower z-index for grid container background */
+  z-index: 1; /* Lower z-index for grid container background */
   overflow: visible !important;
   isolation: isolate;
 }
