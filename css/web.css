@@ -55,7 +55,6 @@ body.theme-classic {
 
 body.theme-classic .grid-container {
   background: rgba(43, 58, 62, 0.8);
-  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -65,7 +64,6 @@ body.theme-classic .grid-container {
 body.theme-classic .grid-container a {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
-  backdrop-filter: blur(10px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 1;
