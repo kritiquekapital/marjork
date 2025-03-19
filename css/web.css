@@ -148,7 +148,7 @@ body.theme-nature .grid-container {
   gap: 2px;
   top: auto !important;
   left: auto !important;
-  position: absolute;
+  position: relative;
   overflow: hidden;
   opacity: 1 !important; /* Force visibility */
   visibility: visible !important; /* Force visibility */
@@ -253,7 +253,8 @@ body.theme-nature .grid-container {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 100; /* Ensure the green circle is above pseudo-elements */
+  z-index: 100;
+  visibility: visible !important;
   mix-blend-mode: normal !important;
 }
 
@@ -1019,6 +1020,6 @@ body.theme-classic .photo .lens::before {
 
 .spotify, .letterboxd {
     display: flex !important;
-    opacity: 10 !important;
+    opacity: 1 !important;
     visibility: visible !important;
 }
