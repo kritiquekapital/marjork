@@ -154,7 +154,7 @@ body.theme-nature .grid-container {
   visibility: visible !important; /* Force visibility */
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
-  z-index: 10; /* Ensure it stays above the grid container */
+  z-index: 1000; /* Ensure it stays above the grid container */
   mix-blend-mode: normal !important;
 }
 
@@ -164,6 +164,7 @@ body.theme-nature .grid-container {
   border-radius: 10px;
   position: absolute;
   transform: none;
+  z-index: 1001;
 }
 
 .spotify .bar.top {
@@ -171,6 +172,7 @@ body.theme-nature .grid-container {
   top: 30%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1001;  
 }
 
 .spotify .bar.middle {
@@ -178,6 +180,7 @@ body.theme-nature .grid-container {
   top: 45%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1001;
 }
 
 .spotify .bar.bottom {
@@ -185,6 +188,7 @@ body.theme-nature .grid-container {
   top: 60%;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 1001;
 }
 
 .spotify:hover {
@@ -253,7 +257,7 @@ body.theme-nature .grid-container {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 100;
+  z-index: 1001;
   visibility: visible !important;
   mix-blend-mode: normal !important;
 }
@@ -269,21 +273,24 @@ body.theme-nature .grid-container {
   opacity: 0;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10; /* Ensure pseudo-elements are behind the green circle */
+  z-index: 1000; /* Ensure pseudo-elements are behind the green circle */
 }
 
 .letterboxd::before {
   left: -0px;
   background-color: #FF8000; /* Orange circle */
+  z-index: 1001;
 }
 
 .letterboxd::after {
   right: -0px;
   background-color: #40BCF4; /* Blue circle */
+  z-index: 1001;
 }
 
 .letterboxd:hover {
   transform: scale(1.1);
+  z-index: 1001;
 }
 
 .letterboxd:hover::before, .letterboxd:hover::after {
