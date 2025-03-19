@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // List of links for the news button
   const newsLinks = [
+    "https://www.documentcloud.org/documents/25592020-letter-from-a-palestinian-political-prisoner-in-louisiana-march-18-2025/",
     "https://www.salon.com/2001/10/16/susans/",
     "https://www.diagonalthoughts.com/?p=1728",
     "https://mirror.xyz/sartoshi.eth/QukjtL1076-1SEoNJuqyc-x4Ut2v8_TocKkszo-S_nU"
