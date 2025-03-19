@@ -172,11 +172,15 @@ body.theme-nature .grid-container a:hover {
   align-items: center;
   flex-direction: column;
   gap: 2px;
-  position: relative;
+  top: auto !important;
+  left: auto !important;
+  position: absolute;
   overflow: hidden;
+  opacity: 1 !important;
+  visibility: visible !important;
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
-  z-index: 100; /* Ensure it stays above the grid container */
+  z-index: 9999; /* Ensure it stays above the grid container */
   mix-blend-mode: normal !important;
 }
 
