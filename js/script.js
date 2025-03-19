@@ -299,6 +299,12 @@ if (themeButton) {
   // Apply the default theme on page load
   applyTheme();
 }
+
+  setTimeout(() => {
+  console.log("Spotify:", getComputedStyle(document.querySelector(".spotify")).opacity);
+  console.log("Letterboxd:", getComputedStyle(document.querySelector(".letterboxd")).opacity);
+}, 3000); // Delays check to ensure JS has loaded
+
   // Handle click on the "VINYL" button
   const vinylLink = document.querySelector(".vinyl-link");
   if (vinylLink) {
