@@ -328,42 +328,53 @@ if (themeButton) {
     });
   }
 
-  // Kiss button random message animation
-  const kissButton = document.querySelector(".kiss-button");
-  if (kissButton) {
-    const messages = [
-      "i love you!",
-      "я тебя люблю!",
-      "☀️ solnyshko ☀️"
-    ];
+// Kiss button random message animation
+const kissButton = document.querySelector(".kiss-button");
+if (kissButton) {
+  const messages = [
+    "i love you!",
+    "я тебя люблю!",
+    "☀️ solnyshko ☀️"
+  ];
 
-    kissButton.addEventListener("click", () => {
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      const loveMessage = document.createElement("div");
+  const rays = document.querySelectorAll('.ray');
 
-      loveMessage.textContent = randomMessage;
-      loveMessage.style.position = "absolute";
-      loveMessage.style.color = "#FF1493";
-      loveMessage.style.fontSize = "1.5rem";
-      loveMessage.style.fontWeight = "bold";
-      loveMessage.style.top = "50%";
-      loveMessage.style.left = "50%";
-      loveMessage.style.transform = "translate(-50%, -50%)";
-      loveMessage.style.opacity = "1";
-      loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
+  kissButton.addEventListener("click", () => {
+    // Random message animation
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    const loveMessage = document.createElement("div");
 
-      setTimeout(() => {
-        const randomX = Math.random() * 200 - 100;
-        const randomY = Math.random() * 200 - 100;
-        loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-        loveMessage.style.opacity = "0";
-      }, 100);
+    loveMessage.textContent = randomMessage;
+    loveMessage.style.position = "absolute";
+    loveMessage.style.color = "#FF1493";
+    loveMessage.style.fontSize = "1.5rem";
+    loveMessage.style.fontWeight = "bold";
+    loveMessage.style.top = "50%";
+    loveMessage.style.left = "50%";
+    loveMessage.style.transform = "translate(-50%, -50%)";
+    loveMessage.style.opacity = "1";
+    loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
 
-      kissButton.appendChild(loveMessage);
+    setTimeout(() => {
+      const randomX = Math.random() * 200 - 100;
+      const randomY = Math.random() * 200 - 100;
+      loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+      loveMessage.style.opacity = "0";
+    }, 100);
 
-      setTimeout(() => {
-        kissButton.removeChild(loveMessage);
-      }, 1600);
+    kissButton.appendChild(loveMessage);
+
+    setTimeout(() => {
+      kissButton.removeChild(loveMessage);
+    }, 1600);
+
+    // Ray animation
+    rays.forEach((ray) => {
+      const randomHeight = Math.random() * 150 + 100; // Random height between 100px and 250px
+      const randomDelay = Math.random() * 0.5; // Random delay between 0s and 0.5s
+      ray.style.setProperty('--ray-height', `${randomHeight}px`);
+      ray.style.animation = `ray-expand 0.5s ease-out ${randomDelay}s forwards`;
     });
-  }
+  });
+}
 });
