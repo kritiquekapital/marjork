@@ -1,0 +1,49 @@
+/* ==================== */
+/* Global Reset and Basic Styles */
+/* ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #2b3a3e, #3f5b5d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  z-index: 2;
+  position: relative;
+  overflow: visible !important;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(4, 120px);
+  gap: 20px;
+  position: relative;
+  z-index: 0;
+}
+
+.grid-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(43, 58, 62, 0.8);
+  border-radius: 20px;
+  z-index: -1;
+}
