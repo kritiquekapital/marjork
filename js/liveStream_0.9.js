@@ -1,51 +1,48 @@
-const liveLinks1 = [
-  "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1",
-  // Add other live stream links
-];
-
-let currentLinkIndex1 = 0;
-
-function updateLiveStream() {
-  let url = liveLinks1[currentLinkIndex1];
-  if (url.includes("watch?v=")) {
-    url = url.replace("watch?v=", "embed/") + "?autoplay=1";
-  }
-  liveFrame.src = url;
-}
-
-document.body.insertAdjacentHTML("beforeend", `
-  <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
-    <div class="video-popup">
-      <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-      <div class="modal-controls">
-        <button id="prevChannel">Previous</button>
-        <button id="nextChannel">Next</button>
-      </div>
-    </div>
-  </div>
-`);
-
-const liveModal = document.getElementById("liveModal");
-const liveFrame = document.getElementById("liveFrame");
-const prevButton = document.getElementById("prevChannel");
-const nextButton = document.getElementById("nextChannel");
-const propagandaLink = document.querySelector(".propaganda-link");
-
-if (propagandaLink) {
-  propagandaLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    updateLiveStream();
-    liveModal.style.visibility = "visible";
-    liveModal.style.display = "flex";
+// Space Background Stream Controller
+(function() {
+  const SPACE_STREAM_URL = "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&loop=1&controls=0&showinfo=0";
+  const THEME_CLASS = 'theme-space';
+  
+  // Create hidden iframe
+  const spaceIframe = document.createElement('iframe');
+  Object.assign(spaceIframe, {
+    src: SPACE_STREAM_URL,
+    allow: 'autoplay',
+    sandbox: 'allow-scripts allow-same-origin',
+    title: 'Space Background Stream',
+    class: 'space-background-stream',
+    style: `position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.2;
+            display: none;`
   });
-}
 
-prevButton.addEventListener("click", () => {
-  currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-  updateLiveStream();
-});
+  document.body.appendChild(spaceIframe);
 
-nextButton.addEventListener("click", () => {
-  currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-  updateLiveStream();
-});
+  // Theme Observer
+  const observer = new MutationObserver(() => {
+    const isSpaceTheme = document.body.classList.contains(THEME_CLASS);
+    spaceIframe.style.display = isSpaceTheme ? 'block' : 'none';
+    
+    // Reset source when theme changes
+    if (isSpaceTheme && !spaceIframe.src.includes('H999s0P1Er0')) {
+      spaceIframe.src = SPACE_STREAM_URL;
+    }
+  });
+
+  // Start observing body for class changes
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+
+  // Initial check
+  if (document.body.classList.contains(THEME_CLASS)) {
+    spaceIframe.style.display = 'block';
+  }
+})();
