@@ -19,55 +19,78 @@
   <meta name="theme-color" content="#ffffff">
 </head>
 <body>
- <!-- Space Background -->
-  <iframe id="space-background" class="space-background-stream"></iframe>
-
   <div class="grid-container">
+    <div id="space-background"></div>
     <div class="grid-backdrop"></div>
-
     <!-- First Row -->
-    <button class="emoji-button" style="grid-row: 1; grid-column: 1;">🚧</button>
-    <button class="emoji-button" style="grid-row: 1; grid-column: 2;">🚧</button>
+      <button class="emoji-button" style="grid-row: 1; grid-column: 1;">🚧</button>
     <a href="https://x.com/cameron_glhf" target="_blank" class="twitter">
       <img src="https://pbs.twimg.com/profile_images/1778281333531234305/6Vj_j3iH_400x400.jpg" alt="Twitter">
     </a>
+      <button class="emoji-button" style="grid-row: 1; grid-column: 1;">🚧</button>
 
     <!-- Second Row -->
     <a href="https://stats.fm/marjork" target="_blank" class="statsfm">
-      <img src="https://stats.fm/api/image?..." alt="StatsFM">
+      <img src="https://stats.fm/api/image?url=https%3A%2F%2Fcdn.stats.fm%2Ffile%2Fstatsfm%2Fimages%2Fusers%2F31m6yxbmqxjd6zq3eg6kk3aefuae%2Fdc140bda1efee5a6acf1d7e33a38d46c.webp&w=256&q=75&fallbackImg=https://cdn.stats.fm/file/statsfm/images/placeholders/users/private.webp" alt="StatsFM">
       <div class="overlay">
         <img src="https://em-content.zobj.net/source/apple/391/goose_1fabf.png" alt="goose">
       </div>
     </a>
-    <a href="https://open.spotify.com/user/..." target="_blank" class="spotify"></a>
-    <a href="https://www.duolingo.com/profile/..." target="_blank" class="duolingo"></a>
+    <a href="https://open.spotify.com/user/31m6yxbmqxjd6zq3eg6kk3aefuae" target="_blank" class="spotify">
+      <div class="bar top"></div>
+      <div class="bar middle"></div>
+      <div class="bar bottom"></div>
+    </a>
+    <a href="https://www.duolingo.com/profile/marjork?via=share_profile_qr" target="_blank" class="duolingo">
+      <img src="https://simg-ssl.duolingo.com/ssr-avatars/825995047/SSR-KngIoLV5cH/xlarge" alt="Duolingo">
+    </a>
 
     <!-- Third Row -->
-    <a href="#" class="photo"></a>
-    <button class="emoji-button" style="grid-row: 3; grid-column: 2;">🚧</button>
+    <a href="#" class="photo">
+      <div class="lens"></div>
+    </a>
     <a href="https://letterboxd.com/marjork/" target="_blank" class="letterboxd"></a>
+    <a href="#" class="news-button">
+      <div class="news-button"></div>
+    </a>
 
     <!-- Fourth Row -->
-    <a href="#" class="propaganda-link">
+    <a href="#" class="propaganda-link" target="_blank">
       <div class="propaganda">
         <span class="symbol">LIVE</span>
       </div>
     </a>
 
     <!-- Fifth Row -->
-    <a href="suprises/slide.html" target="_blank" class="surprise"></a>
-    <button class="theme-button" id="themeButton">🌓</button>
-    <button class="kiss-button"></button>
+    <a href="suprises/slide.html" target="_blank" class="surprise">
+      <div class="joystick"></div>
+      <div class="stick"></div>
+    </a>
 
-    <!-- Sixth Row -->
-    <button class="emoji-button" style="grid-row: 5; grid-column: 3;">🚧</button>
-  </div>
+    <!-- Theme Button in the Middle Column of the Fifth Row -->
+    <button class="theme-button" id="themeButton">🌓</button>
+
+    <button class="kiss-button" onclick="showLoveMessage(event)"></button>
+
+    <div class="container">
+      <!-- Vinyl Player Grouping -->
+      <div class="vinyl">
+        <a href="#" class="vinyl-link">
+          <div class="wood-box"></div>
+          <div class="record"></div>
+          <div class="arm">
+            <div class="stylus-base"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+
 
   <!-- Video Popup Player -->
   <div class="video-container">
     <div class="video-popup">
       <button class="close-button">&times;</button>
-      <iframe frameborder="0" allowfullscreen></iframe>
+      <iframe width="560" height="315" frameborder="0" allowfullscreen></iframe>
       <div class="video-controls">
         <button id="prevButton">Previous</button>
         <button id="nextButton">Next</button>
