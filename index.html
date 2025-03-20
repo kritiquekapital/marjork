@@ -18,6 +18,13 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
 </head>
+<script>
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        let script = document.createElement("script");
+        script.src = "touch-events.js";
+        document.body.appendChild(script);
+    }
+</script>
 <body>
   <div class="grid-container">
     <div id="space-background"></div>
