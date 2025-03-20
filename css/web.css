@@ -219,6 +219,24 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 10px #ffd700;
 }
 
+/* Space Theme Inactivity Tint */
+.space-tint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Persistent dark tint */
+  z-index: 0; /* Keep it behind everything */
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none; /* Ensure it does not block clicks */
+}
+
+.theme-space .space-tint.hidden {
+  opacity: 0; /* Make sure tint fades out if switching themes */
+}
+
 .theme-space .kiss-button {
   background-color: #6a0dad;
   color: #ffffff;
