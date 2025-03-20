@@ -110,6 +110,12 @@ body.theme-nature .grid-container {
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
+/* Retro Theme Grid Container */
+body.theme-retro .grid-backdrop {
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
 /* Buttons */
 .theme-retro button {
   background-color: #ffcc00; /* Bright yellow */
@@ -192,6 +198,12 @@ body.theme-nature .grid-container {
   filter: grayscale(100%) blur(2px);
   object-fit: cover;
   display: none; /* JS will control visibility */
+}
+
+/* Space Theme Grid Container */
+body.theme-space .grid-backdrop {
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 /* Theme-specific adjustments */
