@@ -27,6 +27,38 @@ function applyTheme() {
   }
 }
 
+let inactivityTimer;
+
+function hideSpaceThemeUI() {
+  if (document.body.classList.contains("theme-space")) {
+    document.querySelector(".grid-container").style.opacity = "0";
+    document.querySelector(".grid-container").style.pointerEvents = "none";
+  }
+}
+
+function showSpaceThemeUI() {
+  if (document.body.classList.contains("theme-space")) {
+    document.querySelector(".grid-container").style.opacity = "1";
+    document.querySelector(".grid-container").style.pointerEvents = "auto";
+  }
+}
+
+// Reset the inactivity timer
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  showSpaceThemeUI(); // Ensure UI is visible when active
+  inactivityTimer = setTimeout(hideSpaceThemeUI, 10000); // 10 seconds timeout
+}
+
+// Listen for pointer movements to detect activity
+document.addEventListener("mousemove", resetInactivityTimer);
+document.addEventListener("keydown", resetInactivityTimer);
+document.addEventListener("click", resetInactivityTimer);
+document.addEventListener("touchstart", resetInactivityTimer);
+
+// Initialize the timer when the page loads
+resetInactivityTimer();
+
 const themeButton = document.getElementById("themeButton");
 themeButton.addEventListener("click", () => {
   themeButton.style.animation = "spin 0.5s ease-in-out";
