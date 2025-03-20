@@ -186,13 +186,14 @@ body.theme-nature .grid-container {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.2;
+  z-index: -1; /* Behind everything */
+  pointer-events: none; /* Unclickable */
+  opacity: 0.5; /* Adjust for visibility */
   filter: grayscale(100%) blur(2px);
   object-fit: cover;
-  display: none; /* JS will control visibility */
+  display: none; /* JS will toggle this */
 }
+
 
 /* Theme-specific adjustments */
 .theme-space button {
