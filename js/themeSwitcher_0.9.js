@@ -47,7 +47,7 @@ function showSpaceThemeUI() {
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer);
   showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 10000); // 10 seconds timeout
+  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 10 seconds timeout
 }
 
 // Listen for pointer movements to detect activity
