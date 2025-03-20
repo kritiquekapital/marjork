@@ -7,7 +7,22 @@ const themes = [
 ];
 
 let currentThemeIndex = 0;
-const spaceBackground = document.getElementById("space-background");
+const spaceBackground = document.createElement("iframe");
+spaceBackground.classList.add("space-background-stream");
+spaceBackground.setAttribute("frameborder", "0");
+spaceBackground.setAttribute("allow", "autoplay; encrypted-media");
+spaceBackground.setAttribute("allowfullscreen", "");
+document.body.prepend(spaceBackground);
+
+const liveLinks = [
+  "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&mute=1&controls=0&loop=1",
+];
+let currentLiveIndex = 0;
+
+function updateLiveStream() {
+  let url = liveLinks[currentLiveIndex];
+  spaceBackground.src = url;
+}
 
 function applyTheme() {
   const currentTheme = themes[currentThemeIndex];
@@ -15,16 +30,7 @@ function applyTheme() {
   themeButton.textContent = currentTheme.displayName;
 
   if (currentTheme.name === "space") {
-    if (!spaceBackground.querySelector("iframe")) {
-      spaceBackground.innerHTML = `
-        <iframe
-          src="https://www.youtube.com/embed/xRPjKQtRXR8?autoplay=1&mute=1&controls=0&loop=1&playlist=xRPjKQtRXR8"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-        ></iframe>
-      `;
-    }
+    updateLiveStream();
     spaceBackground.style.display = "block";
   } else {
     spaceBackground.style.display = "none";
