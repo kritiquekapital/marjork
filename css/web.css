@@ -174,23 +174,6 @@ body.theme-nature .grid-container {
   }
 }
 
-/* Rainbow glow effect for all buttons in Retro theme */
-.theme-retro button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120%;
-  height: 120%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
-  background-size: 300% 300%;
-  animation: rainbowGlow 3s ease infinite;
-  opacity: 0.8;
-  z-index: -1;
-}
-
 @keyframes rainbowGlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -234,22 +217,6 @@ body.theme-nature .grid-container {
   color: #0b3d91;
   border: 1px solid #ffffff;
   box-shadow: 0 0 10px #ffd700;
-}
-
-/* Gold glow effect for all buttons in Space theme */
-.theme-space button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120%;
-  height: 120%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, #ffd700, #ffcc00, #ffb400);
-  animation: goldGlow 3s infinite alternate;
-  opacity: 0.8;
-  z-index: -1;
 }
 
 @keyframes goldGlow {
