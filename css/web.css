@@ -29,11 +29,10 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 120px);
-  grid-template-rows: repeat(4, 120px);
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  grid-template-rows: repeat(6, auto); /* 6 rows */
   gap: 20px;
-  position: relative; /* Required for backdrop positioning */
-  z-index: 0; /* Lower than buttons */
+  position: relative;
 }
 
 /* Backdrop Element */
