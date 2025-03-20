@@ -6,67 +6,75 @@ const themes = [
   { name: "space", displayName: "🚀" }
 ];
 
-let currentThemeIndex = 0;
-const spaceBackground = document.createElement("iframe");
-spaceBackground.classList.add("space-background-stream");
-spaceBackground.setAttribute("frameborder", "0");
-spaceBackground.setAttribute("allow", "autoplay; encrypted-media");
-spaceBackground.setAttribute("allowfullscreen", "");
-spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
-document.body.prepend(spaceBackground);
-
-function applyTheme() {
-  const currentTheme = themes[currentThemeIndex];
-  document.body.className = `theme-${currentTheme.name}`;
-  themeButton.textContent = currentTheme.displayName;
-
-  if (currentTheme.name === "space") {
-    spaceBackground.style.display = "block";
-  } else {
-    spaceBackground.style.display = "none";
-  }
-}
-
 let inactivityTimer;
 
-function hideSpaceThemeUI() {
-  if (document.body.classList.contains("theme-space")) {
-    document.querySelector(".grid-container").style.opacity = "0";
-    document.querySelector(".grid-container").style.pointerEvents = "none";
+document.addEventListener("DOMContentLoaded", () => {
+  const gridContainer = document.querySelector(".grid-container");
+
+  // Ensure the tint div exists
+  let tintDiv = document.querySelector(".space-tint");
+  if (!tintDiv) {
+    tintDiv = document.createElement("div");
+    tintDiv.classList.add("space-tint");
+    document.body.appendChild(tintDiv);
   }
-}
 
-function showSpaceThemeUI() {
-  if (document.body.classList.contains("theme-space")) {
-    document.querySelector(".grid-container").style.opacity = "1";
-    document.querySelector(".grid-container").style.pointerEvents = "auto";
+  function hideSpaceThemeUI() {
+    if (document.body.classList.contains("theme-space") && gridContainer) {
+      gridContainer.style.opacity = "0";
+      gridContainer.style.pointerEvents = "none";
+      tintDiv.style.opacity = "1"; // Keep tint visible
+    }
   }
-}
 
-// Reset the inactivity timer
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 10 seconds timeout
-}
+  function showSpaceThemeUI() {
+    if (document.body.classList.contains("theme-space") && gridContainer) {
+      gridContainer.style.opacity = "1";
+      gridContainer.style.pointerEvents = "auto";
+      tintDiv.style.opacity = "1"; // Ensure tint remains
+    }
+  }
 
-// Listen for pointer movements to detect activity
-document.addEventListener("mousemove", resetInactivityTimer);
-document.addEventListener("keydown", resetInactivityTimer);
-document.addEventListener("click", resetInactivityTimer);
-document.addEventListener("touchstart", resetInactivityTimer);
+  function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    if (document.body.classList.contains("theme-space")) {
+      showSpaceThemeUI(); // Show UI if active
+      inactivityTimer = setTimeout(hideSpaceThemeUI, 10000); // 10s timeout
+    }
+  }
 
-// Initialize the timer when the page loads
-resetInactivityTimer();
+  // Detect activity and reset timer
+  ["mousemove", "keydown", "click", "touchstart"].forEach((event) => {
+    document.addEventListener(event, resetInactivityTimer);
+  });
 
-const themeButton = document.getElementById("themeButton");
-themeButton.addEventListener("click", () => {
-  themeButton.style.animation = "spin 0.5s ease-in-out";
-  setTimeout(() => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    applyTheme();
-    themeButton.style.animation = "";
-  }, 500);
+  // Core function to apply themes
+  function applyTheme(themeName) {
+    document.body.className = `theme-${themeName}`;
+
+    if (themeName === "space") {
+      resetInactivityTimer(); // Enable inactivity timer
+      tintDiv.classList.remove("hidden");
+    } else {
+      clearTimeout(inactivityTimer); // Disable inactivity hiding for other themes
+      showSpaceThemeUI(); // Ensure UI is visible
+      tintDiv.classList.add("hidden"); // Hide tint in non-space themes
+    }
+  }
+
+  // Theme switching via button
+  const themeButton = document.getElementById("themeButton");
+  if (themeButton) {
+    themeButton.addEventListener("click", () => {
+      const currentTheme = document.body.className.replace("theme-", "");
+      const nextTheme = themes[(themes.findIndex(t => t.name === currentTheme) + 1) % themes.length].name;
+      applyTheme(nextTheme);
+    });
+  }
+
+  // Apply current theme when page loads
+  const currentTheme = document.body.className.replace("theme-", "");
+  if (currentTheme === "space") {
+    resetInactivityTimer();
+  }
 });
-
-applyTheme();
