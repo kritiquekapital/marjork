@@ -173,39 +173,39 @@ body.theme-nature .grid-container {
 
 /* Space Theme */
 .theme-space {
-  background: transparent; /* Remove solid background */
-  color: #ffffff; /* White text */
-  font-family: "Orbitron", sans-serif; /* Futuristic font */
+  position: relative; /* Required for z-index context */
+  background: transparent;
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
 }
 
-.theme-space button {
-  background-color: #ffd700; /* Gold */
-  color: #0b3d91; /* Deep blue */
-  border: 1px solid #ffffff; /* White */
-  box-shadow: 0 0 10px #ffd700; /* Glow effect */
-}
-
-.theme-space .kiss-button {
-  background-color: #6a0dad; /* Purple */
-  color: #ffffff; /* White */
-  border: 1px solid #ffd700; /* Gold */
-}
-/* Space Live Stream Background */
-#space-background {
-  position: fixed; /* Fixed position to cover the entire viewport */
+/* Target the iframe created by JS */
+.space-background-stream {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Place it behind everything */
-  overflow: hidden;
-  display: none; /* Initially hidden */
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.2;
+  filter: grayscale(100%) blur(2px);
+  object-fit: cover;
+  display: none; /* JS will control visibility */
 }
 
-#space-background iframe {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensure the video covers the entire background */
+/* Theme-specific adjustments */
+.theme-space button {
+  background-color: #ffd700;
+  color: #0b3d91;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+.theme-space .kiss-button {
+  background-color: #6a0dad;
+  color: #ffffff;
+  border: 1px solid #ffd700;
 }
 
 /* ==================== */
