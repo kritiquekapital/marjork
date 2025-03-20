@@ -179,21 +179,19 @@ body.theme-nature .grid-container {
   font-family: "Orbitron", sans-serif;
 }
 
-/* Target the iframe created by JS */
 .space-background-stream {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Behind everything */
-  pointer-events: none; /* Unclickable */
-  opacity: 0.5; /* Adjust for visibility */
-  filter: grayscale(100%) blur(2px);
+  z-index: -1; /* Ensures it stays behind everything */
+  pointer-events: none; /* Prevents interaction */
+  opacity: 1; /* Ensure full visibility */
+  filter: none; /* Removes any grayscale or blur */
   object-fit: cover;
   display: none; /* JS will toggle this */
 }
-
 
 /* Theme-specific adjustments */
 .theme-space button {
