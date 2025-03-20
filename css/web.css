@@ -30,7 +30,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 120px);
-  grid-template-rows: repeat(4, 120px);
+  grid-template-rows: repeat(5, 120px);
   gap: 20px;
   padding: 20px;
   position: relative; /* Required for backdrop positioning */
