@@ -29,10 +29,11 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-  grid-template-rows: repeat(6, auto); /* 6 rows */
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(4, 120px);
   gap: 20px;
-  position: relative;
+  position: relative; /* Required for backdrop positioning */
+  z-index: 0; /* Lower than buttons */
 }
 
 /* Backdrop Element */
@@ -109,11 +110,6 @@ body.theme-nature .grid-container {
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
-.theme-retro .grid-backdrop {
-  transform: none !important;
-  scale: 1 !important;
-}
-
 /* Buttons */
 .theme-retro button {
   background-color: #ffcc00; /* Bright yellow */
@@ -133,15 +129,6 @@ body.theme-nature .grid-container {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
   background-size: 400% 400%;
   animation: rainbow 5s ease infinite;
-}
-
-.emoji-button {
-  background: none;
-  border: none;
-  font-size: 40px;
-  cursor: default;
-  text-align: center;
-  opacity: 0.8;
 }
 
 /* Scanline Effect */
@@ -174,7 +161,7 @@ body.theme-nature .grid-container {
   }
 }
 
-@keyframes rainbowGlow {
+@keyframes rainbow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -192,23 +179,19 @@ body.theme-nature .grid-container {
   font-family: "Orbitron", sans-serif;
 }
 
-.theme-space .grid-backdrop {
-  transform: none !important;
-  scale: 1 !important;
-}
-
+/* Target the iframe created by JS */
 .space-background-stream {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Ensures it stays behind everything */
-  pointer-events: none; /* Prevents interaction */
-  opacity: 1; /* Ensure full visibility */
-  filter: none; /* Removes any grayscale or blur */
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.2;
+  filter: grayscale(100%) blur(2px);
   object-fit: cover;
-  display: none; /* JS will toggle this */
+  display: none; /* JS will control visibility */
 }
 
 /* Theme-specific adjustments */
@@ -219,9 +202,10 @@ body.theme-nature .grid-container {
   box-shadow: 0 0 10px #ffd700;
 }
 
-@keyframes goldGlow {
-  0% { box-shadow: 0 0 10px #ffd700; }
-  100% { box-shadow: 0 0 20px #ffcc00; }
+.theme-space .kiss-button {
+  background-color: #6a0dad;
+  color: #ffffff;
+  border: 1px solid #ffd700;
 }
 
 /* ==================== */
@@ -1148,7 +1132,7 @@ body.theme-classic .photo .lens::before {
 }
 
 .spotify, .letterboxd {
-  background-color: #2b3a3e !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
