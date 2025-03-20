@@ -519,6 +519,7 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%);
   animation: flashEffect 0.3s ease-out forwards;
   z-index: 2;
+  pointer-events: none;
 }
 
 @keyframes flashEffect {
