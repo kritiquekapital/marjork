@@ -109,6 +109,11 @@ body.theme-nature .grid-container {
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
+.theme-retro .grid-backdrop {
+  transform: none !important;
+  scale: 1 !important;
+}
+
 /* Buttons */
 .theme-retro button {
   background-color: #ffcc00; /* Bright yellow */
@@ -128,6 +133,15 @@ body.theme-nature .grid-container {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
   background-size: 400% 400%;
   animation: rainbow 5s ease infinite;
+}
+
+.emoji-button {
+  background: none;
+  border: none;
+  font-size: 40px;
+  cursor: default;
+  text-align: center;
+  opacity: 0.8;
 }
 
 /* Scanline Effect */
@@ -160,7 +174,24 @@ body.theme-nature .grid-container {
   }
 }
 
-@keyframes rainbow {
+/* Rainbow glow effect for all buttons in Retro theme */
+.theme-retro button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
+  background-size: 300% 300%;
+  animation: rainbowGlow 3s ease infinite;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+@keyframes rainbowGlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
@@ -176,6 +207,11 @@ body.theme-nature .grid-container {
   background: transparent;
   color: #ffffff;
   font-family: "Orbitron", sans-serif;
+}
+
+.theme-space .grid-backdrop {
+  transform: none !important;
+  scale: 1 !important;
 }
 
 .space-background-stream {
@@ -200,10 +236,25 @@ body.theme-nature .grid-container {
   box-shadow: 0 0 10px #ffd700;
 }
 
-.theme-space .kiss-button {
-  background-color: #6a0dad;
-  color: #ffffff;
-  border: 1px solid #ffd700;
+/* Gold glow effect for all buttons in Space theme */
+.theme-space button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #ffd700, #ffcc00, #ffb400);
+  animation: goldGlow 3s infinite alternate;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+@keyframes goldGlow {
+  0% { box-shadow: 0 0 10px #ffd700; }
+  100% { box-shadow: 0 0 20px #ffcc00; }
 }
 
 /* ==================== */
@@ -1130,7 +1181,7 @@ body.theme-classic .photo .lens::before {
 }
 
 .spotify, .letterboxd {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+  background-color: #2b3a3e !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
