@@ -2,17 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
-    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1", // crack
-    "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1", // overwhelming and collective harmony
-    "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1", // JRJRJRJRJRJRJRJRJRJRJRJRJR
-    "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1", // drive
-    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1", // fight
-    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1", // la souf
-    "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1", // Prix
-    "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1", // SocWen
-    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1", // fata
-    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1", // tokyo
-    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1"  // bob
+    "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
+    "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
+    "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080", // JRJRJRJRJRJRJRJRJRJRJRJRJR
+    "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1&vq=hd1080", // drive
+    "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1&vq=hd1080", // fight
+    "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&vq=hd1080", // la souf
+    "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1&vq=hd1080", // Prix
+    "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1&vq=hd1080", // SocWen
+    "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1&vq=hd1080", // fata
+    "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1&vq=hd1080", // tokyo
+    "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080"  // bob
   ];
 
   let currentLinkIndex1 = 0;
