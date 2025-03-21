@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
-    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1", // hairpin circus
+    "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1", // overwhelming and collective harmony
     "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1", // JRJRJRJRJRJRJRJRJRJRJRJRJR
