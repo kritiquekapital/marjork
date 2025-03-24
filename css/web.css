@@ -1012,8 +1012,7 @@ body.theme-space .grid-container {
 
 .shuffle-btn {
   position: absolute;
-  bottom: 70px; /* Position it above the play/pause button */
-  left: 10px;  /* Adjust as needed for positioning */
+  top: 10px; /* Position it above the play/pause button */
 }
 
 .shuffle-icon {
