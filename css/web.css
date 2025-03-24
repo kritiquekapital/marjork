@@ -1194,6 +1194,7 @@ body.theme-classic .photo .lens::before {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
+    transition: none !important; /* Remove any fading effect */
 }
 
 body.theme-classic .spotify, 
