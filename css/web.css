@@ -1161,27 +1161,16 @@ body.theme-classic .grid-container a {
 }
 
 /* Ensure Specific Buttons Stay Visible */
-body.theme-modern .spotify,
-body.theme-nature .spotify,
-body.theme-classic .spotify,
-body.theme-modern .letterboxd,
-body.theme-nature .letterboxd,
-body.theme-classic .letterboxd,
 body.theme-classic .statsfm {
   background-color: #2b3a3e !important; /* Dark grey background */
 }
+
 body.theme-modern .photo,
 body.theme-nature .photo,
 body.theme-classic .photo {
   z-index: 2; /* Even higher z-index for specific buttons */
 }
 
-/* Ensure Grid Container Background Doesn't Overlap Buttons */
-body.theme-modern .grid-container,
-body.theme-nature .grid-container,
-body.theme-classic .grid-container {
-  z-index: 0; /* Lower z-index for the grid container background */
-}
 
 /* Ensure Photo Outer Ring is Visible */
 body.theme-modern .photo .lens::before,
@@ -1189,13 +1178,6 @@ body.theme-nature .photo .lens::before,
 body.theme-classic .photo .lens::before {
   border: 4px solid #444 !important; /* Ensure the border is visible */
   z-index: -1 !important; /* Keep the ring behind the lens */
-}
-
-.spotify, .letterboxd {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition: none !important; /* Remove any fading effect */
 }
 
 body.theme-classic .spotify, 
@@ -1207,17 +1189,4 @@ body.theme-nature .letterboxd {
   z-index: 5 !important;
 }
 
-.spotify {
-  background-color: #1DB954 !important; /* Keep it green */
-  color: black !important; /* Ensure contrast */
-  mix-blend-mode: unset !important;
-}
-
-.letterboxd {
-  background-color: red !important; /* Bright red to test */
-  opacity: 1 !important;
-  visibility: visible !important;
-  mix-blend-mode: unset !important;
-  filter: none !important;
-}
 
