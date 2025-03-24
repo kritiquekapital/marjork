@@ -1,12 +1,13 @@
+
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 const miniMusicFrame = document.getElementById("miniMusicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
-  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",   //Gypsy Woman
+  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
-  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",    //но останься
+  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",  //но останься
   "https://www.youtube.com/embed/B6Y-WsgpzlQ?autoplay=1",  //False Sympathy
   "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1",  //Lost
   "https://www.youtube.com/embed/PPoH0Gn50Nc?autoplay=1",  //Renegades
@@ -31,7 +32,6 @@ const liveLinks2 = [
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
-let originalLinks = [...liveLinks2];  // Keep a copy of the original order for reset
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
@@ -43,17 +43,10 @@ function shuffleLinks() {
   if (isShuffling) {
     liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
   } else {
-    liveLinks2 = [...originalLinks]; // Restore the original order
+    liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
   }
-  currentLinkIndex2 = 0;  // Reset to the first song after shuffle
   updateMusicSource();
 }
-
-// Add event listener to shuffle button
-document.querySelector(".shuffle-btn").addEventListener("click", () => {
-  isShuffling = !isShuffling;
-  shuffleLinks();
-});
 
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
@@ -84,7 +77,12 @@ document.querySelector(".next-btn").addEventListener("click", () => {
   updateMusicSource();
 });
 
-// Menu Button to minimize player
+// Shuffle Button
+document.querySelector(".shuffle-btn").addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  shuffleLinks();
+});
+
 document.querySelector(".menu-btn").addEventListener("click", () => {
   musicPlayer.style.display = "none";
   document.querySelector(".minimized-player").style.display = "block";
@@ -95,6 +93,8 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   musicPlayer.style.display = "block";
   document.querySelector(".minimized-player").style.display = "none";
 });
+
+window.addEventListener('click', (event) => {
 
 let isPlayerOpened = false; // Flag to track if the player is opened
 
@@ -128,4 +128,3 @@ window.addEventListener('click', (event) => {
     isPlayerOpened = false; // Mark the player as minimized
   }
 });
-
