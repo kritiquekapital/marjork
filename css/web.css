@@ -1004,6 +1004,29 @@ body.theme-space .grid-container {
   padding: 5px;
   cursor: pointer;
   font-size: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.shuffle-btn {
+  position: absolute;
+  bottom: 70px; /* Position it above the play/pause button */
+  left: 10px;  /* Adjust as needed for positioning */
+}
+
+.shuffle-icon {
+  font-size: 24px; /* Size of the shuffle icon */
+  color: #fff;    /* Icon color */
+}
+
+.shuffle-btn:hover .shuffle-icon {
+  color: #00ccff; /* Change color when hovered */
+}
+
+.shuffle-btn:active .shuffle-icon {
+  color: #ffcc00; /* Change color when clicked */
 }
 
 .playpause {
