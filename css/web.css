@@ -320,6 +320,7 @@ body.theme-space .grid-container {
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
   z-index: 1000; /* Ensure it stays above the grid container */
+  mix-blend-mode: normal !important;
 }
 
 .spotify .bar {
@@ -423,6 +424,7 @@ body.theme-space .grid-container {
   transition: transform 0.3s ease;
   z-index: 1001;
   visibility: visible !important;
+  mix-blend-mode: normal !important;
 }
 
 .letterboxd::before, .letterboxd::after {
@@ -961,6 +963,74 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%) rotate(320deg);
 }
 
+/* Add to web.css */
+.ipod-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  background: #f0f0f0;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  z-index: 10000;
+  display: none;
+}
+
+.ipod-screen {
+  background: #000;
+  border-radius: 5px;
+  height: 180px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.click-wheel {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ipod-btn {
+  border: none;
+  background: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.playpause {
+  position: absolute;
+  bottom: 10px;
+}
+
+.minimized-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* iPod-like theme */
+body.theme-retro .ipod-popup {
+  background: #383838;
+  color: #00ffcc;
+}
+
+body.theme-retro .click-wheel {
+  background: #505050;
+}
+
 .popup-player-container {
   position: fixed;
   top: 0;
@@ -1160,16 +1230,27 @@ body.theme-classic .grid-container a {
 }
 
 /* Ensure Specific Buttons Stay Visible */
+body.theme-modern .spotify,
+body.theme-nature .spotify,
+body.theme-classic .spotify,
+body.theme-modern .letterboxd,
+body.theme-nature .letterboxd,
+body.theme-classic .letterboxd,
 body.theme-classic .statsfm {
   background-color: #2b3a3e !important; /* Dark grey background */
 }
-
 body.theme-modern .photo,
 body.theme-nature .photo,
 body.theme-classic .photo {
   z-index: 2; /* Even higher z-index for specific buttons */
 }
 
+/* Ensure Grid Container Background Doesn't Overlap Buttons */
+body.theme-modern .grid-container,
+body.theme-nature .grid-container,
+body.theme-classic .grid-container {
+  z-index: 0; /* Lower z-index for the grid container background */
+}
 
 /* Ensure Photo Outer Ring is Visible */
 body.theme-modern .photo .lens::before,
@@ -1179,21 +1260,8 @@ body.theme-classic .photo .lens::before {
   z-index: -1 !important; /* Keep the ring behind the lens */
 }
 
-body.theme-classic .spotify, 
-body.theme-classic .letterboxd,
-body.theme-modern .spotify, 
-body.theme-modern .letterboxd,
-body.theme-nature .spotify, 
-body.theme-nature .letterboxd {
-  z-index: 5 !important;
-}
-
-body.theme-retro .wip
-body.theme-retro #themeButton {
-  box-shadow: 0 0 10px #ff00ff;
-  
-body.theme-space #themeButton {
-  text-shadow: 0 0 10px #ffd700;
-  box-shadow: none !important; /* Remove glow from button box */
-  background: none !important; /* Prevent background from interfering */
+.spotify, .letterboxd {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
