@@ -119,9 +119,16 @@ document.querySelector(".playpause").addEventListener("click", () => {
   }
 });
 
+// Shuffle button
+document.querySelector(".shuffle").addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  shuffleLinks();
+});
+
 // Click outside to minimize (or hide) player
 window.addEventListener('click', (event) => {
   // Only hide the player if the click is outside of the player and player has been opened
+  // and the click is not on the minimized player
   if (!musicPlayer.contains(event.target) && !event.target.closest('.minimized-player') && isPlayerOpened) {
     musicPlayer.style.display = "none";  // Hide the music player
     document.querySelector(".minimized-player").style.display = "block";  // Show minimized player
