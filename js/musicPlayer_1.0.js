@@ -2,14 +2,13 @@
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
-const miniMusicFrame = document.getElementById("miniMusicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1",
   // Add other vinyl links
 ];
 
 let currentLinkIndex2 = 0;
-let isPlaying = false;
+let isPlaying = true;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
