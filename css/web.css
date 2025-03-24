@@ -49,7 +49,6 @@ body {
   background: rgba(43, 58, 62, 0.8); /* Background color for classic theme */
   border-radius: 20px; /* Match the grid container's border radius */
   z-index: -1; /* Place it behind the grid container's content */
-  display: none !important;
 }
 
 /* ==================== */
