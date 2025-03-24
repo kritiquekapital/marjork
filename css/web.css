@@ -1197,3 +1197,12 @@ body.theme-classic .photo .lens::before {
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+body.theme-classic .spotify, 
+body.theme-classic .letterboxd,
+body.theme-modern .spotify, 
+body.theme-modern .letterboxd,
+body.theme-nature .spotify, 
+body.theme-nature .letterboxd {
+  z-index: 5 !important;
+}
