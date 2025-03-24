@@ -96,10 +96,36 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-// Click outside to minimize
-window.addEventListener('click', (event) => {
-  if (!musicPlayer.contains(event.target) && !event.target.closest('.minimized-player')) {
-    musicPlayer.style.display = "none";  // Hide the music player
-    document.querySelector(".minimized-player").style.display = "block";  // Show minimized player
+let isPlayerOpened = false; // Flag to track if the player is opened
+
+// Open the player
+vinylLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  updateMusicSource();
+  musicPlayer.style.display = "block";
+  isPlaying = true;
+  isPlayerOpened = true; // Mark that the player was opened
+});
+
+// Controls
+document.querySelector(".playpause").addEventListener("click", () => {
+  isPlaying = !isPlaying;
+  if (isPlaying) {
+    musicFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+    miniMusicFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+  } else {
+    musicFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    miniMusicFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
   }
 });
+
+// Click outside to minimize (or hide) player
+window.addEventListener('click', (event) => {
+  // Only hide the player if the click is outside of the player and player has been opened
+  if (!musicPlayer.contains(event.target) && !event.target.closest('.minimized-player') && isPlayerOpened) {
+    musicPlayer.style.display = "none";  // Hide the music player
+    document.querySelector(".minimized-player").style.display = "block";  // Show minimized player
+    isPlayerOpened = false; // Mark the player as minimized
+  }
+});
+
