@@ -93,3 +93,10 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   musicPlayer.style.display = "block";
   document.querySelector(".minimized-player").style.display = "none";
 });
+
+window.addEventListener('click', (event) => {
+  // Check if the click was outside the music player
+  if (event.target === musicPlayer) {
+    musicPlayer.style.visibility = 'hidden';  // Hide the music player
+  }
+});
