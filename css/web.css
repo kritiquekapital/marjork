@@ -1204,9 +1204,3 @@ body.theme-nature .spotify,
 body.theme-nature .letterboxd {
   z-index: 5 !important;
 }
-
-body.theme-classic .grid-backdrop, 
-body.theme-modern .grid-backdrop, 
-body.theme-nature .grid-backdrop {
-  display: none !important;
-}
