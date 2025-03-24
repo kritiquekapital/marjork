@@ -437,6 +437,7 @@ body.theme-space .grid-container {
   top: 50%;
   transform: translateY(-50%);
   z-index: 1000; /* Ensure pseudo-elements are behind the green circle */
+  border: 3px solid red !important;
 }
 
 .letterboxd::before {
