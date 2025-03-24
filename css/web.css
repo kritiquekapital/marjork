@@ -1212,4 +1212,12 @@ body.theme-nature .letterboxd {
   mix-blend-mode: unset !important;
 }
 
+.letterboxd {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  position: relative !important;
+  background-color: #00e054 !important; /* Ensure it's green */
+  mix-blend-mode: unset !important;
+}
 
