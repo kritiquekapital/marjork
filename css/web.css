@@ -1188,10 +1188,12 @@ body.theme-nature .letterboxd {
   z-index: 5 !important;
 }
 
-body.theme-retro .wip,
-body.theme-retro #themeButton,
+body.theme-retro .wip
+body.theme-retro #themeButton {
+  box-shadow: 0 0 10px #ff00ff;
+  
 body.theme-space #themeButton {
-  text-shadow: 0 0 10px rgba(255, 0, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.6);
+  text-shadow: 0 0 10px #ffd700;
   box-shadow: none !important; /* Remove glow from button box */
   background: none !important; /* Prevent background from interfering */
 }
