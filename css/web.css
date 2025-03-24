@@ -1209,4 +1209,7 @@ body.theme-nature .letterboxd {
 .spotify {
   background-color: #1DB954 !important; /* Keep it green */
   color: black !important; /* Ensure contrast */
+  mix-blend-mode: unset !important;
 }
+
+
