@@ -88,6 +88,23 @@
     <button class="wip" style="grid-row: 5; grid-column: 3;">🔜</button>
     
     </div>
+  
+<div id="musicPlayer" class="ipod-popup">
+  <div class="ipod-screen">
+    <iframe id="musicFrame" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
+  </div>
+  <div class="ipod-controls">
+    <button class="ipod-btn menu-btn">MENU</button>
+    <div class="click-wheel">
+      <button class="ipod-btn prev-btn">◀◀</button>
+      <button class="ipod-btn next-btn">▶▶</button>
+      <button class="ipod-btn playpause">▶/❚❚</button>
+    </div>
+  </div>
+  <div class="minimized-player" style="display: none;">
+    <iframe id="miniMusicFrame" width="200" height="113" frameborder="0"></iframe>
+  </div>
+</div>
   <div class="container">
   <!-- Video Popup Player -->
   <div class="video-container">
@@ -107,6 +124,7 @@
   <script src="js/photoButton_0.9.js" defer></script>
   <script src="js/newsButton_0.9.js" defer></script>  
   <script src="js/kissButton_0.9.js" defer></script>
+  <script src="js/musicPlayer_1.0.js" defer></script>
   <script src="js/vinylButton_0.9.js" defer></script>
 </body>
 </html>
