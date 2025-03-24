@@ -1,4 +1,3 @@
-// Update vinylButton_0.9.js
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
@@ -30,11 +29,23 @@ const liveLinks2 = [
 
 let currentLinkIndex2 = 0;
 let isPlaying = true;
+let isShuffling = false;
+let excludeLongLinks = false;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   musicFrame.src = url;
   miniMusicFrame.src = url;
+}
+
+function shuffleLinks() {
+  if (isShuffling) {
+    liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
+  } else {
+    // Revert to the original order if shuffle is disabled
+    liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
+  }
+  updateMusicSource();
 }
 
 vinylLink.addEventListener("click", (event) => {
@@ -64,6 +75,12 @@ document.querySelector(".prev-btn").addEventListener("click", () => {
 document.querySelector(".next-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
   updateMusicSource();
+});
+
+// Shuffle Button
+document.querySelector(".shuffle-btn").addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  shuffleLinks();
 });
 
 document.querySelector(".menu-btn").addEventListener("click", () => {
