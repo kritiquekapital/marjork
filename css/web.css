@@ -1205,3 +1205,8 @@ body.theme-nature .spotify,
 body.theme-nature .letterboxd {
   z-index: 5 !important;
 }
+
+.spotify {
+  background-color: #1DB954 !important; /* Keep it green */
+  color: black !important; /* Ensure contrast */
+}
