@@ -4,9 +4,9 @@ const musicFrame = document.getElementById("musicFrame");
 const miniMusicFrame = document.getElementById("miniMusicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
-  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
+  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",   //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
-  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",  //но останься
+  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",    //но останься
   "https://www.youtube.com/embed/B6Y-WsgpzlQ?autoplay=1",  //False Sympathy
   "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1",  //Lost
   "https://www.youtube.com/embed/PPoH0Gn50Nc?autoplay=1",  //Renegades
@@ -31,6 +31,7 @@ const liveLinks2 = [
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
+let originalLinks = [...liveLinks2];  // Keep a copy of the original order for reset
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
@@ -42,10 +43,17 @@ function shuffleLinks() {
   if (isShuffling) {
     liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
   } else {
-    liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
+    liveLinks2 = [...originalLinks]; // Restore the original order
   }
+  currentLinkIndex2 = 0;  // Reset to the first song after shuffle
   updateMusicSource();
 }
+
+// Add event listener to shuffle button
+document.querySelector(".shuffle-btn").addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  shuffleLinks();
+});
 
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
@@ -76,12 +84,7 @@ document.querySelector(".next-btn").addEventListener("click", () => {
   updateMusicSource();
 });
 
-// Shuffle Button
-document.querySelector(".shuffle-btn").addEventListener("click", () => {
-  isShuffling = !isShuffling;
-  shuffleLinks();
-});
-
+// Menu Button to minimize player
 document.querySelector(".menu-btn").addEventListener("click", () => {
   musicPlayer.style.display = "none";
   document.querySelector(".minimized-player").style.display = "block";
@@ -93,10 +96,10 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
+// Click outside to minimize
 window.addEventListener('click', (event) => {
-  // Check if the click is outside the music player and its controls
   if (!musicPlayer.contains(event.target) && !event.target.closest('.minimized-player')) {
     musicPlayer.style.display = "none";  // Hide the music player
-    document.querySelector(".minimized-player").style.display = "block";  // Show the minimized version
+    document.querySelector(".minimized-player").style.display = "block";  // Show minimized player
   }
 });
