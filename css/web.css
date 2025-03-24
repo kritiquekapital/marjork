@@ -320,7 +320,6 @@ body.theme-space .grid-container {
   transition: transform 0.6s ease, background-color 0.6s ease;
   grid-row: 2;
   z-index: 1000; /* Ensure it stays above the grid container */
-  mix-blend-mode: normal !important;
 }
 
 .spotify .bar {
@@ -424,7 +423,6 @@ body.theme-space .grid-container {
   transition: transform 0.3s ease;
   z-index: 1001;
   visibility: visible !important;
-  mix-blend-mode: normal !important;
 }
 
 .letterboxd::before, .letterboxd::after {
