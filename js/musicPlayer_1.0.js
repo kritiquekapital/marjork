@@ -35,8 +35,8 @@ let isShuffling = false;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
-  musicFrame.src = url;
-  miniMusicFrame.src = url;
+  musicFrame.src = url; // Update the iframe source
+  miniMusicFrame.src = url; // Update the mini player iframe source (if needed)
 }
 
 function shuffleLinks() {
@@ -49,9 +49,9 @@ function shuffleLinks() {
 }
 
 vinylLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  updateMusicSource();
-  musicPlayer.style.display = "block";
+  event.preventDefault(); // Prevent default link behavior (opening in new tab)
+  updateMusicSource(); // Update the iframe with the first song in the list
+  musicPlayer.style.display = "block"; // Show the player
   isPlaying = true;
 });
 
