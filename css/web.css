@@ -1011,16 +1011,6 @@ body.theme-space .grid-container {
   bottom: 10px;
 }
 
-.minimized-player {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: white;
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
 /* iPod-like theme */
 body.theme-retro .ipod-popup {
   background: #383838;
