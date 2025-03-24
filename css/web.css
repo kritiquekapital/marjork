@@ -49,6 +49,7 @@ body {
   background: rgba(43, 58, 62, 0.8); /* Background color for classic theme */
   border-radius: 20px; /* Match the grid container's border radius */
   z-index: -1; /* Place it behind the grid container's content */
+  display: none !important;
 }
 
 /* ==================== */
@@ -423,6 +424,7 @@ body.theme-space .grid-container {
   transition: transform 0.3s ease;
   z-index: 1001;
   visibility: visible !important;
+  border: 3px solid red !important;
 }
 
 .letterboxd::before, .letterboxd::after {
@@ -437,7 +439,6 @@ body.theme-space .grid-container {
   top: 50%;
   transform: translateY(-50%);
   z-index: 1000; /* Ensure pseudo-elements are behind the green circle */
-  border: 3px solid red !important;
 }
 
 .letterboxd::before {
