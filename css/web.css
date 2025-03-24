@@ -36,7 +36,6 @@ body {
   position: relative; /* Required for backdrop positioning */
   z-index: 0; /* Lower than buttons */
   transition: opacity 2s ease-in-out;
-  display: none !important;
 }
 
 /* Backdrop Element */
@@ -1215,11 +1214,10 @@ body.theme-nature .letterboxd {
 }
 
 .letterboxd {
+  background-color: red !important; /* Bright red to test */
   opacity: 1 !important;
   visibility: visible !important;
-  display: flex !important;
-  position: relative !important;
-  background-color: #00e054 !important; /* Ensure it's green */
   mix-blend-mode: unset !important;
+  filter: none !important;
 }
 
