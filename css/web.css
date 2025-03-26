@@ -963,6 +963,16 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%) rotate(320deg);
 }
 
+#musicPlayer {
+  transition: opacity 0.5s ease-in-out;
+}
+
+#musicPlayer.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none; /* Prevent clicks but keep it active */
+}
+
 /* Add to web.css */
 .ipod-popup {
   position: fixed;
