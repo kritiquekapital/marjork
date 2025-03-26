@@ -113,3 +113,22 @@ document.getElementById("musicPlayer").addEventListener("click", (event) => {
   event.stopPropagation(); // Prevent the click from bubbling to the document
 });
 
+document.addEventListener("click", (event) => {
+  const musicPlayer = document.getElementById("musicPlayer");
+
+  // Ensure the player is open before trying to hide it
+  if (musicPlayer.style.visibility !== "hidden") {
+    if (!musicPlayer.contains(event.target)) {
+      // Hide the player but keep music running
+      musicPlayer.style.opacity = "0";
+      musicPlayer.style.visibility = "hidden";
+      musicPlayer.style.pointerEvents = "none";
+    }
+  }
+});
+
+// Prevent clicks inside the player from closing it
+document.getElementById("musicPlayer").addEventListener("click", (event) => {
+  event.stopPropagation(); // Stops the click from bubbling to the document
+});
+
