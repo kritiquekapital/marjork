@@ -1,21 +1,4 @@
 const vinylLink = document.querySelector(".vinyl-link");
-if (vinylLink) {
-  vinylLink.addEventListener("click", (event) => {
-    event.preventDefault(); // Stop the default link behavior
-
-    updateMusicSource(); // Update music source
-
-    // Show the music player
-    const musicPlayer = document.getElementById("musicPlayer");
-    musicPlayer.style.opacity = "1";
-    musicPlayer.style.visibility = "visible";
-    musicPlayer.style.pointerEvents = "auto";
-    isPlaying = true;
-  });
-} else {
-  console.error("Vinyl button ('.vinyl-link') not found!");
-}
-
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 const liveLinks2 = [
@@ -46,52 +29,30 @@ const liveLinks2 = [
 
 let currentLinkIndex2 = 0;
 let isPlaying = true;
+let isShuffling = false;
+let excludeLongLinks = false;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
-  
-  if (musicFrame.src !== url) {
-    musicFrame.src = url; // Load new video only if different
-  }
+  musicFrame.src = url;
+  miniMusicFrame.src = url;
 }
 
-let isShuffleOn = false;
-const shuffleButton = document.querySelector(".shuffle-btn");
-
-shuffleButton.addEventListener("click", () => {
-  isShuffleOn = !isShuffleOn; // Toggle shuffle state
-
-  if (isShuffleOn) {
-    shuffleButton.classList.add("active");
-    console.log("Shuffle Mode: ON");
+function shuffleLinks() {
+  if (isShuffling) {
+    liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
   } else {
-    shuffleButton.classList.remove("active");
-    console.log("Shuffle Mode: OFF");
+    // Revert to the original order if shuffle is disabled
+    liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
   }
-});
-
-// Function to get the next song index based on shuffle state
-function getNextSongIndex() {
-  if (isShuffleOn) {
-    return Math.floor(Math.random() * liveLinks2.length); // Pick a random song
-  } else {
-    return (currentLinkIndex2 + 1) % liveLinks2.length; // Play next song in order
-  }
+  updateMusicSource();
 }
 
-// Update next and previous buttons to respect shuffle state
-document.querySelector(".next-btn").addEventListener("click", () => {
-  currentLinkIndex2 = getNextSongIndex();
+vinylLink.addEventListener("click", (event) => {
+  event.preventDefault();
   updateMusicSource();
-});
-
-document.querySelector(".prev-btn").addEventListener("click", () => {
-  if (isShuffleOn) {
-    currentLinkIndex2 = Math.floor(Math.random() * liveLinks2.length);
-  } else {
-    currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
-  }
-  updateMusicSource();
+  musicPlayer.style.display = "block";
+  isPlaying = true;
 });
 
 // Controls
@@ -133,22 +94,9 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-document.addEventListener("click", (event) => {
-  const musicPlayer = document.getElementById("musicPlayer");
-
-  if (
-    musicPlayer.style.visibility !== "hidden" && // Ensure the player is open
-    !musicPlayer.contains(event.target) && // Click is outside the player
-    !event.target.classList.contains("vinyl-link") // Prevent hiding when clicking vinyl button
-  ) {
-    musicPlayer.style.opacity = "0";
-    musicPlayer.style.visibility = "hidden";
-    musicPlayer.style.pointerEvents = "none";
+window.addEventListener('click', (event) => {
+// Check if the click was outside the music player
+  if (event.target === musicPlayer) {
+    musicPlayer.style.visibility = 'hidden';  // Hide the music player
   }
 });
-
-// Prevent clicks inside the player from closing it
-document.getElementById("musicPlayer").addEventListener("click", (event) => {
-  event.stopPropagation(); // Stops the click from bubbling to the document
-});
-
