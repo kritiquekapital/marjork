@@ -1,4 +1,21 @@
 const vinylLink = document.querySelector(".vinyl-link");
+if (vinylLink) {
+  vinylLink.addEventListener("click", (event) => {
+    event.preventDefault(); // Stop the default link behavior
+
+    updateMusicSource(); // Update music source
+
+    // Show the music player
+    const musicPlayer = document.getElementById("musicPlayer");
+    musicPlayer.style.opacity = "1";
+    musicPlayer.style.visibility = "visible";
+    musicPlayer.style.pointerEvents = "auto";
+    isPlaying = true;
+  });
+} else {
+  console.error("Vinyl button ('.vinyl-link') not found!");
+}
+
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 const liveLinks2 = [
