@@ -32,8 +32,10 @@ let isPlaying = true;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
-  musicFrame.src = url;
-  miniMusicFrame.src = url;
+  
+  if (musicFrame.src !== url) {
+    musicFrame.src = url; // Load new video only if different
+  }
 }
 
 let isShuffleOn = false;
@@ -134,33 +136,14 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
 document.addEventListener("click", (event) => {
   const musicPlayer = document.getElementById("musicPlayer");
 
-  // Check if the player is visible
-  if (musicPlayer.style.opacity === "1") {
-    // If the click is outside the player, minimize it
-    if (!musicPlayer.contains(event.target)) {
-      musicPlayer.style.opacity = "0";
-      musicPlayer.style.visibility = "hidden";
-      musicPlayer.style.pointerEvents = "none"; // Disable interactions but keep playing
-    }
-  }
-});
-
-// Ensure clicking inside does not trigger hiding
-document.getElementById("musicPlayer").addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent the click from bubbling to the document
-});
-
-document.addEventListener("click", (event) => {
-  const musicPlayer = document.getElementById("musicPlayer");
-
-  // Ensure the player is open before trying to hide it
-  if (musicPlayer.style.visibility !== "hidden") {
-    if (!musicPlayer.contains(event.target)) {
-      // Hide the player but keep music running
-      musicPlayer.style.opacity = "0";
-      musicPlayer.style.visibility = "hidden";
-      musicPlayer.style.pointerEvents = "none";
-    }
+  if (
+    musicPlayer.style.visibility !== "hidden" && // Ensure the player is open
+    !musicPlayer.contains(event.target) && // Click is outside the player
+    !event.target.classList.contains("vinyl-link") // Prevent hiding when clicking vinyl button
+  ) {
+    musicPlayer.style.opacity = "0";
+    musicPlayer.style.visibility = "hidden";
+    musicPlayer.style.pointerEvents = "none";
   }
 });
 
