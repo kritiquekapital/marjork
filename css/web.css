@@ -1023,6 +1023,8 @@ body.theme-space .grid-container {
 .shuffle-btn {
   position: absolute;
   top: 10px; /* Position it above the play/pause button */
+  background-color: #505050; /* Default gray */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .shuffle-icon {
@@ -1036,6 +1038,9 @@ body.theme-space .grid-container {
 
 .shuffle-btn:active .shuffle-icon {
   color: #ffcc00; /* Change color when clicked */
+  background-color: #00ccff; /* Bright blue when active */
+  box-shadow: 0 0 10px #00ccff; /* Glow effect */
+  border-radius: 5px;
 }
 
 .playpause {
