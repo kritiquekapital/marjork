@@ -29,8 +29,6 @@ const liveLinks2 = [
 
 let currentLinkIndex2 = 0;
 let isPlaying = true;
-let isShuffling = false;
-let excludeLongLinks = false;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
@@ -38,15 +36,45 @@ function updateMusicSource() {
   miniMusicFrame.src = url;
 }
 
-function shuffleLinks() {
-  if (isShuffling) {
-    liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
+let isShuffleOn = false;
+const shuffleButton = document.querySelector(".shuffle-btn");
+
+shuffleButton.addEventListener("click", () => {
+  isShuffleOn = !isShuffleOn; // Toggle shuffle state
+
+  if (isShuffleOn) {
+    shuffleButton.classList.add("active");
+    console.log("Shuffle Mode: ON");
   } else {
-    // Revert to the original order if shuffle is disabled
-    liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
+    shuffleButton.classList.remove("active");
+    console.log("Shuffle Mode: OFF");
+  }
+});
+
+// Function to get the next song index based on shuffle state
+function getNextSongIndex() {
+  if (isShuffleOn) {
+    return Math.floor(Math.random() * liveLinks2.length); // Pick a random song
+  } else {
+    return (currentLinkIndex2 + 1) % liveLinks2.length; // Play next song in order
+  }
+}
+
+// Update next and previous buttons to respect shuffle state
+document.querySelector(".next-btn").addEventListener("click", () => {
+  currentLinkIndex2 = getNextSongIndex();
+  updateMusicSource();
+});
+
+document.querySelector(".prev-btn").addEventListener("click", () => {
+  if (isShuffleOn) {
+    currentLinkIndex2 = Math.floor(Math.random() * liveLinks2.length);
+  } else {
+    currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
   }
   updateMusicSource();
-}
+});
+
 
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
