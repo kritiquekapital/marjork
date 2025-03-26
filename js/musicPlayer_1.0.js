@@ -75,13 +75,22 @@ document.querySelector(".prev-btn").addEventListener("click", () => {
   updateMusicSource();
 });
 
+const vinylLink = document.querySelector(".vinyl-link");
+if (vinylLink) {
+  vinylLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    updateMusicSource();
+    
+    // Ensure the music player is made visible
+    musicPlayer.style.opacity = "1";
+    musicPlayer.style.visibility = "visible";
+    musicPlayer.style.pointerEvents = "auto";
 
-vinylLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  updateMusicSource();
-  musicPlayer.style.display = "block";
-  isPlaying = true;
-});
+    isPlaying = true;
+  });
+} else {
+  console.error("Vinyl button ('.vinyl-link') not found!");
+}
 
 // Controls
 document.querySelector(".playpause").addEventListener("click", () => {
