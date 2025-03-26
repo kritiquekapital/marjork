@@ -94,9 +94,22 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-window.addEventListener('click', (event) => {
-// Check if the click was outside the music player
-  if (event.target === musicPlayer) {
-    musicPlayer.style.visibility = 'hidden';  // Hide the music player
+document.addEventListener("click", (event) => {
+  const musicPlayer = document.getElementById("musicPlayer");
+
+  // Check if the player is visible
+  if (musicPlayer.style.opacity === "1") {
+    // If the click is outside the player, minimize it
+    if (!musicPlayer.contains(event.target)) {
+      musicPlayer.style.opacity = "0";
+      musicPlayer.style.visibility = "hidden";
+      musicPlayer.style.pointerEvents = "none"; // Disable interactions but keep playing
+    }
   }
 });
+
+// Ensure clicking inside does not trigger hiding
+document.getElementById("musicPlayer").addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent the click from bubbling to the document
+});
+
