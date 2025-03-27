@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const newsLinks = [
+    "https://open.substack.com/pub/dropsitenews/p/gaza-children-israel-sniper-shoot-jazeera?r=jonc4&utm_medium=ios"
     "https://www.documentcloud.org/documents/25592020-letter-from-a-palestinian-political-prisoner-in-louisiana-march-18-2025/",
     "https://www.salon.com/2001/10/16/susans/",
     "https://www.diagonalthoughts.com/?p=1728",
