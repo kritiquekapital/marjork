@@ -17,17 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const link = newsLinks[currentNewsLinkIndex];
       const newTab = window.open(link, "_blank");
 
-      // Scroll to the specific section if it's the first link
-      if (currentNewsLinkIndex === 0 && link.includes("#")) {
-        const sectionId = link.split("#")[1];
-        newTab.onload = () => {
-          const section = newTab.document.getElementById(sectionId);
-          if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-          }
-        };
-      }
-
       // Cycle to the next link
       currentNewsLinkIndex = (currentNewsLinkIndex + 1) % newsLinks.length;
     });
