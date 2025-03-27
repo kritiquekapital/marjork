@@ -2,7 +2,9 @@ const kissButton = document.querySelector(".kiss-button");
 const messages = [
   "i love you!",
   "я тебя люблю!",
-  "☀️ solnyshko ☀️"
+  "☀️ solnyshko ☀️",
+  "Horse Balls!",
+  "красивый!",
 ];
 
 if (kissButton) {
