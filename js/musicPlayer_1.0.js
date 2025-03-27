@@ -35,7 +35,6 @@ let excludeLongLinks = false;
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   musicFrame.src = url;
-  miniMusicFrame.src = url;
 }
 
 function shuffleLinks() {
