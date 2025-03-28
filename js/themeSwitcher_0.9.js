@@ -78,14 +78,4 @@ document.addEventListener("touchstart", resetInactivityTimer);
 // Initialize the timer when the page loads
 resetInactivityTimer();
 
-const themeButton = document.getElementById("themeButton");
-themeButton.addEventListener("click", () => {
-  themeButton.style.animation = "spin 0.5s ease-in-out";
-  setTimeout(() => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    applyTheme();
-    themeButton.style.animation = "";
-  }, 500);
-});
-
 applyTheme();
