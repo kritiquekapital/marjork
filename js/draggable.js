@@ -1,17 +1,18 @@
 export class Draggable {
-  constructor(element) {
+  constructor(element, getTheme) {
     this.element = element;
+    this.getTheme = getTheme; // This function provides the current theme
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92;
+    this.friction = 0.92; // Default friction
     this.isReleased = false;
     this.animationFrame = null;
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
 
-    // Center the element in the viewport (or your desired container)
+    // Center the element in the viewport
     this.centerElementInViewport();
 
     // Initialize event listeners
@@ -37,6 +38,21 @@ export class Draggable {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
+
+    // Periodically check for theme changes
+    setInterval(() => this.updateThemeEffects(), 500);
+  }
+
+  // Update the friction and gravity effect based on the theme
+  updateThemeEffects() {
+    const currentTheme = this.getTheme();
+
+    // If the theme is "space", set friction to 1 (no friction), and enable bounce without slowdown
+    if (currentTheme === 'space') {
+      this.friction = 1.0; // Zero gravity effect (no friction)
+    } else {
+      this.friction = 0.92; // Default friction for other themes
+    }
   }
 
   // Start dragging
@@ -87,9 +103,11 @@ export class Draggable {
         return;
       }
 
-      // Apply friction to slow down the velocity
-      this.velocity.x *= this.friction;
-      this.velocity.y *= this.friction;
+      // Apply friction to slow down the velocity, except in the "space" theme
+      if (this.getTheme() !== 'space') {
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+      }
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
@@ -104,22 +122,38 @@ export class Draggable {
       const maxX = window.innerWidth - elementWidth;  // Use window.innerWidth to set right boundary
       const maxY = window.innerHeight - elementHeight; // Use window.innerHeight to set bottom boundary
 
-      // Adjust the boundaries to ensure the element does not overflow off the screen
+      // Correct the element's position, and bounce with reversal of velocity in "space" theme
       if (newLeft < minX) {
         newLeft = minX; // Don't allow it to go past the left side
-        this.velocity.x *= -0.4;  // Bounce off left side
+        if (this.getTheme() === 'space') {
+          this.velocity.x *= -1;  // Reverse velocity for zero gravity bounce
+        } else {
+          this.velocity.x *= -0.4;  // Normal bounce with slowdown for other themes
+        }
       }
       if (newLeft > maxX) {
         newLeft = maxX; // Don't allow it to go past the right side
-        this.velocity.x *= -0.4;  // Bounce off right side
+        if (this.getTheme() === 'space') {
+          this.velocity.x *= -1;  // Reverse velocity for zero gravity bounce
+        } else {
+          this.velocity.x *= -0.4;  // Normal bounce with slowdown for other themes
+        }
       }
       if (newTop < minY) {
         newTop = minY; // Don't allow it to go past the top side
-        this.velocity.y *= -0.4;  // Bounce off top side
+        if (this.getTheme() === 'space') {
+          this.velocity.y *= -1;  // Reverse velocity for zero gravity bounce
+        } else {
+          this.velocity.y *= -0.4;  // Normal bounce with slowdown for other themes
+        }
       }
       if (newTop > maxY) {
         newTop = maxY; // Don't allow it to go past the bottom side
-        this.velocity.y *= -0.4;  // Bounce off bottom side
+        if (this.getTheme() === 'space') {
+          this.velocity.y *= -1;  // Reverse velocity for zero gravity bounce
+        } else {
+          this.velocity.y *= -0.4;  // Normal bounce with slowdown for other themes
+        }
       }
 
       // Apply the corrected position to the element
