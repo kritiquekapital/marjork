@@ -6,6 +6,9 @@ const themes = [
   { name: "space", displayName: "🚀" }
 ];
 
+const draggableElement = document.querySelector('.theme-space');
+const draggable = new Draggable(draggableElement, getCurrentTheme);
+
 let currentThemeIndex = 0;
 const spaceBackground = document.createElement("iframe");
 spaceBackground.classList.add("space-background-stream");
