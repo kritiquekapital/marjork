@@ -67,7 +67,7 @@ function hideMusicPlayer() {
 
 // 6. Event listeners
 vinylLink.addEventListener("click", (event) => {
-  event.preventDefault// musicPlayer_1.0.js
+  event.preventDefault()
 
 // 1. Create overlay first
 const overlay = document.createElement('div');
