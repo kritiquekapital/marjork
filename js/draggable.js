@@ -1,7 +1,7 @@
 export class Draggable {
   constructor(element) {
-    this.element = element;
-    this.handle = element; // Makes the entire module draggable
+    this.element = element;  // The draggable container
+    this.video = element.querySelector('video'); // Assuming the video is inside the container
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
@@ -19,7 +19,7 @@ export class Draggable {
 
   init() {
     // Set event listeners for drag actions
-    this.handle.addEventListener('mousedown', this.startDrag.bind(this));
+    this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
 
@@ -72,7 +72,7 @@ export class Draggable {
       const movementInterval = setInterval(() => {
         if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
           clearInterval(movementInterval);
-          return; // Stop when velocity is small enough
+          return; // Stop when velocity becomes small enough
         }
 
         // Apply gravity (constant acceleration downward)
@@ -103,6 +103,7 @@ export class Draggable {
         // Update the position with boundary constraints
         this.element.style.left = `${newLeft}px`;
         this.element.style.top = `${newTop}px`;
+
       }, 16); // approximately 60fps
     }
   }
