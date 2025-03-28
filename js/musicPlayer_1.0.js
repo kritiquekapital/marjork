@@ -28,7 +28,6 @@ const liveLinks2 = [
 ];
 
 let currentLinkIndex2 = 0;
-let isPlaying = true;
 let isShuffling = false;
 let excludeLongLinks = false;
 
@@ -94,17 +93,19 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const vinylLink = document.querySelector(".vinyl-link");
-    const musicPlayer = document.getElementById("musicPlayer");
+// In showMusicPlayer()
+function showMusicPlayer() {
+  musicPlayer.style.display = "block";
+  musicPlayer.style.opacity = "1";
+  musicPlayer.style.visibility = "visible";
+  musicPlayer.style.pointerEvents = "auto";
+}
 
-    // Function to show the music player
-    function showMusicPlayer() {
-        musicPlayer.style.display = "block";
-        musicPlayer.style.opacity = "1";
-        musicPlayer.style.visibility = "visible";
-        musicPlayer.style.pointerEvents = "auto";
-    }
+// In the minimized-player click event:
+document.querySelector(".minimized-player").addEventListener("click", () => {
+  showMusicPlayer(); // Use this function instead of manual styles
+  document.querySelector(".minimized-player").style.display = "none";
+});
 
     // Function to hide the music player
     function hideMusicPlayer() {
