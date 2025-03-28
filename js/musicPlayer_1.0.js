@@ -1,15 +1,18 @@
 import { Draggable } from './draggable.js';
 
-// 1. Create overlay first
+// Overlay
 const overlay = document.createElement('div');
 overlay.className = 'music-overlay';
 document.body.appendChild(overlay);
 
-// 2. Declare other elements
+// Elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
-const draggable = new Draggable(musicPlayer, '.drag-handle'); 
 const musicFrame = document.getElementById("musicFrame");
+
+// Draggable applied to entire screen
+new Draggable(musicPlayer, '.ipod-screen'); 
+
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
   "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
@@ -36,27 +39,26 @@ const liveLinks2 = [
   "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
 ];
 
-// 3. State variables
 let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
+let isPinned = false; // Default: Player can hide
 
-if (!musicPlayer) {
-  console.error("❌ ERROR: #musicPlayer element not found!");
-} else {
-  new Draggable(musicPlayer, '.drag-handle'); // ✅ FIXED
+// Create pin button
+const pinButton = document.createElement("button");
+pinButton.classList.add("ipod-btn", "pin-btn");
+pinButton.innerHTML = "📌";
+document.querySelector(".ipod-controls").prepend(pinButton);
+
+function updatePinState() {
+  isPinned = !isPinned;
+  pinButton.style.opacity = isPinned ? "1" : "0.5";
 }
 
-// 4. Initialize
-document.addEventListener("DOMContentLoaded", () => {
-  hideMusicPlayer();
-  overlay.style.display = 'none';
-});
-
-// 5. Player visibility functions
+// Player Visibility
 function showMusicPlayer() {
-  if(isFirstOpen) {
+  if (isFirstOpen) {
     updateMusicSource();
     isFirstOpen = false;
   }
@@ -65,25 +67,25 @@ function showMusicPlayer() {
 }
 
 function hideMusicPlayer() {
-  musicPlayer.style.display = "none";
-  overlay.style.display = "none";
+  if (!isPinned) {
+    musicPlayer.style.display = "none";
+    overlay.style.display = "none";
+  }
 }
 
-// 6. Event listeners
+// Event Listeners
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
-  if(musicPlayer.style.display === "block") return;
+  if (musicPlayer.style.display === "block") return;
   showMusicPlayer();
 });
 
 overlay.addEventListener("click", hideMusicPlayer);
+pinButton.addEventListener("click", updatePinState);
 
-// Video Control
+// Music Controls
 function updateMusicSource() {
-  const url = liveLinks2[currentLinkIndex2];
-  if(!musicFrame.src.includes(url)) {
-    musicFrame.src = `${url}`;
-  }
+  musicFrame.src = liveLinks2[currentLinkIndex2];
 }
 
 function togglePlayState() {
@@ -95,18 +97,15 @@ function togglePlayState() {
   }, "*");
 }
 
-overlay.addEventListener("click", hideMusicPlayer);
-
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
-
 document.querySelector(".prev-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
   updateMusicSource();
-  if(!isPlaying) togglePlayState();
+  if (!isPlaying) togglePlayState();
 });
 
 document.querySelector(".next-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
   updateMusicSource();
-  if(!isPlaying) togglePlayState();
+  if (!isPlaying) togglePlayState();
 });
