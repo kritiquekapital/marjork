@@ -104,7 +104,7 @@ export class Draggable {
       const maxX = window.innerWidth - elementWidth;  // Use window.innerWidth to set right boundary
       const maxY = window.innerHeight - elementHeight; // Use window.innerHeight to set bottom boundary
 
-      // Correct the position if the element reaches the boundary
+      // Adjust the boundaries to ensure the element does not overflow off the screen
       if (newLeft < minX) {
         newLeft = minX;
         this.velocity.x *= -0.4;  // Bounce off left side
