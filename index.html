@@ -89,7 +89,8 @@
     
     </div>
   
-<div id="musicPlayer" class="ipod-popup">
+<div id="musicPlayer" class="ipod-popup" class="Draggable">
+  <div class="drag-handle"></div>
   <div class="ipod-screen">
     <iframe id="musicFrame" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
   </div>
@@ -101,9 +102,6 @@
       <button class="ipod-btn next-btn">▶▶</button>
       <button class="ipod-btn playpause">▶/❚❚</button>
     </div>
-  </div>
-  <div class="minimized-player" style="display: none;">
-    <iframe id="miniMusicFrame" width="200" height="113" frameborder="0"></iframe>
   </div>
 </div>
   <div class="container">
@@ -120,6 +118,7 @@
   </div>
 
   <!-- External JavaScript Files -->
+  <script src="js/draggable.js" defer></script>
   <script src="js/themeSwitcher_0.9.js" defer></script>
   <script src="js/liveButton_0.9.js" defer></script>  
   <script src="js/photoButton_0.9.js" defer></script>
