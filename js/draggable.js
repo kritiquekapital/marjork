@@ -92,13 +92,13 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Viewport boundaries
+      // Viewport boundaries: Ensure full element stays on screen
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for element's width
-      const maxY = window.innerHeight - elementHeight; // Fix: accounts for element's height
+      const maxX = window.innerWidth - elementWidth;  // Fix: element width should not go offscreen
+      const maxY = window.innerHeight - elementHeight; // Fix: element height should not go offscreen
 
-      // Ensure the element stays within the viewport by correcting the position
+      // Correct the position if the element reaches the boundary
       if (newLeft < minX) {
         newLeft = minX;
         this.velocity.x *= -0.4;  // Bounce off left side
