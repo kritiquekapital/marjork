@@ -4,7 +4,7 @@ export class Draggable {
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92; // Fine-tuned for smoother deceleration
+    this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
 
@@ -57,7 +57,7 @@ export class Draggable {
     const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
     // Store velocity for release power boost
-    this.velocity.x = (newX - this.element.offsetLeft) * 1.5; // Increased release boost
+    this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
     this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
     this.element.style.left = `${newX}px`;
@@ -85,11 +85,15 @@ export class Draggable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
+      // Get module dimensions
+      const elementWidth = this.element.offsetWidth;
+      const elementHeight = this.element.offsetHeight;
+
       // Corrected viewport boundaries (fully contained)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - this.element.offsetWidth;
-      const maxY = window.innerHeight - this.element.offsetHeight;
+      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
+      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
 
       if (newLeft < minX) {
         newLeft = minX;
