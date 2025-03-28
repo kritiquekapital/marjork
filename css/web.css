@@ -972,7 +972,7 @@ body.theme-space .grid-container {
   z-index: 10000; /* Ensure it's above other elements */
 }
 
-.music-overlay {
+.-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -991,7 +991,7 @@ body.theme-space .grid-container {
   z-index: 9999;
   display: none;
   cursor: move;
-  position: fixed;
+  position: absolute;
   user-select: none;
 }
 
