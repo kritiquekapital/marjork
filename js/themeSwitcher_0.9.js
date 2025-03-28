@@ -1,4 +1,4 @@
-import { Draggable } from 'js/draggable.js'; 
+import { Draggable } from './draggable.js'; 
 
 const themes = [
   { name: "classic", displayName: "😎" },
