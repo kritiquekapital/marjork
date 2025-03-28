@@ -43,13 +43,12 @@ let isShuffling = false;
 
 // 4. Initialize
 document.addEventListener("DOMContentLoaded", () => {
-const draggable = new Draggable(musicPlayer, {
-handle: '.drag-handle',
-containment: true
-}
-    hideMusicPlayer();
-  overlay.style.display = 'none';
-});
+  const vinylLink = document.querySelector(".vinyl-link");
+  const musicPlayer = document.getElementById("musicPlayer");
+  const draggable = new Draggable(musicPlayer, {
+    handle: '.drag-handle',
+    containment: true
+  });
 
 // 5. Player visibility functions
 function showMusicPlayer() {
