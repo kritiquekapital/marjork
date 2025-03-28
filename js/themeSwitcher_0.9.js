@@ -1,5 +1,3 @@
-import { Draggable } from './draggable.js'; 
-
 const themes = [
   { name: "classic", displayName: "😎" },
   { name: "modern", displayName: "🌚" },
@@ -25,7 +23,7 @@ function getCurrentTheme() {
 const draggableElement = document.querySelector('.theme-space');
 const draggable = new Draggable(draggableElement, getCurrentTheme);  // Pass getCurrentTheme function
 
-// Theme switcher logic
+// Initialize theme switching button
 const themeButton = document.getElementById("themeButton");
 themeButton.addEventListener("click", () => {
   themeButton.style.animation = "spin 0.5s ease-in-out";
@@ -47,10 +45,7 @@ function applyTheme() {
   }
 }
 
-// Initialize the theme on load
 applyTheme();
-
-// Handle inactivity
 let inactivityTimer;
 
 function hideSpaceThemeUI() {
@@ -71,7 +66,7 @@ function showSpaceThemeUI() {
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer);
   showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
+  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 10 seconds timeout
 }
 
 // Listen for pointer movements to detect activity
@@ -82,3 +77,15 @@ document.addEventListener("touchstart", resetInactivityTimer);
 
 // Initialize the timer when the page loads
 resetInactivityTimer();
+
+const themeButton = document.getElementById("themeButton");
+themeButton.addEventListener("click", () => {
+  themeButton.style.animation = "spin 0.5s ease-in-out";
+  setTimeout(() => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme();
+    themeButton.style.animation = "";
+  }, 500);
+});
+
+applyTheme();
