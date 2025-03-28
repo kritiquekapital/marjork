@@ -1,4 +1,4 @@
-// musicPlayer_1.0.js
+import { Draggable } from './draggable.js';
 
 // 1. Create overlay first
 const overlay = document.createElement('div');
