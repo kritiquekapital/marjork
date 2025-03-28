@@ -8,10 +8,14 @@ export class Draggable {
     this.isReleased = false;
     this.animationFrame = null;
 
+    // Container width and height (boundary box) for the draggable element
+    this.boundaryWidth = 800;  // Adjust width of the draggable area
+    this.boundaryHeight = 600; // Adjust height of the draggable area
+
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
 
-    // Center the element in the viewport
+    // Center the element in the viewport (or your desired container)
     this.centerElementInViewport();
 
     // Initialize event listeners
@@ -92,11 +96,11 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Viewport boundaries: Ensure full element stays on screen
+      // Custom boundaries for containment (using your defined boundary width/height)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Fix: element width should not go offscreen
-      const maxY = window.innerHeight - elementHeight; // Fix: element height should not go offscreen
+      const maxX = this.boundaryWidth - elementWidth;  // Custom right boundary
+      const maxY = this.boundaryHeight - elementHeight; // Custom bottom boundary
 
       // Correct the position if the element reaches the boundary
       if (newLeft < minX) {
