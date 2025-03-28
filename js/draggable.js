@@ -13,8 +13,22 @@ export class Draggable {
     // Make sure the element is positioned absolutely for correct dragging behavior
     this.element.style.position = 'absolute';
 
+    // Center the element initially in the container
+    this.centerElement();
+
     // Initialize the element's position
     this.init();
+  }
+
+  centerElement() {
+    const containerRect = this.element.parentElement.getBoundingClientRect();
+    const elementRect = this.element.getBoundingClientRect();
+    const initialLeft = containerRect.left + (containerRect.width - elementRect.width) / 2;
+    const initialTop = containerRect.top + (containerRect.height - elementRect.height) / 2;
+
+    // Set the initial position in the center of the container
+    this.element.style.left = `${initialLeft}px`;
+    this.element.style.top = `${initialTop}px`;
   }
 
   init() {
