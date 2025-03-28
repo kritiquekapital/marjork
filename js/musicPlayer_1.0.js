@@ -1,6 +1,6 @@
 import { Draggable } from './draggable.js';
 
-// Overlay
+// Create overlay
 const overlay = document.createElement('div');
 overlay.className = 'music-overlay';
 document.body.appendChild(overlay);
@@ -10,8 +10,8 @@ const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 
-// Make entire module draggable
-new Draggable(musicPlayer, '.ipod-screen'); 
+// Draggable (entire player)
+new Draggable(musicPlayer, '.ipod-screen');
 
 // Video Links
 const liveLinks2 = [
@@ -49,29 +49,37 @@ let isShuffling = false;
 // 🎵 Buttons
 const controlsContainer = document.querySelector(".ipod-controls");
 
-// Pin Button
+// 📌 Pin Button
 const pinButton = document.createElement("button");
 pinButton.classList.add("ipod-btn", "pin-btn");
 pinButton.innerHTML = "📌";
-document.querySelector(".ipod-controls").prepend(pinButton);
+controlsContainer.prepend(pinButton);
 
 function updatePinState() {
   isPinned = !isPinned;
   pinButton.style.opacity = isPinned ? "1" : "0.5";
 }
 
-// 🔀 Shuffle Button
-const shuffleButton = document.createElement("button");
-shuffleButton.classList.add("ipod-btn", "shuffle-btn");
-shuffleButton.innerHTML = "🔀";
-controlsContainer.insertBefore(shuffleButton, document.querySelector(".prev-btn"));
+// 🔀 Shuffle Button (Only insert if prev-btn exists)
+const prevButton = document.querySelector(".prev-btn");
+if (prevButton) {
+  const shuffleButton = document.createElement("button");
+  shuffleButton.classList.add("ipod-btn", "shuffle-btn");
+  shuffleButton.innerHTML = "🔀";
+  prevButton.parentNode.insertBefore(shuffleButton, prevButton);
 
-function updateShuffleState() {
-  isShuffling = !isShuffling;
-  shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
+  function updateShuffleState() {
+    isShuffling = !isShuffling;
+    shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
+  }
+
+  shuffleButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    updateShuffleState();
+  });
 }
 
-// Show Player
+// 📌 Show Player
 function showMusicPlayer() {
   if (isFirstOpen) {
     updateMusicSource();
@@ -81,7 +89,7 @@ function showMusicPlayer() {
   overlay.style.display = "block";
 }
 
-// Hide Player (only if not pinned)
+// ❌ Hide Player (only if not pinned)
 function hideMusicPlayer() {
   if (!isPinned) {
     musicPlayer.style.display = "none";
@@ -89,7 +97,7 @@ function hideMusicPlayer() {
   }
 }
 
-// Click outside to hide (only if not pinned)
+// 🖱 Click Outside to Hide (Unless Pinned)
 document.addEventListener("click", (event) => {
   const isClickInside = musicPlayer.contains(event.target) || vinylLink.contains(event.target) || pinButton.contains(event.target);
   if (!isClickInside) {
@@ -97,22 +105,16 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Fix: Ensure clicking vinyl opens the player
+// ✅ Vinyl Click to Open
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
   showMusicPlayer();
 });
 
-// Pin Button Event
+// 🎵 Pin Button Click
 pinButton.addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent from triggering the "click outside" logic
-  updatePinState();
-});
-
-// 🔀 Shuffle Button Click
-shuffleButton.addEventListener("click", (event) => {
   event.stopPropagation();
-  updateShuffleState();
+  updatePinState();
 });
 
 // 🎵 Video Controls
@@ -133,18 +135,18 @@ function togglePlayState() {
 }
 
 // 🎵 Prev Button
-document.querySelector(".prev-btn").addEventListener("click", () => {
+prevButton?.addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 });
 
 // 🎵 Next Button
-document.querySelector(".next-btn").addEventListener("click", () => {
+document.querySelector(".next-btn")?.addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 });
 
 // 🎵 Play/Pause Button
-document.querySelector(".playpause").addEventListener("click", togglePlayState);
+document.querySelector(".playpause")?.addEventListener("click", togglePlayState);
