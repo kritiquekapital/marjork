@@ -1,13 +1,13 @@
 export class Draggable {
-  constructor(element, isSpaceMode = false) {
+  constructor(element, getTheme) {
     this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = isSpaceMode ? 1.0 : 0.92; // Space mode removes friction
+    this.friction = 0.92; // Default friction
     this.isReleased = false;
     this.animationFrame = null;
-    this.isSpaceMode = isSpaceMode; // Stores the space mode setting
+    this.getTheme = getTheme; // Function to retrieve the current theme
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -37,11 +37,17 @@ export class Draggable {
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
 
-    // Listen for space mode toggle from external script
-    document.addEventListener('themeChange', (event) => {
-      this.isSpaceMode = event.detail.isSpaceMode;
-      this.friction = this.isSpaceMode ? 1.0 : 0.92; // Apply or remove friction
-    });
+    // Periodically check for theme changes
+    setInterval(() => this.updateThemeEffects(), 500);
+  }
+
+  updateThemeEffects() {
+    const currentTheme = this.getTheme();
+    if (currentTheme === 'space') {
+      this.friction = 1.0; // Remove friction
+    } else {
+      this.friction = 0.92; // Normal friction
+    }
   }
 
   startDrag(e) {
@@ -81,7 +87,7 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (!this.isSpaceMode && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      if (this.friction !== 1.0 && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
