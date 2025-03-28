@@ -47,7 +47,7 @@ let currentLinkIndex2 = 0;
 let isPlaying = true;
 
 // 5. Initialize draggable music player
-ew Draggable(musicPlayer, { handle: '.drag-handle', containment: true });
+new Draggable(musicPlayer, { handle: '.drag-handle', containment: true });
 
 // 6. Functions
 function showMusicPlayer() {
