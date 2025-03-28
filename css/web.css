@@ -468,10 +468,12 @@ body.theme-space .grid-container {
 
 .letterboxd:hover::before {
   left: -95px;
+  z-index: 1001;
 }
 
 .letterboxd:hover::after {
   right: -95px;
+  z-index: 1001;
 }
 
 /* Photo Button */
