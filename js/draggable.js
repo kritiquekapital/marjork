@@ -21,12 +21,15 @@ export class Draggable {
   }
 
   centerElement() {
+    // Get the container's dimensions
     const containerRect = this.element.parentElement.getBoundingClientRect();
     const elementRect = this.element.getBoundingClientRect();
+
+    // Calculate center position within the container
     const initialLeft = containerRect.left + (containerRect.width - elementRect.width) / 2;
     const initialTop = containerRect.top + (containerRect.height - elementRect.height) / 2;
 
-    // Set the initial position in the center of the container
+    // Set the element's initial position (centered)
     this.element.style.left = `${initialLeft}px`;
     this.element.style.top = `${initialTop}px`;
   }
@@ -37,13 +40,9 @@ export class Draggable {
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
 
-    // Set initial position
+    // Set the initial position
     const rect = this.element.getBoundingClientRect();
     this.initialPosition = { x: rect.left, y: rect.top };
-
-    // Set the element's initial position based on its initial coordinates
-    this.element.style.left = `${this.initialPosition.x}px`;
-    this.element.style.top = `${this.initialPosition.y}px`;
   }
 
   startDrag(e) {
@@ -86,7 +85,7 @@ export class Draggable {
       const movementInterval = setInterval(() => {
         if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
           clearInterval(movementInterval);
-          return; // Stop when velocity becomes small enough
+          return; // Stop when velocity is small enough
         }
 
         // Apply gravity (constant acceleration downward)
