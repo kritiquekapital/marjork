@@ -130,4 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
     musicPlayer.addEventListener("click", function (event) {
         event.stopPropagation();
     });
+
+    window.addEventListener('click', (event) => {
+    // Check if the click was outside the music player
+        if (event.target === musicPlayer) {
+        musicPlayer.style.visibility = 'hidden';  // Hide the music player
+        }
+    });
 });
