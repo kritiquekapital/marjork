@@ -1,7 +1,8 @@
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
-const liveLinks2 = [
+const miniMusicFrame = document.getElementById("miniMusicFrame"); // Must exist in HTML
+const liveLinks2 =
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
   "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
@@ -31,31 +32,64 @@ let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
 
+// Core Functions ========================
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   musicFrame.src = url;
-  miniMusicFrame.src = url;
+  if(miniMusicFrame) miniMusicFrame.src = url;
 }
 
 function shuffleLinks() {
-  if (isShuffling) {
-    liveLinks2.sort(() => Math.random() - 0.5); // Randomize the order
+  if(isShuffling) {
+    liveLinks2.sort(() => Math.random() - 0.5);
   } else {
-    // Revert to the original order if shuffle is disabled
     liveLinks2.sort((a, b) => liveLinks2.indexOf(a) - liveLinks2.indexOf(b));
   }
   updateMusicSource();
 }
 
-// Controls
+// Visibility Control ====================
+function showMusicPlayer() {
+  musicPlayer.classList.remove("hidden");
+}
+
+function hideMusicPlayer() {
+  musicPlayer.classList.add("hidden");
+}
+
+// Event Listeners =======================
+vinylLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  showMusicPlayer();
+  updateMusicSource();
+});
+
+document.addEventListener("click", (event) => {
+  const isPlayer = musicPlayer.contains(event.target);
+  const isVinyl = vinylLink.contains(event.target);
+  const miniPlayer = document.querySelector(".minimized-player");
+  const isMiniPlayer = miniPlayer ? miniPlayer.contains(event.target) : false;
+  
+  if(!isPlayer && !isVinyl && !isMiniPlayer) {
+    hideMusicPlayer();
+  }
+});
+
+musicPlayer.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+// Player Controls =======================
 document.querySelector(".playpause").addEventListener("click", () => {
   isPlaying = !isPlaying;
   const action = isPlaying ? "playVideo" : "pauseVideo";
   [musicFrame, miniMusicFrame].forEach(frame => {
-    frame.contentWindow.postMessage(
-      `{"event":"command","func":"${action}","args":""}`,
-      "*"
-    );
+    if(frame && frame.contentWindow) {
+      frame.contentWindow.postMessage(
+        `{"event":"command","func":"${action}","args":""}`,
+        "*"
+      );
+    }
   });
 });
 
@@ -69,72 +103,18 @@ document.querySelector(".next-btn").addEventListener("click", () => {
   updateMusicSource();
 });
 
-// Shuffle Button
 document.querySelector(".shuffle-btn").addEventListener("click", () => {
   isShuffling = !isShuffling;
   shuffleLinks();
 });
 
+// Mini Player Controls ==================
 document.querySelector(".menu-btn").addEventListener("click", () => {
-  musicPlayer.style.display = "none";
+  hideMusicPlayer();
   document.querySelector(".minimized-player").style.display = "block";
 });
 
-// Minimized player controls
 document.querySelector(".minimized-player").addEventListener("click", () => {
-  musicPlayer.style.display = "block";
+  showMusicPlayer();
   document.querySelector(".minimized-player").style.display = "none";
 });
-
-// In the minimized-player click event:
-document.querySelector(".minimized-player").addEventListener("click", () => {
-  showMusicPlayer(); // Use this function instead of manual styles
-  document.querySelector(".minimized-player").style.display = "none";
-});
-
-    // Click event to show the music player
-    vinylLink.addEventListener("click", function (event) {
-        event.preventDefault();
-        showMusicPlayer();
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Click outside logic
-      document.addEventListener("click", function (event) {
-        const isPlayer = musicPlayer.contains(event.target);
-        const isVinyl = vinylLink.contains(event.target);
-        const isMiniPlayer = document.querySelector(".minimized-player").contains(event.target);
-        
-        if (!isPlayer && !isVinyl && !isMiniPlayer) {
-          hideMusicPlayer();
-        }
-      });
-    
-      // Play/Pause Button
-      document.querySelector(".playpause").addEventListener("click", () => {
-        isPlaying = !isPlaying;
-        const action = isPlaying ? "playVideo" : "pauseVideo";
-        musicFrame.contentWindow.postMessage(
-          `{"event":"command","func":"${action}","args":""}`,
-          "*"
-        );
-        miniMusicFrame.contentWindow.postMessage(
-          `{"event":"command","func":"${action}","args":""}`,
-          "*"
-        );
-      });
-    });
-
-    // Prevent the music player click from closing itself
-    musicPlayer.addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-      // Visibility functions
-  function showMusicPlayer() {
-    musicPlayer.classList.remove("hidden");
-  }
-
-  function hideMusicPlayer() {
-    musicPlayer.classList.add("hidden");
-  }
