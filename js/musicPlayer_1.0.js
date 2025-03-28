@@ -15,6 +15,7 @@ new Draggable(musicPlayer, '.ipod-screen');
 
 // Video Links
 const liveLinks2 = [
+  "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1",  //Candy
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
   "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
