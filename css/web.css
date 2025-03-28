@@ -965,6 +965,13 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%) rotate(320deg);
 }
 
+.draggable {
+  position: fixed;
+  cursor: move;
+  user-select: none;
+  z-index: 10000; /* Ensure it's above other elements */
+}
+
 .music-overlay {
   position: fixed;
   top: 0;
