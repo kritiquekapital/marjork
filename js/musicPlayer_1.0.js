@@ -47,6 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
   overlay.style.display = 'none';
 });
 
+// Then initialize dragging
+const draggable = new Draggable(musicPlayer, {
+    handle: '.drag-handle',
+    containment: true // Optional: keep within window bounds
+});
+
 // 5. Player visibility functions
 function showMusicPlayer() {
   if(isFirstOpen) {
