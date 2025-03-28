@@ -965,9 +965,24 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%) rotate(320deg);
 }
 
+.music-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 9998;
+  display: none;
+}
+
 #musicPlayer {
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  display: block !important; /* Force block layout */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: none;
 }
 
 #musicPlayer.hidden {
