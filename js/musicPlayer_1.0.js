@@ -28,8 +28,8 @@ const liveLinks2 = [
 ];
 
 let currentLinkIndex2 = 0;
+let isPlaying = true;
 let isShuffling = false;
-let excludeLongLinks = false;
 
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
@@ -47,23 +47,16 @@ function shuffleLinks() {
   updateMusicSource();
 }
 
-vinylLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  updateMusicSource();
-  musicPlayer.style.display = "block";
-  isPlaying = true;
-});
-
 // Controls
 document.querySelector(".playpause").addEventListener("click", () => {
   isPlaying = !isPlaying;
-  if (isPlaying) {
-    musicFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-    miniMusicFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-  } else {
-    musicFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-    miniMusicFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-  }
+  const action = isPlaying ? "playVideo" : "pauseVideo";
+  [musicFrame, miniMusicFrame].forEach(frame => {
+    frame.contentWindow.postMessage(
+      `{"event":"command","func":"${action}","args":""}`,
+      "*"
+    );
+  });
 });
 
 document.querySelector(".prev-btn").addEventListener("click", () => {
@@ -93,26 +86,11 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-// In showMusicPlayer()
-function showMusicPlayer() {
-  musicPlayer.style.display = "block";
-  musicPlayer.style.opacity = "1";
-  musicPlayer.style.visibility = "visible";
-  musicPlayer.style.pointerEvents = "auto";
-}
-
 // In the minimized-player click event:
 document.querySelector(".minimized-player").addEventListener("click", () => {
   showMusicPlayer(); // Use this function instead of manual styles
   document.querySelector(".minimized-player").style.display = "none";
 });
-
-    // Function to hide the music player
-    function hideMusicPlayer() {
-        musicPlayer.style.opacity = "0";
-        musicPlayer.style.visibility = "hidden";
-        musicPlayer.style.pointerEvents = "none";
-    }
 
     // Click event to show the music player
     vinylLink.addEventListener("click", function (event) {
@@ -120,11 +98,31 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
         showMusicPlayer();
     });
 
-    // Click outside to minimize the player
-    document.addEventListener("click", function (event) {
-        if (!musicPlayer.contains(event.target) && !vinylLink.contains(event.target)) {
-            hideMusicPlayer();
+    document.addEventListener("DOMContentLoaded", function () {
+      // Click outside logic
+      document.addEventListener("click", function (event) {
+        const isPlayer = musicPlayer.contains(event.target);
+        const isVinyl = vinylLink.contains(event.target);
+        const isMiniPlayer = document.querySelector(".minimized-player").contains(event.target);
+        
+        if (!isPlayer && !isVinyl && !isMiniPlayer) {
+          hideMusicPlayer();
         }
+      });
+    
+      // Play/Pause Button
+      document.querySelector(".playpause").addEventListener("click", () => {
+        isPlaying = !isPlaying;
+        const action = isPlaying ? "playVideo" : "pauseVideo";
+        musicFrame.contentWindow.postMessage(
+          `{"event":"command","func":"${action}","args":""}`,
+          "*"
+        );
+        miniMusicFrame.contentWindow.postMessage(
+          `{"event":"command","func":"${action}","args":""}`,
+          "*"
+        );
+      });
     });
 
     // Prevent the music player click from closing itself
@@ -132,9 +130,11 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
         event.stopPropagation();
     });
 
-    window.addEventListener('click', (event) => {
-    // Check if the click was outside the music player
-        if (event.target === musicPlayer) {
-        musicPlayer.style.visibility = 'hidden';  // Hide the music player
-        }
-    });
+      // Visibility functions
+  function showMusicPlayer() {
+    musicPlayer.classList.remove("hidden");
+  }
+
+  function hideMusicPlayer() {
+    musicPlayer.classList.add("hidden");
+  }
