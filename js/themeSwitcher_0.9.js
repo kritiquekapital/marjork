@@ -1,4 +1,3 @@
-// Themes array and current theme index
 const themes = [
   { name: "classic", displayName: "😎" },
   { name: "modern", displayName: "🌚" },
@@ -8,13 +7,6 @@ const themes = [
 ];
 
 let currentThemeIndex = 0;
-
-// Global getCurrentTheme function
-function getCurrentTheme() {
-  return themes[currentThemeIndex].name; // Returns the active theme's name
-}
-
-// Create space background iframe
 const spaceBackground = document.createElement("iframe");
 spaceBackground.classList.add("space-background-stream");
 spaceBackground.setAttribute("frameborder", "0");
@@ -23,7 +15,6 @@ spaceBackground.setAttribute("allowfullscreen", "");
 spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
 document.body.prepend(spaceBackground);
 
-// Function to apply the current theme
 function applyTheme() {
   const currentTheme = themes[currentThemeIndex];
   document.body.className = `theme-${currentTheme.name}`;
@@ -36,7 +27,6 @@ function applyTheme() {
   }
 }
 
-// Inactivity timer
 let inactivityTimer;
 
 function hideSpaceThemeUI() {
@@ -53,11 +43,11 @@ function showSpaceThemeUI() {
   }
 }
 
-// Reset inactivity timer
+// Reset the inactivity timer
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer);
   showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
+  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 10 seconds timeout
 }
 
 // Listen for pointer movements to detect activity
@@ -69,7 +59,6 @@ document.addEventListener("touchstart", resetInactivityTimer);
 // Initialize the timer when the page loads
 resetInactivityTimer();
 
-// Theme button click listener
 const themeButton = document.getElementById("themeButton");
 themeButton.addEventListener("click", () => {
   themeButton.style.animation = "spin 0.5s ease-in-out";
@@ -80,5 +69,4 @@ themeButton.addEventListener("click", () => {
   }, 500);
 });
 
-// Initialize the theme
 applyTheme();
