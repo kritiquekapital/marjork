@@ -1,35 +1,38 @@
 export class Draggable {
   constructor(element) {
-    this.element = element;  // The draggable container
-    this.video = element.querySelector('video'); // Assuming the video is inside the container
+    this.element = element;  // The draggable container (the whole music player)
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
-    this.velocity = { x: 0, y: 0 };
+    this.velocity = { x: 0, y: 0 };  // Current velocity of the player
     this.gravity = 0.2;  // Gravity effect (constant acceleration)
     this.dragCoefficient = 0.98;  // Simulate drag
-    this.friction = 0.98;  // Friction or resistance when moving
+    this.friction = 0.95;  // Friction to slow down the movement gradually
     this.isReleased = false;  // Track if the item has been released
 
     // Make sure the element is positioned absolutely for correct dragging behavior
     this.element.style.position = 'absolute';
 
-    // Center the element initially in the container
-    this.centerElement();
+    // Center the element initially in the viewport
+    this.centerElementInViewport();
 
     // Initialize the element's position
     this.init();
   }
 
-  centerElement() {
-    // Get the container's dimensions
-    const containerRect = this.element.parentElement.getBoundingClientRect();
-    const elementRect = this.element.getBoundingClientRect();
+  centerElementInViewport() {
+    // Get the viewport's dimensions
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    // Calculate center position within the container
-    const initialLeft = containerRect.left + (containerRect.width - elementRect.width) / 2;
-    const initialTop = containerRect.top + (containerRect.height - elementRect.height) / 2;
+    // Get the element's dimensions
+    const elementWidth = this.element.offsetWidth;
+    const elementHeight = this.element.offsetHeight;
 
-    // Set the element's initial position (centered)
+    // Calculate center position in the viewport
+    const initialLeft = (viewportWidth - elementWidth) / 2;
+    const initialTop = (viewportHeight - elementHeight) / 2;
+
+    // Set the element's initial position (centered in the viewport)
     this.element.style.left = `${initialLeft}px`;
     this.element.style.top = `${initialTop}px`;
   }
@@ -61,7 +64,7 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate new position based on mouse movement
+    // Calculate the change in position based on mouse movement
     const deltaX = e.clientX - this.offset.x;
     const deltaY = e.clientY - this.offset.y;
 
@@ -84,8 +87,8 @@ export class Draggable {
       // Apply gravity and drag to simulate inertia after release
       const movementInterval = setInterval(() => {
         if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-          clearInterval(movementInterval);
-          return; // Stop when velocity is small enough
+          clearInterval(movementInterval);  // Stop when the velocity is small enough
+          return;
         }
 
         // Apply gravity (constant acceleration downward)
@@ -117,7 +120,7 @@ export class Draggable {
         this.element.style.left = `${newLeft}px`;
         this.element.style.top = `${newTop}px`;
 
-      }, 16); // approximately 60fps
+      }, 16);  // approximately 60fps
     }
   }
 }
