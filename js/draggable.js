@@ -10,29 +10,32 @@ export class Draggable {
     this.dragCoefficient = 0.98;  // Simulate drag
     this.friction = 0.98;  // Friction or resistance when moving
     this.isReleased = false;  // Track if the item has been released
-    this.initialPosition = { x: 0, y: 0 }; // To track initial position
+
+    // Make sure the element is positioned absolutely for correct dragging behavior
+    this.element.style.position = 'absolute';
 
     this.init();
   }
 
   init() {
+    // Set event listeners for drag actions
     this.handle.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
 
-    // Set the initial position of the element
+    // Get the initial position of the element
     const rect = this.element.getBoundingClientRect();
-    this.initialPosition.x = rect.left;
-    this.initialPosition.y = rect.top;
+    this.initialPosition = { x: rect.left, y: rect.top };
 
-    // Set the element's position to "absolute" for drag to work
-    this.element.style.position = 'absolute';
+    // Set initial position correctly
     this.element.style.left = `${this.initialPosition.x}px`;
     this.element.style.top = `${this.initialPosition.y}px`;
   }
 
   startDrag(e) {
     this.isDragging = true;
+
+    // Set the offset relative to the current mouse position and element's position
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -45,14 +48,15 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate new position during drag
+    // Calculate new position based on the mouse movement
     const deltaX = e.clientX - this.offset.x;
     const deltaY = e.clientY - this.offset.y;
-    
+
+    // Update the position of the element during drag
     this.element.style.left = `${deltaX}px`;
     this.element.style.top = `${deltaY}px`;
 
-    // Update velocity based on the current drag movement
+    // Track the velocity during drag to simulate inertia later
     this.velocity = { x: deltaX - this.element.offsetLeft, y: deltaY - this.element.offsetTop };
   }
 
@@ -64,28 +68,28 @@ export class Draggable {
 
   applyPhysics() {
     if (this.isReleased) {
-      // Apply gravity and drag to simulate a natural post-release movement
+      // Apply gravity and drag to simulate inertia after release
       const movementInterval = setInterval(() => {
         if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
           clearInterval(movementInterval);
-          return; // Stop when velocity is small enough
+          return; // Stop when velocity becomes too small
         }
 
-        // Apply gravity effect
-        this.velocity.y += this.gravity; // Gravity pulls the element down
+        // Apply gravity (acceleration in the y-direction)
+        this.velocity.y += this.gravity;
 
-        // Apply drag effect (air resistance or friction)
-        this.velocity.x *= this.dragCoefficient; 
-        this.velocity.y *= this.dragCoefficient; 
+        // Apply drag resistance to slow down the movement
+        this.velocity.x *= this.dragCoefficient;
+        this.velocity.y *= this.dragCoefficient;
 
-        // Apply friction to slow down the movement
+        // Apply friction to slow the velocity gradually
         this.velocity.x *= this.friction;
         this.velocity.y *= this.friction;
 
-        // Update the element's position based on velocity
+        // Update the element's position based on its velocity
         this.element.style.left = `${parseFloat(this.element.style.left || 0) + this.velocity.x}px`;
         this.element.style.top = `${parseFloat(this.element.style.top || 0) + this.velocity.y}px`;
-      }, 16);  // roughly 60fps
+      }, 16); // approximately 60fps
     }
   }
 }
