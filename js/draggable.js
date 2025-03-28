@@ -106,19 +106,19 @@ export class Draggable {
 
       // Adjust the boundaries to ensure the element does not overflow off the screen
       if (newLeft < minX) {
-        newLeft = minX;
+        newLeft = minX; // Don't allow it to go past the left side
         this.velocity.x *= -0.4;  // Bounce off left side
       }
       if (newLeft > maxX) {
-        newLeft = maxX;
+        newLeft = maxX; // Don't allow it to go past the right side
         this.velocity.x *= -0.4;  // Bounce off right side
       }
       if (newTop < minY) {
-        newTop = minY;
+        newTop = minY; // Don't allow it to go past the top side
         this.velocity.y *= -0.4;  // Bounce off top side
       }
       if (newTop > maxY) {
-        newTop = maxY;
+        newTop = maxY; // Don't allow it to go past the bottom side
         this.velocity.y *= -0.4;  // Bounce off bottom side
       }
 
