@@ -74,8 +74,11 @@ function hideMusicPlayer() {
 }
 
 // Click outside to hide (only if not pinned)
-overlay.addEventListener("click", () => {
-  hideMusicPlayer();
+document.addEventListener("click", (event) => {
+  const isClickInside = musicPlayer.contains(event.target) || pinButton.contains(event.target);
+  if (!isClickInside) {
+    hideMusicPlayer();
+  }
 });
 
 // Event Listeners
