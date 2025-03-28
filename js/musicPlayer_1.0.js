@@ -1,11 +1,5 @@
 import { Draggable } from './draggable.js';
 
-if (!musicPlayer) {
-  console.error("❌ ERROR: #musicPlayer element not found!");
-} else {
-  new Draggable(musicPlayer, '.drag-handle'); // ✅ FIXED
-}
-
 // 1. Create overlay first
 const overlay = document.createElement('div');
 overlay.className = 'music-overlay';
@@ -50,6 +44,12 @@ let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
+
+if (!musicPlayer) {
+  console.error("❌ ERROR: #musicPlayer element not found!");
+} else {
+  new Draggable(musicPlayer, '.drag-handle'); // ✅ FIXED
+}
 
 // 4. Initialize
 document.addEventListener("DOMContentLoaded", () => {
