@@ -983,6 +983,21 @@ body.theme-space .grid-container {
   transform: translate(-50%, -50%);
   z-index: 9999;
   display: none;
+  cursor: move;
+  position: fixed;
+  user-select: none;
+}
+
+#musicPlayer * {
+  user-select: none;
+}
+
+.drag-handle {
+  height: 30px;
+  width: 100%;
+  background: #333;
+  cursor: move;
+  border-radius: 5px 5px 0 0;
 }
 
 #musicPlayer.hidden {
