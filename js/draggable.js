@@ -1,12 +1,13 @@
 export class Draggable {
-  constructor(element) {
+  constructor(element, isSpaceMode = false) {
     this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92;
+    this.friction = isSpaceMode ? 1.0 : 0.92; // Space mode removes friction
     this.isReleased = false;
     this.animationFrame = null;
+    this.isSpaceMode = isSpaceMode; // Stores the space mode setting
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -35,6 +36,12 @@ export class Draggable {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
+
+    // Listen for space mode toggle from external script
+    document.addEventListener('themeChange', (event) => {
+      this.isSpaceMode = event.detail.isSpaceMode;
+      this.friction = this.isSpaceMode ? 1.0 : 0.92; // Apply or remove friction
+    });
   }
 
   startDrag(e) {
@@ -74,7 +81,7 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      if (!this.isSpaceMode && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
@@ -89,11 +96,11 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Corrected viewport boundaries (fully contained)
+      // Correct viewport boundaries (entire module stays in bounds)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
-      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
+      const maxX = window.innerWidth - elementWidth;
+      const maxY = window.innerHeight - elementHeight;
 
       if (newLeft < minX) {
         newLeft = minX;
