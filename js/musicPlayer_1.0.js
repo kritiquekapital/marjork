@@ -75,7 +75,7 @@ overlay.addEventListener("click", hideMusicPlayer);
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   if(!musicFrame.src.includes(url)) {
-    musicFrame.src = `${url}?autoplay=1`;
+    musicFrame.src = `${url}`;
   }
 }
 
