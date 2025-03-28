@@ -1,5 +1,17 @@
+// musicPlayer_1.0.js
+
+// 1. Create overlay first
+const overlay = document.createElement('div');
+overlay.className = 'music-overlay';
+document.body.appendChild(overlay);
+
+// 2. Declare other elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
+const draggable = new Draggable(musicPlayer, {
+    handle: '.drag-handle',
+    containment: true // Optional: keep within window bounds
+});
 const musicFrame = document.getElementById("musicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
@@ -27,17 +39,19 @@ const liveLinks2 = [
   "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
 ];
 
+// 3. State variables
+let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
 
-// Initialize
+// 4. Initialize
 document.addEventListener("DOMContentLoaded", () => {
   hideMusicPlayer();
   overlay.style.display = 'none';
 });
 
-// Player Visibility Control
+// 5. Player visibility functions
 function showMusicPlayer() {
   if(isFirstOpen) {
     updateMusicSource();
@@ -45,7 +59,6 @@ function showMusicPlayer() {
   }
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
-  if(!isPlaying) togglePlayState();
 }
 
 function hideMusicPlayer() {
@@ -53,11 +66,20 @@ function hideMusicPlayer() {
   overlay.style.display = "none";
 }
 
+// 6. Event listeners
+vinylLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  if(musicPlayer.style.display === "block") return;
+  showMusicPlayer();
+});
+
+overlay.addEventListener("click", hideMusicPlayer);
+
 // Video Control
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   if(!musicFrame.src.includes(url)) {
-    musicFrame.src = `${url}?autoplay=1`;
+    musicFrame.src = `${url}`;
   }
 }
 
