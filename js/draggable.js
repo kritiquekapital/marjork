@@ -10,6 +10,7 @@ export class Draggable {
     this.dragCoefficient = 0.98;  // Simulate drag
     this.friction = 0.98;  // Friction or resistance when moving
     this.isReleased = false;  // Track if the item has been released
+    this.initialPosition = { x: 0, y: 0 }; // To track initial position
 
     this.init();
   }
@@ -18,6 +19,16 @@ export class Draggable {
     this.handle.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
+
+    // Set the initial position of the element
+    const rect = this.element.getBoundingClientRect();
+    this.initialPosition.x = rect.left;
+    this.initialPosition.y = rect.top;
+
+    // Set the element's position to "absolute" for drag to work
+    this.element.style.position = 'absolute';
+    this.element.style.left = `${this.initialPosition.x}px`;
+    this.element.style.top = `${this.initialPosition.y}px`;
   }
 
   startDrag(e) {
@@ -34,14 +45,14 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Update position of the element
+    // Calculate new position during drag
     const deltaX = e.clientX - this.offset.x;
     const deltaY = e.clientY - this.offset.y;
     
     this.element.style.left = `${deltaX}px`;
     this.element.style.top = `${deltaY}px`;
 
-    // Update the velocity based on the drag movement
+    // Update velocity based on the current drag movement
     this.velocity = { x: deltaX - this.element.offsetLeft, y: deltaY - this.element.offsetTop };
   }
 
@@ -71,7 +82,7 @@ export class Draggable {
         this.velocity.x *= this.friction;
         this.velocity.y *= this.friction;
 
-        // Update the element's position
+        // Update the element's position based on velocity
         this.element.style.left = `${parseFloat(this.element.style.left || 0) + this.velocity.x}px`;
         this.element.style.top = `${parseFloat(this.element.style.top || 0) + this.velocity.y}px`;
       }, 16);  // roughly 60fps
