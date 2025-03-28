@@ -1,3 +1,5 @@
+import { Draggable } from 'js/draggable.js'; 
+
 const themes = [
   { name: "classic", displayName: "😎" },
   { name: "modern", displayName: "🌚" },
