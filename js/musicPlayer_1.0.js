@@ -27,9 +27,22 @@ const liveLinks2 = [
   "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
 ];
 
+// Variable declarations
+let isFirstOpen = true; // Controls first-time initialization
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
+
+// Player Visibility Control
+function showMusicPlayer() {
+  if(isFirstOpen) {
+    updateMusicSource();
+    isFirstOpen = false; // Mark first open as complete
+  }
+  musicPlayer.style.display = "block";
+  overlay.style.display = "block";
+  if(!isPlaying) togglePlayState();
+}
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
