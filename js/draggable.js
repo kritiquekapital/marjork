@@ -40,7 +40,8 @@ export class Draggable {
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
-    
+
+    // Calculate initial offset
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -52,14 +53,15 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate the new position with slightly slowed movement for better control
-    const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
-    const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
+    // Calculate new position with some smoothing for better control
+    const newX = e.clientX - this.offset.x;
+    const newY = e.clientY - this.offset.y;
 
-    // Store velocity for release power boost
+    // Store velocity for release physics
     this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
     this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
+    // Apply the position to the element
     this.element.style.left = `${newX}px`;
     this.element.style.top = `${newY}px`;
   }
@@ -79,6 +81,7 @@ export class Draggable {
         return;
       }
 
+      // Apply friction
       this.velocity.x *= this.friction;
       this.velocity.y *= this.friction;
 
@@ -89,13 +92,13 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Corrected viewport boundaries (fully contained within the window)
+      // Viewport boundaries
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
-      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
+      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for element's width
+      const maxY = window.innerHeight - elementHeight; // Fix: accounts for element's height
 
-      // Adjust boundaries to ensure the element stays fully within the viewport
+      // Ensure the element stays within the viewport by correcting the position
       if (newLeft < minX) {
         newLeft = minX;
         this.velocity.x *= -0.4;  // Bounce off left side
@@ -113,6 +116,7 @@ export class Draggable {
         this.velocity.y *= -0.4;  // Bounce off bottom side
       }
 
+      // Apply the corrected position to the element
       this.element.style.left = `${newLeft}px`;
       this.element.style.top = `${newTop}px`;
 
