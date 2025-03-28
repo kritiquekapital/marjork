@@ -1,6 +1,5 @@
-// draggable.js
 export class Draggable {
-  constructor(element, handleSelector = '.drag-handle') {
+  constructor(element, handleSelector = '.ipod-screen') { // Changed to entire screen
     this.element = element;
     this.handle = element.querySelector(handleSelector);
     this.isDragging = false;
@@ -10,17 +9,21 @@ export class Draggable {
   }
 
   init() {
-    this.handle.addEventListener('mousedown', this.startDrag.bind(this));
+    if (this.handle) {
+      this.handle.addEventListener('mousedown', this.startDrag.bind(this));
+    }
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
   }
 
   startDrag(e) {
-    this.isDragging = true;
-    this.offset = {
-      x: e.clientX - this.element.offsetLeft,
-      y: e.clientY - this.element.offsetTop
-    };
+    if (!this.isDragging) {
+      this.isDragging = true;
+      this.offset = {
+        x: e.clientX - this.element.offsetLeft,
+        y: e.clientY - this.element.offsetTop
+      };
+    }
   }
 
   drag(e) {
