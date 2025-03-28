@@ -1,13 +1,12 @@
 export class Draggable {
-  constructor(element, getTheme) {
+  constructor(element) {
     this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92; // Default friction
+    this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
-    this.getTheme = getTheme; // Function to retrieve the current theme
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -36,19 +35,6 @@ export class Draggable {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
-
-    // Periodically check for theme changes
-    setInterval(() => this.updateThemeEffects(), 500); // Check for theme every 500ms
-  }
-
-  updateThemeEffects() {
-    const currentTheme = this.getTheme();
-    console.log('Current theme in Draggable:', currentTheme);  // Log to verify the correct theme
-    if (currentTheme === 'space') {
-      this.friction = 1.0; // Remove friction for "space" theme
-    } else {
-      this.friction = 0.92; // Normal friction for other themes
-    }
   }
 
   startDrag(e) {
@@ -88,7 +74,7 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (this.friction !== 1.0 && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
@@ -103,11 +89,11 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Correct viewport boundaries (entire module stays in bounds)
+      // Corrected viewport boundaries (fully contained)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;
-      const maxY = window.innerHeight - elementHeight;
+      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
+      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
 
       if (newLeft < minX) {
         newLeft = minX;
@@ -135,7 +121,3 @@ export class Draggable {
     this.animationFrame = requestAnimationFrame(animate);
   }
 }
-
-// Initialize Draggable with the correct theme function
-const draggableElement = document.querySelector('.theme-space');
-const draggable = new Draggable(draggableElement, getCurrentTheme);
