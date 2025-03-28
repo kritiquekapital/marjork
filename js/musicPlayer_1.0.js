@@ -1,7 +1,6 @@
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
-const miniMusicFrame = document.getElementById("miniMusicFrame"); // Must exist in HTML
 const liveLinks2 =
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
   "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
