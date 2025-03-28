@@ -91,13 +91,6 @@ function togglePlayState() {
   }, "*");
 }
 
-// Event Listeners
-vinylLink.addEventListener("click", (event) => {
-  event.preventDefault();
-  if(musicPlayer.style.display === "block") return;
-  showMusicPlayer();
-});
-
 overlay.addEventListener("click", hideMusicPlayer);
 
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
