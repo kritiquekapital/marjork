@@ -1,13 +1,12 @@
 export class Draggable {
   constructor(element) {
-    this.element = element;  
+    this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
-    this.velocity = { x: 0, y: 0 };  
-    this.gravity = 0.5;  // Stronger gravity for a more noticeable effect
-    this.friction = 0.98;  // Slows down movement over time
-    this.isReleased = false;  
-    this.animationFrame = null;  // For smooth physics animation
+    this.velocity = { x: 0, y: 0 };
+    this.friction = 0.98; // Slows down over time
+    this.isReleased = false;
+    this.animationFrame = null;
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -57,7 +56,7 @@ export class Draggable {
     const newX = e.clientX - this.offset.x;
     const newY = e.clientY - this.offset.y;
 
-    // Calculate velocity based on last movement
+    // Track velocity for smooth sliding after release
     this.velocity.x = newX - this.element.offsetLeft;
     this.velocity.y = newY - this.element.offsetTop;
 
@@ -68,7 +67,6 @@ export class Draggable {
   stopDrag() {
     this.isDragging = false;
     this.isReleased = true;
-    
     this.applyPhysics();
   }
 
@@ -81,14 +79,11 @@ export class Draggable {
         return;
       }
 
-      // Apply gravity
-      this.velocity.y += this.gravity;
-
-      // Apply friction to both axes
+      // Apply friction to both axes (no downward gravity)
       this.velocity.x *= this.friction;
       this.velocity.y *= this.friction;
 
-      // Update position
+      // Update position based on velocity
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
@@ -98,7 +93,7 @@ export class Draggable {
 
       if (newLeft < 0) {
         newLeft = 0;
-        this.velocity.x *= -0.5;  // Bounce effect
+        this.velocity.x *= -0.5; // Bounce effect
       }
       if (newLeft > maxWidth) {
         newLeft = maxWidth;
