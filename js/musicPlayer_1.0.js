@@ -43,9 +43,9 @@ const liveLinks2 = [
 let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
-let isPinned = false; // Default: Player can hide
+let isPinned = false;
 
-// Create pin button
+// Pin Button
 const pinButton = document.createElement("button");
 pinButton.classList.add("ipod-btn", "pin-btn");
 pinButton.innerHTML = "📌";
@@ -56,7 +56,7 @@ function updatePinState() {
   pinButton.style.opacity = isPinned ? "1" : "0.5";
 }
 
-// Player Visibility
+// Show Player
 function showMusicPlayer() {
   if (isFirstOpen) {
     updateMusicSource();
@@ -66,6 +66,7 @@ function showMusicPlayer() {
   overlay.style.display = "block";
 }
 
+// Hide Player (only if not pinned)
 function hideMusicPlayer() {
   if (!isPinned) {
     musicPlayer.style.display = "none";
@@ -75,21 +76,25 @@ function hideMusicPlayer() {
 
 // Click outside to hide (only if not pinned)
 document.addEventListener("click", (event) => {
-  const isClickInside = musicPlayer.contains(event.target) || pinButton.contains(event.target);
+  const isClickInside = musicPlayer.contains(event.target) || vinylLink.contains(event.target) || pinButton.contains(event.target);
   if (!isClickInside) {
     hideMusicPlayer();
   }
 });
 
-// Event Listeners
+// Fix: Ensure clicking vinyl opens the player
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
   showMusicPlayer();
 });
 
-pinButton.addEventListener("click", updatePinState);
+// Pin Button Event
+pinButton.addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent from triggering the "click outside" logic
+  updatePinState();
+});
 
-// Music Controls
+// Video Controls
 function updateMusicSource() {
   musicFrame.src = liveLinks2[currentLinkIndex2];
 }
@@ -103,6 +108,7 @@ function togglePlayState() {
   }, "*");
 }
 
+// Event Listeners for Buttons
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 document.querySelector(".prev-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
