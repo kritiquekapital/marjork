@@ -1,6 +1,6 @@
 // draggable.js
 export class Draggable {
-  constructor(element, handleSelector = '.drag-handle') {
+  constructor(element) {
     this.element = element;
     this.handle = element.querySelector(handleSelector);
     this.isDragging = false;
