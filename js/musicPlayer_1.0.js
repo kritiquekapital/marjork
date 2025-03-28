@@ -8,10 +8,7 @@ document.body.appendChild(overlay);
 // 2. Declare other elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
-const draggable = new Draggable(musicPlayer, {
-    handle: '.drag-handle',
-    containment: true // Optional: keep within window bounds
-});
+const draggable = new Draggable(musicPlayer, '.drag-handle'); 
 const musicFrame = document.getElementById("musicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
