@@ -1,126 +1,124 @@
 export class Draggable {
   constructor(element) {
-    this.element = element;  // The draggable container (the whole music player)
+    this.element = element;  
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
-    this.velocity = { x: 0, y: 0 };  // Current velocity of the player
-    this.gravity = 0.2;  // Gravity effect (constant acceleration)
-    this.dragCoefficient = 0.98;  // Simulate drag
-    this.friction = 0.95;  // Friction to slow down the movement gradually
-    this.isReleased = false;  // Track if the item has been released
+    this.velocity = { x: 0, y: 0 };  
+    this.gravity = 0.5;  // Stronger gravity for a more noticeable effect
+    this.friction = 0.98;  // Slows down movement over time
+    this.isReleased = false;  
+    this.animationFrame = null;  // For smooth physics animation
 
-    // Make sure the element is positioned absolutely for correct dragging behavior
+    // Ensure absolute positioning
     this.element.style.position = 'absolute';
 
-    // Center the element initially in the viewport
+    // Center the element in the viewport
     this.centerElementInViewport();
 
-    // Initialize the element's position
+    // Initialize event listeners
     this.init();
   }
 
   centerElementInViewport() {
-    // Get the viewport's dimensions
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-
-    // Get the element's dimensions
     const elementWidth = this.element.offsetWidth;
     const elementHeight = this.element.offsetHeight;
 
-    // Calculate center position in the viewport
     const initialLeft = (viewportWidth - elementWidth) / 2;
     const initialTop = (viewportHeight - elementHeight) / 2;
 
-    // Set the element's initial position (centered in the viewport)
     this.element.style.left = `${initialLeft}px`;
     this.element.style.top = `${initialTop}px`;
   }
 
   init() {
-    // Set event listeners for drag actions
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
-
-    // Set the initial position
-    const rect = this.element.getBoundingClientRect();
-    this.initialPosition = { x: rect.left, y: rect.top };
   }
 
   startDrag(e) {
     this.isDragging = true;
-
-    // Set the offset relative to the current mouse position and element's position
+    this.isReleased = false;
+    
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
     };
 
-    // Reset velocity when starting to drag
-    this.velocity = { x: 0, y: 0 };
+    // Stop physics while dragging
+    cancelAnimationFrame(this.animationFrame);
   }
 
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate the change in position based on mouse movement
-    const deltaX = e.clientX - this.offset.x;
-    const deltaY = e.clientY - this.offset.y;
+    const newX = e.clientX - this.offset.x;
+    const newY = e.clientY - this.offset.y;
 
-    // Update the element's position during drag
-    this.element.style.left = `${deltaX}px`;
-    this.element.style.top = `${deltaY}px`;
+    // Calculate velocity based on last movement
+    this.velocity.x = newX - this.element.offsetLeft;
+    this.velocity.y = newY - this.element.offsetTop;
 
-    // Track the velocity during the drag to simulate inertia after release
-    this.velocity = { x: deltaX - this.element.offsetLeft, y: deltaY - this.element.offsetTop };
+    this.element.style.left = `${newX}px`;
+    this.element.style.top = `${newY}px`;
   }
 
   stopDrag() {
     this.isDragging = false;
     this.isReleased = true;
+    
     this.applyPhysics();
   }
 
   applyPhysics() {
-    if (this.isReleased) {
-      // Apply gravity and drag to simulate inertia after release
-      const movementInterval = setInterval(() => {
-        if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-          clearInterval(movementInterval);  // Stop when the velocity is small enough
-          return;
-        }
+    if (!this.isReleased) return;
 
-        // Apply gravity (constant acceleration downward)
-        this.velocity.y += this.gravity;
+    const animate = () => {
+      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+        cancelAnimationFrame(this.animationFrame);
+        return;
+      }
 
-        // Apply drag resistance to slow down the movement
-        this.velocity.x *= this.dragCoefficient;
-        this.velocity.y *= this.dragCoefficient;
+      // Apply gravity
+      this.velocity.y += this.gravity;
 
-        // Apply friction to slow the velocity gradually
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
+      // Apply friction to both axes
+      this.velocity.x *= this.friction;
+      this.velocity.y *= this.friction;
 
-        // Update the element's position based on velocity
-        let newLeft = parseFloat(this.element.style.left || 0) + this.velocity.x;
-        let newTop = parseFloat(this.element.style.top || 0) + this.velocity.y;
+      // Update position
+      let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+      let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-        // Check boundaries to prevent the element from going outside the viewport
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+      // Keep inside viewport bounds
+      const maxWidth = window.innerWidth - this.element.offsetWidth;
+      const maxHeight = window.innerHeight - this.element.offsetHeight;
 
-        // Prevent going beyond the right and left edges
-        newLeft = Math.max(0, Math.min(viewportWidth - this.element.offsetWidth, newLeft));
+      if (newLeft < 0) {
+        newLeft = 0;
+        this.velocity.x *= -0.5;  // Bounce effect
+      }
+      if (newLeft > maxWidth) {
+        newLeft = maxWidth;
+        this.velocity.x *= -0.5;
+      }
+      if (newTop < 0) {
+        newTop = 0;
+        this.velocity.y *= -0.5;
+      }
+      if (newTop > maxHeight) {
+        newTop = maxHeight;
+        this.velocity.y *= -0.5;
+      }
 
-        // Prevent going beyond the top and bottom edges
-        newTop = Math.max(0, Math.min(viewportHeight - this.element.offsetHeight, newTop));
+      this.element.style.left = `${newLeft}px`;
+      this.element.style.top = `${newTop}px`;
 
-        // Update the position with boundary constraints
-        this.element.style.left = `${newLeft}px`;
-        this.element.style.top = `${newTop}px`;
+      this.animationFrame = requestAnimationFrame(animate);
+    };
 
-      }, 16);  // approximately 60fps
-    }
+    this.animationFrame = requestAnimationFrame(animate);
   }
 }
