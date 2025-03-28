@@ -3,9 +3,9 @@ const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 const liveLinks2 = [
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
-  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",   //Gypsy Woman
+  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
-  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",    //но останься
+  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",  //но останься
   "https://www.youtube.com/embed/B6Y-WsgpzlQ?autoplay=1",  //False Sympathy
   "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1",  //Lost
   "https://www.youtube.com/embed/PPoH0Gn50Nc?autoplay=1",  //Renegades
@@ -35,6 +35,7 @@ let excludeLongLinks = false;
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
   musicFrame.src = url;
+  miniMusicFrame.src = url;
 }
 
 function shuffleLinks() {
@@ -93,9 +94,40 @@ document.querySelector(".minimized-player").addEventListener("click", () => {
   document.querySelector(".minimized-player").style.display = "none";
 });
 
-window.addEventListener('click', (event) => {
-// Check if the click was outside the music player
-  if (event.target === musicPlayer) {
-    musicPlayer.style.visibility = 'hidden';  // Hide the music player
-  }
+document.addEventListener("DOMContentLoaded", function () {
+    const vinylLink = document.querySelector(".vinyl-link");
+    const musicPlayer = document.getElementById("musicPlayer");
+
+    // Function to show the music player
+    function showMusicPlayer() {
+        musicPlayer.style.display = "block";
+        musicPlayer.style.opacity = "1";
+        musicPlayer.style.visibility = "visible";
+        musicPlayer.style.pointerEvents = "auto";
+    }
+
+    // Function to hide the music player
+    function hideMusicPlayer() {
+        musicPlayer.style.opacity = "0";
+        musicPlayer.style.visibility = "hidden";
+        musicPlayer.style.pointerEvents = "none";
+    }
+
+    // Click event to show the music player
+    vinylLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        showMusicPlayer();
+    });
+
+    // Click outside to minimize the player
+    document.addEventListener("click", function (event) {
+        if (!musicPlayer.contains(event.target) && !vinylLink.contains(event.target)) {
+            hideMusicPlayer();
+        }
+    });
+
+    // Prevent the music player click from closing itself
+    musicPlayer.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
 });
