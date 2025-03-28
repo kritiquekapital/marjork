@@ -56,6 +56,17 @@ function updatePinState() {
   pinButton.style.opacity = isPinned ? "1" : "0.5";
 }
 
+// 🔀 Shuffle Button
+const shuffleButton = document.createElement("button");
+shuffleButton.classList.add("ipod-btn", "shuffle-btn");
+shuffleButton.innerHTML = "🔀";
+controlsContainer.insertBefore(shuffleButton, document.querySelector(".prev-btn"));
+
+function updateShuffleState() {
+  isShuffling = !isShuffling;
+  shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
+}
+
 // Show Player
 function showMusicPlayer() {
   if (isFirstOpen) {
@@ -94,8 +105,17 @@ pinButton.addEventListener("click", (event) => {
   updatePinState();
 });
 
-// Video Controls
+// 🔀 Shuffle Button Click
+shuffleButton.addEventListener("click", (event) => {
+  event.stopPropagation();
+  updateShuffleState();
+});
+
+// 🎵 Video Controls
 function updateMusicSource() {
+  if (isShuffling) {
+    currentLinkIndex2 = Math.floor(Math.random() * liveLinks2.length);
+  }
   musicFrame.src = liveLinks2[currentLinkIndex2];
 }
 
@@ -108,16 +128,19 @@ function togglePlayState() {
   }, "*");
 }
 
-// Event Listeners for Buttons
-document.querySelector(".playpause").addEventListener("click", togglePlayState);
+// 🎵 Prev Button
 document.querySelector(".prev-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 });
 
+// 🎵 Next Button
 document.querySelector(".next-btn").addEventListener("click", () => {
   currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 });
+
+// 🎵 Play/Pause Button
+document.querySelector(".playpause").addEventListener("click", togglePlayState);
