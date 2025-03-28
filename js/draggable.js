@@ -38,15 +38,16 @@ export class Draggable {
     document.addEventListener('mouseup', this.stopDrag.bind(this));
 
     // Periodically check for theme changes
-    setInterval(() => this.updateThemeEffects(), 500);
+    setInterval(() => this.updateThemeEffects(), 500); // Check for theme every 500ms
   }
 
   updateThemeEffects() {
     const currentTheme = this.getTheme();
+    console.log('Current theme in Draggable:', currentTheme);  // Log to verify the correct theme
     if (currentTheme === 'space') {
-      this.friction = 1.0; // Remove friction
+      this.friction = 1.0; // Remove friction for "space" theme
     } else {
-      this.friction = 0.92; // Normal friction
+      this.friction = 0.92; // Normal friction for other themes
     }
   }
 
@@ -134,3 +135,7 @@ export class Draggable {
     this.animationFrame = requestAnimationFrame(animate);
   }
 }
+
+// Initialize Draggable with the correct theme function
+const draggableElement = document.querySelector('.theme-space');
+const draggable = new Draggable(draggableElement, getCurrentTheme);
