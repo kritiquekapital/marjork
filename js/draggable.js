@@ -8,10 +8,6 @@ export class Draggable {
     this.isReleased = false;
     this.animationFrame = null;
 
-    // Container width and height (boundary box) for the draggable element
-    this.boundaryWidth = 800;  // Adjust width of the draggable area
-    this.boundaryHeight = 600; // Adjust height of the draggable area
-
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
 
@@ -22,6 +18,7 @@ export class Draggable {
     this.init();
   }
 
+  // Method to center the element in the viewport
   centerElementInViewport() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -35,12 +32,14 @@ export class Draggable {
     this.element.style.top = `${initialTop}px`;
   }
 
+  // Initialize event listeners for dragging
   init() {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
   }
 
+  // Start dragging
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
@@ -54,6 +53,7 @@ export class Draggable {
     cancelAnimationFrame(this.animationFrame);
   }
 
+  // Dragging action
   drag(e) {
     if (!this.isDragging) return;
 
@@ -70,12 +70,14 @@ export class Draggable {
     this.element.style.top = `${newY}px`;
   }
 
+  // Stop dragging
   stopDrag() {
     this.isDragging = false;
     this.isReleased = true;
     this.applyPhysics();
   }
 
+  // Apply physics (smooth stop with velocity decay)
   applyPhysics() {
     if (!this.isReleased) return;
 
@@ -85,22 +87,22 @@ export class Draggable {
         return;
       }
 
-      // Apply friction
+      // Apply friction to slow down the velocity
       this.velocity.x *= this.friction;
       this.velocity.y *= this.friction;
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get module dimensions
+      // Get the dimensions of the element
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Custom boundaries for containment (using your defined boundary width/height)
+      // Dynamically set boundary width and height to the current viewport size
       const minX = 0;
       const minY = 0;
-      const maxX = this.boundaryWidth - elementWidth;  // Custom right boundary
-      const maxY = this.boundaryHeight - elementHeight; // Custom bottom boundary
+      const maxX = window.innerWidth - elementWidth;  // Use window.innerWidth to set right boundary
+      const maxY = window.innerHeight - elementHeight; // Use window.innerHeight to set bottom boundary
 
       // Correct the position if the element reaches the boundary
       if (newLeft < minX) {
