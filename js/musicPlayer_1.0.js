@@ -1,3 +1,11 @@
+// musicPlayer_1.0.js
+
+// 1. Create overlay first
+const overlay = document.createElement('div');
+overlay.className = 'music-overlay';
+document.body.appendChild(overlay);
+
+// 2. Declare other elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
@@ -27,30 +35,19 @@ const liveLinks2 = [
   "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
 ];
 
-// Variable declarations
-let isFirstOpen = true; // Controls first-time initialization
+// 3. State variables
+let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isShuffling = false;
 
-// Player Visibility Control
-function showMusicPlayer() {
-  if(isFirstOpen) {
-    updateMusicSource();
-    isFirstOpen = false; // Mark first open as complete
-  }
-  musicPlayer.style.display = "block";
-  overlay.style.display = "block";
-  if(!isPlaying) togglePlayState();
-}
-
-// Initialize
+// 4. Initialize
 document.addEventListener("DOMContentLoaded", () => {
   hideMusicPlayer();
   overlay.style.display = 'none';
 });
 
-// Player Visibility Control
+// 5. Player visibility functions
 function showMusicPlayer() {
   if(isFirstOpen) {
     updateMusicSource();
@@ -58,13 +55,21 @@ function showMusicPlayer() {
   }
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
-  if(!isPlaying) togglePlayState();
 }
 
 function hideMusicPlayer() {
   musicPlayer.style.display = "none";
   overlay.style.display = "none";
 }
+
+// 6. Event listeners
+vinylLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  if(musicPlayer.style.display === "block") return;
+  showMusicPlayer();
+});
+
+overlay.addEventListener("click", hideMusicPlayer);
 
 // Video Control
 function updateMusicSource() {
