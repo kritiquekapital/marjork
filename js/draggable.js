@@ -52,7 +52,7 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Make dragging movement slightly slower for better control
+    // Calculate the new position with slightly slowed movement for better control
     const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
     const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
@@ -89,27 +89,28 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Corrected viewport boundaries (fully contained)
+      // Corrected viewport boundaries (fully contained within the window)
       const minX = 0;
       const minY = 0;
       const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
       const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
 
+      // Adjust boundaries to ensure the element stays fully within the viewport
       if (newLeft < minX) {
         newLeft = minX;
-        this.velocity.x *= -0.4;
+        this.velocity.x *= -0.4;  // Bounce off left side
       }
       if (newLeft > maxX) {
         newLeft = maxX;
-        this.velocity.x *= -0.4;
+        this.velocity.x *= -0.4;  // Bounce off right side
       }
       if (newTop < minY) {
         newTop = minY;
-        this.velocity.y *= -0.4;
+        this.velocity.y *= -0.4;  // Bounce off top side
       }
       if (newTop > maxY) {
         newTop = maxY;
-        this.velocity.y *= -0.4;
+        this.velocity.y *= -0.4;  // Bounce off bottom side
       }
 
       this.element.style.left = `${newLeft}px`;
