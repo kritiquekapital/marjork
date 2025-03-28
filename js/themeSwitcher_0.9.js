@@ -23,7 +23,7 @@ function getCurrentTheme() {
 const draggableElement = document.querySelector('.theme-space');
 const draggable = new Draggable(draggableElement, getCurrentTheme);  // Pass getCurrentTheme function
 
-// Initialize theme switching button
+// Theme switcher logic
 const themeButton = document.getElementById("themeButton");
 themeButton.addEventListener("click", () => {
   themeButton.style.animation = "spin 0.5s ease-in-out";
@@ -45,7 +45,10 @@ function applyTheme() {
   }
 }
 
+// Initialize the theme on load
 applyTheme();
+
+// Handle inactivity
 let inactivityTimer;
 
 function hideSpaceThemeUI() {
