@@ -4,7 +4,7 @@ export class Draggable {
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.98; // Slows down over time
+    this.friction = 0.92; // Slightly increased friction for smoother stopping
     this.isReleased = false;
     this.animationFrame = null;
 
@@ -46,7 +46,6 @@ export class Draggable {
       y: e.clientY - this.element.offsetTop
     };
 
-    // Stop physics while dragging
     cancelAnimationFrame(this.animationFrame);
   }
 
@@ -56,9 +55,8 @@ export class Draggable {
     const newX = e.clientX - this.offset.x;
     const newY = e.clientY - this.offset.y;
 
-    // Track velocity for smooth sliding after release
-    this.velocity.x = newX - this.element.offsetLeft;
-    this.velocity.y = newY - this.element.offsetTop;
+    this.velocity.x = (newX - this.element.offsetLeft) * 0.9; // Reduced sensitivity
+    this.velocity.y = (newY - this.element.offsetTop) * 0.9; // Reduced sensitivity
 
     this.element.style.left = `${newX}px`;
     this.element.style.top = `${newY}px`;
@@ -79,33 +77,31 @@ export class Draggable {
         return;
       }
 
-      // Apply friction to both axes (no downward gravity)
       this.velocity.x *= this.friction;
       this.velocity.y *= this.friction;
 
-      // Update position based on velocity
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Keep inside viewport bounds
+      // Corrected viewport boundaries
       const maxWidth = window.innerWidth - this.element.offsetWidth;
       const maxHeight = window.innerHeight - this.element.offsetHeight;
 
-      if (newLeft < 0) {
-        newLeft = 0;
-        this.velocity.x *= -0.5; // Bounce effect
+      if (newLeft < 10) {
+        newLeft = 10;
+        this.velocity.x *= -0.4;
       }
-      if (newLeft > maxWidth) {
-        newLeft = maxWidth;
-        this.velocity.x *= -0.5;
+      if (newLeft > maxWidth - 10) {
+        newLeft = maxWidth - 10;
+        this.velocity.x *= -0.4;
       }
-      if (newTop < 0) {
-        newTop = 0;
-        this.velocity.y *= -0.5;
+      if (newTop < 10) {
+        newTop = 10;
+        this.velocity.y *= -0.4;
       }
-      if (newTop > maxHeight) {
-        newTop = maxHeight;
-        this.velocity.y *= -0.5;
+      if (newTop > maxHeight - 10) {
+        newTop = maxHeight - 10;
+        this.velocity.y *= -0.4;
       }
 
       this.element.style.left = `${newLeft}px`;
