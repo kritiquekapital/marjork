@@ -1,7 +1,7 @@
 export class Draggable {
   constructor(element, getTheme) {
     this.element = element;
-    this.getTheme = getTheme; // This function provides the current theme
+    this.getTheme = getTheme; // Store the getTheme function here
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
@@ -19,7 +19,6 @@ export class Draggable {
     this.init();
   }
 
-  // Method to center the element in the viewport
   centerElementInViewport() {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
@@ -33,7 +32,6 @@ export class Draggable {
     this.element.style.top = `${initialTop}px`;
   }
 
-  // Initialize event listeners for dragging
   init() {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
@@ -43,24 +41,19 @@ export class Draggable {
     setInterval(() => this.updateThemeEffects(), 500);
   }
 
-  // Update the friction and gravity effect based on the theme
   updateThemeEffects() {
-    const currentTheme = this.getTheme();
-
-    // If the theme is "space", set friction to 1 (no friction), and enable bounce without slowdown
+    const currentTheme = this.getTheme(); // Retrieve the current theme
     if (currentTheme === 'space') {
-      this.friction = 1.0; // Zero gravity effect (no friction)
+      this.friction = 1.0; // No friction in space theme
     } else {
-      this.friction = 0.92; // Default friction for other themes
+      this.friction = 0.92; // Normal friction
     }
   }
 
-  // Start dragging
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
 
-    // Calculate initial offset
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -69,31 +62,27 @@ export class Draggable {
     cancelAnimationFrame(this.animationFrame);
   }
 
-  // Dragging action
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate new position with some smoothing for better control
-    const newX = e.clientX - this.offset.x;
-    const newY = e.clientY - this.offset.y;
+    // Make dragging movement slightly slower for better control
+    const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
+    const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
-    // Store velocity for release physics
+    // Store velocity for release power boost
     this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
     this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
-    // Apply the position to the element
     this.element.style.left = `${newX}px`;
     this.element.style.top = `${newY}px`;
   }
 
-  // Stop dragging
   stopDrag() {
     this.isDragging = false;
     this.isReleased = true;
     this.applyPhysics();
   }
 
-  // Apply physics (smooth stop with velocity decay)
   applyPhysics() {
     if (!this.isReleased) return;
 
@@ -103,60 +92,39 @@ export class Draggable {
         return;
       }
 
-      // Apply friction to slow down the velocity, except in the "space" theme
-      if (this.getTheme() !== 'space') {
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
-      }
+      this.velocity.x *= this.friction;
+      this.velocity.y *= this.friction;
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get the dimensions of the element
+      // Get module dimensions
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Dynamically set boundary width and height to the current viewport size
+      // Correct viewport boundaries (fully contained)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Use window.innerWidth to set right boundary
-      const maxY = window.innerHeight - elementHeight; // Use window.innerHeight to set bottom boundary
+      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
+      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
 
-      // Correct the element's position, and bounce with reversal of velocity in "space" theme
       if (newLeft < minX) {
-        newLeft = minX; // Don't allow it to go past the left side
-        if (this.getTheme() === 'space') {
-          this.velocity.x *= -1;  // Reverse velocity for zero gravity bounce
-        } else {
-          this.velocity.x *= -0.4;  // Normal bounce with slowdown for other themes
-        }
+        newLeft = minX;
+        this.velocity.x *= -0.4;
       }
       if (newLeft > maxX) {
-        newLeft = maxX; // Don't allow it to go past the right side
-        if (this.getTheme() === 'space') {
-          this.velocity.x *= -1;  // Reverse velocity for zero gravity bounce
-        } else {
-          this.velocity.x *= -0.4;  // Normal bounce with slowdown for other themes
-        }
+        newLeft = maxX;
+        this.velocity.x *= -0.4;
       }
       if (newTop < minY) {
-        newTop = minY; // Don't allow it to go past the top side
-        if (this.getTheme() === 'space') {
-          this.velocity.y *= -1;  // Reverse velocity for zero gravity bounce
-        } else {
-          this.velocity.y *= -0.4;  // Normal bounce with slowdown for other themes
-        }
+        newTop = minY;
+        this.velocity.y *= -0.4;
       }
       if (newTop > maxY) {
-        newTop = maxY; // Don't allow it to go past the bottom side
-        if (this.getTheme() === 'space') {
-          this.velocity.y *= -1;  // Reverse velocity for zero gravity bounce
-        } else {
-          this.velocity.y *= -0.4;  // Normal bounce with slowdown for other themes
-        }
+        newTop = maxY;
+        this.velocity.y *= -0.4;
       }
 
-      // Apply the corrected position to the element
       this.element.style.left = `${newLeft}px`;
       this.element.style.top = `${newTop}px`;
 
