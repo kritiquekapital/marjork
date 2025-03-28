@@ -1,22 +1,8 @@
-import { Draggable } from './draggable.js';
-
-// 1. Create overlay
-const overlay = document.createElement('div');
-overlay.className = 'music-overlay';
-document.body.appendChild(overlay);
-
-// 2. Declare elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
-const closeBtn = document.querySelector(".close-btn");
-const playPauseBtn = document.querySelector(".playpause");
-const prevBtn = document.querySelector(".prev-btn");
-const nextBtn = document.querySelector(".next-btn");
-
-// 3. Playlist
 const liveLinks2 = [
-  "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1&",  //Плачу на техно
+  "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
   "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
   "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
   "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",  //но останься
@@ -38,25 +24,41 @@ const liveLinks2 = [
   "https://www.youtube.com/embed/3NrZCJh2Hgk?autoplay=1",  //Seaside
   "https://www.youtube.com/embed/cYpQ36acEUU?autoplay=1",  //miss u
   "https://www.youtube.com/embed/wfj26-cQkx8?autoplay=1",  //forfeit
-  "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1"   //saftey
+  "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
 ];
 
-// 4. State variables
-let isFirstOpen = true;
+// Variable declarations
+let isFirstOpen = true; // Controls first-time initialization
 let currentLinkIndex2 = 0;
 let isPlaying = true;
+let isShuffling = false;
 
-// 5. Initialize draggable music player
-ew Draggable(musicPlayer, { handle: '.drag-handle', containment: true });
-
-// 6. Functions
+// Player Visibility Control
 function showMusicPlayer() {
-  if (isFirstOpen) {
+  if(isFirstOpen) {
+    updateMusicSource();
+    isFirstOpen = false; // Mark first open as complete
+  }
+  musicPlayer.style.display = "block";
+  overlay.style.display = "block";
+  if(!isPlaying) togglePlayState();
+}
+
+// Initialize
+document.addEventListener("DOMContentLoaded", () => {
+  hideMusicPlayer();
+  overlay.style.display = 'none';
+});
+
+// Player Visibility Control
+function showMusicPlayer() {
+  if(isFirstOpen) {
     updateMusicSource();
     isFirstOpen = false;
   }
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
+  if(!isPlaying) togglePlayState();
 }
 
 function hideMusicPlayer() {
@@ -64,50 +66,42 @@ function hideMusicPlayer() {
   overlay.style.display = "none";
 }
 
+// Video Control
 function updateMusicSource() {
   const url = liveLinks2[currentLinkIndex2];
-  if (!musicFrame.src.includes(url)) {
-    musicFrame.src = url;
+  if(!musicFrame.src.includes(url)) {
+    musicFrame.src = `${url}?autoplay=1`;
   }
 }
 
 function togglePlayState() {
-  console.log("Toggling Play/Pause");
   isPlaying = !isPlaying;
-  if (musicFrame.contentWindow) {
-    musicFrame.contentWindow.postMessage(
-      JSON.stringify({
-        event: "command",
-        func: isPlaying ? "playVideo" : "pauseVideo",
-      }),
-      "*"
-    );
-  } else {
-    console.log("Music frame contentWindow not accessible.");
-  }
+  musicFrame.contentWindow.postMessage({
+    event: "command",
+    func: isPlaying ? "playVideo" : "pauseVideo",
+    args: ""
+  }, "*");
 }
 
-function playPrevious() {
-  currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
-  updateMusicSource();
-  if (!isPlaying) togglePlayState();
-}
-
-function playNext() {
-  currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
-  updateMusicSource();
-  if (!isPlaying) togglePlayState();
-}
-
-// 7. Event Listeners
-document.addEventListener("DOMContentLoaded", hideMusicPlayer);
+// Event Listeners
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
-  if (musicPlayer.style.display === "block") return;
+  if(musicPlayer.style.display === "block") return;
   showMusicPlayer();
 });
+
 overlay.addEventListener("click", hideMusicPlayer);
-closeBtn?.addEventListener("click", hideMusicPlayer);
-playPauseBtn?.addEventListener("click", togglePlayState);
-prevBtn?.addEventListener("click", playPrevious);
-nextBtn?.addEventListener("click", playNext);
+
+document.querySelector(".playpause").addEventListener("click", togglePlayState);
+
+document.querySelector(".prev-btn").addEventListener("click", () => {
+  currentLinkIndex2 = (currentLinkIndex2 - 1 + liveLinks2.length) % liveLinks2.length;
+  updateMusicSource();
+  if(!isPlaying) togglePlayState();
+});
+
+document.querySelector(".next-btn").addEventListener("click", () => {
+  currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
+  updateMusicSource();
+  if(!isPlaying) togglePlayState();
+});
