@@ -64,6 +64,11 @@ themeButton.addEventListener("click", () => {
   themeButton.style.animation = "spin 0.5s ease-in-out";
   setTimeout(() => {
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+
+function getCurrentTheme() {
+  return themes[currentThemeIndex].name; // Returns the active theme's name
+}
+
     applyTheme();
     themeButton.style.animation = "";
   }, 500);
