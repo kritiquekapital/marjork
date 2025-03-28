@@ -44,6 +44,10 @@ let isFirstOpen = true;
 let currentLinkIndex2 = 0;
 let isPlaying = true;
 let isPinned = false;
+let isShuffling = false;
+
+// 🎵 Buttons
+const controlsContainer = document.querySelector(".ipod-controls");
 
 // Pin Button
 const pinButton = document.createElement("button");
