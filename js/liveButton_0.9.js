@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080", // JRJRJRJRJRJRJRJRJRJRJRJRJR
     "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1&vq=hd1080", // drive
     "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1&vq=hd1080", // fight
-    "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080",    //MNR
+    "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080", //MNR
     "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&vq=hd1080", // la souf
     "https://www.youtube.com/embed/md9-jG4RzXs?autoplay=1&vq=hd1080", // Prix
     "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1&vq=hd1080", // SocWen
