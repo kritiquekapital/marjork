@@ -167,7 +167,6 @@ document.querySelector(".playpause")?.addEventListener("click", togglePlayState)
         const nextVideo = videoList[currentIndex].getAttribute("data-src");
         player.src = nextVideo;
         player.play();
-    }
 
     player.addEventListener("ended", playNextVideo);
     
