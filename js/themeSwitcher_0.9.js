@@ -2,96 +2,96 @@ import { Draggable } from './draggable.js';
 
 // themeSwitcher_0.9.js
 document.addEventListener('DOMContentLoaded', () => {
+  // Ensure the draggableElement exists before initializing Draggable
   const draggableElement = document.getElementById('draggableElement');
 
-  // Check if the element exists before creating the Draggable instance
   if (!draggableElement) {
     throw new Error("Element with ID 'draggableElement' not found. Please check the HTML.");
   }
 
-  // Now that we know the element exists, we can safely create the Draggable instance
+  // Initialize the Draggable instance once
   const draggable = new Draggable(draggableElement);
 
+  // Define the function to control zero-gravity mode
   function setZeroGravityMode(isZeroGravity) {
-    // Set the zero gravity mode on the draggable instance
     draggable.setZeroGravityMode(isZeroGravity);
   }
 
-const themes = [
-  { name: "classic", displayName: "😎" },
-  { name: "modern", displayName: "🌚" },
-  { name: "nature", displayName: "🌞" },
-  { name: "retro", displayName: "🕹️" },
-  { name: "space", displayName: "🚀" }
-];
+  const themes = [
+    { name: "classic", displayName: "😎" },
+    { name: "modern", displayName: "🌚" },
+    { name: "nature", displayName: "🌞" },
+    { name: "retro", displayName: "🕹️" },
+    { name: "space", displayName: "🚀" }
+  ];
 
-let currentThemeIndex = 0;
-const spaceBackground = document.createElement("iframe");
-spaceBackground.classList.add("space-background-stream");
-spaceBackground.setAttribute("frameborder", "0");
-spaceBackground.setAttribute("allow", "autoplay; encrypted-media");
-spaceBackground.setAttribute("allowfullscreen", "");
-spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
-document.body.prepend(spaceBackground);
+  let currentThemeIndex = 0;
+  const spaceBackground = document.createElement("iframe");
+  spaceBackground.classList.add("space-background-stream");
+  spaceBackground.setAttribute("frameborder", "0");
+  spaceBackground.setAttribute("allow", "autoplay; encrypted-media");
+  spaceBackground.setAttribute("allowfullscreen", "");
+  spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
+  document.body.prepend(spaceBackground);
 
-// Initialize draggable element
-const draggableElement = document.getElementById('draggableElement');
-const draggable = new Draggable(draggableElement);
+  // Apply theme based on the current index
+  function applyTheme() {
+    const currentTheme = themes[currentThemeIndex];
+    document.body.className = `theme-${currentTheme.name}`;
+    themeButton.textContent = currentTheme.displayName;
 
-function applyTheme() {
-  const currentTheme = themes[currentThemeIndex];
-  document.body.className = `theme-${currentTheme.name}`;
-  themeButton.textContent = currentTheme.displayName;
-
-  if (currentTheme.name === "space") {
-    spaceBackground.style.display = "block";
-    setZeroGravityMode(true);  // Enable zero-gravity mode
-  } else {
-    spaceBackground.style.display = "none";
-    setZeroGravityMode(false);  // Disable zero-gravity mode
+    if (currentTheme.name === "space") {
+      spaceBackground.style.display = "block";
+      setZeroGravityMode(true);  // Enable zero-gravity mode
+    } else {
+      spaceBackground.style.display = "none";
+      setZeroGravityMode(false);  // Disable zero-gravity mode
+    }
   }
-}
 
-let inactivityTimer;
+  let inactivityTimer;
 
-function hideSpaceThemeUI() {
-  if (document.body.classList.contains("theme-space")) {
-    document.querySelector(".grid-container").style.opacity = "0";
-    document.querySelector(".grid-container").style.pointerEvents = "none";
+  // Function to hide space theme UI
+  function hideSpaceThemeUI() {
+    if (document.body.classList.contains("theme-space")) {
+      document.querySelector(".grid-container").style.opacity = "0";
+      document.querySelector(".grid-container").style.pointerEvents = "none";
+    }
   }
-}
 
-function showSpaceThemeUI() {
-  if (document.body.classList.contains("theme-space")) {
-    document.querySelector(".grid-container").style.opacity = "1";
-    document.querySelector(".grid-container").style.pointerEvents = "auto";
+  // Function to show space theme UI
+  function showSpaceThemeUI() {
+    if (document.body.classList.contains("theme-space")) {
+      document.querySelector(".grid-container").style.opacity = "1";
+      document.querySelector(".grid-container").style.pointerEvents = "auto";
+    }
   }
-}
 
-// Reset the inactivity timer
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
-}
+  // Reset the inactivity timer
+  function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    showSpaceThemeUI(); // Ensure UI is visible when active
+    inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
+  }
 
-// Listen for pointer movements to detect activity
-document.addEventListener("mousemove", resetInactivityTimer);
-document.addEventListener("keydown", resetInactivityTimer);
-document.addEventListener("click", resetInactivityTimer);
-document.addEventListener("touchstart", resetInactivityTimer);
+  // Listen for pointer movements to detect activity
+  document.addEventListener("mousemove", resetInactivityTimer);
+  document.addEventListener("keydown", resetInactivityTimer);
+  document.addEventListener("click", resetInactivityTimer);
+  document.addEventListener("touchstart", resetInactivityTimer);
 
-// Initialize the timer when the page loads
-resetInactivityTimer();
+  // Initialize the timer when the page loads
+  resetInactivityTimer();
 
-const themeButton = document.getElementById("themeButton");
-themeButton.addEventListener("click", () => {
-  themeButton.style.animation = "spin 0.5s ease-in-out";
-  setTimeout(() => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    applyTheme();
-    themeButton.style.animation = "";
-  }, 500);
+  const themeButton = document.getElementById("themeButton");
+  themeButton.addEventListener("click", () => {
+    themeButton.style.animation = "spin 0.5s ease-in-out";
+    setTimeout(() => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      applyTheme();
+      themeButton.style.animation = "";
+    }, 500);
+  });
+
+  applyTheme();  // Apply the initial theme
 });
-
-applyTheme();
