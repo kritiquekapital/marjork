@@ -158,17 +158,14 @@ document.querySelector(".next-btn")?.addEventListener("click", () => {
 document.querySelector(".playpause")?.addEventListener("click", togglePlayState);
 
 // 🎵 Next Video on End
-    function playNextVideo() {
-        if (isShuffled) {
-            currentIndex = Math.floor(Math.random() * videoList.length);
-        } else {
-            currentIndex = (currentIndex + 1) % videoList.length;
-        }
-        const nextVideo = videoList[currentIndex].getAttribute("data-src");
-        player.src = nextVideo;
-        player.play();
+player.addEventListener("ended", function () {
+    if (isShuffled) {
+        currentIndex = Math.floor(Math.random() * videoList.length);
+    } else {
+        currentIndex = (currentIndex + 1) % videoList.length;
+    }
 
-    player.addEventListener("ended", playNextVideo);
-    
-    updatePinState();
-    updateShuffleState();
+    const nextVideo = videoList[currentIndex].getAttribute("data-src");
+    player.src = nextVideo;
+    player.play();
+});
