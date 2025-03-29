@@ -1,3 +1,5 @@
+import Draggable from './draggable.js';
+
 const themes = [
   { name: "classic", displayName: "😎" },
   { name: "modern", displayName: "🌚" },
@@ -15,6 +17,10 @@ spaceBackground.setAttribute("allowfullscreen", "");
 spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
 document.body.prepend(spaceBackground);
 
+// Initialize draggable element
+const draggableElement = document.getElementById('draggableElement');
+const draggable = new Draggable(draggableElement);
+
 function applyTheme() {
   const currentTheme = themes[currentThemeIndex];
   document.body.className = `theme-${currentTheme.name}`;
@@ -22,8 +28,10 @@ function applyTheme() {
 
   if (currentTheme.name === "space") {
     spaceBackground.style.display = "block";
+    setZeroGravityMode(true);  // Enable zero-gravity mode
   } else {
     spaceBackground.style.display = "none";
+    setZeroGravityMode(false);  // Disable zero-gravity mode
   }
 }
 
@@ -47,7 +55,7 @@ function showSpaceThemeUI() {
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer);
   showSpaceThemeUI(); // Ensure UI is visible when active
-  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 10 seconds timeout
+  inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
 }
 
 // Listen for pointer movements to detect activity
