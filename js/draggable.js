@@ -70,7 +70,7 @@ export class Draggable {
     this.applyPhysics();
   }
 
-  applyPhysics() {
+applyPhysics() {
     if (!this.isReleased) return;
 
     const animate = () => {
@@ -85,32 +85,32 @@ export class Draggable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get module dimensions
+      // Get element dimensions
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Corrected viewport boundaries (fully contained within the window)
-      const minX = 0;
-      const minY = 0;
-      const maxX = document.documentElement.clientWidth - elementWidth;  // 100px padding on the right
-      const maxY = document.documentElement.clientHeight - elementHeight;
+      // Set custom boundaries with padding (100px on the right, 200px on the bottom)
+      const minX = 100; // 100px padding on the left
+      const minY = 200; // 200px padding on the top
+      const maxX = document.documentElement.clientWidth - elementWidth - 100;  // 100px padding on the right
+      const maxY = document.documentElement.clientHeight - elementHeight - 200; // 200px padding on the bottom
 
-      // Adjust boundaries to ensure the element stays fully within the viewport
+      // Adjust boundaries to ensure the element stays fully within the viewport with the offset
       if (newLeft < minX) {
         newLeft = minX;
-        this.velocity.x *= -0.4;  // Bounce off left side
+        this.velocity.x *= -0.4;  // Bounce off the left side
       }
       if (newLeft > maxX) {
         newLeft = maxX;
-        this.velocity.x *= -0.4;  // Bounce off right side
+        this.velocity.x *= -0.4;  // Bounce off the right side
       }
       if (newTop < minY) {
         newTop = minY;
-        this.velocity.y *= -0.4;  // Bounce off top side
+        this.velocity.y *= -0.4;  // Bounce off the top side
       }
       if (newTop > maxY) {
         newTop = maxY;
-        this.velocity.y *= -0.4;  // Bounce off bottom side
+        this.velocity.y *= -0.4;  // Bounce off the bottom side
       }
 
       this.element.style.left = `${newLeft}px`;
@@ -120,5 +120,4 @@ export class Draggable {
     };
 
     this.animationFrame = requestAnimationFrame(animate);
-  }
 }
