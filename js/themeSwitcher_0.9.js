@@ -1,14 +1,21 @@
 import { Draggable } from './draggable.js';
 
 // themeSwitcher_0.9.js
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   const draggableElement = document.getElementById('draggableElement');
-  if (draggableElement) {
-    const draggable = new Draggable(draggableElement);
-  } else {
-    console.error("Element with ID 'draggableElement' not found.");
+
+  // Check if the element exists before creating the Draggable instance
+  if (!draggableElement) {
+    throw new Error("Element with ID 'draggableElement' not found. Please check the HTML.");
   }
-});
+
+  // Now that we know the element exists, we can safely create the Draggable instance
+  const draggable = new Draggable(draggableElement);
+
+  function setZeroGravityMode(isZeroGravity) {
+    // Set the zero gravity mode on the draggable instance
+    draggable.setZeroGravityMode(isZeroGravity);
+  }
 
 const themes = [
   { name: "classic", displayName: "😎" },
