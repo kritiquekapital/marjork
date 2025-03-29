@@ -1,5 +1,15 @@
 import Draggable from './draggable.js';
 
+// themeSwitcher_0.9.js
+document.addEventListener("DOMContentLoaded", () => {
+  const draggableElement = document.getElementById('draggableElement');
+  if (draggableElement) {
+    const draggable = new Draggable(draggableElement);
+  } else {
+    console.error("Element with ID 'draggableElement' not found.");
+  }
+});
+
 const themes = [
   { name: "classic", displayName: "😎" },
   { name: "modern", displayName: "🌚" },
