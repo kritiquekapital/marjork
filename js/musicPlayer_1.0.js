@@ -172,4 +172,3 @@ document.querySelector(".playpause")?.addEventListener("click", togglePlayState)
     
     updatePinState();
     updateShuffleState();
-});
