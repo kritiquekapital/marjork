@@ -29,3 +29,7 @@ function enableScroll() {
 if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
   disableScroll();
 }
+
+document.addEventListener("touchmove", function (event) {
+  event.preventDefault(); // Blocks swipe scrolling
+}, { passive: false });
