@@ -1,4 +1,4 @@
-import Draggable from './draggable.js';
+import { Draggable } from './draggable.js';
 
 // themeSwitcher_0.9.js
 document.addEventListener("DOMContentLoaded", () => {
