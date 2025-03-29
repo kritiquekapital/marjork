@@ -8,10 +8,10 @@ export class Draggable {
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92; // For normal mode
+    this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
-    this.isZeroGravity = false;
+    this.isZeroGravity = false;  // New property to track zero-gravity mode
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -23,6 +23,7 @@ export class Draggable {
     this.init();
   }
 
+  // Function to toggle physics mode based on theme
   setZeroGravityMode(isZeroGravity) {
     this.isZeroGravity = isZeroGravity;
   }
@@ -61,11 +62,11 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    const newX = e.clientX - this.offset.x;
-    const newY = e.clientY - this.offset.y;
+    const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
+    const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
-    this.velocity.x = (newX - this.element.offsetLeft) * 0.5;
-    this.velocity.y = (newY - this.element.offsetTop) * 0.5;
+    this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
+    this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
     this.element.style.left = `${newX}px`;
     this.element.style.top = `${newY}px`;
@@ -81,13 +82,12 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1 && !this.isZeroGravity) {
+      if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
 
       if (!this.isZeroGravity) {
-        // Apply friction for normal mode
         this.velocity.x *= this.friction;
         this.velocity.y *= this.friction;
       }
@@ -97,42 +97,20 @@ export class Draggable {
 
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
-
       const minX = 155;
       const minY = 200;
       const maxX = document.documentElement.clientWidth - 155;
       const maxY = document.documentElement.clientHeight - 200;
 
-      if (this.isZeroGravity) {
-        // In zero gravity mode, it will keep moving indefinitely at a constant speed
-        if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1;  // Reverse horizontal velocity but maintain constant speed
-        }
-        if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1;  // Reverse vertical velocity but maintain constant speed
-        }
-      } else {
-        // Normal physics: bounce off edges with friction
-        if (newLeft < minX) {
-          newLeft = minX;
-          this.velocity.x *= -1;  // Reverse horizontal velocity
-        }
-        if (newLeft > maxX) {
-          newLeft = maxX;
-          this.velocity.x *= -1;  // Reverse horizontal velocity
-        }
-        if (newTop < minY) {
-          newTop = minY;
-          this.velocity.y *= -1;  // Reverse vertical velocity
-        }
-        if (newTop > maxY) {
-          newTop = maxY;
-          this.velocity.y *= -1;  // Reverse vertical velocity
-        }
+      if (newLeft < minX || newLeft > maxX) {
+        this.velocity.x *= -1;
+      }
+      if (newTop < minY || newTop > maxY) {
+        this.velocity.y *= -1;
       }
 
-      this.element.style.left = `${newLeft}px`;
-      this.element.style.top = `${newTop}px`;
+      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
       this.animationFrame = requestAnimationFrame(animate);
     };
