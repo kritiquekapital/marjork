@@ -56,7 +56,12 @@ body {
     transform: scale(0.95); /* Slightly zooms out the entire page */
     transform-origin: center;
     padding-bottom: 15vh; /* Adds extra buffer at the bottom */
+    background-color: transparent !important; /* Ensures theme background applies */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
+}
 
   #musicPlayer {
     margin-bottom: 60px; /* Ensures the player isn’t cut off */
