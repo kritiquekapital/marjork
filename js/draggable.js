@@ -96,10 +96,10 @@ export class Draggable {
       const elementHeight = this.element.offsetHeight;
 
       // Corrected viewport boundaries (fully contained within the window)
-      const minX = 0;
-      const minY = 0;
-      const maxX = document.documentElement.clientWidth - elementWidth;
-      const maxY = document.documentElement.clientHeight - elementHeight;
+      const minX = 155;
+      const minY = 200;
+      const maxX = document.documentElement.clientWidth - 155;
+      const maxY = document.documentElement.clientHeight - 200;
 
       if (this.isZeroGravity) {
         // Zero-gravity mode: reverse velocity when hitting the edges, simulating bounce
