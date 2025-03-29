@@ -54,7 +54,7 @@ body {
 @media (max-width: 768px) {
   body {
     transform: scale(0.95); /* Slightly zooms out the entire page */
-    transform-origin: top center;
+    transform-origin: center;
     padding-bottom: 15vh; /* Adds extra buffer at the bottom */
   }
 
