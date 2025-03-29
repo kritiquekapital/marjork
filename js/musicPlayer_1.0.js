@@ -79,13 +79,21 @@ if (prevButton) {
     updateShuffleState();
   });
 }
+ 
+  // Set initial state for shuffle button
+  shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
+}
 
 // 📌 Show Player
 function showMusicPlayer() {
   if (isFirstOpen) {
     updateMusicSource();
     isFirstOpen = false;
-  }
+    
+  // Set initial state for pin button
+  pinButton.style.opacity = isPinned ? "1" : "0.5";
+}
+  
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
 }
