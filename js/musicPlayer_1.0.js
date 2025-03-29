@@ -82,7 +82,6 @@ if (prevButton) {
  
   // Set initial state for shuffle button
   shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
-}
 
 // 📌 Show Player
 function showMusicPlayer() {
