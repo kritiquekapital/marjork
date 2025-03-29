@@ -13,7 +13,7 @@ const musicFrame = document.getElementById("musicFrame");
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
 
-// Video Links
+// Video Links (enable YouTube API)
 const liveLinks2 = [
   "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1",  //Candy
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
@@ -48,23 +48,7 @@ let isShuffling = false;
 let shuffleQueue = [];
 let currentPlaylist = [...liveLinks2];
 let currentIndex = 0;
-let player; // YouTube Player Instance
-
-// 🎵 Buttons
-const controlsContainer = document.querySelector(".ipod-controls");
-
-// 📌 Pin Button
-const pinButton = document.createElement("button");
-pinButton.classList.add("ipod-btn", "pin-btn");
-pinButton.innerHTML = "📌";
-controlsContainer.prepend(pinButton);
-
-// 🔀 Shuffle Button
-const prevButton = document.querySelector(".prev-btn");
-const shuffleButton = document.createElement("button");
-shuffleButton.classList.add("ipod-btn", "shuffle-btn");
-shuffleButton.innerHTML = "🔀";
-prevButton.parentNode.insertBefore(shuffleButton, prevButton);
+let player; // YouTube Player instance
 
 // 📌 Show Player
 function showMusicPlayer() {
@@ -85,56 +69,24 @@ function hideMusicPlayer() {
   }
 }
 
-// 🖱 Click Outside to Hide (Unless Pinned)
-document.addEventListener("click", (event) => {
-  if (!musicPlayer.contains(event.target) && !vinylLink.contains(event.target)) {
-    hideMusicPlayer();
-  }
-});
-
 // ✅ Vinyl Click to Open
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
   showMusicPlayer();
 });
 
-// 📌 Pin Button Click
-pinButton.addEventListener("click", () => {
-  isPinned = !isPinned;
-  updateButtonStates();
-});
-
-// 🔀 Shuffle Button Click
-shuffleButton.addEventListener("click", () => {
-  isShuffling = !isShuffling;
-  if (isShuffling) {
-    shufflePlaylist();
-  } else {
-    resumeSequential();
-  }
-  updateButtonStates();
-});
-
-// 🎵 Update Button Opacity
-function updateButtonStates() {
-  pinButton.style.opacity = isPinned ? "1" : "0.5";
-  shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
-}
-
-// 🎵 Shuffle Algorithm (Elimination-based)
+// 🎵 Shuffle Algorithm
 function shufflePlaylist() {
   shuffleQueue = [...liveLinks2].sort(() => Math.random() - 0.5);
   currentIndex = 0;
   currentPlaylist = [...shuffleQueue];
 }
 
-// 🎵 Resume Sequential Order
+// 🎵 Resume Sequential Order from Current Track
 function resumeSequential() {
   let currentVideo = currentPlaylist[currentIndex];
   let originalIndex = liveLinks2.indexOf(currentVideo);
-  
   if (originalIndex === -1) originalIndex = 0;
-  
   currentPlaylist = [...liveLinks2];
   currentIndex = originalIndex;
 }
@@ -143,46 +95,20 @@ function resumeSequential() {
 function updateMusicSource() {
   let newSrc = currentPlaylist[currentIndex];
   musicFrame.src = newSrc;
-  setTimeout(initializeYouTubePlayer, 1000); // Ensure API loads
-}
-
-// 🎵 Play/Pause Toggle
-function togglePlayState() {
-  isPlaying = !isPlaying;
-  player?.playVideo();
+  setTimeout(initializeYouTubePlayer, 1000); // Delay to let API bind
 }
 
 // 🎵 Next Track
 function nextTrack() {
-  currentIndex++;
-  
-  if (currentIndex >= currentPlaylist.length) {
-    if (isShuffling) {
-      shufflePlaylist(); // Restart shuffle cycle
-    } else {
-      currentIndex = 0; // Loop in normal mode
-    }
-  }
-
+  currentIndex = (currentIndex + 1) % currentPlaylist.length;
   updateMusicSource();
-  if (!isPlaying) togglePlayState();
 }
-
-// 🎵 Previous Track
-function prevTrack() {
-  currentIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
-  updateMusicSource();
-  if (!isPlaying) togglePlayState();
-}
-
-// 🎵 Button Listeners
-document.querySelector(".next-btn").addEventListener("click", nextTrack);
-prevButton.addEventListener("click", prevTrack);
-document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
 // 🎵 Initialize YouTube Player API
 function initializeYouTubePlayer() {
-  player = new YT.Player('musicFrame', {
+  if (!window.YT || !YT.Player) return;
+  if (player) player.destroy(); // Remove previous instance
+  player = new YT.Player(musicFrame, {
     events: {
       'onStateChange': function (event) {
         if (event.data === YT.PlayerState.ENDED) {
