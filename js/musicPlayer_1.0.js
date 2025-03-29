@@ -158,7 +158,19 @@ document.querySelector(".next-btn")?.addEventListener("click", () => {
 document.querySelector(".playpause")?.addEventListener("click", togglePlayState);
 
 // 🎵 Next Video on End
-musicFrame.addEventListener("ended", () => {
-  currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
-  updateMusicSource();
+    function playNextVideo() {
+        if (isShuffled) {
+            currentIndex = Math.floor(Math.random() * videoList.length);
+        } else {
+            currentIndex = (currentIndex + 1) % videoList.length;
+        }
+        const nextVideo = videoList[currentIndex].getAttribute("data-src");
+        player.src = nextVideo;
+        player.play();
+    }
+
+    player.addEventListener("ended", playNextVideo);
+    
+    updatePinState();
+    updateShuffleState();
 });
