@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         <div class="modal-controls">
           <button id="prevChannel">Previous</button>
+          <button id="popoutButton">Popout</button>
           <button id="nextChannel">Next</button>
         </div>
       </div>
