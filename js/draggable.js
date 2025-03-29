@@ -1,4 +1,4 @@
-export default class Draggable {
+export class Draggable {
   constructor(element) {
     this.element = element;
     this.isDragging = false;
