@@ -118,6 +118,5 @@ applyPhysics() {
 
       this.animationFrame = requestAnimationFrame(animate);
     };
-
     this.animationFrame = requestAnimationFrame(animate);
 }
