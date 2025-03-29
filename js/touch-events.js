@@ -14,3 +14,18 @@ document.addEventListener("gesturestart", function (event) {
 document.addEventListener("DOMContentLoaded", function () {
     document.body.style.touchAction = "manipulation"; // Prevents double-tap zoom
 });
+
+function disableScroll() {
+  document.body.style.overflow = "hidden";
+  document.body.style.position = "fixed"; // Prevents jumping when re-enabling
+}
+
+function enableScroll() {
+  document.body.style.overflow = "";
+  document.body.style.position = "";
+}
+
+// Disable scroll on mobile
+if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+  disableScroll();
+}
