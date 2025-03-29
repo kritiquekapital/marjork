@@ -90,7 +90,7 @@ export class Draggable {
       const elementHeight = this.element.offsetHeight;
 
       // Set custom boundaries with padding (100px on the right, 200px on the bottom)
-      const minX = 100; // 100px padding on the left
+      const minX = 125; // 100px padding on the left
       const minY = 200; // 200px padding on the top
       const maxX = document.documentElement.clientWidth - elementWidth - 100;  // 100px padding on the right
       const maxY = document.documentElement.clientHeight - elementHeight - 200; // 200px padding on the bottom
