@@ -92,8 +92,8 @@ export class Draggable {
       // Corrected viewport boundaries (fully contained within the window)
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
-      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
+      const maxX = document.documentElement.clientWidth - elementWidth;  // 100px padding on the right
+      const maxY = document.documentElement.clientHeight - elementHeight;
 
       // Adjust boundaries to ensure the element stays fully within the viewport
       if (newLeft < minX) {
