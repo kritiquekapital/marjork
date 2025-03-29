@@ -7,6 +7,7 @@ export class Draggable {
     this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
+    this.isZeroGravity = false;  // New property to track zero-gravity mode
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -16,6 +17,11 @@ export class Draggable {
 
     // Initialize event listeners
     this.init();
+  }
+
+  // Function to toggle physics mode based on theme
+  setZeroGravityMode(isZeroGravity) {
+    this.isZeroGravity = isZeroGravity;
   }
 
   centerElementInViewport() {
@@ -40,7 +46,7 @@ export class Draggable {
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
-
+    
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -85,32 +91,30 @@ export class Draggable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get element dimensions
+      // Get module dimensions
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Set custom boundaries with padding (100px on the right, 200px on the bottom)
-      const minX = 155; // 100px padding on the left
-      const minY = 200; // 200px padding on the top
-      const maxX = document.documentElement.clientWidth - 155;  // 100px padding on the right
-      const maxY = document.documentElement.clientHeight - 200; // 200px padding on the bottom
+      // Corrected viewport boundaries (fully contained within the window)
+      const minX = 0;
+      const minY = 0;
+      const maxX = document.documentElement.clientWidth - elementWidth;
+      const maxY = document.documentElement.clientHeight - elementHeight;
 
-      // Adjust boundaries to ensure the element stays fully within the viewport with the offset
-      if (newLeft < minX) {
-        newLeft = minX;
-        this.velocity.x *= -0.4;  // Bounce off the left side
-      }
-      if (newLeft > maxX) {
-        newLeft = maxX;
-        this.velocity.x *= -0.4;  // Bounce off the right side
-      }
-      if (newTop < minY) {
-        newTop = minY;
-        this.velocity.y *= -0.4;  // Bounce off the top side
-      }
-      if (newTop > maxY) {
-        newTop = maxY;
-        this.velocity.y *= -0.4;  // Bounce off the bottom side
+      if (this.isZeroGravity) {
+        // Zero-gravity mode: reverse velocity when hitting the edges, simulating bounce
+        if (newLeft < minX || newLeft > maxX) {
+          this.velocity.x *= -1;  // Reverse horizontal velocity to simulate bounce
+        }
+        if (newTop < minY || newTop > maxY) {
+          this.velocity.y *= -1;  // Reverse vertical velocity to simulate bounce
+        }
+      } else {
+        // If not zero-gravity, respect boundaries and stop at them
+        if (newLeft < minX) newLeft = minX;
+        if (newLeft > maxX) newLeft = maxX;
+        if (newTop < minY) newTop = minY;
+        if (newTop > maxY) newTop = maxY;
       }
 
       this.element.style.left = `${newLeft}px`;
