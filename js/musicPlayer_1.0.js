@@ -86,9 +86,10 @@ function showMusicPlayer() {
     updateMusicSource();
     isFirstOpen = false;
     
-  // Set initial state for pin button
-  pinButton.style.opacity = isPinned ? "1" : "0.5";
-}
+    // Set initial state for pin and shuffle buttons
+    pinButton.style.opacity = isPinned ? "1" : "0.5";
+    document.querySelector(".shuffle-btn").style.opacity = isShuffling ? "1" : "0.5";
+  }
   
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
@@ -155,3 +156,9 @@ document.querySelector(".next-btn")?.addEventListener("click", () => {
 
 // 🎵 Play/Pause Button
 document.querySelector(".playpause")?.addEventListener("click", togglePlayState);
+
+// 🎵 Next Video on End
+musicFrame.addEventListener("ended", () => {
+  currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
+  updateMusicSource();
+});
