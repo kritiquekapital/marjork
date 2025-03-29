@@ -11,14 +11,21 @@ export class Draggable {
     this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
-    this.isZeroGravity = false;
+    this.isZeroGravity = false;  // New property to track zero-gravity mode
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
+
+    // Center the element in the viewport
     this.centerElementInViewport();
 
     // Initialize event listeners
     this.init();
+  }
+
+  // Function to toggle physics mode based on theme
+  setZeroGravityMode(isZeroGravity) {
+    this.isZeroGravity = isZeroGravity;
   }
 
   centerElementInViewport() {
@@ -43,7 +50,7 @@ export class Draggable {
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
-
+    
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -75,13 +82,15 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
 
-      this.velocity.x *= this.friction;
-      this.velocity.y *= this.friction;
+      if (!this.isZeroGravity) {
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+      }
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
@@ -109,40 +118,3 @@ export class Draggable {
     this.animationFrame = requestAnimationFrame(animate);
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const videoPlayerModal = document.getElementById("videoPlayerModal");
-  const videoFrame = document.getElementById("videoFrame");
-  const popoutButton = document.getElementById("popoutButton");
-
-  let draggableInstance = null;  // Store the Draggable instance for the pop-out video player
-
-  // Popout Button logic
-  popoutButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    // Set the video source
-    videoFrame.src = "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080"; // Example video link
-    videoPlayerModal.style.visibility = "visible";
-    videoPlayerModal.style.display = "flex";
-
-    // Initialize draggable only if not already initialized
-    if (!draggableInstance) {
-      draggableInstance = new Draggable(videoPlayerModal);
-    }
-  });
-
-  // Close the modal logic
-  window.addEventListener("click", (event) => {
-    if (event.target === videoPlayerModal) {
-      videoPlayerModal.style.visibility = "hidden";
-      videoPlayerModal.style.display = "none";
-      videoFrame.src = ""; // Stop the video
-
-      // Optional: Reset draggable position or other properties when modal is closed
-      if (draggableInstance) {
-        draggableInstance = null;  // Reset draggable instance if you want to reinitialize it later
-      }
-    }
-  });
-});
