@@ -104,12 +104,12 @@ export class Draggable {
       const maxY = document.documentElement.clientHeight - 200;
 
       if (this.isZeroGravity) {
-        // In zero gravity mode, it will bounce off the edges and continue indefinitely
+        // In zero gravity mode, it will keep moving indefinitely at a constant speed
         if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1;  // Bounce off horizontal edges
+          this.velocity.x *= -1;  // Reverse horizontal velocity but maintain constant speed
         }
         if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1;  // Bounce off vertical edges
+          this.velocity.y *= -1;  // Reverse vertical velocity but maintain constant speed
         }
       } else {
         // Normal physics: bounce off edges with friction
