@@ -70,7 +70,7 @@ export class Draggable {
     this.applyPhysics();
   }
 
-applyPhysics() {
+  applyPhysics() {
     if (!this.isReleased) return;
 
     const animate = () => {
@@ -92,8 +92,8 @@ applyPhysics() {
       // Corrected viewport boundaries (fully contained within the window)
       const minX = 0;
       const minY = 0;
-      const maxX = document.documentElement.clientWidth - elementWidth;  // Use clientWidth for the actual available width
-      const maxY = document.documentElement.clientHeight - elementHeight; // Use clientHeight for the actual available height
+      const maxX = window.innerWidth - elementWidth;  // Fix: accounts for full width
+      const maxY = window.innerHeight - elementHeight; // Fix: accounts for full height
 
       // Adjust boundaries to ensure the element stays fully within the viewport
       if (newLeft < minX) {
@@ -118,5 +118,7 @@ applyPhysics() {
 
       this.animationFrame = requestAnimationFrame(animate);
     };
+
     this.animationFrame = requestAnimationFrame(animate);
+  }
 }
