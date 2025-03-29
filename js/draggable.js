@@ -1,8 +1,8 @@
-    class Draggable {
-      constructor(element) {
-        if (!element) {
-          throw new Error("Element is required to initialize Draggable.");
-        }
+export class Draggable {
+  constructor(element) {
+    if (!element) {
+      throw new Error("Element is required to initialize Draggable.");
+    }
 
         this.element = element;
         this.isDragging = false;
