@@ -2,11 +2,11 @@ import { Draggable } from './draggable.js';
 
 // themeSwitcher_0.9.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Ensure the draggableElement exists before initializing Draggable
-  const draggableElement = document.getElementById('draggableElement');
+  // Ensure the draggable element exists before initializing Draggable
+  const draggableElement = document.getElementById('musicPlayer'); // Change to 'musicPlayer'
 
   if (!draggableElement) {
-    throw new Error("Element with ID 'draggableElement' not found. Please check the HTML.");
+    throw new Error("Element with ID 'musicPlayer' not found. Please check the HTML.");
   }
 
   // Initialize the Draggable instance once
