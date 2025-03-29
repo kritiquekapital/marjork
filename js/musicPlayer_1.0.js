@@ -48,6 +48,7 @@ let isShuffling = false;
 let shuffleQueue = [];
 let currentPlaylist = [...liveLinks2];
 let currentIndex = 0;
+let player; // YouTube Player Instance
 
 // 🎵 Buttons
 const controlsContainer = document.querySelector(".ipod-controls");
@@ -140,17 +141,15 @@ function resumeSequential() {
 
 // 🎵 Update Music Source
 function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex];
+  let newSrc = currentPlaylist[currentIndex];
+  musicFrame.src = newSrc;
+  setTimeout(initializeYouTubePlayer, 1000); // Ensure API loads
 }
 
 // 🎵 Play/Pause Toggle
 function togglePlayState() {
   isPlaying = !isPlaying;
-  musicFrame.contentWindow.postMessage({
-    event: "command",
-    func: isPlaying ? "playVideo" : "pauseVideo",
-    args: ""
-  }, "*");
+  player?.playVideo();
 }
 
 // 🎵 Next Track
@@ -181,12 +180,13 @@ document.querySelector(".next-btn").addEventListener("click", nextTrack);
 prevButton.addEventListener("click", prevTrack);
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
-// 🎵 Detect Video End and Play Next
-function onYouTubeIframeAPIReady() {
-  let player = new YT.Player('musicFrame', {
+// 🎵 Initialize YouTube Player API
+function initializeYouTubePlayer() {
+  player = new YT.Player('musicFrame', {
     events: {
       'onStateChange': function (event) {
         if (event.data === YT.PlayerState.ENDED) {
+          console.log("Video ended, moving to next track...");
           nextTrack();
         }
       }
@@ -196,10 +196,16 @@ function onYouTubeIframeAPIReady() {
 
 // 🎵 Load YouTube API Script
 function loadYouTubeAPI() {
-  let tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  let firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  if (!window.YT) {
+    let tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  } else {
+    initializeYouTubePlayer();
+  }
 }
 
+// 🏁 Ensure YouTube API Loads
+window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
 loadYouTubeAPI();
