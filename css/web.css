@@ -51,6 +51,18 @@ body {
   z-index: -1; /* Place it behind the grid container's content */
 }
 
+@media (max-width: 768px) {
+  body {
+    transform: scale(0.95); /* Slightly zooms out the entire page */
+    transform-origin: top center;
+    padding-bottom: 15vh; /* Adds extra buffer at the bottom */
+  }
+
+  #musicPlayer {
+    margin-bottom: 60px; /* Ensures the player isn’t cut off */
+  }
+}
+
 /* ==================== */
 /* Theme Styles */
 /* ==================== */
