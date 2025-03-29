@@ -45,7 +45,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const prevButton = document.getElementById("prevChannel");
   const nextButton = document.getElementById("nextChannel");
   const propagandaLink = document.querySelector(".propaganda-link");
+  const popoutButton = document.getElementById("popoutButton");
 
+  // Handle click on the "Popout Video" button
+  if (popoutButton) {
+    popoutButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      updateLiveStream(); // Update the live stream URL
+      videoPlayerModal.style.visibility = "visible"; // Show the modal
+      videoPlayerModal.style.display = "flex";
+
+      // Make the video player draggable once it's popped out
+      new Draggable(videoPlayerModal); // Initialize Draggable class for video player
+    });
+  }
+  
   // Handle click on the "LIVE" button
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
