@@ -13,7 +13,7 @@ const musicFrame = document.getElementById("musicFrame");
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
 
-// Video Links (enable YouTube API)
+// Video Links
 const liveLinks2 = [
   "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1",  //Candy
   "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
@@ -45,10 +45,24 @@ let isFirstOpen = true;
 let isPlaying = true;
 let isPinned = false;
 let isShuffling = false;
-let shuffleQueue = [];
-let currentPlaylist = [...liveLinks2];
+let currentPlaylist = [...liveLinks2];  // Default order
 let currentIndex = 0;
-let player; // YouTube Player instance
+
+// 🎵 Buttons
+const controlsContainer = document.querySelector(".ipod-controls");
+
+// 📌 Pin Button
+const pinButton = document.createElement("button");
+pinButton.classList.add("ipod-btn", "pin-btn");
+pinButton.innerHTML = "📌";
+controlsContainer.prepend(pinButton);
+
+// 🔀 Shuffle Button
+const prevButton = document.querySelector(".prev-btn");
+const shuffleButton = document.createElement("button");
+shuffleButton.classList.add("ipod-btn", "shuffle-btn");
+shuffleButton.innerHTML = "🔀";
+prevButton.parentNode.insertBefore(shuffleButton, prevButton);
 
 // 📌 Show Player
 function showMusicPlayer() {
@@ -69,69 +83,91 @@ function hideMusicPlayer() {
   }
 }
 
+// 🖱 Click Outside to Hide (Unless Pinned)
+document.addEventListener("click", (event) => {
+  if (!musicPlayer.contains(event.target) && !vinylLink.contains(event.target)) {
+    hideMusicPlayer();
+  }
+});
+
 // ✅ Vinyl Click to Open
 vinylLink.addEventListener("click", (event) => {
   event.preventDefault();
   showMusicPlayer();
 });
 
-// 🎵 Shuffle Algorithm
-function shufflePlaylist() {
-  shuffleQueue = [...liveLinks2].sort(() => Math.random() - 0.5);
-  currentIndex = 0;
-  currentPlaylist = [...shuffleQueue];
+// 📌 Pin Button Click
+pinButton.addEventListener("click", () => {
+  isPinned = !isPinned;
+  updateButtonStates();
+});
+
+// 🔀 Shuffle Button Click
+shuffleButton.addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  if (isShuffling) {
+    shufflePlaylist();
+  } else {
+    resetPlaylist();
+  }
+  updateButtonStates();
+});
+
+// 🎵 Update Button Opacity
+function updateButtonStates() {
+  pinButton.style.opacity = isPinned ? "1" : "0.5";
+  shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
 }
 
-// 🎵 Resume Sequential Order from Current Track
-function resumeSequential() {
-  let currentVideo = currentPlaylist[currentIndex];
-  let originalIndex = liveLinks2.indexOf(currentVideo);
-  if (originalIndex === -1) originalIndex = 0;
+// 🎵 Shuffle Algorithm (Plays All Before Repeating)
+function shufflePlaylist() {
+  currentPlaylist = [...liveLinks2].sort(() => Math.random() - 0.5);
+  currentIndex = 0;
+}
+
+// 🎵 Reset to Normal Order
+function resetPlaylist() {
   currentPlaylist = [...liveLinks2];
-  currentIndex = originalIndex;
+  currentIndex = 0;
 }
 
 // 🎵 Update Music Source
 function updateMusicSource() {
-  let newSrc = currentPlaylist[currentIndex];
-  musicFrame.src = newSrc;
-  setTimeout(initializeYouTubePlayer, 1000); // Delay to let API bind
+  musicFrame.src = currentPlaylist[currentIndex];
+}
+
+// 🎵 Play/Pause Toggle
+function togglePlayState() {
+  isPlaying = !isPlaying;
+  musicFrame.contentWindow.postMessage({
+    event: "command",
+    func: isPlaying ? "playVideo" : "pauseVideo",
+    args: ""
+  }, "*");
 }
 
 // 🎵 Next Track
 function nextTrack() {
   currentIndex = (currentIndex + 1) % currentPlaylist.length;
   updateMusicSource();
+  if (!isPlaying) togglePlayState();
 }
 
-// 🎵 Initialize YouTube Player API
-function initializeYouTubePlayer() {
-  if (!window.YT || !YT.Player) return;
-  if (player) player.destroy(); // Remove previous instance
-  player = new YT.Player(musicFrame, {
-    events: {
-      'onStateChange': function (event) {
-        if (event.data === YT.PlayerState.ENDED) {
-          console.log("Video ended, moving to next track...");
-          nextTrack();
-        }
-      }
-    }
-  });
+// 🎵 Previous Track
+function prevTrack() {
+  currentIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
+  updateMusicSource();
+  if (!isPlaying) togglePlayState();
 }
 
-// 🎵 Load YouTube API Script
-function loadYouTubeAPI() {
-  if (!window.YT) {
-    let tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    let firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  } else {
-    initializeYouTubePlayer();
+// 🎵 Button Listeners
+document.querySelector(".next-btn").addEventListener("click", nextTrack);
+prevButton.addEventListener("click", prevTrack);
+document.querySelector(".playpause").addEventListener("click", togglePlayState);
+
+// 🎵 Play Next Video When Current One Ends
+window.addEventListener("message", (event) => {
+  if (event.data?.event === "onStateChange" && event.data.info === 0) {
+    nextTrack();
   }
-}
-
-// 🏁 Ensure YouTube API Loads
-window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
-loadYouTubeAPI();
+});
