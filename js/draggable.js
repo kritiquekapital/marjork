@@ -1,5 +1,9 @@
 export class Draggable {
   constructor(element) {
+    if (!element) {
+      throw new Error("Element is required to initialize Draggable.");
+    }
+
     this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
@@ -58,11 +62,9 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
-    // Calculate the new position with slightly slowed movement for better control
     const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
     const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
-    // Store velocity for release power boost
     this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
     this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
@@ -91,26 +93,22 @@ export class Draggable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get module dimensions
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Corrected viewport boundaries (fully contained within the window)
-      const minX = 155;
-      const minY = 200;
-      const maxX = document.documentElement.clientWidth - 155;
-      const maxY = document.documentElement.clientHeight - 200;
+      const minX = 0;
+      const minY = 0;
+      const maxX = document.documentElement.clientWidth - elementWidth;
+      const maxY = document.documentElement.clientHeight - elementHeight;
 
       if (this.isZeroGravity) {
-        // Zero-gravity mode: reverse velocity when hitting the edges, simulating bounce
         if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1;  // Reverse horizontal velocity to simulate bounce
+          this.velocity.x *= -1;
         }
         if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1;  // Reverse vertical velocity to simulate bounce
+          this.velocity.y *= -1;
         }
       } else {
-        // If not zero-gravity, respect boundaries and stop at them
         if (newLeft < minX) newLeft = minX;
         if (newLeft > maxX) newLeft = maxX;
         if (newTop < minY) newTop = minY;
