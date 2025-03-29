@@ -1,3 +1,5 @@
+import { Draggable } from './draggable.js';
+
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
