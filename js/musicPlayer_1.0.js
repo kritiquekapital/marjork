@@ -63,8 +63,9 @@ function updatePinState() {
 
 // 🔀 Shuffle Button (Only insert if prev-btn exists)
 const prevButton = document.querySelector(".prev-btn");
+let shuffleButton;
 if (prevButton) {
-  const shuffleButton = document.createElement("button");
+  shuffleButton = document.createElement("button");
   shuffleButton.classList.add("ipod-btn", "shuffle-btn");
   shuffleButton.innerHTML = "🔀";
   prevButton.parentNode.insertBefore(shuffleButton, prevButton);
@@ -85,12 +86,12 @@ function showMusicPlayer() {
   if (isFirstOpen) {
     updateMusicSource();
     isFirstOpen = false;
-    
+
     // Set initial state for pin and shuffle buttons
     pinButton.style.opacity = isPinned ? "1" : "0.5";
-    document.querySelector(".shuffle-btn").style.opacity = isShuffling ? "1" : "0.5";
+    if (shuffleButton) shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
   }
-  
+
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
 }
@@ -127,6 +128,8 @@ pinButton.addEventListener("click", (event) => {
 function updateMusicSource() {
   if (isShuffling) {
     currentLinkIndex2 = Math.floor(Math.random() * liveLinks2.length);
+  } else {
+    currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
   }
   musicFrame.src = liveLinks2[currentLinkIndex2];
 }
@@ -158,14 +161,14 @@ document.querySelector(".next-btn")?.addEventListener("click", () => {
 document.querySelector(".playpause")?.addEventListener("click", togglePlayState);
 
 // 🎵 Next Video on End
-player.addEventListener("ended", function () {
-    if (isShuffled) {
-        currentIndex = Math.floor(Math.random() * videoList.length);
+window.addEventListener("message", (event) => {
+  if (typeof event.data === "object" && event.data.event === "onStateChange" && event.data.info === 0) {
+    // Video ended
+    if (isShuffling) {
+      currentLinkIndex2 = Math.floor(Math.random() * liveLinks2.length);
     } else {
-        currentIndex = (currentIndex + 1) % videoList.length;
+      currentLinkIndex2 = (currentLinkIndex2 + 1) % liveLinks2.length;
     }
-
-    const nextVideo = videoList[currentIndex].getAttribute("data-src");
-    player.src = nextVideo;
-    player.play();
+    musicFrame.src = liveLinks2[currentLinkIndex2];
+  }
 });
