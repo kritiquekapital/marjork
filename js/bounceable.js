@@ -19,17 +19,19 @@ export class Bounceable {
 handleClick(e) {
   if (!this.isFree) {
     this.clickCount++;
-    console.log("Click count:", this.clickCount);
     if (this.clickCount >= 10) {
       this.isFree = true;
-      console.log("Button is free!");
-      this.velocity = { x: 0, y: 0 };  // Reset velocity when the button becomes free
-      this.applyBouncePhysics();  // Start the bouncing animation
-      this.element.style.position = "absolute";  // Change position to absolute
-
-      // Reset position within the viewport after 10 clicks
-      this.element.style.left = `${this.initialLeft}px`; 
-      this.element.style.top = `${this.initialTop}px`;
+      this.velocity = { x: 0, y: 0 };
+      
+      // Ensure the button is absolutely positioned relative to the viewport
+      this.element.style.position = "absolute";
+      
+      // Set the starting point relative to the viewport
+      const rect = this.element.getBoundingClientRect();
+      this.element.style.left = `${rect.left}px`;  // This keeps it where it was in the grid
+      this.element.style.top = `${rect.top}px`;  // Same for top position
+      
+      this.applyBouncePhysics();  // Trigger bounce physics
     }
   } else {
     this.moveOppositeDirection(e.clientX, e.clientY);
