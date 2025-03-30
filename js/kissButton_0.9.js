@@ -1,3 +1,5 @@
+import { Draggable } from "./draggable.js"; // Ensure correct path
+
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
   "i love you!",
@@ -8,7 +10,15 @@ const messages = [
 ];
 
 if (kissButton) {
-  kissButton.addEventListener("click", () => {
+  const kissDraggable = new Draggable(kissButton, true); // Make it physics-enabled
+
+  kissButton.addEventListener("click", (e) => {
+    if (!kissDraggable.isFree) {
+      // If not free, count clicks for breaking free
+      kissDraggable.handleKissButtonClick(e);
+    }
+
+    // Love message animation
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const loveMessage = document.createElement("div");
 
