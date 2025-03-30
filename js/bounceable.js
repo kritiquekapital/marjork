@@ -2,14 +2,16 @@ export class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92;
+    this.friction = 0.95; // Slightly higher friction for smoother movement
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
-    this.element.style.position = "absolute"; 
-    this.element.style.left = this.element.style.left || "100px";
-    this.element.style.top = this.element.style.top || "100px";
 
+    // Ensure absolute positioning but use its computed initial position
+    this.element.style.position = "absolute"; 
+    const rect = this.element.getBoundingClientRect();
+    this.element.style.left = `${rect.left}px`;
+    this.element.style.top = `${rect.top}px`;
 
     // Attach click event directly inside the class
     this.element.addEventListener("click", this.handleClick.bind(this));
@@ -32,8 +34,8 @@ export class Bounceable {
 
   // Move in the opposite direction of the click
   moveOppositeDirection(x, y) {
-    this.velocity.x = (this.element.offsetLeft - x) * 0.5;
-    this.velocity.y = (this.element.offsetTop - y) * 0.5;
+    this.velocity.x = (this.element.offsetLeft - x) * 0.1; // Reduced for less extreme movement
+    this.velocity.y = (this.element.offsetTop - y) * 0.1;
     this.applyBouncePhysics();
   }
 
@@ -54,11 +56,15 @@ export class Bounceable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Define viewport boundaries
-      const minX = 100;
-      const minY = 150;
-      const maxX = document.documentElement.clientWidth - 100;
-      const maxY = document.documentElement.clientHeight - 150;
+      // Get element size for proper bounding
+      const elementWidth = this.element.offsetWidth;
+      const elementHeight = this.element.offsetHeight;
+
+      // Define viewport boundaries dynamically
+      const minX = 0;
+      const minY = 0;
+      const maxX = window.innerWidth - elementWidth;
+      const maxY = window.innerHeight - elementHeight;
 
       // Bounce off edges
       if (newLeft < minX || newLeft > maxX) {
@@ -68,7 +74,7 @@ export class Bounceable {
         this.velocity.y *= -1;
       }
 
-      // Apply new position
+      // Apply new position, ensuring it stays within bounds
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
