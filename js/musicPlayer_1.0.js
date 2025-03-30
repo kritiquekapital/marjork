@@ -165,6 +165,45 @@ document.querySelector(".next-btn").addEventListener("click", nextTrack);
 prevButton.addEventListener("click", prevTrack);
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
+// 📜 Menu Button (Right Side)
+const menuButton = document.createElement("button");
+menuButton.classList.add("ipod-btn", "menu-btn");
+menuButton.innerHTML = "📜";
+controlsContainer.appendChild(menuButton);
+
+// 📜 Dropdown Menu
+const dropdownMenu = document.createElement("div");
+dropdownMenu.classList.add("dropdown-menu");
+dropdownMenu.style.display = "none";
+musicPlayer.appendChild(dropdownMenu);
+
+// 📜 Populate Playlist Dropdown
+function populateDropdown() {
+  dropdownMenu.innerHTML = "";
+  currentPlaylist.forEach((track, index) => {
+    const menuItem = document.createElement("div");
+    menuItem.classList.add("menu-item");
+    menuItem.innerText = `Track ${index + 1}`;
+    menuItem.addEventListener("click", () => {
+      currentIndex = index;
+      updateMusicSource();
+      dropdownMenu.style.display = "none";
+    });
+    dropdownMenu.appendChild(menuItem);
+  });
+}
+
+// 📜 Toggle Dropdown Visibility
+menuButton.addEventListener("click", () => {
+  populateDropdown();
+  dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
+});
+
+document.addEventListener("click", (event) => {
+  if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+    dropdownMenu.style.display = "none";
+  }
+});
 // 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
