@@ -106,7 +106,7 @@ export class Draggable {
   }
 
   applyPhysics() {
-    if (!this.isReleased && !this.isFree) return;
+    if (!this.isFree && this.isKissButton) return; // Prevent movement before it's free
 
     const animate = () => {
       if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -124,10 +124,12 @@ export class Draggable {
 
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
-      const minX = this.isKissButton ? 50 : 160;
-      const minY = this.isKissButton ? 50 : 220;
-      const maxX = document.documentElement.clientWidth - (this.isKissButton ? 50 : 160);
-      const maxY = document.documentElement.clientHeight - (this.isKissButton ? 50 : 220);
+
+      // Separate boundaries for kiss button
+      const minX = this.isKissButton ? 100 : 160;
+      const minY = this.isKissButton ? 150 : 220;
+      const maxX = document.documentElement.clientWidth - (this.isKissButton ? 100 : 160);
+      const maxY = document.documentElement.clientHeight - (this.isKissButton ? 150 : 220);
 
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
