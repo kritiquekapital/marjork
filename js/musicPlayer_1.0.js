@@ -133,7 +133,7 @@ function resetPlaylist() {
 
 // 🎵 Update Music Source
 function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex];
+  musicFrame.src = currentPlaylist[currentIndex].url;  // Ensure only the URL is assigned
 }
 
 // 🎵 Play/Pause Toggle
@@ -197,12 +197,6 @@ liveLinks2.forEach((track, index) => {
 menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
-});
-
-listItem.addEventListener("click", () => {
-  currentIndex = index;
-  updateMusicSource();
-  dropdownMenu.style.display = "none";
 });
 
 // 🎵 Play Next Video When Current One Ends
