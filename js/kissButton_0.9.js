@@ -10,13 +10,10 @@ const messages = [
 ];
 
 if (kissButton) {
-  const kissBounceable = new Bounceable(kissButton); // Handle bounce physics independently
-
-  let clickCount = 0;
-  let isFree = false;
+  new Bounceable(kissButton); // Initialize Bounceable (click tracking is handled there)
 
   kissButton.addEventListener("click", (e) => {
-    // Show a love message on every click, regardless of free state
+    // Show a love message on every click
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const loveMessage = document.createElement("div");
 
@@ -43,18 +40,5 @@ if (kissButton) {
     setTimeout(() => {
       kissButton.removeChild(loveMessage);
     }, 1600);
-
-    // Increment clicks until it breaks free
-    if (!isFree) {
-      clickCount++;
-      if (clickCount >= 10) {
-        isFree = true;
-        // Reset velocity after it breaks free
-        kissBounceable.velocity = { x: 0, y: 0 };
-      }
-    } else {
-      // Once free, move in opposite direction and apply bounce physics
-      kissBounceable.moveOppositeDirection(e.clientX, e.clientY);
-    }
   });
 }
