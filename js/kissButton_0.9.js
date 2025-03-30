@@ -1,3 +1,5 @@
+import { Draggable } from './Draggable';
+
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
   "i love you!",
