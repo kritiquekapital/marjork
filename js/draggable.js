@@ -66,9 +66,11 @@ export class Draggable {
   drag(e) {
     if (!this.isDragging) return;
 
+    // Calculate new position with a smoothing factor
     const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
     const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
 
+    // Update velocity but only when the element is being dragged
     this.velocity.x = (newX - this.element.offsetLeft) * 1.5;
     this.velocity.y = (newY - this.element.offsetTop) * 1.5;
 
