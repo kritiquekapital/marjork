@@ -21,9 +21,15 @@ if (kissButton) {
       clickCount++;
       if (clickCount >= 10) {
         isFree = true;
+        // Reset velocity after it breaks free
+        kissBounceable.velocity = { x: 0, y: 0 };
+      } else {
+        return;
       }
-    } else {
-      // Once free, move in opposite direction and apply bounce physics
+    }
+
+    // Once free, move in opposite direction and apply bounce physics
+    if (isFree) {
       kissBounceable.moveOppositeDirection(e.clientX, e.clientY);
     }
 
