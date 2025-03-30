@@ -1,4 +1,4 @@
-class Bounceable {
+export class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
