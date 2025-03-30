@@ -175,12 +175,16 @@ controlsContainer.appendChild(menuButton);
 const dropdownMenu = document.createElement("ul");
 dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
+dropdownMenu.style.maxHeight = "150px";
+dropdownMenu.style.overflowY = "auto";
 menuButton.appendChild(dropdownMenu);
 
 // Populate Dropdown
 liveLinks2.forEach((track, index) => {
   const listItem = document.createElement("li");
   listItem.textContent = track.title;
+  listItem.style.padding = "5px";
+  listItem.style.cursor = "pointer";
   listItem.addEventListener("click", () => {
     currentIndex = index;
     updateMusicSource();
@@ -193,10 +197,6 @@ liveLinks2.forEach((track, index) => {
 menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
-});
-
-document.addEventListener("click", () => {
-  dropdownMenu.style.display = "none";
 });
 
 // 🎵 Play Next Video When Current One Ends
