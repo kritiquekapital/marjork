@@ -1013,11 +1013,11 @@ body.theme-space .grid-container {
   pointer-events: none;
 }
 
+/* Dropdown Menu */
 .dropdown-menu {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 50px;
+  position: absolute; /* This should stay absolute */
+  top: 50px;  /* This will be adjusted dynamically in JS */
+  left: 50%;  /* Keep it centered */
   width: 150px;
   background: rgba(30, 30, 30, 0.95);
   border-radius: 8px;
@@ -1028,9 +1028,9 @@ body.theme-space .grid-container {
   max-height: 150px;
   overflow-y: auto;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  transform: translate(-50%, -5px);
   opacity: 0;
   pointer-events: none;
+  z-index: 1000;  /* Make sure it's on top of other elements */
 }
 
 .dropdown-menu.show {
