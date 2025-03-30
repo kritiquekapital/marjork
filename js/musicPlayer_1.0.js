@@ -177,7 +177,7 @@ dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
 dropdownMenu.style.maxHeight = "150px";
 dropdownMenu.style.overflowY = "auto";
-menuButton.appendChild(dropdownMenu);
+document.body.appendChild(dropdownMenu);
 
 // Populate Dropdown
 liveLinks2.forEach((track, index) => {
@@ -196,7 +196,10 @@ liveLinks2.forEach((track, index) => {
 // Toggle Dropdown Menu
 menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
-  dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
+  const rect = menuButton.getBoundingClientRect();
+  dropdownMenu.style.top = `${rect.bottom + window.scrollY}px`;
+  dropdownMenu.style.left = `${rect.left + window.scrollX}px`;
+  dropdownMenu.classList.toggle("show");
 });
 
 // 🎵 Play Next Video When Current One Ends
