@@ -133,7 +133,7 @@ function resetPlaylist() {
 
 // 🎵 Update Music Source
 function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex].url;  // Ensure only the URL is assigned
+  musicFrame.src = currentPlaylist[currentIndex];
 }
 
 // 🎵 Play/Pause Toggle
@@ -175,16 +175,12 @@ controlsContainer.appendChild(menuButton);
 const dropdownMenu = document.createElement("ul");
 dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
-dropdownMenu.style.maxHeight = "150px";
-dropdownMenu.style.overflowY = "auto";
 menuButton.appendChild(dropdownMenu);
 
 // Populate Dropdown
 liveLinks2.forEach((track, index) => {
   const listItem = document.createElement("li");
   listItem.textContent = track.title;
-  listItem.style.padding = "5px";
-  listItem.style.cursor = "pointer";
   listItem.addEventListener("click", () => {
     currentIndex = index;
     updateMusicSource();
@@ -198,6 +194,15 @@ menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
 });
+
+document.addEventListener("click", () => {
+  dropdownMenu.style.display = "none";
+});
+
+// 🎵 Update Music Source
+function updateMusicSource() {
+  musicFrame.src = currentPlaylist[currentIndex].url;
+}
 
 // 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
