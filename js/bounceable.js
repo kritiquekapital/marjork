@@ -1,4 +1,4 @@
-export class Bounceable {
+class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
@@ -7,10 +7,10 @@ export class Bounceable {
     this.clickCount = 0;
     this.isFree = false;
 
-    // Ensure absolute positioning
-    this.element.style.position = "absolute"; 
-    this.element.style.left = `${this.element.offsetLeft}px`;
-    this.element.style.top = `${this.element.offsetTop}px`;
+    // Set initial position within the grid (relative to the container)
+    this.initialLeft = element.offsetLeft;
+    this.initialTop = element.offsetTop;
+    this.element.style.position = "relative";  // Maintain relative positioning within the grid
 
     // Attach click event
     this.element.addEventListener("click", this.handleClick.bind(this));
@@ -73,7 +73,7 @@ export class Bounceable {
         this.velocity.y *= -1;
       }
 
-      // Ensure it stays within the viewport
+      // Apply the updated position, ensuring the element stays within the viewport
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
