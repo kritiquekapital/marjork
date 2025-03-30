@@ -197,9 +197,9 @@ liveLinks2.forEach((track, index) => {
 menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
   const rect = menuButton.getBoundingClientRect();
-  dropdownMenu.style.top = `${rect.bottom + window.scrollY}px`;
-  dropdownMenu.style.left = `${rect.left + window.scrollX}px`;
-  dropdownMenu.classList.toggle("show");
+  dropdownMenu.style.top = `${rect.bottom + window.scrollY}px`;  // Position based on button's bottom
+  dropdownMenu.style.left = `${rect.left + window.scrollX}px`;  // Align left of button
+  dropdownMenu.classList.toggle("show");  // Toggle visibility
 });
 
 // 🎵 Play Next Video When Current One Ends
