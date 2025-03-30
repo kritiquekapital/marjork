@@ -199,11 +199,6 @@ document.addEventListener("click", () => {
   dropdownMenu.style.display = "none";
 });
 
-// 🎵 Update Music Source
-function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex].url;
-}
-
 // 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
