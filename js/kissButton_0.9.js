@@ -1,5 +1,3 @@
-import { Draggable } from './draggable.js';
-
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
   "i love you!",
@@ -10,11 +8,7 @@ const messages = [
 ];
 
 if (kissButton) {
-  // Create an instance of Draggable, passing in the kissButton element
-  const kissDraggable = new Draggable(kissButton, true); // true indicates this is the kiss button
-
-  // Click event for kiss button
-  kissButton.addEventListener("click", (e) => {
+  kissButton.addEventListener("click", () => {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const loveMessage = document.createElement("div");
 
