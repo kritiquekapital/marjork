@@ -4,9 +4,37 @@ export class Bounceable {
     this.velocity = { x: 0, y: 0 };
     this.friction = 0.92;
     this.animationFrame = null;
+    this.clickCount = 0;
+    this.isFree = false;
+
+    // Initialize click event for kiss button
+    this.element.addEventListener('click', this.handleKissButtonClick.bind(this));
   }
 
-  // Start the bouncing physics for the kiss button
+  // Handle the kiss button click behavior
+  handleKissButtonClick(e) {
+    if (!this.isFree) {
+      this.clickCount++;
+      if (this.clickCount >= 10) {
+        this.isFree = true;
+        this.velocity = { x: 0, y: 0 }; // Reset velocity once free
+      } else {
+        return;
+      }
+    }
+
+    // Move in the opposite direction of the click
+    this.moveOppositeDirection(e.clientX, e.clientY);
+  }
+
+  // Method to move the kiss button in the opposite direction of the click
+  moveOppositeDirection(x, y) {
+    this.velocity.x = (this.element.offsetLeft - x) * 0.5;
+    this.velocity.y = (this.element.offsetTop - y) * 0.5;
+    this.applyBouncePhysics();
+  }
+
+  // Apply the bouncing physics for the kiss button
   applyBouncePhysics() {
     const animate = () => {
       // Check if velocity is small enough to stop animation
@@ -47,12 +75,5 @@ export class Bounceable {
     };
 
     this.animationFrame = requestAnimationFrame(animate);
-  }
-
-  // Method to move the kiss button in the opposite direction of the click
-  moveOppositeDirection(x, y) {
-    this.velocity.x = (this.element.offsetLeft - x) * 0.5;
-    this.velocity.y = (this.element.offsetTop - y) * 0.5;
-    this.applyBouncePhysics();
   }
 }
