@@ -1,4 +1,4 @@
-import { Draggable } from '.draggable.js'; // Assuming Draggable is in another file
+import { Draggable } from './draggable.js';
 
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
