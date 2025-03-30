@@ -48,7 +48,6 @@ handleClick(e) {
 
 applyBouncePhysics() {
   if (!this.isFree) return;
-  console.log("Applying bounce physics...");  // Debugging log
 
   const animate = () => {
     if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
@@ -63,6 +62,8 @@ applyBouncePhysics() {
     let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
     let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
+    console.log(`New Position - Left: ${newLeft}, Top: ${newTop}`);  // Debugging log
+
     // Get element size
     const elementWidth = this.element.offsetWidth;
     const elementHeight = this.element.offsetHeight;
@@ -72,6 +73,8 @@ applyBouncePhysics() {
     const minY = 0;
     const maxX = window.innerWidth - elementWidth;
     const maxY = window.innerHeight - elementHeight;
+
+    console.log(`Viewport bounds - minX: ${minX}, maxX: ${maxX}, minY: ${minY}, maxY: ${maxY}`);
 
     // Bounce off edges
     if (newLeft < minX || newLeft > maxX) {
