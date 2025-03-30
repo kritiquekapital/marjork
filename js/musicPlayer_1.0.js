@@ -175,7 +175,7 @@ controlsContainer.appendChild(menuButton);
 const dropdownMenu = document.createElement("ul");
 dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
-dropdownMenu.style.maxHeight = "150px";
+dropdownMenu.style.maxHeight = "50px";
 dropdownMenu.style.overflowY = "auto";
 menuButton.appendChild(dropdownMenu);
 
