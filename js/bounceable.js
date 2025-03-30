@@ -39,47 +39,48 @@ export class Bounceable {
     this.applyBouncePhysics();
   }
 
-  applyBouncePhysics() {
-    if (!this.isFree) return;
+applyBouncePhysics() {
+  if (!this.isFree) return;
+  console.log("Applying bounce physics...");  // Debugging log
 
-    const animate = () => {
-      if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
-        cancelAnimationFrame(this.animationFrame);
-        return;
-      }
+  const animate = () => {
+    if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
+      cancelAnimationFrame(this.animationFrame);
+      return;
+    }
 
-      // Apply friction
-      this.velocity.x *= this.friction;
-      this.velocity.y *= this.friction;
+    // Apply friction
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
 
-      let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-      let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+    let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+    let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get element size
-      const elementWidth = this.element.offsetWidth;
-      const elementHeight = this.element.offsetHeight;
+    // Get element size
+    const elementWidth = this.element.offsetWidth;
+    const elementHeight = this.element.offsetHeight;
 
-      // Get viewport boundaries
-      const minX = 0;
-      const minY = 0;
-      const maxX = window.innerWidth - elementWidth;
-      const maxY = window.innerHeight - elementHeight;
+    // Get viewport boundaries
+    const minX = 0;
+    const minY = 0;
+    const maxX = window.innerWidth - elementWidth;
+    const maxY = window.innerHeight - elementHeight;
 
-      // Bounce off edges
-      if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -1;
-      }
-      if (newTop < minY || newTop > maxY) {
-        this.velocity.y *= -1;
-      }
+    // Bounce off edges
+    if (newLeft < minX || newLeft > maxX) {
+      this.velocity.x *= -1;
+    }
+    if (newTop < minY || newTop > maxY) {
+      this.velocity.y *= -1;
+    }
 
-      // Apply the updated position, ensuring the element stays within the viewport
-      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
-      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
-
-      this.animationFrame = requestAnimationFrame(animate);
-    };
+    // Apply the updated position, ensuring the element stays within the viewport
+    this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+    this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
     this.animationFrame = requestAnimationFrame(animate);
+  };
+
+  this.animationFrame = requestAnimationFrame(animate);
   }
 }
