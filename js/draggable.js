@@ -1,4 +1,4 @@
-class Draggable {
+export class Draggable {
   constructor(element, isKissButton = false) {
     if (!element) {
       throw new Error("Element is required to initialize Draggable.");
