@@ -20,6 +20,9 @@ export class Draggable {
       // Center only if it's NOT the kiss button
       this.centerElementInViewport();
     }
+   
+    this.init();
+  }
 
   setZeroGravityMode(isZeroGravity) {
     this.isZeroGravity = isZeroGravity;
