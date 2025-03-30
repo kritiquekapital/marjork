@@ -22,19 +22,14 @@ handleClick(e) {
     if (this.clickCount >= 10) {
       this.isFree = true;
       this.velocity = { x: 0, y: 0 };
-      
-      // Ensure the button is absolutely positioned relative to the viewport
+
+      // Set the button to absolute positioning relative to the viewport
       this.element.style.position = "absolute";
-      
-      // Set the starting point relative to the viewport
-      const rect = this.element.getBoundingClientRect();
-      this.element.style.left = `${rect.left}px`;  // This keeps it where it was in the grid
-      this.element.style.top = `${rect.top}px`;  // Same for top position
-      
-      this.applyBouncePhysics();  // Trigger bounce physics
+
+      this.applyBouncePhysics();  // Start applying the bounce physics from here
     }
   } else {
-    this.moveOppositeDirection(e.clientX, e.clientY);
+    this.moveOppositeDirection(e.clientX, e.clientY); // Move based on the click location
   }
 }
 
