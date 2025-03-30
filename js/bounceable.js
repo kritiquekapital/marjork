@@ -2,7 +2,7 @@ export class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.85;
+    this.friction = 0.92;
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
@@ -11,9 +11,6 @@ export class Bounceable {
     this.element.style.position = "absolute"; 
     this.element.style.left = `${this.element.offsetLeft}px`;
     this.element.style.top = `${this.element.offsetTop}px`;
-
-    // Get reference to the offset parent (ensures boundaries are correct)
-    this.container = this.element.offsetParent || document.body;
 
     // Attach click event
     this.element.addEventListener("click", this.handleClick.bind(this));
@@ -34,8 +31,11 @@ export class Bounceable {
 
   moveOppositeDirection(x, y) {
     const rect = this.element.getBoundingClientRect();
-    this.velocity.x = (rect.left - x) * 0.05;
-    this.velocity.y = (rect.top - y) * 0.05;
+
+    // Increase force for a stronger push
+    this.velocity.x = (rect.left - x) * 0.3; 
+    this.velocity.y = (rect.top - y) * 0.3; 
+
     this.applyBouncePhysics();
   }
 
@@ -59,22 +59,21 @@ export class Bounceable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Get container boundaries
-      const containerRect = this.container.getBoundingClientRect();
+      // Get viewport boundaries
       const minX = 0;
       const minY = 0;
-      const maxX = containerRect.width - elementWidth;
-      const maxY = containerRect.height - elementHeight;
+      const maxX = window.innerWidth - elementWidth;
+      const maxY = window.innerHeight - elementHeight;
 
       // Bounce off edges
       if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -0.8;
+        this.velocity.x *= -1;
       }
       if (newTop < minY || newTop > maxY) {
-        this.velocity.y *= -0.8;
+        this.velocity.y *= -1;
       }
 
-      // Ensure it stays within the container
+      // Ensure it stays within the viewport
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
