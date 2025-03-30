@@ -6,6 +6,10 @@ export class Bounceable {
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
+    this.element.style.position = "absolute"; 
+    this.element.style.left = this.element.style.left || "100px";
+    this.element.style.top = this.element.style.top || "100px";
+
 
     // Attach click event directly inside the class
     this.element.addEventListener("click", this.handleClick.bind(this));
