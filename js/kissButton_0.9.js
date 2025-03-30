@@ -7,7 +7,13 @@ const messages = [
   "красивый!",
 ];
 
+let kissButtonDraggable;
+
 if (kissButton) {
+  let clickCount = 0;
+  const maxClicks = 30;
+
+  // Listen for clicks on the kiss button
   kissButton.addEventListener("click", () => {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const loveMessage = document.createElement("div");
@@ -35,5 +41,15 @@ if (kissButton) {
     setTimeout(() => {
       kissButton.removeChild(loveMessage);
     }, 1600);
+
+    // Track the number of clicks
+    clickCount++;
+
+    if (clickCount >= maxClicks) {
+      // Initialize Draggable after the max click count
+      if (!kissButtonDraggable) {
+        kissButtonDraggable = new Draggable(kissButton);
+      }
+    }
   });
 }
