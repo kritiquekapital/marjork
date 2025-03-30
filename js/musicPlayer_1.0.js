@@ -15,30 +15,30 @@ new Draggable(musicPlayer, '.ipod-screen');
 
 // Video Links
 const liveLinks2 = [
-  "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1",  //Candy
-  "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1",  //Плачу на техно
-  "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1",  //Gypsy Woman
-  "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1",  //Volga
-  "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1",  //но останься
-  "https://www.youtube.com/embed/B6Y-WsgpzlQ?autoplay=1",  //False Sympathy
-  "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1",  //Lost
-  "https://www.youtube.com/embed/PPoH0Gn50Nc?autoplay=1",  //Renegades
-  "https://www.youtube.com/embed/taCRBFkUqdM?autoplay=1",  //Let Me
-  "https://www.youtube.com/embed/y1TNuHPSBXI?autoplay=1",  //Loosen Up
-  "https://www.youtube.com/embed/LSIOcCcEVaE?autoplay=1",  //SnSORRY
-  "https://www.youtube.com/embed/BpqOWO6ctsg?autoplay=1",  //Sunshine
-  "https://www.youtube.com/embed/iYTz6lr8JY8?autoplay=1",  //Fam
-  "https://www.youtube.com/embed/7xxgRUyzgs0?autoplay=1",  //Cult
-  "https://www.youtube.com/embed/G4CKmzBf5Cs?autoplay=1",  //Mass
-  "https://www.youtube.com/embed/-rZWdolJfgk?autoplay=1",  //Potage
-  "https://www.youtube.com/embed/FEkOYs6aWIg?autoplay=1",  //Absolutely
-  "https://www.youtube.com/embed/I067BonnW48?autoplay=1",  //María
-  "https://www.youtube.com/embed/V7IUtUsfARA?autoplay=1",  //Like Kant
-  "https://www.youtube.com/embed/x4ygVwbOyJU?autoplay=1",  //Doomer
-  "https://www.youtube.com/embed/3NrZCJh2Hgk?autoplay=1",  //Seaside
-  "https://www.youtube.com/embed/cYpQ36acEUU?autoplay=1",  //miss u
-  "https://www.youtube.com/embed/wfj26-cQkx8?autoplay=1",  //forfeit
-  "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1",  //saftey
+  { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
+  { title: "Плачу на техно", url: "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1" },
+  { title: "Gypsy Woman", url: "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1" },
+  { title: "Volga", url: "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1" },
+  { title: "но останься", url: "https://www.youtube.com/embed/__xsCTe9dTQ?autoplay=1" },
+  { title: "False Sympathy", url: "https://www.youtube.com/embed/B6Y-WsgpzlQ?autoplay=1" },
+  { title: "Lost", url: "https://www.youtube.com/embed/6riDJMI-Y8U?autoplay=1" },
+  { title: "Renegades", url: "https://www.youtube.com/embed/PPoH0Gn50Nc?autoplay=1" },
+  { title: "Let Me", url: "https://www.youtube.com/embed/taCRBFkUqdM?autoplay=1" },
+  { title: "Loosen Up", url: "https://www.youtube.com/embed/y1TNuHPSBXI?autoplay=1" },
+  { title: "SnSORRY", url: "https://www.youtube.com/embed/LSIOcCcEVaE?autoplay=1" },
+  { title: "Sunshine", url: "https://www.youtube.com/embed/BpqOWO6ctsg?autoplay=1" },
+  { title: "Fam", url: "https://www.youtube.com/embed/iYTz6lr8JY8?autoplay=1" },
+  { title: "Cult", url: "https://www.youtube.com/embed/7xxgRUyzgs0?autoplay=1" },
+  { title: "Mass", url: "https://www.youtube.com/embed/G4CKmzBf5Cs?autoplay=1" },
+  { title: "Potage", url: "https://www.youtube.com/embed/-rZWdolJfgk?autoplay=1" },
+  { title: "Absolutely", url: "https://www.youtube.com/embed/FEkOYs6aWIg?autoplay=1" },
+  { title: "María", url: "https://www.youtube.com/embed/I067BonnW48?autoplay=1" },
+  { title: "Like Kant", url: "https://www.youtube.com/embed/V7IUtUsfARA?autoplay=1" },
+  { title: "Doomer", url: "https://www.youtube.com/embed/x4ygVwbOyJU?autoplay=1" },
+  { title: "Seaside", url: "https://www.youtube.com/embed/3NrZCJh2Hgk?autoplay=1" },
+  { title: "miss u", url: "https://www.youtube.com/embed/cYpQ36acEUU?autoplay=1" },
+  { title: "forfeit", url: "https://www.youtube.com/embed/wfj26-cQkx8?autoplay=1" },
+  { title: "safety", url: "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1" }
 ];
 
 let isFirstOpen = true;
@@ -165,45 +165,45 @@ document.querySelector(".next-btn").addEventListener("click", nextTrack);
 prevButton.addEventListener("click", prevTrack);
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
-// 📜 Menu Button (Right Side)
+// 🎵 Menu Button (Right Side, Dropdown)
 const menuButton = document.createElement("button");
 menuButton.classList.add("ipod-btn", "menu-btn");
 menuButton.innerHTML = "📜";
 controlsContainer.appendChild(menuButton);
 
-// 📜 Dropdown Menu
-const dropdownMenu = document.createElement("div");
+// 🎵 Dropdown Menu
+const dropdownMenu = document.createElement("ul");
 dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
-musicPlayer.appendChild(dropdownMenu);
+menuButton.appendChild(dropdownMenu);
 
-// 📜 Populate Playlist Dropdown
-function populateDropdown() {
-  dropdownMenu.innerHTML = "";
-  currentPlaylist.forEach((track, index) => {
-    const menuItem = document.createElement("div");
-    menuItem.classList.add("menu-item");
-    menuItem.innerText = `Track ${index + 1}`;
-    menuItem.addEventListener("click", () => {
-      currentIndex = index;
-      updateMusicSource();
-      dropdownMenu.style.display = "none";
-    });
-    dropdownMenu.appendChild(menuItem);
+// Populate Dropdown
+liveLinks2.forEach((track, index) => {
+  const listItem = document.createElement("li");
+  listItem.textContent = track.title;
+  listItem.addEventListener("click", () => {
+    currentIndex = index;
+    updateMusicSource();
+    dropdownMenu.style.display = "none";
   });
-}
+  dropdownMenu.appendChild(listItem);
+});
 
-// 📜 Toggle Dropdown Visibility
-menuButton.addEventListener("click", () => {
-  populateDropdown();
+// Toggle Dropdown Menu
+menuButton.addEventListener("click", (event) => {
+  event.stopPropagation();
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
 });
 
-document.addEventListener("click", (event) => {
-  if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-    dropdownMenu.style.display = "none";
-  }
+document.addEventListener("click", () => {
+  dropdownMenu.style.display = "none";
 });
+
+// 🎵 Update Music Source
+function updateMusicSource() {
+  musicFrame.src = currentPlaylist[currentIndex].url;
+}
+
 // 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
