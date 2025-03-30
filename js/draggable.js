@@ -11,34 +11,33 @@ export class Draggable {
     this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
-    this.isZeroGravity = false;  // New property to track zero-gravity mode
+    this.isZeroGravity = false;
+
+    // Boundaries similar to other draggable elements (calculated dynamically)
+    this.boundaries = this.calculateBoundaries();
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
-
-    // Center the element in the viewport
-    this.centerElementInViewport();
 
     // Initialize event listeners
     this.init();
   }
 
-  // Function to toggle physics mode based on theme
+  // Function to toggle zero-gravity mode
   setZeroGravityMode(isZeroGravity) {
     this.isZeroGravity = isZeroGravity;
   }
 
-  centerElementInViewport() {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+  // Calculate the boundaries dynamically based on the element's dimensions
+  calculateBoundaries() {
     const elementWidth = this.element.offsetWidth;
     const elementHeight = this.element.offsetHeight;
+    const minX = 160;
+    const minY = 220;
+    const maxX = document.documentElement.clientWidth - elementWidth - 160;
+    const maxY = document.documentElement.clientHeight - elementHeight - 220;
 
-    const initialLeft = (viewportWidth - elementWidth) / 2;
-    const initialTop = (viewportHeight - elementHeight) / 2;
-
-    this.element.style.left = `${initialLeft}px`;
-    this.element.style.top = `${initialTop}px`;
+    return { minX, minY, maxX, maxY };
   }
 
   init() {
@@ -50,7 +49,7 @@ export class Draggable {
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
-    
+
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -95,22 +94,16 @@ export class Draggable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      const elementWidth = this.element.offsetWidth;
-      const elementHeight = this.element.offsetHeight;
-      const minX = 160;
-      const minY = 220;
-      const maxX = document.documentElement.clientWidth - 160;
-      const maxY = document.documentElement.clientHeight - 220;
-
-      if (newLeft < minX || newLeft > maxX) {
+      // Apply boundaries to the element
+      if (newLeft < this.boundaries.minX || newLeft > this.boundaries.maxX) {
         this.velocity.x *= -1;
       }
-      if (newTop < minY || newTop > maxY) {
+      if (newTop < this.boundaries.minY || newTop > this.boundaries.maxY) {
         this.velocity.y *= -1;
       }
 
-      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
-      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
+      this.element.style.left = `${Math.min(this.boundaries.maxX, Math.max(this.boundaries.minX, newLeft))}px`;
+      this.element.style.top = `${Math.min(this.boundaries.maxY, Math.max(this.boundaries.minY, newTop))}px`;
 
       this.animationFrame = requestAnimationFrame(animate);
     };
