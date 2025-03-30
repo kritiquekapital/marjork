@@ -133,7 +133,7 @@ function resetPlaylist() {
 
 // 🎵 Update Music Source
 function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex];
+  musicFrame.src = currentPlaylist[currentIndex].url;  // Ensure only the URL is assigned
 }
 
 // 🎵 Play/Pause Toggle
