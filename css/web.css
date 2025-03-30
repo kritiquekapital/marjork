@@ -725,7 +725,6 @@ body.theme-space .grid-container {
 }
 
 /* Kiss Button */
-/* Kiss Button - Initial grid-based positioning */
 .kiss-button {
   background: url('pic/solavi.png');
   background-size: contain;
@@ -733,8 +732,8 @@ body.theme-space .grid-container {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: relative; /* Set to relative initially within the grid */
-  width: 120px; /* Size the button */
+  position: relative; /* Default relative positioning within the grid */
+  width: 120px;
   height: 120px;
   display: inline-block;
   align-items: center;
@@ -744,7 +743,13 @@ body.theme-space .grid-container {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 10;
-  overflow: visible; /* Ensure any rays do not overflow */
+  overflow: visible;
+}
+
+/* After Breakout: Absolute positioning */
+.kiss-button.free {
+  position: absolute; /* Make it independent of the grid */
+  transition: none; /* No transition after breakout */
 }
 
 /* Hover and active effects */
