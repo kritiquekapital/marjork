@@ -1,4 +1,4 @@
-import { Draggable } from "./draggable.js";
+import { Bounceable } from './bounceable.js';
 
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
@@ -10,18 +10,21 @@ const messages = [
 ];
 
 if (kissButton) {
-  const kissDraggable = new Draggable(kissButton, true); // Mark as a kiss button
+  const kissBounceable = new Bounceable(kissButton); // Handle bounce physics independently
+
+  let clickCount = 0;
+  let isFree = false;
 
   kissButton.addEventListener("click", (e) => {
-    if (!kissDraggable.isFree) {
+    if (!isFree) {
       // Increment clicks until it breaks free
-      kissDraggable.clickCount++;
-      if (kissDraggable.clickCount >= 10) {
-        kissDraggable.isFree = true;
+      clickCount++;
+      if (clickCount >= 10) {
+        isFree = true;
       }
     } else {
-      // Once free, move in opposite direction
-      kissDraggable.handleKissButtonClick(e);
+      // Once free, move in opposite direction and apply bounce physics
+      kissBounceable.moveOppositeDirection(e.clientX, e.clientY);
     }
 
     // Floating love message animation
@@ -31,25 +34,4 @@ if (kissButton) {
     loveMessage.textContent = randomMessage;
     loveMessage.style.position = "absolute";
     loveMessage.style.color = "#FF1493";
-    loveMessage.style.fontSize = "1.5rem";
-    loveMessage.style.fontWeight = "bold";
-    loveMessage.style.top = "50%";
-    loveMessage.style.left = "50%";
-    loveMessage.style.transform = "translate(-50%, -50%)";
-    loveMessage.style.opacity = "1";
-    loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
-
-    setTimeout(() => {
-      const randomX = Math.random() * 200 - 100;
-      const randomY = Math.random() * 200 - 100;
-      loveMessage.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-      loveMessage.style.opacity = "0";
-    }, 100);
-
-    kissButton.appendChild(loveMessage);
-
-    setTimeout(() => {
-      kissButton.removeChild(loveMessage);
-    }, 1600);
-  });
-}
+    loveMessage.style.fontSize = "1
