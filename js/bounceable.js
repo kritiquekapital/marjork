@@ -11,8 +11,6 @@ export class Bounceable {
     this.element.addEventListener("click", this.handleClick.bind(this));
   }
 
-  console.log("Bounceable.js loaded!");
-
   // Handle the click event
   handleClick(e) {
     if (!this.isFree) {
