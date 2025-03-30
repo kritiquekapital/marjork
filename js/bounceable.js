@@ -2,16 +2,15 @@ export class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.95; // Slightly higher friction for smoother movement
+    this.friction = 0.85; // Higher friction for slower movement
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
 
-    // Ensure absolute positioning but use its computed initial position
+    // Ensure absolute positioning, using current position instead of `getBoundingClientRect()`
     this.element.style.position = "absolute"; 
-    const rect = this.element.getBoundingClientRect();
-    this.element.style.left = `${rect.left}px`;
-    this.element.style.top = `${rect.top}px`;
+    this.element.style.left = `${this.element.offsetLeft}px`;
+    this.element.style.top = `${this.element.offsetTop}px`;
 
     // Attach click event directly inside the class
     this.element.addEventListener("click", this.handleClick.bind(this));
@@ -34,8 +33,8 @@ export class Bounceable {
 
   // Move in the opposite direction of the click
   moveOppositeDirection(x, y) {
-    this.velocity.x = (this.element.offsetLeft - x) * 0.1; // Reduced for less extreme movement
-    this.velocity.y = (this.element.offsetTop - y) * 0.1;
+    this.velocity.x = (this.element.offsetLeft - x) * 0.05; // Reduce intensity
+    this.velocity.y = (this.element.offsetTop - y) * 0.05;
     this.applyBouncePhysics();
   }
 
@@ -44,7 +43,7 @@ export class Bounceable {
     if (!this.isFree) return; // Ensure physics only runs after freeing
 
     const animate = () => {
-      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
         cancelAnimationFrame(this.animationFrame);
         return;
       }
@@ -60,18 +59,18 @@ export class Bounceable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Define viewport boundaries dynamically
+      // Define viewport boundaries dynamically (keeping within screen)
       const minX = 0;
       const minY = 0;
       const maxX = window.innerWidth - elementWidth;
       const maxY = window.innerHeight - elementHeight;
 
-      // Bounce off edges
+      // Bounce off edges and slow down bounce effect
       if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -1;
+        this.velocity.x *= -0.8; // Reduce velocity loss on bounce
       }
       if (newTop < minY || newTop > maxY) {
-        this.velocity.y *= -1;
+        this.velocity.y *= -0.8;
       }
 
       // Apply new position, ensuring it stays within bounds
