@@ -84,59 +84,59 @@ export class Draggable {
     this.applyPhysics();
   }
 
-  applyPhysics() {
-    if (!this.isReleased) return;
+applyPhysics() {
+  if (!this.isReleased) return;
 
-    const animate = () => {
-      let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-      let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+  const animate = () => {
+    let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+    let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      const elementWidth = this.element.offsetWidth;
-      const elementHeight = this.element.offsetHeight;
+    const elementWidth = this.element.offsetWidth;
+    const elementHeight = this.element.offsetHeight;
 
-      let minX, minY, maxX, maxY;
+    let minX, minY, maxX, maxY;
 
-      // Set boundaries depending on whether it's the music player or the kiss button
-      if (this.isKissButton) {
-        // Kiss button boundaries (adjust as needed)
-        minX = 0;
-        minY = 0;
-        maxX = document.documentElement.clientWidth - 0;
-        maxY = document.documentElement.clientHeight - 0;
-      } else {
-        // Music player boundaries (keep the old ones)
-        minX = 160;
-        minY = 220;
-        maxX = document.documentElement.clientWidth - 160;
-        maxY = document.documentElement.clientHeight - 220;
-      }
+    // Set boundaries depending on whether it's the music player or the kiss button
+    if (this.isKissButton) {
+      // Kiss button boundaries (adjust as needed)
+      minX = 50;
+      minY = 50;
+      maxX = document.documentElement.clientWidth - 50;
+      maxY = document.documentElement.clientHeight - 50;
+    } else {
+      // Music player boundaries (keep the old ones)
+      minX = 160;
+      minY = 220;
+      maxX = document.documentElement.clientWidth - 160;
+      maxY = document.documentElement.clientHeight - 220;
+    }
 
-      // Apply friction for normal gravity physics
-      if (!this.isZeroGravity) {
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
-      }
+    // Apply friction for normal gravity physics
+    if (!this.isZeroGravity) {
+      this.velocity.x *= this.friction;
+      this.velocity.y *= this.friction;
 
-      // Bouncing at the boundaries (as per older behavior)
+      // Boundary checks and bounce (only for normal gravity)
       if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -1;
+        this.velocity.x *= -1; // Reverse velocity to simulate bounce
       }
       if (newTop < minY || newTop > maxY) {
-        this.velocity.y *= -1;
+        this.velocity.y *= -1; // Reverse velocity to simulate bounce
       }
+    }
 
-      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
-      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
+    // Update the position
+    this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+    this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
-      // Stop the animation when the velocity is low enough (similar to older physics)
-      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-        cancelAnimationFrame(this.animationFrame);
-        return;
-      }
-
-      this.animationFrame = requestAnimationFrame(animate);
-    };
+    // Stop the animation when the velocity is low enough (similar to older physics)
+    if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      cancelAnimationFrame(this.animationFrame);
+      return;
+    }
 
     this.animationFrame = requestAnimationFrame(animate);
-  }
+  };
+
+  this.animationFrame = requestAnimationFrame(animate);
 }
