@@ -1,5 +1,5 @@
 export class Draggable {
-  constructor(element) {
+  constructor(element, isKissButton = false) {
     if (!element) {
       throw new Error("Element is required to initialize Draggable.");
     }
@@ -11,19 +11,16 @@ export class Draggable {
     this.friction = 0.92;
     this.isReleased = false;
     this.animationFrame = null;
-    this.isZeroGravity = false;  // New property to track zero-gravity mode
+    this.isZeroGravity = false;
+    this.isKissButton = isKissButton;
+    this.clickCount = 0;
+    this.isFree = false;
 
-    // Ensure absolute positioning
     this.element.style.position = 'absolute';
-
-    // Center the element in the viewport
     this.centerElementInViewport();
-
-    // Initialize event listeners
     this.init();
   }
 
-  // Function to toggle physics mode based on theme
   setZeroGravityMode(isZeroGravity) {
     this.isZeroGravity = isZeroGravity;
   }
@@ -42,21 +39,37 @@ export class Draggable {
   }
 
   init() {
-    this.element.addEventListener('mousedown', this.startDrag.bind(this));
-    document.addEventListener('mousemove', this.drag.bind(this));
-    document.addEventListener('mouseup', this.stopDrag.bind(this));
+    if (this.isKissButton) {
+      this.element.addEventListener('click', this.handleKissButtonClick.bind(this));
+    } else {
+      this.element.addEventListener('mousedown', this.startDrag.bind(this));
+      document.addEventListener('mousemove', this.drag.bind(this));
+      document.addEventListener('mouseup', this.stopDrag.bind(this));
+    }
   }
 
-startDrag(e) {
-    const rect = this.element.getBoundingClientRect();
-
-    if (
-        e.clientX < rect.left || e.clientX > rect.right ||
-        e.clientY < rect.top || e.clientY > rect.bottom
-    ) {
+  handleKissButtonClick(e) {
+    if (!this.isFree) {
+      this.clickCount++;
+      if (this.clickCount >= 10) {
+        this.isFree = true;
+      } else {
         return;
+      }
     }
 
+    // Move in the opposite direction of the click
+    const rect = this.element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    this.velocity.x = (centerX - e.clientX) * 0.5;
+    this.velocity.y = (centerY - e.clientY) * 0.5;
+
+    this.applyPhysics();
+  }
+
+  startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
 
@@ -66,7 +79,7 @@ startDrag(e) {
     };
 
     cancelAnimationFrame(this.animationFrame);
-}
+  }
 
   drag(e) {
     if (!this.isDragging) return;
@@ -81,16 +94,16 @@ startDrag(e) {
     this.element.style.top = `${newY}px`;
   }
 
-stopDrag(e) {
+  stopDrag() {
     if (!this.isDragging) return;
 
     this.isDragging = false;
     this.isReleased = true;
     this.applyPhysics();
-}
+  }
 
   applyPhysics() {
-    if (!this.isReleased) return;
+    if (!this.isReleased && !this.isFree) return;
 
     const animate = () => {
       if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -108,10 +121,10 @@ stopDrag(e) {
 
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
-      const minX = 160;
-      const minY = 220;
-      const maxX = document.documentElement.clientWidth - 160;
-      const maxY = document.documentElement.clientHeight - 220;
+      const minX = this.isKissButton ? 50 : 160;
+      const minY = this.isKissButton ? 50 : 220;
+      const maxX = document.documentElement.clientWidth - (this.isKissButton ? 50 : 160);
+      const maxY = document.documentElement.clientHeight - (this.isKissButton ? 50 : 220);
 
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
