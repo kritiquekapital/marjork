@@ -1,15 +1,14 @@
 export class Bounceable {
-  constructor(element, container) {
+  constructor(element) {
     this.element = element;
-    this.container = container; // The container element (visual boundary)
     this.velocity = { x: 0, y: 0 };
     this.friction = 0.92;
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
-    this.isOutOfContainer = false; // Track if the element has broken free
 
-    // Initial positioning within the container
+    // Ensure absolute positioning
+    this.element.style.position = "absolute"; 
     this.element.style.left = `${this.element.offsetLeft}px`;
     this.element.style.top = `${this.element.offsetTop}px`;
 
@@ -19,19 +18,14 @@ export class Bounceable {
 
   handleClick(e) {
     if (!this.isFree) {
-      this.incrementClickCount();
+      this.clickCount++;
+      if (this.clickCount >= 10) {
+        this.isFree = true;
+        this.velocity = { x: 0, y: 0 };
+        this.applyBouncePhysics();
+      }
     } else {
       this.moveOppositeDirection(e.clientX, e.clientY);
-    }
-  }
-
-  incrementClickCount() {
-    this.clickCount++;
-    if (this.clickCount >= 10 && !this.isFree) {
-      this.isFree = true;
-      this.isOutOfContainer = true; // Mark it as outside the container now
-      this.velocity = { x: 0, y: 0 };
-      this.applyBouncePhysics();
     }
   }
 
@@ -65,13 +59,13 @@ export class Bounceable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Get the viewport boundaries (now we ignore the container's boundaries)
+      // Get the actual viewport boundaries
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth; // Width of the window minus the element's width
-      const maxY = window.innerHeight - elementHeight; // Height of the window minus the element's height
+      const maxX = window.innerWidth - elementWidth;
+      const maxY = window.innerHeight - elementHeight;
 
-      // Bounce off edges of the viewport (outside of the container)
+      // Bounce off edges of the viewport (not the container)
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
       }
