@@ -1284,28 +1284,3 @@ body.theme-retro .click-wheel {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-/* ==================== */
-/* Ensure Buttons Stay Above Grid Container Background */
-/* ==================== */
-body.theme-modern .grid-container a,
-body.theme-nature .grid-container a,
-body.theme-classic .grid-container a {
-  position: relative;
-  z-index: 1; /* Higher than the grid container background */
-}
-
-/* Ensure Grid Container Background Doesn't Overlap Buttons */
-body.theme-modern .grid-container,
-body.theme-nature .grid-container,
-body.theme-classic .grid-container {
-  z-index: 0; /* Lower z-index for the grid container background */
-}
-
-/* Ensure Photo Outer Ring is Visible */
-body.theme-modern .photo .lens::before,
-body.theme-nature .photo .lens::before,
-body.theme-classic .photo .lens::before {
-  border: 4px solid #444 !important; /* Ensure the border is visible */
-  z-index: -1 !important; /* Keep the ring behind the lens */
-}
