@@ -18,8 +18,10 @@ export class Draggable {
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
 
-    // Center the element in the viewport
-    this.centerElementInViewport();
+    // No need to center the kiss button, we will leave its position as is
+    if (!this.isKissButton) {
+      this.centerElementInViewport();  // Only center music player
+    }
 
     // Initialize event listeners
     this.init();
@@ -84,16 +86,6 @@ export class Draggable {
     if (!this.isReleased) return;
 
     const animate = () => {
-      if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-        cancelAnimationFrame(this.animationFrame);
-        return;
-      }
-
-      if (!this.isZeroGravity) {
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
-      }
-
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
@@ -105,10 +97,10 @@ export class Draggable {
       // Set boundaries depending on whether it's the music player or the kiss button
       if (this.isKissButton) {
         // Kiss button boundaries (adjust as needed)
-        minX = 100;  // Adjust padding for the kiss button's left side
-        minY = 150;  // Adjust padding for the kiss button's top side
-        maxX = document.documentElement.clientWidth - elementWidth - 100; // Right boundary
-        maxY = document.documentElement.clientHeight - elementHeight - 150; // Bottom boundary
+        minX = 100;
+        minY = 150;
+        maxX = document.documentElement.clientWidth - elementWidth - 100;
+        maxY = document.documentElement.clientHeight - elementHeight - 150;
       } else {
         // Music player boundaries (keep the old ones)
         minX = 160;
@@ -117,7 +109,6 @@ export class Draggable {
         maxY = document.documentElement.clientHeight - 220;
       }
 
-      // Check if the element has moved outside of the boundaries and reverse velocity
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
       }
@@ -125,7 +116,6 @@ export class Draggable {
         this.velocity.y *= -1;
       }
 
-      // Ensure the element stays within the boundaries
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
