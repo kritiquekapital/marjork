@@ -732,8 +732,10 @@ body.theme-space .grid-container {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: relative;
-  font-size: 20px;
+  position: absolute; /* Change to absolute for viewport-relative positioning */
+  top: 50%; /* Start position in the center */
+  left: 50%; /* Start position in the center */
+  transform: translate(-50%, -50%); /* Center it */
   width: 120px;
   height: 120px;
   display: inline-block;
@@ -743,8 +745,6 @@ body.theme-space .grid-container {
   background-color: transparent;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
-  grid-row: 4;
-  grid-column: 2;
   z-index: 10;
   overflow: visible; /* Hide overflowing rays */
 }
@@ -829,8 +829,9 @@ body.theme-space .grid-container {
   transform: translate(0, 0);
   transition: transform 2s ease, opacity 2s ease;
   opacity: 1;
-  z-index: 1000;
+  z-index: 10000;
 }
+
 
 /* ==================== */
 /* Vinyl and Video Popup Styles */
