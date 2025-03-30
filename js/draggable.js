@@ -97,10 +97,10 @@ export class Draggable {
       // Set boundaries depending on whether it's the music player or the kiss button
       if (this.isKissButton) {
         // Kiss button boundaries (adjust as needed)
-        minX = 100;
-        minY = 150;
-        maxX = document.documentElement.clientWidth - elementWidth - 100;
-        maxY = document.documentElement.clientHeight - elementHeight - 150;
+        minX = 50;
+        minY = 50;
+        maxX = document.documentElement.clientWidth - 50;
+        maxY = document.documentElement.clientHeight - 50;
       } else {
         // Music player boundaries (keep the old ones)
         minX = 160;
