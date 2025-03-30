@@ -23,29 +23,29 @@ handleClick(e) {
       this.isFree = true;
       this.velocity = { x: 0, y: 0 };
 
-      // Set the button to absolute positioning relative to the viewport
-      this.element.style.position = "absolute";
+      // Track the current position before breaking out
+      const rect = this.element.getBoundingClientRect();
+      const currentLeft = rect.left;
+      const currentTop = rect.top;
 
-      this.applyBouncePhysics();  // Start applying the bounce physics from here
+      // Set the element's position to absolute, retaining current position
+      this.element.style.position = "absolute";
+      this.element.style.left = `${currentLeft}px`;
+      this.element.style.top = `${currentTop}px`;
+
+      // Start applying the bounce physics
+      this.applyBouncePhysics();
     }
   } else {
-    this.moveOppositeDirection(e.clientX, e.clientY); // Move based on the click location
+    // Apply movement when the element is free to move
+    this.moveOppositeDirection(e.clientX, e.clientY);
   }
 }
-
-  moveOppositeDirection(x, y) {
-    const rect = this.element.getBoundingClientRect();
-
-    // Increase force for a stronger push
-    this.velocity.x = (rect.left - x) * 0.3; 
-    this.velocity.y = (rect.top - y) * 0.3; 
-
-    this.applyBouncePhysics();
-  }
 
 applyBouncePhysics() {
   if (!this.isFree) return;
 
+  // Only apply physics after the breakout
   const animate = () => {
     if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
       cancelAnimationFrame(this.animationFrame);
@@ -59,8 +59,6 @@ applyBouncePhysics() {
     let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
     let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-    console.log(`New Position - Left: ${newLeft}, Top: ${newTop}`);  // Debugging log
-
     // Get element size
     const elementWidth = this.element.offsetWidth;
     const elementHeight = this.element.offsetHeight;
@@ -71,9 +69,7 @@ applyBouncePhysics() {
     const maxX = window.innerWidth - elementWidth;
     const maxY = window.innerHeight - elementHeight;
 
-    console.log(`Viewport bounds - minX: ${minX}, maxX: ${maxX}, minY: ${minY}, maxY: ${maxY}`);
-
-    // Bounce off edges
+    // Ensure element bounces off edges of the viewport
     if (newLeft < minX || newLeft > maxX) {
       this.velocity.x *= -1;
     }
@@ -81,13 +77,15 @@ applyBouncePhysics() {
       this.velocity.y *= -1;
     }
 
-    // Apply the updated position, ensuring the element stays within the viewport
+    // Update position while keeping the element within bounds
     this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
     this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
+    // Request next frame for smooth animation
     this.animationFrame = requestAnimationFrame(animate);
   };
 
+  // Begin animation
   this.animationFrame = requestAnimationFrame(animate);
   }
 }
