@@ -199,6 +199,12 @@ menuButton.addEventListener("click", (event) => {
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
 });
 
+listItem.addEventListener("click", () => {
+  currentIndex = index;
+  updateMusicSource();
+  dropdownMenu.style.display = "none";
+});
+
 // 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
