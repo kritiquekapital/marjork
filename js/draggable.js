@@ -1,5 +1,5 @@
 export class Draggable {
-  constructor(element) {
+  constructor(element, maxClicks = 30) {
     if (!element) {
       throw new Error("Element is required to initialize Draggable.");
     }
@@ -12,6 +12,8 @@ export class Draggable {
     this.isReleased = false;
     this.animationFrame = null;
     this.isZeroGravity = false;  // New property to track zero-gravity mode
+    this.clickCount = 0;  // Track the number of clicks
+    this.maxClicks = maxClicks;  // The number of clicks before breaking free
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -45,9 +47,24 @@ export class Draggable {
     this.element.addEventListener('mousedown', this.startDrag.bind(this));
     document.addEventListener('mousemove', this.drag.bind(this));
     document.addEventListener('mouseup', this.stopDrag.bind(this));
+
+    // If this is the kiss button, add click event listener for the click tracking
+    if (this.element.classList.contains('kiss-button')) {
+      this.element.addEventListener('click', this.handleClick.bind(this));
+    }
+  }
+
+  handleClick(e) {
+    this.clickCount++;
+
+    if (this.clickCount >= this.maxClicks) {
+      this.breakFree();  // Allow the kiss button to "break free"
+    }
   }
 
   startDrag(e) {
+    if (this.clickCount < this.maxClicks) return;  // Don't drag until threshold is hit
+
     this.isDragging = true;
     this.isReleased = false;
     
@@ -60,7 +77,7 @@ export class Draggable {
   }
 
   drag(e) {
-    if (!this.isDragging) return;
+    if (!this.isDragging || this.clickCount < this.maxClicks) return;
 
     const newX = this.element.offsetLeft + (e.clientX - this.offset.x - this.element.offsetLeft) * 0.5;
     const newY = this.element.offsetTop + (e.clientY - this.offset.y - this.element.offsetTop) * 0.5;
@@ -73,13 +90,15 @@ export class Draggable {
   }
 
   stopDrag() {
+    if (this.clickCount < this.maxClicks) return;
+
     this.isDragging = false;
     this.isReleased = true;
     this.applyPhysics();
   }
 
   applyPhysics() {
-    if (!this.isReleased) return;
+    if (!this.isReleased || this.clickCount < this.maxClicks) return;
 
     const animate = () => {
       if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -116,5 +135,25 @@ export class Draggable {
     };
 
     this.animationFrame = requestAnimationFrame(animate);
+  }
+
+  breakFree() {
+    // Change the element's behavior after it "breaks free" (allows zero-gravity and physics)
+    this.setZeroGravityMode(true);
+    this.element.style.cursor = 'pointer';  // Change cursor to indicate interaction
+
+    // Set the initial velocity and direction based on the click position
+    const rect = this.element.getBoundingClientRect();
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    const directionX = (clickX - rect.left) / rect.width;
+    const directionY = (clickY - rect.top) / rect.height;
+
+    this.velocity.x = directionX * 10;  // Customize speed multiplier here
+    this.velocity.y = directionY * 10;
+
+    this.isReleased = true;
+    this.applyPhysics();
   }
 }
