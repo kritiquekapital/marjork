@@ -725,6 +725,7 @@ body.theme-space .grid-container {
 }
 
 /* Kiss Button */
+/* Kiss Button - Initial grid-based positioning */
 .kiss-button {
   background: url('pic/solavi.png');
   background-size: contain;
@@ -732,12 +733,9 @@ body.theme-space .grid-container {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: absolute; /* Change to absolute for viewport-relative positioning after breakout */
-  top: 50%; /* Initial position */
-  left: 50%; /* Initial position */
-  transform: translate(-50%, -50%); /* Center it */
-  width: 120px; /* Set the width of the button */
-  height: 120px; /* Set the height of the button */
+  position: relative; /* Set to relative initially within the grid */
+  width: 120px; /* Size the button */
+  height: 120px;
   display: inline-block;
   align-items: center;
   justify-content: center;
@@ -746,14 +744,17 @@ body.theme-space .grid-container {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 10;
-  overflow: visible; /* Hide overflowing rays */
+  overflow: visible; /* Ensure any rays do not overflow */
 }
 
-/* Adjust size on hover (only when needed) */
+/* Hover and active effects */
 .kiss-button:hover {
   transform: scale(1.1);
-  z-index: 10 !important;
   box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
+}
+
+.kiss-button:active {
+  transform: scale(0.95);
 }
 
 /* Ray Container */
@@ -792,7 +793,7 @@ body.theme-space .grid-container {
   }
 }
 
-/* Position Rays Non-Uniformly */
+/* Ray Direction */
 .ray:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg); }
 .ray:nth-child(2) { transform: translate(-50%, -50%) rotate(45deg); }
 .ray:nth-child(3) { transform: translate(-50%, -50%) rotate(90deg); }
@@ -821,7 +822,7 @@ body.theme-space .grid-container {
   transform: translate(0, 0);
   transition: transform 2s ease, opacity 2s ease;
   opacity: 1;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 /* ==================== */
