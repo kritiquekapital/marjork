@@ -16,24 +16,7 @@ if (kissButton) {
   let isFree = false;
 
   kissButton.addEventListener("click", (e) => {
-    if (!isFree) {
-      // Increment clicks until it breaks free
-      clickCount++;
-      if (clickCount >= 10) {
-        isFree = true;
-        // Reset velocity after it breaks free
-        kissBounceable.velocity = { x: 0, y: 0 };
-      } else {
-        return;
-      }
-    }
-
-    // Once free, move in opposite direction and apply bounce physics
-    if (isFree) {
-      kissBounceable.moveOppositeDirection(e.clientX, e.clientY);
-    }
-
-    // Floating love message animation
+    // Show a love message on every click, regardless of free state
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
     const loveMessage = document.createElement("div");
 
@@ -60,5 +43,18 @@ if (kissButton) {
     setTimeout(() => {
       kissButton.removeChild(loveMessage);
     }, 1600);
+
+    // Increment clicks until it breaks free
+    if (!isFree) {
+      clickCount++;
+      if (clickCount >= 10) {
+        isFree = true;
+        // Reset velocity after it breaks free
+        kissBounceable.velocity = { x: 0, y: 0 };
+      }
+    } else {
+      // Once free, move in opposite direction and apply bounce physics
+      kissBounceable.moveOppositeDirection(e.clientX, e.clientY);
+    }
   });
 }
