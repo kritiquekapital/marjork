@@ -1,5 +1,5 @@
 export class Draggable {
-  constructor(element, isKissButton = false) {
+  constructor(element) {
     if (!element) {
       throw new Error("Element is required to initialize Draggable.");
     }
@@ -12,19 +12,12 @@ export class Draggable {
     this.isReleased = false;
     this.animationFrame = null;
     this.isZeroGravity = false;
-    this.isKissButton = isKissButton;
-    this.clickCount = 0;
-    this.isFree = false;
 
-    if (!isKissButton) {
-      // Center only if it's NOT the kiss button
-      this.centerElementInViewport();
-      // Set up drag events for music player
-      this.initMusicPlayer();
-    } else {
-      // Set up click behavior for the kiss button
-      this.initKissButton();
-    }
+    // Center the element in the viewport if necessary
+    this.centerElementInViewport();
+    
+    // Initialize the drag events
+    this.initDrag();
   }
 
   // Set Zero Gravity Mode
@@ -47,43 +40,13 @@ export class Draggable {
   }
 
   // Initialize the Music Player drag functionality (no click behavior)
-  initMusicPlayer() {
+  initDrag() {
     this.element.addEventListener("mousedown", this.startDrag.bind(this));
     document.addEventListener("mousemove", this.drag.bind(this));
     document.addEventListener("mouseup", this.stopDrag.bind(this));
   }
 
-  // Initialize the Kiss Button click functionality (no drag)
-  initKissButton() {
-    this.element.addEventListener('click', this.handleKissButtonClick.bind(this));
-  }
-
-  // Kiss button logic (responds to clicks)
-  handleKissButtonClick(e) {
-    if (!this.isKissButton) return;
-
-    if (!this.isFree) {
-      this.clickCount++;
-      if (this.clickCount >= 10) {
-        this.isFree = true;
-        this.velocity = { x: 0, y: 0 }; // Reset velocity once free.
-      } else {
-        return;
-      }
-    }
-
-    // Move in the opposite direction of the click
-    const rect = this.element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    this.velocity.x = (centerX - e.clientX) * 0.5;
-    this.velocity.y = (centerY - e.clientY) * 0.5;
-
-    this.applyPhysics();
-  }
-
-  // Start dragging (for music player only)
+  // Start dragging
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
@@ -96,7 +59,7 @@ export class Draggable {
     cancelAnimationFrame(this.animationFrame);
   }
 
-  // Dragging logic (for music player only)
+  // Dragging logic
   drag(e) {
     if (!this.isDragging) return;
 
@@ -110,7 +73,7 @@ export class Draggable {
     this.element.style.top = `${newY}px`;
   }
 
-  // Stop dragging (for music player only)
+  // Stop dragging
   stopDrag() {
     if (!this.isDragging) return;
 
@@ -119,10 +82,8 @@ export class Draggable {
     this.applyPhysics();
   }
 
-  // Apply physics (for both music player and kiss button)
+  // Apply physics for the element's movement
   applyPhysics() {
-    if (this.isKissButton && !this.isFree) return; // Prevent movement before it's free
-
     const animate = () => {
       if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
         cancelAnimationFrame(this.animationFrame);
@@ -140,11 +101,10 @@ export class Draggable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Separate boundaries for kiss button
-      const minX = this.isKissButton ? 100 : 160;
-      const minY = this.isKissButton ? 150 : 220;
-      const maxX = document.documentElement.clientWidth - (this.isKissButton ? 100 : 160);
-      const maxY = document.documentElement.clientHeight - (this.isKissButton ? 150 : 220);
+      const minX = 160;
+      const minY = 220;
+      const maxX = document.documentElement.clientWidth - 160;
+      const maxY = document.documentElement.clientHeight - 220;
 
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
