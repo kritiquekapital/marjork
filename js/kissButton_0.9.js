@@ -1,4 +1,4 @@
-import { Draggable } from './Draggable';
+import { Draggable } from './Draggable'; // Assuming the Draggable class is in a separate file
 
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
@@ -13,27 +13,27 @@ let clickCount = 0;
 const maxClicks = 30;
 let isFree = false;  // Flag to track if the button has broken free
 
-// Function to handle click event on the kiss button
+// Function to handle the click event on the kiss button
 if (kissButton) {
   kissButton.addEventListener("click", (e) => {
-    // Always show the love message
     showLoveMessage();
 
     // If the kiss button is free, apply physics movement
     if (isFree) {
+      console.log("Button is free, applying physics movement...");
       handleFreeButtonMovement(e);
     } else {
       clickCount++;
 
       // Check if the max click threshold has been reached
       if (clickCount >= maxClicks) {
+        console.log("Max clicks reached, breaking free from position...");
         breakFreeFromPosition();
       }
     }
   });
 }
 
-// Function to show love messages on click
 function showLoveMessage() {
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
   const loveMessage = document.createElement("div");
@@ -49,9 +49,6 @@ function showLoveMessage() {
   loveMessage.style.opacity = "1";
   loveMessage.style.transition = "opacity 1.5s ease, transform 1.5s ease";
 
-  // Position the love message relative to the kiss button
-  kissButton.appendChild(loveMessage);
-
   setTimeout(() => {
     const randomX = Math.random() * 200 - 100;
     const randomY = Math.random() * 200 - 100;
@@ -59,73 +56,47 @@ function showLoveMessage() {
     loveMessage.style.opacity = "0";
   }, 100);
 
+  kissButton.appendChild(loveMessage);
+
   setTimeout(() => {
     kissButton.removeChild(loveMessage);
   }, 1600);
 }
 
-// Function to "break free" from the kiss button's initial position
+// Function to handle the button movement after breaking free
 function breakFreeFromPosition() {
   isFree = true;
-  kissButton.style.cursor = 'pointer';  // Change cursor style to indicate interaction
+  kissButton.style.cursor = 'pointer'; // Add cursor style for interactivity
 
-  // Give it an initial direction based on where it was clicked
-  const rect = kissButton.getBoundingClientRect();
-  const clickX = event.clientX;
-  const clickY = event.clientY;
+  // Apply draggable physics now that it's free
+  const draggable = new Draggable(kissButton);
 
-  const directionX = (clickX - rect.left) / rect.width;
-  const directionY = (clickY - rect.top) / rect.height;
-
-  const velocityX = directionX * 10;  // Customize the speed here
-  const velocityY = directionY * 10;
-
-  // Start applying physics and release the button
-  startPhysics(velocityX, velocityY);
+  // Debug: Check the button’s position
+  console.log("Button is now draggable. Current position:", kissButton.style.left, kissButton.style.top);
 }
 
-// Function to handle the kiss button's movement after breaking free (physics)
-function startPhysics(initialVelocityX, initialVelocityY) {
-  let velocity = { x: initialVelocityX, y: initialVelocityY };
-  let position = { x: kissButton.offsetLeft, y: kissButton.offsetTop };
-  let friction = 0.98;
-
-  // Function to update position and apply physics
-  function updatePhysics() {
-    if (Math.abs(velocity.x) < 0.1 && Math.abs(velocity.y) < 0.1) {
-      return;  // Stop the movement if velocity is small enough
-    }
-
-    // Apply friction
-    velocity.x *= friction;
-    velocity.y *= friction;
-
-    position.x += velocity.x;
-    position.y += velocity.y;
-
-    // Update the button's position
-    kissButton.style.left = `${position.x}px`;
-    kissButton.style.top = `${position.y}px`;
-
-    // Request the next animation frame
-    requestAnimationFrame(updatePhysics);
-  }
-
-  // Start the physics update loop
-  requestAnimationFrame(updatePhysics);
-}
-
-// Function to handle the kiss button's movement before it breaks free
+// Function to handle movement when the button is free
 function handleFreeButtonMovement(e) {
+  // Get the dimensions and position of the button
   const rect = kissButton.getBoundingClientRect();
-  const clickX = e.clientX;
-  const clickY = e.clientY;
+  const offsetX = e.clientX - rect.left;
+  const offsetY = e.clientY - rect.top;
 
-  const directionX = (clickX - rect.left) / rect.width;
-  const directionY = (clickY - rect.top) / rect.height;
+  // Limit movement to a small range after breaking free
+  const maxMovement = 30; // Reduce the distance moved significantly
+  const newLeft = Math.min(
+    document.documentElement.clientWidth - rect.width - 20,
+    Math.max(20, e.clientX - offsetX + (Math.random() * maxMovement - maxMovement / 2))
+  );
+  const newTop = Math.min(
+    document.documentElement.clientHeight - rect.height - 20,
+    Math.max(20, e.clientY - offsetY + (Math.random() * maxMovement - maxMovement / 2))
+  );
 
-  const velocityX = directionX * 15;  // Customize speed here
-  const velocityY = directionY * 15;
+  // Update button position
+  kissButton.style.left = `${newLeft}px`;
+  kissButton.style.top = `${newTop}px`;
 
-  startPhysics(velocityX, velocityY);  // Call physics function after break free
+  // Debug: Log the button's new position
+  console.log("New position:", newLeft, newTop);
 }
