@@ -15,10 +15,10 @@ let animationFrame = null; // Store animation frame for physics updates
 
 // Boundaries similar to other draggable elements (calculated dynamically)
 const boundaries = {
-  minX: 160,
-  minY: 220,
-  maxX: document.documentElement.clientWidth - 160,
-  maxY: document.documentElement.clientHeight - 220,
+  minX: 0,
+  minY: 0,
+  maxX: document.documentElement.clientWidth - 10,
+  maxY: document.documentElement.clientHeight - 10,
 };
 
 if (kissButton) {
