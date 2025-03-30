@@ -1,4 +1,4 @@
-export class Bounceable {
+class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
@@ -59,13 +59,13 @@ export class Bounceable {
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Get the actual viewport boundaries
+      // Get viewport boundaries
       const minX = 0;
       const minY = 0;
       const maxX = window.innerWidth - elementWidth;
       const maxY = window.innerHeight - elementHeight;
 
-      // Bounce off edges of the viewport (not the container)
+      // Bounce off edges
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
       }
