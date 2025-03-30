@@ -117,17 +117,15 @@ export class Draggable {
         // Boundary checks and bounce (only for normal gravity)
         if (newLeft < minX || newLeft > maxX) {
           this.velocity.x *= -1; // Reverse velocity to simulate bounce
-          newLeft = Math.min(Math.max(minX, newLeft), maxX); // Constrain within boundaries
         }
         if (newTop < minY || newTop > maxY) {
           this.velocity.y *= -1; // Reverse velocity to simulate bounce
-          newTop = Math.min(Math.max(minY, newTop), maxY); // Constrain within boundaries
         }
       }
 
       // Update the position
-      this.element.style.left = `${newLeft}px`;
-      this.element.style.top = `${newTop}px`;
+      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
       // Stop the animation when the velocity is low enough (similar to older physics)
       if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
