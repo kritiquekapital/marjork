@@ -16,6 +16,7 @@ new Draggable(musicPlayer, '.ipod-screen');
 // Video Links
 const liveLinks2 = [
   { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
+  { title: "Avatar's Love", url: "https://www.youtube.com/embed/-JH5X_-Px-4?autoplay=1" },
   { title: "Плачу на техно", url: "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1" },
   { title: "Gypsy Woman", url: "https://www.youtube.com/embed/_KztNIg4cvE?autoplay=1" },
   { title: "Volga", url: "https://www.youtube.com/embed/_6rUeOCm7S0?autoplay=1" },
