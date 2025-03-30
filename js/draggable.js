@@ -109,6 +109,13 @@ export class Draggable {
         maxY = document.documentElement.clientHeight - 220;
       }
 
+      // Apply friction for normal gravity physics
+      if (!this.isZeroGravity) {
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+      }
+
+      // Bouncing at the boundaries (as per older behavior)
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
       }
@@ -118,6 +125,12 @@ export class Draggable {
 
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
+
+      // Stop the animation when the velocity is low enough (similar to older physics)
+      if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+        cancelAnimationFrame(this.animationFrame);
+        return;
+      }
 
       this.animationFrame = requestAnimationFrame(animate);
     };
