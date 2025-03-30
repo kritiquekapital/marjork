@@ -15,13 +15,8 @@ export class Draggable {
     this.clickCount = 0;  // Track the number of clicks
     this.maxClicks = maxClicks;  // The number of clicks before breaking free
 
-    // Boundaries similar to other draggable elements (adjusted as needed)
-    this.boundaries = {
-      minX: 160,
-      minY: 220,
-      maxX: document.documentElement.clientWidth - 160,
-      maxY: document.documentElement.clientHeight - 220,
-    };
+    // Boundaries similar to other draggable elements (calculated dynamically)
+    this.boundaries = this.calculateBoundaries();
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -36,6 +31,18 @@ export class Draggable {
   // Function to toggle zero-gravity mode
   setZeroGravityMode(isZeroGravity) {
     this.isZeroGravity = isZeroGravity;
+  }
+
+  // Calculate the boundaries dynamically based on the element's dimensions
+  calculateBoundaries() {
+    const elementWidth = this.element.offsetWidth;
+    const elementHeight = this.element.offsetHeight;
+    const minX = 160;
+    const minY = 220;
+    const maxX = document.documentElement.clientWidth - elementWidth - 160;
+    const maxY = document.documentElement.clientHeight - elementHeight - 220;
+
+    return { minX, minY, maxX, maxY };
   }
 
   centerElementInViewport() {
@@ -123,10 +130,6 @@ export class Draggable {
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
-
-      // Define boundaries for element movement (to mimic air hockey-like boundaries)
-      const elementWidth = this.element.offsetWidth;
-      const elementHeight = this.element.offsetHeight;
 
       // Ensure the element respects the predefined boundaries (same as draggable)
       if (newLeft < this.boundaries.minX || newLeft > this.boundaries.maxX) {
