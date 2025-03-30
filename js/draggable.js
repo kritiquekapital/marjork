@@ -48,7 +48,15 @@ export class Draggable {
   }
 
 startDrag(e) {
-    if (e.target !== this.element) return;
+    const rect = this.element.getBoundingClientRect();
+
+    // Ensure the click is within the element bounds
+    if (
+        e.clientX < rect.left || e.clientX > rect.right ||
+        e.clientY < rect.top || e.clientY > rect.bottom
+    ) {
+        return;
+    }
 
     this.isDragging = true;
     this.isReleased = false;
