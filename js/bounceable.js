@@ -2,45 +2,45 @@ export class Bounceable {
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
-    this.friction = 0.85; // Higher friction for slower movement
+    this.friction = 0.85;
     this.animationFrame = null;
     this.clickCount = 0;
     this.isFree = false;
 
-    // Ensure absolute positioning, using current position instead of `getBoundingClientRect()`
+    // Ensure absolute positioning
     this.element.style.position = "absolute"; 
     this.element.style.left = `${this.element.offsetLeft}px`;
     this.element.style.top = `${this.element.offsetTop}px`;
 
-    // Attach click event directly inside the class
+    // Get reference to the offset parent (ensures boundaries are correct)
+    this.container = this.element.offsetParent || document.body;
+
+    // Attach click event
     this.element.addEventListener("click", this.handleClick.bind(this));
   }
 
-  // Handle the click event
   handleClick(e) {
     if (!this.isFree) {
       this.clickCount++;
       if (this.clickCount >= 10) {
         this.isFree = true;
-        this.velocity = { x: 0, y: 0 }; // Reset velocity when breaking free
-        this.applyBouncePhysics(); // Start physics immediately
+        this.velocity = { x: 0, y: 0 };
+        this.applyBouncePhysics();
       }
     } else {
-      // Move in the opposite direction
       this.moveOppositeDirection(e.clientX, e.clientY);
     }
   }
 
-  // Move in the opposite direction of the click
   moveOppositeDirection(x, y) {
-    this.velocity.x = (this.element.offsetLeft - x) * 0.05; // Reduce intensity
-    this.velocity.y = (this.element.offsetTop - y) * 0.05;
+    const rect = this.element.getBoundingClientRect();
+    this.velocity.x = (rect.left - x) * 0.05;
+    this.velocity.y = (rect.top - y) * 0.05;
     this.applyBouncePhysics();
   }
 
-  // Apply bouncing physics
   applyBouncePhysics() {
-    if (!this.isFree) return; // Ensure physics only runs after freeing
+    if (!this.isFree) return;
 
     const animate = () => {
       if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
@@ -55,25 +55,26 @@ export class Bounceable {
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Get element size for proper bounding
+      // Get element size
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
 
-      // Define viewport boundaries dynamically (keeping within screen)
+      // Get container boundaries
+      const containerRect = this.container.getBoundingClientRect();
       const minX = 0;
       const minY = 0;
-      const maxX = window.innerWidth - elementWidth;
-      const maxY = window.innerHeight - elementHeight;
+      const maxX = containerRect.width - elementWidth;
+      const maxY = containerRect.height - elementHeight;
 
-      // Bounce off edges and slow down bounce effect
+      // Bounce off edges
       if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -0.8; // Reduce velocity loss on bounce
+        this.velocity.x *= -0.8;
       }
       if (newTop < minY || newTop > maxY) {
         this.velocity.y *= -0.8;
       }
 
-      // Apply new position, ensuring it stays within bounds
+      // Ensure it stays within the container
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
