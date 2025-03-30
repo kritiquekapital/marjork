@@ -97,10 +97,10 @@ export class Draggable {
 
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
-      const minX = 155;
-      const minY = 200;
-      const maxX = document.documentElement.clientWidth - 155;
-      const maxY = document.documentElement.clientHeight - 200;
+      const minX = 160;
+      const minY = 210;
+      const maxX = document.documentElement.clientWidth - 160;
+      const maxY = document.documentElement.clientHeight - 210;
 
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
