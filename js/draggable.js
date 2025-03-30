@@ -1,10 +1,11 @@
-export class Draggable {
-  constructor(element) {
+class Draggable {
+  constructor(element, isKissButton = false) {
     if (!element) {
       throw new Error("Element is required to initialize Draggable.");
     }
 
     this.element = element;
+    this.isKissButton = isKissButton; // Track if this is the kiss button
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
     this.velocity = { x: 0, y: 0 };
@@ -12,6 +13,7 @@ export class Draggable {
     this.isReleased = false;
     this.animationFrame = null;
     this.isZeroGravity = false;  // New property to track zero-gravity mode
+    this.clickCount = 0;  // Track the number of clicks
 
     // Ensure absolute positioning
     this.element.style.position = 'absolute';
@@ -50,7 +52,7 @@ export class Draggable {
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
-    
+
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
@@ -97,11 +99,25 @@ export class Draggable {
 
       const elementWidth = this.element.offsetWidth;
       const elementHeight = this.element.offsetHeight;
-      const minX = 160;
-      const minY = 220;
-      const maxX = document.documentElement.clientWidth - 160;
-      const maxY = document.documentElement.clientHeight - 220;
 
+      let minX, minY, maxX, maxY;
+
+      // Set boundaries depending on whether it's the music player or the kiss button
+      if (this.isKissButton) {
+        // Kiss button boundaries (adjust as needed)
+        minX = 100;  // Adjust padding for the kiss button's left side
+        minY = 150;  // Adjust padding for the kiss button's top side
+        maxX = document.documentElement.clientWidth - elementWidth - 100; // Right boundary
+        maxY = document.documentElement.clientHeight - elementHeight - 150; // Bottom boundary
+      } else {
+        // Music player boundaries (keep the old ones)
+        minX = 160;
+        minY = 220;
+        maxX = document.documentElement.clientWidth - 160;
+        maxY = document.documentElement.clientHeight - 220;
+      }
+
+      // Check if the element has moved outside of the boundaries and reverse velocity
       if (newLeft < minX || newLeft > maxX) {
         this.velocity.x *= -1;
       }
@@ -109,6 +125,7 @@ export class Draggable {
         this.velocity.y *= -1;
       }
 
+      // Ensure the element stays within the boundaries
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
