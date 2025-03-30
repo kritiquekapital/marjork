@@ -732,32 +732,31 @@ body.theme-space .grid-container {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: absolute; /* Change to absolute for viewport-relative positioning */
-  top: 50%; /* Start position in the center */
-  left: 50%; /* Start position in the center */
+  position: absolute; /* Change to absolute for viewport-relative positioning after breakout */
+  top: 50%; /* Initial position */
+  left: 50%; /* Initial position */
   transform: translate(-50%, -50%); /* Center it */
-  width: 120px;
-  height: 120px;
+  width: 120px; /* Set the width of the button */
+  height: 120px; /* Set the height of the button */
   display: inline-block;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background-color: transparent;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 10;
   overflow: visible; /* Hide overflowing rays */
 }
 
-.kiss-button img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 50%;
+/* Adjust size on hover (only when needed) */
+.kiss-button:hover {
+  transform: scale(1.1);
+  z-index: 10 !important;
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
 }
 
-/* Rays Container */
+/* Ray Container */
 .rays {
   position: absolute;
   top: 50%;
@@ -765,7 +764,7 @@ body.theme-space .grid-container {
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  pointer-events: none; /* Ensure rays don't interfere with button clicks */
+  pointer-events: none;
 }
 
 /* Individual Ray */
@@ -778,7 +777,7 @@ body.theme-space .grid-container {
   background: rgba(255, 223, 0, 0.8);
   transform-origin: top center;
   opacity: 0;
-  animation: none; /* Disable animation by default */
+  animation: none;
 }
 
 /* Ray Animation */
@@ -803,13 +802,6 @@ body.theme-space .grid-container {
 .ray:nth-child(7) { transform: translate(-50%, -50%) rotate(270deg); }
 .ray:nth-child(8) { transform: translate(-50%, -50%) rotate(315deg); }
 
-/* Hover Effect */
-.kiss-button:hover {
-  transform: scale(1.1);
-  z-index: 10 !important;
-  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
-}
-
 /* Active Effect */
 .kiss-button:active {
   transform: scale(0.95);
@@ -829,9 +821,8 @@ body.theme-space .grid-container {
   transform: translate(0, 0);
   transition: transform 2s ease, opacity 2s ease;
   opacity: 1;
-  z-index: 10000;
+  z-index: 1000;
 }
-
 
 /* ==================== */
 /* Vinyl and Video Popup Styles */
