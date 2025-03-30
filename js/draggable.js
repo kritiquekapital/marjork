@@ -61,7 +61,6 @@ startDrag(e) {
     cancelAnimationFrame(this.animationFrame);
 }
 
-
   drag(e) {
     if (!this.isDragging) return;
 
