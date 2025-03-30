@@ -1013,7 +1013,60 @@ body.theme-space .grid-container {
   pointer-events: none;
 }
 
-/* Add to web.css */
+.dropdown-menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 50px;
+  width: 150px;
+  background: rgba(30, 30, 30, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  list-style: none;
+  padding: 5px 0;
+  max-height: 150px;
+  overflow-y: auto;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translate(-50%, -5px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: all;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.dropdown-menu li:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Custom Scrollbar */
+.dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .ipod-popup {
   position: fixed;
   top: 50%;
