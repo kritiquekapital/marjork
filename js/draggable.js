@@ -50,7 +50,6 @@ export class Draggable {
 startDrag(e) {
     const rect = this.element.getBoundingClientRect();
 
-    // Ensure the click is within the element bounds
     if (
         e.clientX < rect.left || e.clientX > rect.right ||
         e.clientY < rect.top || e.clientY > rect.bottom
@@ -82,11 +81,13 @@ startDrag(e) {
     this.element.style.top = `${newY}px`;
   }
 
-  stopDrag() {
+stopDrag(e) {
+    if (!this.isDragging) return;
+
     this.isDragging = false;
     this.isReleased = true;
     this.applyPhysics();
-  }
+}
 
   applyPhysics() {
     if (!this.isReleased) return;
