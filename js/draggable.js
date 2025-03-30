@@ -47,17 +47,20 @@ export class Draggable {
     document.addEventListener('mouseup', this.stopDrag.bind(this));
   }
 
-  startDrag(e) {
+startDrag(e) {
+    if (e.target !== this.element) return;
+
     this.isDragging = true;
     this.isReleased = false;
-    
+
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
       y: e.clientY - this.element.offsetTop
     };
 
     cancelAnimationFrame(this.animationFrame);
-  }
+}
+
 
   drag(e) {
     if (!this.isDragging) return;
