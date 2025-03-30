@@ -1,4 +1,4 @@
-class Bounceable {
+export class Bounceable {
   constructor(element, container) {
     this.element = element;
     this.container = container; // The container element (visual boundary)
