@@ -1,11 +1,12 @@
 export class Bounceable {
-    static instances = [];
-    static running = false; // Shared animation state
+  constructor(element, options = {}) {
+    // Initialize static properties
+    if (!Bounceable.instances) Bounceable.instances = [];
+    if (typeof Bounceable.running === 'undefined') Bounceable.running = false;
 
-    constructor(element, { isInteractive = false } = {}) {
-        this.element = element;
-        this.velocity = { x: 0, y: 0 };
-        this.friction = 0.92;
+    this.element = element;
+    this.velocity = { x: 0, y: 0 };
+    this.friction = 0.92;
         this.isFree = false;
         this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
