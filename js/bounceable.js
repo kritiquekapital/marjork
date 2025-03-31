@@ -17,24 +17,27 @@ export class Bounceable {
     this.element.addEventListener('click', this.handleClick.bind(this));
   }
 
-  handleClick(e) {
-    if (!this.isFree) {
-      this.clickCount++;
+handleClick(e) {
+  if (!this.isFree) {
+    this.clickCount++;
 
-      if (this.clickCount >= 10) {
-        this.isFree = true;
-        this.velocity = { x: 0, y: 0 }; // Reset velocity on breakout
-        this.element.classList.add('free'); // Add the free class when it breaks out
+    if (this.clickCount >= 10) {
+      this.isFree = true;
+      this.velocity = { x: 0, y: 0 };
+      this.element.classList.add('free');
 
-        // Start moving from the original position (no repositioning)
-        this.element.style.position = 'fixed'; // Switch to viewport-relative positioning
-        this.element.style.left = `${rect.left + window.scrollX}px`;
-        this.element.style.top = `${rect.top + window.scrollY}px`;
-      }
-    } else {
-      this.moveOppositeDirection(e.clientX, e.clientY);
+      // Get current position relative to viewport
+      const rect = this.element.getBoundingClientRect(); // <-- Add this back
+      
+      // Switch to fixed positioning with scroll compensation
+      this.element.style.position = 'fixed';
+      this.element.style.left = `${rect.left + window.scrollX}px`;
+      this.element.style.top = `${rect.top + window.scrollY}px`;
     }
+  } else {
+    this.moveOppositeDirection(e.clientX, e.clientY);
   }
+}
 
   moveOppositeDirection(x, y) {
     const rect = this.element.getBoundingClientRect();
