@@ -19,7 +19,7 @@ export class Bounceable {
     handleClick(e) {
         if (!this.isFree) {
             this.clickCount++;
-            if (this.clickCount >= 10) {
+            if (this.clickCount >= 20) {
                 this.isFree = true;
                 this.velocity = { x: 0, y: 0 };
                 this.element.classList.add('free');
