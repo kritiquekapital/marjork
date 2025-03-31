@@ -1,4 +1,6 @@
 export class Bounceable {
+    static instances = []; // Track all bounceable elements
+  
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
@@ -6,7 +8,9 @@ export class Bounceable {
     this.clickCount = 0;
     this.isFree = false;
     this.animationFrame = null;
-
+    this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
+    Bounceable.instances.push(this);
+    
     // Track the original position of the kiss button
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
 
@@ -61,6 +65,12 @@ moveOppositeDirection(clickX, clickY) {
 applyBouncePhysics() {
   if (!this.isFree) return;
 
+    Bounceable.instances.forEach(other => {
+    if (other !== this && this.isColliding(other)) {
+       this.resolveCollision(other);
+    }
+  });
+  
   const animate = () => {
     // Apply friction
     this.velocity.x *= this.friction;
@@ -73,7 +83,7 @@ applyBouncePhysics() {
     // Viewport boundaries
     const maxX = window.innerWidth - this.element.offsetWidth;
     const maxY = window.innerHeight - this.element.offsetHeight;
-
+        
     // Bounce physics with energy preservation
     if (newLeft < 0) {
       newLeft = 0;
@@ -91,6 +101,56 @@ applyBouncePhysics() {
       newTop = maxY;
       this.velocity.y *= -0.9;
     }
+
+      isColliding(other) {
+    const rect1 = this.element.getBoundingClientRect();
+    const rect2 = other.element.getBoundingClientRect();
+    
+    return !(rect1.right < rect2.left || 
+            rect1.left > rect2.right || 
+            rect1.bottom < rect2.top || 
+            rect1.top > rect2.bottom);
+  }
+
+  resolveCollision(other) {
+    // Calculate centers
+    const rect1 = this.element.getBoundingClientRect();
+    const rect2 = other.element.getBoundingClientRect();
+    
+    const dx = (rect1.left + rect1.width/2) - (rect2.left + rect2.width/2);
+    const dy = (rect1.top + rect1.height/2) - (rect2.top + rect2.height/2);
+    const distance = Math.sqrt(dx*dx + dy*dy);
+    
+    // Minimum distance to consider collision
+    const minDistance = this.radius + other.radius;
+    
+    if (distance < minDistance) {
+      // Collision normal vector
+      const nx = dx / distance;
+      const ny = dy / distance;
+      
+      // Relative velocity
+      const rvx = other.velocity.x - this.velocity.x;
+      const rvy = other.velocity.y - this.velocity.y;
+      
+      // Impulse scalar
+      const speed = rvx * nx + rvy * ny;
+      const impulse = 2 * speed / (1 + 1); // Simplified for equal mass
+      
+      // Apply impulse
+      this.velocity.x += impulse * nx;
+      this.velocity.y += impulse * ny;
+      other.velocity.x -= impulse * nx;
+      other.velocity.y -= impulse * ny;
+      
+      // Position correction to prevent overlap
+      const overlap = minDistance - distance;
+      this.element.style.left = `${parseFloat(this.element.style.left) + nx * overlap/2}px`;
+      this.element.style.top = `${parseFloat(this.element.style.top) + ny * overlap/2}px`;
+      other.element.style.left = `${parseFloat(other.element.style.left) - nx * overlap/2}px`;
+      other.element.style.top = `${parseFloat(other.element.style.top) - ny * overlap/2}px`;
+    }
+  }
 
     this.element.style.left = `${newLeft}px`;
     this.element.style.top = `${newTop}px`;
