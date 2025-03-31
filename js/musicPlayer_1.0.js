@@ -8,8 +8,11 @@ document.body.appendChild(overlay);
 
 // Elements
 const vinylLink = document.querySelector(".vinyl-link");
-const musicPlayer = document.getElementById("musicPlayer");
-  new Bounceable(musicPlayer);
+const musicPlayer = document.getElementById('musicPlayer');
+const playerPhysics = new Bounceable(musicPlayer, {
+    isInteractive: false // Disables click effects
+});
+playerPhysics.startPhysics(); // Critical: Start continuous updates
 const musicFrame = document.getElementById("musicFrame");
 
 
