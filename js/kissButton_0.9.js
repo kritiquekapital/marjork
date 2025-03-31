@@ -9,6 +9,10 @@ const messages = [
   "красивый!",
 ];
 
+const kissPhysics = new Bounceable(kissButton, {
+    isInteractive: true
+});
+
 if (kissButton) {
   new Bounceable(kissButton, { isInteractive: true });
   
