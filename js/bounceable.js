@@ -1,56 +1,36 @@
 export class Bounceable {
-    static instances = [];
+    static instances = []; // Track all bounceable elements
 
-    constructor(element, { isInteractive = true } = {}) {
+    constructor(element) {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
-        this.friction = 0.96;
+        this.friction = 0.92;
+        this.clickCount = 0;
+        this.isFree = false;
+        this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
-        this.isInteractive = isInteractive;
-        
-        // Critical difference: Non-interactive elements start free
-        this.isFree = !isInteractive; 
-
         Bounceable.instances.push(this);
-
-        if (this.isInteractive) {
-            this.clickCount = 0;
-            this.element.style.position = 'absolute';
-            this.element.addEventListener('click', this.handleClick.bind(this));
-        } else {
-            // Music player specific initialization
-            this.element.classList.add('free');
-            this.element.style.position = 'fixed';
-            this.element.style.left = '100px';  // Initial position
-            this.element.style.top = '100px';
-            this.applyBouncePhysics(); // Start physics immediately
-        }
+        
+        this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
+        this.element.style.position = 'absolute';
+        this.element.addEventListener('click', this.handleClick.bind(this));
     }
 
     handleClick(e) {
-        if (!this.isInteractive) return;
-        
-        // Original click-to-free logic
         if (!this.isFree) {
             this.clickCount++;
             if (this.clickCount >= 10) {
-                // ... existing free logic ...
-                this.applyBouncePhysics();
+                this.isFree = true;
+                this.velocity = { x: 0, y: 0 };
+                this.element.classList.add('free');
+                const rect = this.element.getBoundingClientRect();
+                this.element.style.position = 'fixed';
+                this.element.style.left = `${rect.left + window.scrollX}px`;
+                this.element.style.top = `${rect.top + window.scrollY}px`;
             }
         } else {
             this.moveOppositeDirection(e.clientX, e.clientY);
         }
-    }
-
-    // Add this new method to continuously run physics
-    startPhysics() {
-        const animate = () => {
-            if (this.isFree) {
-                this.applyBouncePhysics();
-            }
-            requestAnimationFrame(animate);
-        };
-        animate();
     }
 
     moveOppositeDirection(clickX, clickY) {
