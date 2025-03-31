@@ -9,7 +9,6 @@ document.body.appendChild(overlay);
 // Elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById('musicPlayer');
-const musicPlayer = document.getElementById('musicPlayer'); // Added semicolon
 new Bounceable(musicPlayer, { isInteractive: false });
 const musicFrame = document.getElementById("musicFrame");
 
