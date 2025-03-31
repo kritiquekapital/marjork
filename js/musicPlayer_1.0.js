@@ -9,9 +9,9 @@ document.body.appendChild(overlay);
 // Elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
+  new Bounceable(musicPlayer);
 const musicFrame = document.getElementById("musicFrame");
-const musicPlayer = document.getElementById('musicPlayer');
-new Bounceable(musicPlayer);
+
 
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
