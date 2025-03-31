@@ -27,14 +27,6 @@ export class Bounceable {
         }
     }
 
-        // In isColliding() method
-    console.log('Collision check between:', this.element, other.element);
-    console.log('Collision result:', !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom));
-
-    // In resolveCollision() method
-    console.log('Resolving collision between:', this.element, other.element);
-    console.log('Velocity after collision - this:', this.velocity, 'other:', other.velocity);
-
     // Add global animation loop
     globalAnimate() {
         Bounceable.instances.forEach(instance => {
