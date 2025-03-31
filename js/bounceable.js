@@ -1,25 +1,37 @@
 export class Bounceable {
-    static instances = []; // Track all bounceable elements
+    static instances = [];
 
-    constructor(element) {
+    constructor(element, { isInteractive = false } = {}) {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
         this.friction = 0.92;
-        this.clickCount = 0;
         this.isFree = false;
         this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
-        Bounceable.instances.push(this);
+        this.isInteractive = isInteractive; // New flag for clickable elements
         
-        this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
-        this.element.style.position = 'absolute';
-        this.element.addEventListener('click', this.handleClick.bind(this));
+        Bounceable.instances.push(this);
+
+        // Only add click handling for interactive elements (kiss button)
+        if (this.isInteractive) {
+            this.clickCount = 0;
+            this.element.style.position = 'absolute';
+            this.element.addEventListener('click', this.handleClick.bind(this));
+        } else {
+            // For non-interactive elements (music player)
+            this.isFree = true; // Start as free-moving
+            this.element.style.position = 'fixed';
+            this.applyBouncePhysics(); // Start physics immediately
+        }
     }
 
     handleClick(e) {
+        // Only process clicks for interactive elements
+        if (!this.isInteractive) return;
+
         if (!this.isFree) {
             this.clickCount++;
-            if (this.clickCount >= 20) {
+            if (this.clickCount >= 5) {
                 this.isFree = true;
                 this.velocity = { x: 0, y: 0 };
                 this.element.classList.add('free');
@@ -32,7 +44,7 @@ export class Bounceable {
             this.moveOppositeDirection(e.clientX, e.clientY);
         }
     }
-
+    
     moveOppositeDirection(clickX, clickY) {
         const rect = this.element.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
