@@ -9,13 +9,9 @@ const messages = [
   "красивый!",
 ];
 
-const kissPhysics = new Bounceable(kissButton, {
-    isInteractive: true
-});
-
 if (kissButton) {
-  new Bounceable(kissButton, { isInteractive: true });
-  
+  new Bounceable(kissButton); // Initialize Bounceable (click tracking is handled there)
+
   kissButton.addEventListener("click", (e) => {
     // Show a love message on every click
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
