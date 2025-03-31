@@ -1,12 +1,12 @@
-export class Bounceable {
-  constructor(element, options = {}) {
-    // Initialize static properties
-    if (!Bounceable.instances) Bounceable.instances = [];
-    if (typeof Bounceable.running === 'undefined') Bounceable.running = false;
-
-    this.element = element;
-    this.velocity = { x: 0, y: 0 };
-    this.friction = 0.92;
+    export class Bounceable {
+      constructor(element, { isInteractive = false } = {}) { // Fix here
+        this.element = element;
+        this.isInteractive = isInteractive; // Now properly defined
+    
+        // Rest of your constructor code
+        this.velocity = { x: 0, y: 0 };
+        this.friction = 0.92;
+        this.clickCount = 0;
         this.isFree = false;
         this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
