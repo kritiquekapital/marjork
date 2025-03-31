@@ -101,4 +101,5 @@ applyBouncePhysics() {
   };
 
   requestAnimationFrame(animate);
+  }
 }
