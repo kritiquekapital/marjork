@@ -746,11 +746,12 @@ body.theme-space .grid-container {
   overflow: visible;
 }
 
-/* After Breakout: Absolute positioning */
 .kiss-button.free {
   position: fixed !important;
-  z-index: 9999;
-  cursor: grab;
+  z-index: 1010;
+  cursor: pointer;
+  transition: transform 0.1s linear;
+  contain: layout;
 }
 
 /* Hover and active effects */
