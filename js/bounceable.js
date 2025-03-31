@@ -10,8 +10,8 @@ export class Bounceable {
     // Track initial position when the button is first placed
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
 
-    // Set initial relative positioning
-    this.element.style.position = 'relative'; 
+    // Set initial absolute positioning within the viewport
+    this.element.style.position = 'absolute'; 
 
     // Attach the click event
     this.element.addEventListener('click', this.handleClick.bind(this));
@@ -78,10 +78,11 @@ export class Bounceable {
         this.velocity.y *= -1; // Reverse direction if hitting the top or bottom
       }
 
-      // Set the position, making sure it's within bounds
+      // Set the position, ensuring it's within bounds
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
+      // Continue animating
       this.animationFrame = requestAnimationFrame(animate);
     };
 
