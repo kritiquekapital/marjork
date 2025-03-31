@@ -9,13 +9,20 @@ document.body.appendChild(overlay);
 // Elements
 const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById('musicPlayer');
-new Bounceable(musicPlayer, { isInteractive: false });
+const playerPhysics = new Bounceable(musicPlayer, {
+    isInteractive: false // Disables click effects
+});
+playerPhysics.startPhysics(); // Critical: Start continuous updates
 const musicFrame = document.getElementById("musicFrame");
 
 
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
-
+// Music player gets collision-only physics
+new Bounceable(musicPlayer, {
+    isInteractive: false, 
+    startPosition: { x: 100, y: 100 } // Optional position override
+});
 // Video Links
 const liveLinks2 = [
   { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
@@ -40,7 +47,7 @@ const liveLinks2 = [
   { title: "Like Kant", url: "https://www.youtube.com/embed/V7IUtUsfARA?autoplay=1" },
   { title: "Doomer", url: "https://www.youtube.com/embed/x4ygVwbOyJU?autoplay=1" },
   { title: "Seaside", url: "https://www.youtube.com/embed/3NrZCJh2Hgk?autoplay=1" },
-  { title: "kiss me", url: "https://www.youtube.com/embed/cYpQ36acEUU?autoplay=1" },
+  { title: "miss u", url: "https://www.youtube.com/embed/cYpQ36acEUU?autoplay=1" },
   { title: "forfeit", url: "https://www.youtube.com/embed/wfj26-cQkx8?autoplay=1" },
   { title: "safety", url: "https://www.youtube.com/embed/SMIQbo-61P4?autoplay=1" }
 ];
