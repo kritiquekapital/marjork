@@ -15,7 +15,11 @@ const musicFrame = document.getElementById("musicFrame");
 
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
-
+// Music player gets collision-only physics
+new Bounceable(musicPlayer, {
+    isInteractive: false, 
+    startPosition: { x: 100, y: 100 } // Optional position override
+});
 // Video Links
 const liveLinks2 = [
   { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
