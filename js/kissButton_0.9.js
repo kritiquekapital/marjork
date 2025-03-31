@@ -10,8 +10,10 @@ const messages = [
 ];
 
 if (kissButton) {
-  new Bounceable(kissButton, { isInteractive: true });
+  // Initialize bounceable physics WITH interactive flag
+  const bounceableKiss = new Bounceable(kissButton, { isInteractive: true });
 
+  // Existing message display code
   kissButton.addEventListener("click", (e) => {
     // Show a love message on every click
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
