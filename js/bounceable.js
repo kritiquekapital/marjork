@@ -7,10 +7,10 @@ export class Bounceable {
     this.isFree = false;
     this.animationFrame = null;
 
-    // Track initial position when the button is first placed
+    // Track the original position of the kiss button
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
 
-    // Set initial absolute positioning within the viewport
+    // Set initial absolute positioning of the element in the viewport
     this.element.style.position = 'absolute'; 
 
     // Attach the click event
@@ -24,12 +24,11 @@ export class Bounceable {
       if (this.clickCount >= 10) {
         this.isFree = true;
         this.velocity = { x: 0, y: 0 }; // Reset velocity on breakout
-        this.element.classList.add('free'); // Add the free class
+        this.element.classList.add('free'); // Add the free class when it breaks out
 
-        // Record the exact position at the moment of breakout
-        const rect = this.element.getBoundingClientRect();
-        this.element.style.left = `${rect.left}px`;
-        this.element.style.top = `${rect.top}px`;
+        // Start moving from the original position (no repositioning)
+        this.element.style.left = `${this.initialPosition.left}px`;
+        this.element.style.top = `${this.initialPosition.top}px`;
       }
     } else {
       this.moveOppositeDirection(e.clientX, e.clientY);
@@ -39,7 +38,7 @@ export class Bounceable {
   moveOppositeDirection(x, y) {
     const rect = this.element.getBoundingClientRect();
 
-    // Push in the opposite direction of the click
+    // Calculate the opposite direction to push the element
     this.velocity.x = (rect.left - x) * 0.3;
     this.velocity.y = (rect.top - y) * 0.3;
 
@@ -78,11 +77,10 @@ export class Bounceable {
         this.velocity.y *= -1; // Reverse direction if hitting the top or bottom
       }
 
-      // Set the position, ensuring it's within bounds
+      // Set the position, making sure it's within bounds
       this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
       this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
 
-      // Continue animating
       this.animationFrame = requestAnimationFrame(animate);
     };
 
