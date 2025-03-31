@@ -5,40 +5,52 @@ export class Bounceable {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
         this.friction = 0.96;
-        this.isFree = !isInteractive; // Music player starts free
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
-        this.isInteractive = isInteractive; // New flag
+        this.isInteractive = isInteractive;
+        
+        // Critical difference: Non-interactive elements start free
+        this.isFree = !isInteractive; 
 
         Bounceable.instances.push(this);
 
         if (this.isInteractive) {
-            // Only add click handling for interactive elements
             this.clickCount = 0;
             this.element.style.position = 'absolute';
             this.element.addEventListener('click', this.handleClick.bind(this));
         } else {
-            // Initialize music player as free-moving
+            // Music player specific initialization
             this.element.classList.add('free');
             this.element.style.position = 'fixed';
+            this.element.style.left = '100px';  // Initial position
+            this.element.style.top = '100px';
+            this.applyBouncePhysics(); // Start physics immediately
         }
     }
 
     handleClick(e) {
-        if (!this.isInteractive) return; // Skip for non-interactive
+        if (!this.isInteractive) return;
+        
+        // Original click-to-free logic
         if (!this.isFree) {
             this.clickCount++;
             if (this.clickCount >= 10) {
-                this.isFree = true;
-                this.velocity = { x: 0, y: 0 };
-                this.element.classList.add('free');
-                const rect = this.element.getBoundingClientRect();
-                this.element.style.position = 'fixed';
-                this.element.style.left = `${rect.left + window.scrollX}px`;
-                this.element.style.top = `${rect.top + window.scrollY}px`;
+                // ... existing free logic ...
+                this.applyBouncePhysics();
             }
         } else {
             this.moveOppositeDirection(e.clientX, e.clientY);
         }
+    }
+
+    // Add this new method to continuously run physics
+    startPhysics() {
+        const animate = () => {
+            if (this.isFree) {
+                this.applyBouncePhysics();
+            }
+            requestAnimationFrame(animate);
+        };
+        animate();
     }
 
     moveOppositeDirection(clickX, clickY) {
