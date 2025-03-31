@@ -1,22 +1,30 @@
 export class Bounceable {
-    static instances = []; // Track all bounceable elements
+    static instances = [];
 
-    constructor(element) {
+    constructor(element, { isInteractive = true } = {}) {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
-        this.friction = 0.92;
-        this.clickCount = 0;
-        this.isFree = false;
-        this.animationFrame = null;
+        this.friction = 0.96;
+        this.isFree = !isInteractive; // Music player starts free
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
+        this.isInteractive = isInteractive; // New flag
+
         Bounceable.instances.push(this);
-        
-        this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
-        this.element.style.position = 'absolute';
-        this.element.addEventListener('click', this.handleClick.bind(this));
+
+        if (this.isInteractive) {
+            // Only add click handling for interactive elements
+            this.clickCount = 0;
+            this.element.style.position = 'absolute';
+            this.element.addEventListener('click', this.handleClick.bind(this));
+        } else {
+            // Initialize music player as free-moving
+            this.element.classList.add('free');
+            this.element.style.position = 'fixed';
+        }
     }
 
     handleClick(e) {
+        if (!this.isInteractive) return; // Skip for non-interactive
         if (!this.isFree) {
             this.clickCount++;
             if (this.clickCount >= 10) {
