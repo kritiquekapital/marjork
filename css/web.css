@@ -132,8 +132,8 @@ body.theme-retro .grid-backdrop {
   text-transform: uppercase;
 }
 
-/* Kiss Button */
-.theme-retro .kiss-button {
+/*  Button */
+.theme-retro .-button {
   background-color: #00ffcc; /* Neon teal */
   color: #ff00ff; /* Neon pink */
   border: 2px solid #ffcc00; /* Bright yellow */
@@ -237,7 +237,7 @@ body.theme-space .grid-backdrop {
   opacity: 0; /* Make sure tint fades out if switching themes */
 }
 
-.theme-space .kiss-button {
+.theme-space .-button {
   background-color: #6a0dad;
   color: #ffffff;
   border: 1px solid #ffd700;
@@ -724,7 +724,7 @@ body.theme-space .grid-container {
   text-align: center;
 }
 
-/* Kiss Button */
+/*  Button */
 .kiss-button {
   background: url('pic/solavi.png');
   background-size: contain;
@@ -748,8 +748,9 @@ body.theme-space .grid-container {
 
 /* After Breakout: Absolute positioning */
 .kiss-button.free {
-  position: absolute; /* Make it independent of the grid */
-  transition: none; /* No transition after breakout */
+  position: fixed !important;
+  z-index: 9999;
+  cursor: grab;
 }
 
 /* Hover and active effects */
