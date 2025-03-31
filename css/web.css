@@ -1290,18 +1290,3 @@ body.theme-retro .click-wheel {
   box-sizing: border-box;
   contain: layout;
 }
-/* Prevent music player from blocking pointer events */
-#musicPlayer {
-    pointer-events: none;
-}
-
-/* Re-enable for controls */
-.ipod-controls * {
-    pointer-events: auto;
-}
-
-/* Ensure collision boundaries match visuals */
-#musicPlayer, .kiss-button.free {
-    box-sizing: border-box;
-    contain: strict;
-}
