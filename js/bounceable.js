@@ -1,4 +1,3 @@
-// Modify bounceable.js to detect draggable elements
 import { Draggable } from "./draggable.js";
 
 export class Bounceable {
@@ -18,6 +17,16 @@ export class Bounceable {
         this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
         this.element.style.position = "absolute";
         this.element.addEventListener("click", this.handleClick.bind(this));
+    }
+
+    handleClick() {
+        this.clickCount++;
+        if (this.clickCount >= 10) {
+            this.isFree = true;
+            this.velocity.x = (Math.random() - 0.5) * 10;
+            this.velocity.y = (Math.random() - 0.5) * 10;
+            this.applyBouncePhysics();
+        }
     }
 
     static registerDraggable(draggable) {
