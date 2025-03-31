@@ -1284,3 +1284,9 @@ body.theme-retro .click-wheel {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Ensure both elements have visible boundaries */
+#musicPlayer, .kiss-button.free {
+  box-sizing: border-box;
+  contain: layout;
+}
