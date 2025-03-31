@@ -39,55 +39,66 @@ handleClick(e) {
   }
 }
 
-  moveOppositeDirection(x, y) {
-    const rect = this.element.getBoundingClientRect();
+moveOppositeDirection(clickX, clickY) {
+  const rect = this.element.getBoundingClientRect();
+  
+  // Calculate click position relative to button center
+  const centerX = rect.left + rect.width/2;
+  const centerY = rect.top + rect.height/2;
+  
+  // Calculate direction vector from click to center
+  const dirX = centerX - clickX;
+  const dirY = centerY - clickY;
+  
+  // Normalize vector and apply force
+  const length = Math.sqrt(dirX*dirX + dirY*dirY);
+  this.velocity.x = (dirX/length) * 25; // Force multiplier
+  this.velocity.y = (dirY/length) * 25;
 
-    // Calculate the opposite direction to push the element
-    this.velocity.x = (rect.left - x) * 0.3;
-    this.velocity.y = (rect.top - y) * 0.3;
+  this.applyBouncePhysics();
+}
 
-    this.applyBouncePhysics();
-  }
+applyBouncePhysics() {
+  if (!this.isFree) return;
 
-  applyBouncePhysics() {
-    if (!this.isFree) return;
+  const animate = () => {
+    // Apply friction
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
 
-    const animate = () => {
-      // If velocity is too small, stop the animation
-      if (Math.abs(this.velocity.x) < 0.5 && Math.abs(this.velocity.y) < 0.5) {
-        cancelAnimationFrame(this.animationFrame);
-        return;
-      }
+    // Update position
+    let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+    let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-      // Apply friction to the velocity
-      this.velocity.x *= this.friction;
-      this.velocity.y *= this.friction;
+    // Viewport boundaries
+    const maxX = window.innerWidth - this.element.offsetWidth;
+    const maxY = window.innerHeight - this.element.offsetHeight;
 
-      // Move the button based on velocity
-      let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-      let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+    // Bounce physics with energy preservation
+    if (newLeft < 0) {
+      newLeft = 0;
+      this.velocity.x *= -0.9; // Reverse direction with slight energy loss
+    }
+    if (newLeft > maxX) {
+      newLeft = maxX;
+      this.velocity.x *= -0.9;
+    }
+    if (newTop < 0) {
+      newTop = 0;
+      this.velocity.y *= -0.9;
+    }
+    if (newTop > maxY) {
+      newTop = maxY;
+      this.velocity.y *= -0.9;
+    }
 
-      // Get viewport boundaries to keep the button within the screen
-      const minX = 0;
-      const minY = 0;
-      const maxX = window.innerWidth - this.element.offsetWidth;
-      const maxY = window.innerHeight - this.element.offsetHeight;
+    this.element.style.left = `${newLeft}px`;
+    this.element.style.top = `${newTop}px`;
 
-      // Bounce off edges of the viewport
-      if (newLeft < minX || newLeft > maxX) {
-        this.velocity.x *= -1; // Reverse direction if hitting the sides
-      }
-      if (newTop < minY || newTop > maxY) {
-        this.velocity.y *= -1; // Reverse direction if hitting the top or bottom
-      }
+    if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+      requestAnimationFrame(animate);
+    }
+  };
 
-      // Set the position, making sure it's within bounds
-      this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
-      this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
-
-      this.animationFrame = requestAnimationFrame(animate);
-    };
-
-    this.animationFrame = requestAnimationFrame(animate);
-  }
+  requestAnimationFrame(animate);
 }
