@@ -27,8 +27,9 @@ export class Bounceable {
         this.element.classList.add('free'); // Add the free class when it breaks out
 
         // Start moving from the original position (no repositioning)
-        this.element.style.left = `${this.initialPosition.left}px`;
-        this.element.style.top = `${this.initialPosition.top}px`;
+        this.element.style.position = 'fixed'; // Switch to viewport-relative positioning
+        this.element.style.left = `${rect.left + window.scrollX}px`;
+        this.element.style.top = `${rect.top + window.scrollY}px`;
       }
     } else {
       this.moveOppositeDirection(e.clientX, e.clientY);
