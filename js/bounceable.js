@@ -1,5 +1,6 @@
 export class Bounceable {
     static instances = [];
+    static running = false; // Shared animation state
 
     constructor(element, { isInteractive = false } = {}) {
         this.element = element;
@@ -12,17 +13,45 @@ export class Bounceable {
         
         Bounceable.instances.push(this);
 
-        // Only add click handling for interactive elements (kiss button)
-        if (this.isInteractive) {
-            this.clickCount = 0;
-            this.element.style.position = 'absolute';
-            this.element.addEventListener('click', this.handleClick.bind(this));
-        } else {
-            // For non-interactive elements (music player)
-            this.isFree = true; // Start as free-moving
+        if (!this.isInteractive) {
+            this.isFree = true;
             this.element.style.position = 'fixed';
-            this.applyBouncePhysics(); // Start physics immediately
+            this.startPhysics(); // Start continuous physics
         }
+
+        // Start global animation loop
+        if (!Bounceable.running) {
+            Bounceable.running = true;
+            this.globalAnimate();
+        }
+    }
+
+        // In isColliding() method
+    console.log('Collision check between:', this.element, other.element);
+    console.log('Collision result:', !(a.right < b.left || a.left > b.right || a.bottom < b.top || a.top > b.bottom));
+
+    // In resolveCollision() method
+    console.log('Resolving collision between:', this.element, other.element);
+    console.log('Velocity after collision - this:', this.velocity, 'other:', other.velocity);
+
+    // Add global animation loop
+    globalAnimate() {
+        Bounceable.instances.forEach(instance => {
+            if (instance.isFree) instance.applyBouncePhysics();
+        });
+        requestAnimationFrame(() => this.globalAnimate());
+    }
+
+    // Modified collision detection
+    isColliding(other) {
+        const a = this.element.getBoundingClientRect();
+        const b = other.element.getBoundingClientRect();
+        
+        // Rectangle collision test
+        return !(a.right < b.left || 
+                a.left > b.right || 
+                a.bottom < b.top || 
+                a.top > b.bottom);
     }
 
     handleClick(e) {
