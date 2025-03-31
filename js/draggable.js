@@ -1,17 +1,17 @@
 export class Draggable {
-    constructor(element) {
-        if (!element) throw new Error("Element is required to initialize Draggable.");
-
-        this.element = element;
-        this.isDragging = false;
-        this.offset = { x: 0, y: 0 };
-        this.velocity = { x: 0, y: 0 };
-        this.friction = 0.92;
-        this.isZeroGravity = false;
-
-        Bounceable.registerDraggable(this); // Register for collision handling
-        this.initDrag();
+  constructor(element) {
+    if (!element) {
+      throw new Error("Element is required to initialize Draggable.");
     }
+
+    this.element = element;
+    this.isDragging = false;
+    this.offset = { x: 0, y: 0 };
+    this.velocity = { x: 0, y: 0 };
+    this.friction = 0.92;
+    this.isReleased = false;
+    this.animationFrame = null;
+    this.isZeroGravity = false;
 
     // Center the element in the viewport if necessary
     this.centerElementInViewport();
