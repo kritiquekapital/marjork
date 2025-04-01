@@ -315,6 +315,11 @@ body.theme-space .grid-container {
   z-index: 2; /* Ensure it stays above the grid container */
 }
 
+.wip:active {
+  transform: translate(10px, 0) scale(1.1); /* Move 10px right and scale up */
+  transition: transform 0.2s ease-in-out; /* Faster animation for click feedback */
+}
+
 /* Spotify Button */
 .spotify {
   background-color: #1DB954 !important;
