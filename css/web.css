@@ -51,6 +51,21 @@ body {
   z-index: -1; /* Place it behind the grid container's content */
 }
 
+* {
+    -webkit-user-select: none; /* Safari/Chrome */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE/Edge */
+    user-select: none;
+}
+
+/* Optional: Override for specific elements (if needed) */
+.allow-select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
 /* ==================== */
 /* Theme Styles */
 /* ==================== */
