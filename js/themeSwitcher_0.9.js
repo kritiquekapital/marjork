@@ -15,10 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "space", displayName: "🚀" }
   ];
 
-  // Logistics Theme Cleanup Handler
   let cleanupLogistics = () => {};
 
-  // Background setup
   const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
     iframe.classList.add(className);
@@ -36,24 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.prepend(spaceBackground);
 
-  // Theme management
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
   function applyTheme() {
-    // Cleanup previous theme-specific elements
     cleanupLogistics();
     
     const currentTheme = themes[currentThemeIndex];
     document.body.className = `theme-${currentTheme.name}`;
     themeButton.textContent = currentTheme.displayName;
 
-    // Background visibility
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
-    
-    // Handle logistics-specific media player
+
     const logisticsPlayer = document.getElementById('logistics-player');
-    
     if (currentTheme.name === "logistics") {
       if (logisticsPlayer) logisticsPlayer.style.display = "block";
       cleanupLogistics = initLogisticsTheme() || (() => {});
@@ -64,18 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
     draggable.setZeroGravityMode(currentTheme.name === "space");
   }
 
-  // UI Visibility Management
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
-  const mediaControlBar = document.querySelector(".media-control-bar");
-  
+  const mediaControlBar = document.querySelector(".media-controls");
+
   const handleUIState = (shouldHide) => {
+    if (!gridContainer || !mediaControlBar) return; // Prevent null errors
+
     if (document.body.classList.contains("theme-space") || 
        document.body.classList.contains("theme-logistics")) {
       gridContainer.style.opacity = shouldHide ? "0" : "1";
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
       gridContainer.style.transition = "opacity 0.5s ease-in-out";
-      
+
       mediaControlBar.style.opacity = shouldHide ? "0" : "1";
       mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
       mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
@@ -88,16 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
     inactivityTimer = setTimeout(() => handleUIState(true), 7000);
   };
 
-  // Event Listeners
   ['mousemove', 'keydown', 'click', 'touchstart'].forEach(event => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-  const arrowButton = document.getElementById("arrowButton");
+  const arrowButton = document.querySelector(".logistics-shipper");
   if (arrowButton) {
     arrowButton.addEventListener("click", () => {
-      gridContainer.classList.toggle("grid-visible");
-      mediaControlBar.classList.toggle("media-bar-visible");
+      if (!gridContainer || !mediaControlBar) return;
+
+      gridContainer.classList.toggle("shipped");
+      mediaControlBar.classList.toggle("visible");
     });
   }
 
@@ -110,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   });
 
-  // Initial setup
   resetInactivityTimer();
   applyTheme();
 });
