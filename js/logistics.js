@@ -1,3 +1,4 @@
+// logisticsTheme.js
 let player;
 
 export function initLogisticsTheme() {
@@ -6,7 +7,8 @@ export function initLogisticsTheme() {
   // Create transport controls
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
-  
+  transportContainer.style.display = 'none'; // Hidden initially
+
   // Create shipper arrow
   const shipper = document.createElement('div');
   shipper.className = 'logistics-shipper';
@@ -28,11 +30,38 @@ export function initLogisticsTheme() {
   transportContainer.append(shipper, mediaControls);
   document.body.appendChild(transportContainer);
 
-  // Initialize YouTube Player
+  // Player initialization
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
   document.body.prepend(playerContainer);
 
+  // Define player callbacks first
+  const updatePlayButton = () => {
+    const playButton = document.querySelector('[data-action="playpause"]');
+    if (!playButton) return;
+    playButton.textContent = player.getPlayerState() === YT.PlayerState.PLAYING ? '⏸' : '▶';
+  };
+
+  const handleControlClick = (action) => {
+    switch(action) {
+      case 'playpause': player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
+        break;
+      case 'next': player.nextVideo();
+        break;
+      case 'prev': player.previousVideo();
+        break;
+      case 'rewind': player.seekTo(Math.max(0, player.getCurrentTime() - 10));
+        break;
+      case 'fastforward': player.seekTo(player.getCurrentTime() + 10);
+        break;
+      case 'shuffle': player.setShuffle(true);
+        break;
+      case 'repeat': player.setLoop(!player.getLoop());
+        break;
+    }
+  };
+
+  // Initialize YouTube Player
   player = new YT.Player('logistics-player', {
     height: '100%',
     width: '100%',
@@ -48,15 +77,14 @@ export function initLogisticsTheme() {
     events: {
       onReady: (event) => {
         event.target.setVolume(50);
-        updatePlayButton();
-        // Show controls after player is ready
         transportContainer.style.display = 'block';
+        updatePlayButton();
       },
       onStateChange: updatePlayButton
     }
   });
 
-  // Animation and control logic
+  // Animation logic
   const gridContainer = document.querySelector('.grid-container');
   let isShipped = false;
 
@@ -67,9 +95,9 @@ export function initLogisticsTheme() {
     shipper.style.transform = `translateX(-50%) rotate(${isShipped ? 180 : 0}deg)`;
   });
 
-  // Media control handlers
+  // Control handlers
   mediaControls.addEventListener('click', (e) => {
-    const action = e.target.dataset.action;
+    const action = e.target.closest('button')?.dataset.action;
     if (action) handleControlClick(action);
   });
 
@@ -81,6 +109,6 @@ export function initLogisticsTheme() {
     }
     transportContainer.remove();
     playerContainer.remove();
-    gridContainer.classList.remove('shipped');
+    gridContainer?.classList.remove('shipped');
   };
 }
