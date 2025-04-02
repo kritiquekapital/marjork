@@ -1,89 +1,79 @@
 import { Draggable } from './draggable.js';
 
-// themeSwitcher_0.9.js
 document.addEventListener('DOMContentLoaded', () => {
-  // Ensure the draggable element exists before initializing Draggable
-  const draggableElement = document.getElementById('musicPlayer'); // Change to 'musicPlayer'
+  const draggableElement = document.getElementById('musicPlayer');
+  if (!draggableElement) throw new Error("Element with ID 'musicPlayer' not found");
 
-  if (!draggableElement) {
-    throw new Error("Element with ID 'musicPlayer' not found. Please check the HTML.");
-  }
-
-  // Initialize the Draggable instance once
   const draggable = new Draggable(draggableElement);
-
-  // Define the function to control zero-gravity mode
-  function setZeroGravityMode(isZeroGravity) {
-    draggable.setZeroGravityMode(isZeroGravity);
-  }
-
   const themes = [
     { name: "classic", displayName: "😎" },
     { name: "modern", displayName: "🌚" },
     { name: "nature", displayName: "🌞" },
+    { name: "logistics", displayName: "📦" },
     { name: "retro", displayName: "🕹️" },
     { name: "space", displayName: "🚀" }
   ];
 
-  let currentThemeIndex = 0;
-  const spaceBackground = document.createElement("iframe");
-  spaceBackground.classList.add("space-background-stream");
-  spaceBackground.setAttribute("frameborder", "0");
-  spaceBackground.setAttribute("allow", "autoplay; encrypted-media");
-  spaceBackground.setAttribute("allowfullscreen", "");
-  spaceBackground.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1");
-  document.body.prepend(spaceBackground);
+  // Background setup
+  const createBackground = (url, className) => {
+    const iframe = document.createElement("iframe");
+    iframe.classList.add(className);
+    iframe.setAttribute("frameborder", "0");
+    iframe.setAttribute("allow", "autoplay; encrypted-media");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("src", url);
+    return iframe;
+  };
 
-  // Apply theme based on the current index
+  const spaceBackground = createBackground(
+    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1",
+    "space-background-stream"
+  );
+
+  const logisticsBackground = createBackground(
+    "https://www.youtube.com/embed/videoseries?list=PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw&autoplay=1&mute=1&controls=0&loop=1",
+    "logistics-background-stream"
+  );
+
+  document.body.prepend(logisticsBackground, spaceBackground);
+
+  // Theme management
+  let currentThemeIndex = 0;
+  const themeButton = document.getElementById("themeButton");
+
   function applyTheme() {
     const currentTheme = themes[currentThemeIndex];
     document.body.className = `theme-${currentTheme.name}`;
     themeButton.textContent = currentTheme.displayName;
 
-    if (currentTheme.name === "space") {
-      spaceBackground.style.display = "block";
-      setZeroGravityMode(true);  // Enable zero-gravity mode
-    } else {
-      spaceBackground.style.display = "none";
-      setZeroGravityMode(false);  // Disable zero-gravity mode
-    }
+    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+    logisticsBackground.style.display = currentTheme.name === "logistics" ? "block" : "none";
+    draggable.setZeroGravityMode(currentTheme.name === "space");
   }
 
+  // UI Visibility Management
   let inactivityTimer;
-
-  // Function to hide space theme UI
-  function hideSpaceThemeUI() {
-    if (document.body.classList.contains("theme-space")) {
-      document.querySelector(".grid-container").style.opacity = "0";
-      document.querySelector(".grid-container").style.pointerEvents = "none";
+  
+  const handleUIState = (shouldHide) => {
+    const gridContainer = document.querySelector(".grid-container");
+    if (document.body.classList.contains("theme-space") || 
+       document.body.classList.contains("theme-logistics")) {
+      gridContainer.style.opacity = shouldHide ? "0" : "1";
+      gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
     }
-  }
+  };
 
-  // Function to show space theme UI
-  function showSpaceThemeUI() {
-    if (document.body.classList.contains("theme-space")) {
-      document.querySelector(".grid-container").style.opacity = "1";
-      document.querySelector(".grid-container").style.pointerEvents = "auto";
-    }
-  }
-
-  // Reset the inactivity timer
-  function resetInactivityTimer() {
+  const resetInactivityTimer = () => {
     clearTimeout(inactivityTimer);
-    showSpaceThemeUI(); // Ensure UI is visible when active
-    inactivityTimer = setTimeout(hideSpaceThemeUI, 7000); // 7 seconds timeout
-  }
+    handleUIState(false);
+    inactivityTimer = setTimeout(() => handleUIState(true), 7000);
+  };
 
-  // Listen for pointer movements to detect activity
-  document.addEventListener("mousemove", resetInactivityTimer);
-  document.addEventListener("keydown", resetInactivityTimer);
-  document.addEventListener("click", resetInactivityTimer);
-  document.addEventListener("touchstart", resetInactivityTimer);
+  // Event Listeners
+  ['mousemove', 'keydown', 'click', 'touchstart'].forEach(event => {
+    document.addEventListener(event, resetInactivityTimer);
+  });
 
-  // Initialize the timer when the page loads
-  resetInactivityTimer();
-
-  const themeButton = document.getElementById("themeButton");
   themeButton.addEventListener("click", () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
     setTimeout(() => {
@@ -93,5 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
   });
 
-  applyTheme();  // Apply the initial theme
+  // Initial setup
+  resetInactivityTimer();
+  applyTheme();
 });
