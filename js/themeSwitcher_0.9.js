@@ -1,5 +1,5 @@
 import { Draggable } from './draggable.js';
-import { initLogisticsTheme } from './logisticsTheme.js';
+import { initLogisticsTheme } from './logistics.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const draggableElement = document.getElementById('musicPlayer');
