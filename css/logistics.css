@@ -1,10 +1,53 @@
+/* Shipping Controls */
+#logistics-player {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.logistics-transport {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  width: min(90%, 800px);
+}
+
+.logistics-shipper {
+  cursor: pointer;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logistics-shipper::before {
+  content: '↑';
+  font-size: 2.5rem;
+  color: var(--accent-color, #fff);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.logistics-shipper:hover {
+  opacity: 0.8;
+  transform: translateX(-50%) scale(1.1);
+}
+
 /* Media Controls */
 .media-controls {
   background: var(--grid-bg-color);
   border-radius: 15px 15px 0 0;
   padding: 1rem 2rem;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 equal columns for the first row */
+  grid-template-columns: repeat(10, 1fr);
   gap: 0.5rem;
   transform: translateY(100%); /* Starts off-screen */
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Smooth upward exit */
@@ -28,52 +71,18 @@
 }
 
 .media-controls button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   transform: scale(1.05);
 }
 
-/* First Row (Time Controls) */
-.media-controls .row1 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
-  gap: 0.5rem;
-  align-items: center;
+.media-controls button[data-action="playpause"] {
+  grid-column: span 2;
+  font-size: 1.2rem;
 }
 
-.media-controls .row1 button[data-action="playpause"] {
-  grid-column: span 2; /* Play/Pause button spans two columns */
-  justify-self: center;
-}
-
-.media-controls .row1 button[data-action="list"] {
-  grid-column: span 2; /* List button spans two columns */
+.media-controls button[data-action="list"] {
+  grid-column: span 2;
   justify-self: end; /* Positioned to the far right */
-}
-
-/* Second Row (Mute, Progress Bar, Skip Ad) */
-.media-controls .row2 {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr; /* Mute, Progress bar, Skip Ad */
-  gap: 0.5rem;
-  align-items: center;
-  width: 100%;
-}
-
-.media-controls .row2 button[data-action="list"] {
-  justify-self: start; /* List button on the left */
-}
-
-.media-controls .row2 button[data-action="mute"] {
-  justify-self: center; /* Mute button centered */
-}
-
-.media-controls .row2 .progress-bar {
-  grid-column: span 2; /* Progress bar spans the remaining space */
-  margin: 0 10px; /* Small buffer around progress bar */
-}
-
-.media-controls .row2 button[data-action="skip-ad"] {
-  justify-self: end; /* Skip Ad button on the far right */
 }
 
 /* Progress Bar */
@@ -92,26 +101,6 @@
 
 .progress-bar::-webkit-progress-value {
   background-color: #4CAF50;
-}
-
-/* Skip Ad Button */
-#skip-ad-button {
-  background: none;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.8rem;
-  color: inherit;
-  cursor: pointer;
-  position: absolute;
-  right: 20px; /* Adjust based on desired positioning */
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2000;
-}
-
-#skip-ad-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.05);
 }
 
 /* Checkpoints List */
@@ -151,4 +140,20 @@
   transform: translateX(-50%);
   cursor: pointer;
   z-index: 2000;
+}
+
+/* Transition for grid/container visibility */
+.grid-container.shipped {
+  transform: translateY(calc(-100vh + 100px)); /* Grid slides up */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Matching transition speed */
+}
+
+.logistics-transport.shipped-off {
+  transform: translateY(100%); /* Moves off-screen */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.media-controls.visible-off {
+  transform: translateY(100%); /* Media controls exit upward */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Same exit speed */
 }
