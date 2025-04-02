@@ -72,6 +72,28 @@
   transform: scale(1.05);
 }
 
+.media-controls {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+
+.media-controls button {
+  min-width: 50px;
+  font-size: 0.9rem;
+  padding: 8px;
+}
+
+[data-action="playpause"] {
+  grid-column: span 2;
+  font-size: 1.2rem;
+}
+
+[data-action="list"] {
+  grid-column: span 2;
+}
+
 /* Animation State */
 .grid-container.shipped {
   transform: translateY(calc(-100vh + 100px));
