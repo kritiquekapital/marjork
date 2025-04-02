@@ -1,53 +1,10 @@
-/* Shipping Controls */
-#logistics-player {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100%;
-  min-height: 100%;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.logistics-transport {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-  width: min(90%, 800px);
-}
-
-.logistics-shipper {
-  cursor: pointer;
-  opacity: 0.4;
-  transition: all 0.3s ease;
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.logistics-shipper::before {
-  content: '↑';
-  font-size: 2.5rem;
-  color: var(--accent-color, #fff);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.logistics-shipper:hover {
-  opacity: 0.8;
-  transform: translateX(-50%) scale(1.1);
-}
-
 /* Media Controls */
 .media-controls {
   background: var(--grid-bg-color);
   border-radius: 15px 15px 0 0;
   padding: 1rem 2rem;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(4, 1fr) repeat(6, 1fr); /* 4 buttons in the first row and 6 in the second row */
   gap: 0.5rem;
   transform: translateY(100%); /* Starts off-screen */
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Smooth upward exit */
@@ -60,34 +17,42 @@
   transform: translateY(0); /* When visible */
 }
 
-.media-controls button {
-  background: none;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.8rem;
-  color: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.media-controls button:hover {
-  background: rgba(255,255,255,0.1);
-  transform: scale(1.05);
-}
-
-.media-controls button[data-action="playpause"] {
-  grid-column: span 2;
+/* First row: buttons for -4h to +4h */
+.media-controls button[data-action="-4h"],
+.media-controls button[data-action="-2h"],
+.media-controls button[data-action="-1h"],
+.media-controls button[data-action="-1m"],
+.media-controls button[data-action="playpause"],
+.media-controls button[data-action="+1m"],
+.media-controls button[data-action="+1h"],
+.media-controls button[data-action="+2h"],
+.media-controls button[data-action="+4h"] {
+  grid-column: span 1; /* Each of these buttons takes one column in the first row */
   font-size: 1.2rem;
 }
 
-.media-controls button[data-action="list"] {
-  grid-column: span 2;
-  justify-self: end; /* Positioned to the far right */
+.media-controls button[data-action="playpause"] {
+  grid-column: span 2; /* Play/pause button spans two columns */
 }
 
-/* Progress Bar */
+.media-controls button[data-action="list"] {
+  grid-column: span 1; /* List button */
+}
+
+.media-controls button[data-action="unmute"] {
+  grid-column: span 1; /* Mute button */
+}
+
+.media-controls button[data-action="skipad"] {
+  grid-column: span 1; /* Skip Ad button */
+}
+
+/* Second row: Progress bar, mute, list and skip ad */
+.media-controls .progress-container {
+  grid-column: span 10; /* Progress bar spans the entire second row */
+}
+
 .progress-container {
-  grid-column: span 10; /* Make the progress bar span the whole row */
   width: 100%;
   height: 12px;
   background: rgba(255, 255, 255, 0.5);
@@ -111,6 +76,41 @@ progress::-webkit-progress-bar {
 progress::-webkit-progress-value {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 12px;
+}
+
+/* General button style adjustments */
+.media-controls button {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.media-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.media-controls button[data-action="playpause"] {
+  font-size: 1.2rem;
+}
+
+.media-controls button[data-action="list"] {
+  justify-self: end; /* Positioned to the far right */
+}
+
+/* Skip Ad button: Uniform size */
+#skip-ad-button {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 /* Checkpoints List */
@@ -140,30 +140,4 @@ progress::-webkit-progress-value {
 
 .checkpoint:hover {
   background-color: rgba(0, 0, 0, 0.1);
-}
-
-/* Arrow animation */
-.logistics-shipper {
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: pointer;
-  z-index: 2000;
-}
-
-/* Transition for grid/container visibility */
-.grid-container.shipped {
-  transform: translateY(calc(-100vh + 100px)); /* Grid slides up */
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Matching transition speed */
-}
-
-.logistics-transport.shipped-off {
-  transform: translateY(100%); /* Moves off-screen */
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.media-controls.visible-off {
-  transform: translateY(100%); /* Media controls exit upward */
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Same exit speed */
 }
