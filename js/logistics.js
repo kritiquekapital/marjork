@@ -15,19 +15,25 @@ export function initLogisticsTheme() {
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
-    <button data-action="unmute">🔇</button>
-    <button data-action="-4h">-4h</button>
-    <button data-action="-2h">-2h</button>
-    <button data-action="-1h">-1h</button>
-    <button data-action="-1m">-1m</button>
-    <button data-action="playpause">⏯</button>
-    <button data-action="+1m">+1m</button>
-    <button data-action="+1h">+1h</button>
-    <button data-action="+2h">+2h</button>
-    <button data-action="+4h">+4h</button>
-    <button data-action="list">📋</button>
-    <div class="progress-container">
-      <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+    <div class="row1">
+      <button data-action="unmute">🔇</button>
+      <button data-action="-4h">-4h</button>
+      <button data-action="-2h">-2h</button>
+      <button data-action="-1h">-1h</button>
+      <button data-action="-1m">-1m</button>
+      <button data-action="playpause">⏯</button>
+      <button data-action="+1m">+1m</button>
+      <button data-action="+1h">+1h</button>
+      <button data-action="+2h">+2h</button>
+      <button data-action="+4h">+4h</button>
+    </div>
+    <div class="row2">
+      <button data-action="list">📋</button>
+      <button data-action="mute">🔇</button> <!-- Mute button on row 2 -->
+      <div class="progress-container">
+        <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+      </div>
+      <button data-action="skip-ad" id="skip-ad-button">⏭️</button>
     </div>
   `;
 
@@ -161,25 +167,24 @@ export function initLogisticsTheme() {
   });
 
   // Function to simulate a click on the skip ad button
-function simulateSkipAdClick() {
-  const skipButton = document.querySelector('.ytp-ad-skip-button');
-  if (skipButton) {
-    skipButton.click(); // Simulate the click
-  } else {
-    console.log('No skip button found.');
+  function simulateSkipAdClick() {
+    const skipButton = document.querySelector('.ytp-ad-skip-button');
+    if (skipButton) {
+      skipButton.click(); // Simulate the click
+    } else {
+      console.log('No skip button found.');
+    }
   }
-}
 
-// Add the event listener for your skip ad button
-const skipAdButton = document.createElement('button');
-skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // or use an icon, like ⏭️
+  // Add the event listener for your skip ad button
+  const skipAdButton = document.createElement('button');
+  skipAdButton.id = 'skip-ad-button';
+  skipAdButton.textContent = '⏭️';  // or use an icon
 
-skipAdButton.addEventListener('click', simulateSkipAdClick);
+  skipAdButton.addEventListener('click', simulateSkipAdClick);
 
-// Append it to the media controls or desired location
-document.querySelector('.media-controls').appendChild(skipAdButton);
-
+  // Append it to the media controls or desired location
+  document.querySelector('.media-controls').appendChild(skipAdButton);
 
   // Event listeners
   mediaControls.addEventListener('click', (e) => {
