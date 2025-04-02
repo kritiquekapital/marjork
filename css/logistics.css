@@ -11,10 +11,16 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto; /* Center media controls */
+  opacity: 1;
 }
 
 .media-controls.visible {
   transform: translateY(0); /* When visible */
+}
+
+.media-controls.hidden {
+  opacity: 0; /* Fade out */
+  pointer-events: none; /* Disable interactions when hidden */
 }
 
 /* First row: buttons for -4h to +4h */
