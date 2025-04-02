@@ -66,13 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // UI Visibility Management
   let inactivityTimer;
+  const gridContainer = document.querySelector(".grid-container");
+  const mediaControlBar = document.querySelector(".media-control-bar");
   
   const handleUIState = (shouldHide) => {
-    const gridContainer = document.querySelector(".grid-container");
     if (document.body.classList.contains("theme-space") || 
        document.body.classList.contains("theme-logistics")) {
       gridContainer.style.opacity = shouldHide ? "0" : "1";
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
+      gridContainer.style.transition = "opacity 0.5s ease-in-out";
+      
+      mediaControlBar.style.opacity = shouldHide ? "0" : "1";
+      mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
+      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
     }
   };
 
@@ -85,6 +91,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event Listeners
   ['mousemove', 'keydown', 'click', 'touchstart'].forEach(event => {
     document.addEventListener(event, resetInactivityTimer);
+  });
+
+  document.getElementById("arrowButton").addEventListener("click", () => {
+    handleUIState(false);
   });
 
   themeButton.addEventListener("click", () => {
