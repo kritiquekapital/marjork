@@ -160,26 +160,28 @@ export function initLogisticsTheme() {
     }
   });
 
-  // Function to simulate a click on the skip ad button
-function simulateSkipAdClick() {
-  const skipButton = document.querySelector('.ytp-ad-skip-button');
-  if (skipButton) {
-    skipButton.click(); // Simulate the click
+// Function to simulate skipping the ad using YouTube's API
+function skipAd() {
+  // Check if the player is currently in an ad state
+  if (player && player.getPlayerState() === YT.PlayerState.AD) {
+    // Skip the ad
+    player.stopVideo(); // Stop video to skip the ad
+    player.playVideo(); // Start playing the video after ad
   } else {
-    console.log('No skip button found.');
+    console.log('No ad playing.');
   }
 }
 
-// Add the event listener for your skip ad button
+// Create skip ad button
 const skipAdButton = document.createElement('button');
 skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // or use an icon, like ⏭️
+skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
 
-skipAdButton.addEventListener('click', simulateSkipAdClick);
+// Add event listener for the skip ad button
+skipAdButton.addEventListener('click', skipAd);
 
 // Append it to the media controls or desired location
 document.querySelector('.media-controls').appendChild(skipAdButton);
-
 
   // Event listeners
   mediaControls.addEventListener('click', (e) => {
