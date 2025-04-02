@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const arrowButton = document.getElementById("arrowButton");
   if (arrowButton) {
     arrowButton.addEventListener("click", () => {
-      handleUIState(false);
+      gridContainer.classList.toggle("grid-visible");
+      mediaControlBar.classList.toggle("media-bar-visible");
     });
   }
 
