@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const spaceBackground = createBackground(
-    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1",
+    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
     "space-background-stream"
   );
 
   const logisticsBackground = createBackground(
-    "https://www.youtube.com/embed/videoseries?list=PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw&autoplay=1&mute=1&controls=0&loop=1",
+    "https://www.youtube.com/embed/videoseries?list=PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw&autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
     "logistics-background-stream"
   );
 
