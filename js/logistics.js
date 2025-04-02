@@ -1,4 +1,8 @@
 let player;
+let checkpoints = [];
+let totalDurationInSeconds = 37 * 24 * 60 * 60; // 37 days in seconds
+let checkpointInterval = 8 * 60 * 60; // 8 hours in seconds
+let checkpointButton;
 
 export function initLogisticsTheme() {
   if (!document.body.classList.contains('theme-logistics')) return null;
@@ -30,6 +34,41 @@ export function initLogisticsTheme() {
 
   transportContainer.append(shipper, mediaControls);
   document.body.appendChild(transportContainer);
+
+  // Create the progress bar container
+  const progressContainer = document.createElement('div');
+  progressContainer.className = 'journey-progress';
+
+  // Progress Bar
+  const progressBar = document.createElement('progress');
+  progressBar.max = totalDurationInSeconds;  // Set the max value to the total duration of the playlist
+  progressBar.value = 0;  // Initially set the value to 0
+
+  progressContainer.appendChild(progressBar);
+  document.body.appendChild(progressContainer);
+
+  // Create the checkpoints list
+  const checkpointsList = document.createElement('div');
+  checkpointsList.id = 'checkpoints-list';
+  checkpointsList.className = 'hidden';
+  document.body.appendChild(checkpointsList);
+
+  checkpointButton = document.querySelector('[data-action="list"]');
+
+  // Generate checkpoints
+  for (let i = 0; i <= totalDurationInSeconds / checkpointInterval; i++) {
+    const checkpointTime = i * checkpointInterval;
+    const checkpoint = new Date(checkpointTime * 1000).toISOString().substr(11, 8); // Convert seconds to HH:mm:ss format
+    checkpoints.push(checkpoint);
+  }
+
+  // Populate the checkpoints list
+  checkpoints.forEach((checkpoint) => {
+    const checkpointItem = document.createElement('div');
+    checkpointItem.className = 'checkpoint';
+    checkpointItem.textContent = `Checkpoint: ${checkpoint}`;
+    checkpointsList.appendChild(checkpointItem);
+  });
 
   // YouTube Player initialization
   const playerContainer = document.createElement('div');
@@ -71,8 +110,14 @@ export function initLogisticsTheme() {
         break;
 
       case 'list':
-        // Placeholder for list functionality
-        console.log('List button clicked - implement playlist UI');
+        // Toggle visibility of checkpoints list
+        if (checkpointsList.classList.contains('hidden')) {
+          checkpointsList.classList.remove('hidden');
+          checkpointsList.classList.add('show');
+        } else {
+          checkpointsList.classList.remove('show');
+          checkpointsList.classList.add('hidden');
+        }
         break;
 
       default:
@@ -81,6 +126,19 @@ export function initLogisticsTheme() {
           player.seekTo(Math.max(0, newTime));
         }
     }
+  };
+
+  // Update progress bar based on video time
+  const updateProgressBar = () => {
+    const currentTime = player.getCurrentTime();
+    progressBar.value = currentTime;
+
+    // Check if the current time matches a checkpoint
+    checkpoints.forEach((checkpoint, index) => {
+      if (Math.abs(currentTime - (index * checkpointInterval)) < 30) {
+        console.log(`Reached checkpoint: ${checkpoint}`);
+      }
+    });
   };
 
   // Initialize YouTube Player
@@ -118,9 +176,6 @@ export function initLogisticsTheme() {
     const action = e.target.closest('button')?.dataset.action;
     if (action) handleControlClick(action);
   });
-
-  // Animation logic remains same
-  // ... (keep existing shipping animation code)
 
   // Cleanup function
   return () => {
