@@ -170,22 +170,28 @@ function simulateSkipAdClick() {
   }
 }
 
-// Add the event listener for your skip ad button
+// Function to simulate skipping the ad using YouTube's API
+function skipAd() {
+  // Check if the player is currently in an ad state
+  if (player && player.getPlayerState() === YT.PlayerState.AD) {
+    // Skip the ad
+    player.stopVideo(); // Stop video to skip the ad
+    player.playVideo(); // Start playing the video after ad
+  } else {
+    console.log('No ad playing.');
+  }
+}
+
+// Create skip ad button
 const skipAdButton = document.createElement('button');
 skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // or use an icon, like ⏭️
+skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
 
-skipAdButton.addEventListener('click', simulateSkipAdClick);
+// Add event listener for the skip ad button
+skipAdButton.addEventListener('click', skipAd);
 
 // Append it to the media controls or desired location
 document.querySelector('.media-controls').appendChild(skipAdButton);
-
-
-  // Event listeners
-  mediaControls.addEventListener('click', (e) => {
-    const action = e.target.closest('button')?.dataset.action;
-    if (action) handleControlClick(action);
-  });
 
   // Periodically update progress bar
   setInterval(updateProgressBar, 1000);
