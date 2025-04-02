@@ -160,6 +160,27 @@ export function initLogisticsTheme() {
     }
   });
 
+  // Function to simulate a click on the skip ad button
+function simulateSkipAdClick() {
+  const skipButton = document.querySelector('.ytp-ad-skip-button');
+  if (skipButton) {
+    skipButton.click(); // Simulate the click
+  } else {
+    console.log('No skip button found.');
+  }
+}
+
+// Add the event listener for your skip ad button
+const skipAdButton = document.createElement('button');
+skipAdButton.id = 'skip-ad-button';
+skipAdButton.textContent = 'Skip Ad';  // or use an icon, like ⏭️
+
+skipAdButton.addEventListener('click', simulateSkipAdClick);
+
+// Append it to the media controls or desired location
+document.querySelector('.media-controls').appendChild(skipAdButton);
+
+
   // Event listeners
   mediaControls.addEventListener('click', (e) => {
     const action = e.target.closest('button')?.dataset.action;
