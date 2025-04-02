@@ -93,9 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-  document.getElementById("arrowButton").addEventListener("click", () => {
-    handleUIState(false);
-  });
+  const arrowButton = document.getElementById("arrowButton");
+  if (arrowButton) {
+    arrowButton.addEventListener("click", () => {
+      handleUIState(false);
+    });
+  }
 
   themeButton.addEventListener("click", () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
