@@ -59,14 +59,18 @@ export function initLogisticsTheme() {
   for (let i = 0; i <= totalDurationInSeconds / checkpointInterval; i++) {
     const checkpointTime = i * checkpointInterval;
     const checkpoint = new Date(checkpointTime * 1000).toISOString().substr(11, 8); // Convert seconds to HH:mm:ss format
-    checkpoints.push(checkpoint);
+    checkpoints.push({ name: `Checkpoint ${i + 1}`, time: checkpointTime });
   }
 
-  // Populate the checkpoints list
-  checkpoints.forEach((checkpoint) => {
+  // Populate the checkpoints list with clickable items
+  checkpoints.forEach((checkpoint, index) => {
     const checkpointItem = document.createElement('div');
     checkpointItem.className = 'checkpoint';
-    checkpointItem.textContent = `Checkpoint: ${checkpoint}`;
+    checkpointItem.textContent = checkpoint.name;
+    checkpointItem.dataset.index = index;
+    checkpointItem.addEventListener('click', () => {
+      player.seekTo(checkpoint.time, true);
+    });
     checkpointsList.appendChild(checkpointItem);
   });
 
@@ -132,13 +136,6 @@ export function initLogisticsTheme() {
   const updateProgressBar = () => {
     const currentTime = player.getCurrentTime();
     progressBar.value = currentTime;
-
-    // Check if the current time matches a checkpoint
-    checkpoints.forEach((checkpoint, index) => {
-      if (Math.abs(currentTime - (index * checkpointInterval)) < 30) {
-        console.log(`Reached checkpoint: ${checkpoint}`);
-      }
-    });
   };
 
   // Initialize YouTube Player
@@ -176,6 +173,9 @@ export function initLogisticsTheme() {
     const action = e.target.closest('button')?.dataset.action;
     if (action) handleControlClick(action);
   });
+
+  // Periodically update progress bar
+  setInterval(updateProgressBar, 1000);
 
   // Cleanup function
   return () => {
