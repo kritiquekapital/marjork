@@ -1,4 +1,4 @@
-/* Shipping Controls */
+/* General Styling */
 #logistics-player {
   position: fixed;
   top: 50%;
@@ -16,16 +16,17 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1001;
-  width: min(90%, 800px);
+  width: min(90%, 900px); /* Wider media bar */
+  transition: transform 0.5s ease;
 }
 
 /* Media Controls */
 .media-controls {
-  background: rgba(255, 255, 255, 0.2); /* semi-transparent */
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 15px 15px 0 0;
   padding: 1rem 2rem;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(9, 1fr) 1fr; /* Add space for the list button */
   gap: 0.5rem;
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -49,50 +50,45 @@
 }
 
 .media-controls button:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
 
 /* Progress Bar */
 .progress-container {
-  grid-column: span 10; /* Make the progress bar span the whole row */
-  width: 100%;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  margin-top: 10px;
+  grid-column: span 8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-progress {
+.progress-bar {
   width: 100%;
-  height: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
   appearance: none;
-  border-radius: 12px;
-  background-color: transparent;
-  color: #fff;
 }
 
-progress::-webkit-progress-bar {
-  background-color: transparent;
+.progress-bar::-webkit-progress-bar {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
-progress::-webkit-progress-value {
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 12px;
+.progress-bar::-webkit-progress-value {
+  background-color: #4CAF50;
 }
 
 /* Checkpoints List */
 #checkpoints-list {
   position: fixed;
-  top: 10%;
-  left: 10%;
-  z-index: 1002;
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 1rem;
-  border-radius: 8px;
-  max-height: 70%;
-  overflow-y: scroll;
-  width: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 60px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: none;
 }
 
@@ -101,11 +97,44 @@ progress::-webkit-progress-value {
 }
 
 .checkpoint {
-  color: white;
-  margin-bottom: 10px;
+  padding: 10px;
   cursor: pointer;
+  border-bottom: 1px solid #ddd;
 }
 
 .checkpoint:hover {
-  text-decoration: underline;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Arrow animation */
+.logistics-shipper {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.logistics-shipper::before {
+  content: '↑';
+  font-size: 2.5rem;
+  color: var(--accent-color, #fff);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Transition for media control visibility */
+.logistics-transport.shipped {
+  transform: translateY(calc(-100vh + 100px));
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logistics-transport.shipped-off {
+  transform: translateY(100%);
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Media Controls Visibility */
+.media-controls.visible-off {
+  transform: translateY(100%);
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
