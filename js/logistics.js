@@ -26,6 +26,9 @@ export function initLogisticsTheme() {
     <button data-action="+2h">+2h</button>
     <button data-action="+4h">+4h</button>
     <button data-action="list">📋</button>
+    <div class="progress-container">
+      <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+    </div>
   `;
 
   // Create shipper arrow
@@ -34,18 +37,6 @@ export function initLogisticsTheme() {
 
   transportContainer.append(shipper, mediaControls);
   document.body.appendChild(transportContainer);
-
-  // Create the progress bar container
-  const progressContainer = document.createElement('div');
-  progressContainer.className = 'journey-progress';
-
-  // Progress Bar
-  const progressBar = document.createElement('progress');
-  progressBar.max = totalDurationInSeconds;  // Set the max value to the total duration of the playlist
-  progressBar.value = 0;  // Initially set the value to 0
-
-  progressContainer.appendChild(progressBar);
-  document.body.appendChild(progressContainer);
 
   // Create the checkpoints list
   const checkpointsList = document.createElement('div');
@@ -135,6 +126,7 @@ export function initLogisticsTheme() {
   // Update progress bar based on video time
   const updateProgressBar = () => {
     const currentTime = player.getCurrentTime();
+    const progressBar = document.querySelector('.progress-bar');
     progressBar.value = currentTime;
   };
 
