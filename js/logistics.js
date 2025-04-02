@@ -160,16 +160,6 @@ export function initLogisticsTheme() {
     }
   });
 
-  // Function to simulate a click on the skip ad button
-function simulateSkipAdClick() {
-  const skipButton = document.querySelector('.ytp-ad-skip-button');
-  if (skipButton) {
-    skipButton.click(); // Simulate the click
-  } else {
-    console.log('No skip button found.');
-  }
-}
-
 // Function to simulate skipping the ad using YouTube's API
 function skipAd() {
   // Check if the player is currently in an ad state
