@@ -1,15 +1,38 @@
-// logisticsTheme.js
 let player;
 
 export function initLogisticsTheme() {
   if (!document.body.classList.contains('theme-logistics')) return null;
 
-  // Create player container instead of iframe
+  // Create transport controls
+  const transportContainer = document.createElement('div');
+  transportContainer.className = 'logistics-transport';
+  
+  // Create shipper arrow
+  const shipper = document.createElement('div');
+  shipper.className = 'logistics-shipper';
+  
+  // Create media controls
+  const mediaControls = document.createElement('div');
+  mediaControls.className = 'media-controls';
+  mediaControls.innerHTML = `
+    <button data-action="prev">⏮</button>
+    <button data-action="rewind">⏪</button>
+    <button data-action="playpause">⏯</button>
+    <button data-action="fastforward">⏩</button>
+    <button data-action="next">⏭</button>
+    <button data-action="shuffle">🔀</button>
+    <button data-action="repeat">🔁</button>
+  `;
+
+  // Assemble controls
+  transportContainer.append(shipper, mediaControls);
+  document.body.appendChild(transportContainer);
+
+  // Initialize YouTube Player
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
   document.body.prepend(playerContainer);
 
-  // Initialize YouTube Player
   player = new YT.Player('logistics-player', {
     height: '100%',
     width: '100%',
@@ -23,76 +46,32 @@ export function initLogisticsTheme() {
       rel: 0
     },
     events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange
+      onReady: (event) => {
+        event.target.setVolume(50);
+        updatePlayButton();
+        // Show controls after player is ready
+        transportContainer.style.display = 'block';
+      },
+      onStateChange: updatePlayButton
     }
   });
 
-  // Create transport controls (keep your existing HTML structure)
-  const transportContainer = document.createElement('div');
-  transportContainer.className = 'logistics-transport';
-  // ... rest of your control creation code ...
+  // Animation and control logic
+  const gridContainer = document.querySelector('.grid-container');
+  let isShipped = false;
 
-  // Player control functions
-  function onPlayerReady(event) {
-    event.target.setVolume(50);
-    updatePlayButton();
-  }
+  shipper.addEventListener('click', () => {
+    isShipped = !isShipped;
+    gridContainer.classList.toggle('shipped', isShipped);
+    mediaControls.classList.toggle('visible', isShipped);
+    shipper.style.transform = `translateX(-50%) rotate(${isShipped ? 180 : 0}deg)`;
+  });
 
-  function onPlayerStateChange(event) {
-    updatePlayButton();
-  }
-
-  function updatePlayButton() {
-    const playButton = document.querySelector('[data-action="playpause"]');
-    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-      playButton.textContent = '⏸';
-    } else {
-      playButton.textContent = '▶';
-    }
-  }
-
-  // Control handlers
-  function handleControlClick(action) {
-    switch(action) {
-      case 'playpause':
-        togglePlayback();
-        break;
-      case 'next':
-        player.nextVideo();
-        break;
-      case 'prev':
-        player.previousVideo();
-        break;
-      case 'rewind':
-        player.seekTo(player.getCurrentTime() - 10);
-        break;
-      case 'fastforward':
-        player.seekTo(player.getCurrentTime() + 10);
-        break;
-      case 'shuffle':
-        player.setShuffle(true);
-        break;
-      case 'repeat':
-        toggleRepeat();
-        break;
-    }
-  }
-
-  function togglePlayback() {
-    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-      player.pauseVideo();
-    } else {
-      player.playVideo();
-    }
-  }
-
-  function toggleRepeat() {
-    const repeatButton = document.querySelector('[data-action="repeat"]');
-    const looping = player.getLoop();
-    player.setLoop(!looping);
-    repeatButton.style.color = !looping ? '#1db954' : '';
-  }
+  // Media control handlers
+  mediaControls.addEventListener('click', (e) => {
+    const action = e.target.dataset.action;
+    if (action) handleControlClick(action);
+  });
 
   // Cleanup function
   return () => {
@@ -101,7 +80,7 @@ export function initLogisticsTheme() {
       player = null;
     }
     transportContainer.remove();
-    document.getElementById('logistics-player')?.remove();
+    playerContainer.remove();
     gridContainer.classList.remove('shipped');
   };
 }
