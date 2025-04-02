@@ -1,4 +1,5 @@
 import { Draggable } from './draggable.js';
+import { initLogisticsTheme } from './logisticsTheme.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const draggableElement = document.getElementById('musicPlayer');
@@ -13,6 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "retro", displayName: "🕹️" },
     { name: "space", displayName: "🚀" }
   ];
+
+  // Logistics Theme Cleanup Handler
+  let cleanupLogistics = () => {};
 
   // Background setup
   const createBackground = (url, className) => {
@@ -42,12 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeButton = document.getElementById("themeButton");
 
   function applyTheme() {
+    // Cleanup previous theme-specific elements
+    cleanupLogistics();
+    
     const currentTheme = themes[currentThemeIndex];
     document.body.className = `theme-${currentTheme.name}`;
     themeButton.textContent = currentTheme.displayName;
 
+    // Background visibility
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
     logisticsBackground.style.display = currentTheme.name === "logistics" ? "block" : "none";
+    
+    // Initialize theme-specific features
+    if (currentTheme.name === "logistics") {
+      cleanupLogistics = initLogisticsTheme() || (() => {});
+    }
+    
     draggable.setZeroGravityMode(currentTheme.name === "space");
   }
 
