@@ -15,7 +15,6 @@ export function initLogisticsTheme() {
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
-    <button data-action="unmute">🔇</button>
     <button data-action="-4h">-4h</button>
     <button data-action="-2h">-2h</button>
     <button data-action="-1h">-1h</button>
@@ -26,6 +25,7 @@ export function initLogisticsTheme() {
     <button data-action="+2h">+2h</button>
     <button data-action="+4h">+4h</button>
     <button data-action="list">📋</button>
+    <button data-action="unmute">🔇</button>
     <div class="progress-container">
       <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
     </div>
