@@ -160,26 +160,48 @@ export function initLogisticsTheme() {
     }
   });
 
-  // Function to simulate a click on the skip ad button
-function simulateSkipAdClick() {
-  const skipButton = document.querySelector('.ytp-ad-skip-button');
-  if (skipButton) {
-    skipButton.click(); // Simulate the click
+  let inactivityTimer;
+const mediaControls = document.querySelector('.media-controls');
+
+// Function to show media controls
+function showMediaControls() {
+  mediaControls.classList.remove('hidden');
+  // Reset the inactivity timer
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    mediaControls.classList.add('hidden'); // Fade out after 5 seconds of inactivity
+  }, 5000); // 5 seconds of inactivity
+}
+
+// Add event listeners for user interaction (button clicks, mouse movement, etc.)
+document.body.addEventListener('mousemove', showMediaControls);
+document.body.addEventListener('click', showMediaControls);
+
+// Initially, show the media controls when the page is loaded or when autoplay starts
+showMediaControls();
+  
+// Function to simulate skipping the ad using YouTube's API
+function skipAd() {
+  // Check if the player is currently in an ad state
+  if (player && player.getPlayerState() === YT.PlayerState.AD) {
+    // Skip the ad
+    player.stopVideo(); // Stop video to skip the ad
+    player.playVideo(); // Start playing the video after ad
   } else {
-    console.log('No skip button found.');
+    console.log('No ad playing.');
   }
 }
 
-// Add the event listener for your skip ad button
+// Create skip ad button
 const skipAdButton = document.createElement('button');
 skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // or use an icon, like ⏭️
+skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
 
-skipAdButton.addEventListener('click', simulateSkipAdClick);
+// Add event listener for the skip ad button
+skipAdButton.addEventListener('click', skipAd);
 
 // Append it to the media controls or desired location
 document.querySelector('.media-controls').appendChild(skipAdButton);
-
 
   // Event listeners
   mediaControls.addEventListener('click', (e) => {
