@@ -91,19 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-  if (arrowButton) {
-    arrowButton.addEventListener("click", () => {
-      if (!gridContainer || !mediaControlBar) return;
+document.addEventListener('click', (event) => {
+  if (event.target.closest('.logistics-shipper')) {
+    const gridContainer = document.querySelector(".grid-container");
+    const mediaControlBar = document.querySelector(".media-controls");
+    if (!gridContainer || !mediaControlBar) return;
 
-      console.log("Arrow clicked! Toggling classes.");
-      gridContainer.classList.toggle("shipped");
-      mediaControlBar.classList.toggle("visible");
-
-      // Force reflow to fix transition issues
-      void gridContainer.offsetHeight;
-      void mediaControlBar.offsetHeight;
-    });
+    gridContainer.classList.toggle("shipped");
+    mediaControlBar.classList.toggle("visible");
   }
+});
 
   themeButton.addEventListener("click", () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
