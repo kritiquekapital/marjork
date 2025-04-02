@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
   const mediaControlBar = document.querySelector(".media-controls");
+  const arrowButton = document.querySelector(".logistics-shipper");
+
+  if (!gridContainer) console.warn("grid-container not found");
+  if (!mediaControlBar) console.warn("media-controls not found");
+  if (!arrowButton) console.warn("logistics-shipper button not found");
 
   const handleUIState = (shouldHide) => {
     if (!gridContainer || !mediaControlBar) return; // Prevent null errors
@@ -86,13 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-  const arrowButton = document.querySelector(".logistics-shipper");
   if (arrowButton) {
     arrowButton.addEventListener("click", () => {
       if (!gridContainer || !mediaControlBar) return;
 
+      console.log("Arrow clicked! Toggling classes.");
       gridContainer.classList.toggle("shipped");
       mediaControlBar.classList.toggle("visible");
+
+      // Force reflow to fix transition issues
+      void gridContainer.offsetHeight;
+      void mediaControlBar.offsetHeight;
     });
   }
 
