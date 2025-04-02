@@ -160,6 +160,26 @@ export function initLogisticsTheme() {
     }
   });
 
+  let inactivityTimer;
+const mediaControls = document.querySelector('.media-controls');
+
+// Function to show media controls
+function showMediaControls() {
+  mediaControls.classList.remove('hidden');
+  // Reset the inactivity timer
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(() => {
+    mediaControls.classList.add('hidden'); // Fade out after 5 seconds of inactivity
+  }, 5000); // 5 seconds of inactivity
+}
+
+// Add event listeners for user interaction (button clicks, mouse movement, etc.)
+document.body.addEventListener('mousemove', showMediaControls);
+document.body.addEventListener('click', showMediaControls);
+
+// Initially, show the media controls when the page is loaded or when autoplay starts
+showMediaControls();
+  
 // Function to simulate skipping the ad using YouTube's API
 function skipAd() {
   // Check if the player is currently in an ad state
