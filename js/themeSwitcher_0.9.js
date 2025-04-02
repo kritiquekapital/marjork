@@ -34,12 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "space-background-stream"
   );
 
-  const logisticsBackground = createBackground(
-    "https://www.youtube.com/embed/videoseries?list=PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw&autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
-    "logistics-background-stream"
-  );
-
-  document.body.prepend(logisticsBackground, spaceBackground);
+  document.body.prepend(spaceBackground);
 
   // Theme management
   let currentThemeIndex = 0;
@@ -55,11 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Background visibility
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
-    logisticsBackground.style.display = currentTheme.name === "logistics" ? "block" : "none";
     
-    // Initialize theme-specific features
+    // Handle logistics-specific media player
+    const logisticsPlayer = document.getElementById('logistics-player');
+    
     if (currentTheme.name === "logistics") {
+      if (logisticsPlayer) logisticsPlayer.style.display = "block";
       cleanupLogistics = initLogisticsTheme() || (() => {});
+    } else {
+      if (logisticsPlayer) logisticsPlayer.style.display = "none";
     }
     
     draggable.setZeroGravityMode(currentTheme.name === "space");
