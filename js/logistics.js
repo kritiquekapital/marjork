@@ -1,3 +1,4 @@
+let inactivityTimer;
 let player;
 let checkpoints = [];
 let totalDurationInSeconds = 37 * 24 * 60 * 60; // 37 days in seconds
@@ -160,48 +161,28 @@ export function initLogisticsTheme() {
     }
   });
 
-  let inactivityTimer;
-const mediaControls = document.querySelector('.media-controls');
-
-// Function to show media controls
-function showMediaControls() {
-  mediaControls.classList.remove('hidden');
-  // Reset the inactivity timer
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    mediaControls.classList.add('hidden'); // Fade out after 5 seconds of inactivity
-  }, 5000); // 5 seconds of inactivity
-}
-
-// Add event listeners for user interaction (button clicks, mouse movement, etc.)
-document.body.addEventListener('mousemove', showMediaControls);
-document.body.addEventListener('click', showMediaControls);
-
-// Initially, show the media controls when the page is loaded or when autoplay starts
-showMediaControls();
-  
-// Function to simulate skipping the ad using YouTube's API
-function skipAd() {
-  // Check if the player is currently in an ad state
-  if (player && player.getPlayerState() === YT.PlayerState.AD) {
-    // Skip the ad
-    player.stopVideo(); // Stop video to skip the ad
-    player.playVideo(); // Start playing the video after ad
-  } else {
-    console.log('No ad playing.');
+  // Function to simulate skipping the ad using YouTube's API
+  function skipAd() {
+    // Check if the player is currently in an ad state
+    if (player && player.getPlayerState() === YT.PlayerState.AD) {
+      // Skip the ad
+      player.stopVideo(); // Stop video to skip the ad
+      player.playVideo(); // Start playing the video after ad
+    } else {
+      console.log('No ad playing.');
+    }
   }
-}
 
-// Create skip ad button
-const skipAdButton = document.createElement('button');
-skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
+  // Create skip ad button
+  const skipAdButton = document.createElement('button');
+  skipAdButton.id = 'skip-ad-button';
+  skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
 
-// Add event listener for the skip ad button
-skipAdButton.addEventListener('click', skipAd);
+  // Add event listener for the skip ad button
+  skipAdButton.addEventListener('click', skipAd);
 
-// Append it to the media controls or desired location
-document.querySelector('.media-controls').appendChild(skipAdButton);
+  // Append it to the media controls or desired location
+  document.querySelector('.media-controls').appendChild(skipAdButton);
 
   // Event listeners
   mediaControls.addEventListener('click', (e) => {
@@ -211,6 +192,19 @@ document.querySelector('.media-controls').appendChild(skipAdButton);
 
   // Periodically update progress bar
   setInterval(updateProgressBar, 1000);
+
+  // Track inactivity for fading out the controls
+  const resetInactivityTimer = () => {
+    clearTimeout(inactivityTimer);
+    mediaControls.classList.remove('hidden'); // Show controls again when activity is detected
+    inactivityTimer = setTimeout(() => {
+      mediaControls.classList.add('hidden'); // Hide controls after 5 seconds of inactivity
+    }, 5000); // 5 seconds
+  };
+
+  // Add event listeners to track user activity
+  document.body.addEventListener('mousemove', resetInactivityTimer);
+  document.body.addEventListener('click', resetInactivityTimer);
 
   // Cleanup function
   return () => {
