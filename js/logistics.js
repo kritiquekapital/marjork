@@ -106,10 +106,52 @@ export function initLogisticsTheme() {
     checkpointsList.appendChild(checkpointItem);
   });
 
-  // YouTube Player initialization
-  const playerContainer = document.createElement('div');
-  playerContainer.id = 'logistics-player';
-  document.body.prepend(playerContainer);
+ // Initialize YouTube Player
+const playerContainer = document.createElement('div');
+playerContainer.id = 'logistics-player';
+document.body.prepend(playerContainer);
+
+const mediaControls = document.createElement('div'); // ✅ Fixed duplicate declaration
+mediaControls.className = 'media-controls';
+mediaControls.innerHTML = `
+  <button data-action="-4h">-4h</button>
+  <button data-action="-2h">-2h</button>
+  <button data-action="-1h">-1h</button>
+  <button data-action="-1m">-1m</button>
+  <button data-action="playpause">⏯</button>
+  <button data-action="+1m">+1m</button>
+  <button data-action="+1h">+1h</button>
+  <button data-action="+2h">+2h</button>
+  <button data-action="+4h">+4h</button>
+  <button data-action="list">📋</button>
+  <button data-action="unmute">🔇</button>
+  <div class="progress-container">
+    <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
+  </div>
+`;
+
+document.body.appendChild(mediaControls);
+
+player = new YT.Player('logistics-player', {
+  height: '100%',
+  width: '100%',
+  playerVars: {
+    listType: 'playlist',
+    list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
+    autoplay: 1,
+    controls: 0,
+    loop: 1,
+    modestbranding: 1,
+    rel: 0
+  },
+  events: {
+    onReady: (event) => {
+      event.target.mute();
+      mediaControls.style.display = 'block';
+      document.querySelector('[data-action="unmute"]').textContent = '🔇';
+    }
+  }
+});
 
   // Control handlers
   const handleControlClick = (action) => {
@@ -163,60 +205,6 @@ export function initLogisticsTheme() {
         }
     }
   };
-
-  // Update progress bar based on video time
-  const updateProgressBar = () => {
-    const currentTime = player.getCurrentTime();
-    const progressBar = document.querySelector('.progress-bar');
-    progressBar.value = currentTime;
-  };
-
- // Initialize YouTube Player
-const playerContainer = document.createElement('div');
-playerContainer.id = 'logistics-player';
-document.body.prepend(playerContainer);
-
-const mediaControls = document.createElement('div'); // ✅ Fixed duplicate declaration
-mediaControls.className = 'media-controls';
-mediaControls.innerHTML = `
-  <button data-action="-4h">-4h</button>
-  <button data-action="-2h">-2h</button>
-  <button data-action="-1h">-1h</button>
-  <button data-action="-1m">-1m</button>
-  <button data-action="playpause">⏯</button>
-  <button data-action="+1m">+1m</button>
-  <button data-action="+1h">+1h</button>
-  <button data-action="+2h">+2h</button>
-  <button data-action="+4h">+4h</button>
-  <button data-action="list">📋</button>
-  <button data-action="unmute">🔇</button>
-  <div class="progress-container">
-    <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
-  </div>
-`;
-
-document.body.appendChild(mediaControls);
-
-player = new YT.Player('logistics-player', {
-  height: '100%',
-  width: '100%',
-  playerVars: {
-    listType: 'playlist',
-    list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
-    autoplay: 1,
-    controls: 0,
-    loop: 1,
-    modestbranding: 1,
-    rel: 0
-  },
-  events: {
-    onReady: (event) => {
-      event.target.mute();
-      mediaControls.style.display = 'block';
-      document.querySelector('[data-action="unmute"]').textContent = '🔇';
-    }
-  }
-});
 
 // Function to update progress bar
 const updateProgressBar = () => {
