@@ -1,8 +1,56 @@
+let inactivityTimer;
 let player;
 let checkpoints = [];
-let totalDurationInSeconds = 37 * 24 * 60 * 60; // 37 days in seconds
-let checkpointInterval = 8 * 60 * 60; // 8 hours in seconds
 let checkpointButton;
+
+// Exact video lengths in seconds (converted from your timestamps)
+const videoDurations = [
+  28810, 26958, 28807, 28799, 28787, 28803, 28800, 28790, 28800, 28800,
+  28792, 28805, 28800, 28787, 28800, 28800, 28792, 28802, 28800, 28791,
+  28803, 28800, 28789, 28806, 28800, 28786, 28800, 28800, 28793, 28800,
+  28800, 28792, 28800, 28800, 28792, 28808, 28800, 28784, 28805, 28799,
+  28788, 28809, 28799, 28783, 28808, 28793, 18131, 28807, 28800, 28789,
+  28805, 28803, 28787, 28804, 28803, 28789, 28800, 28800, 28795, 28804,
+  28800, 28792, 28801, 28804, 22170, 28809, 28792, 28791, 28802, 28802,
+  28788, 28807, 28795, 28791, 28808, 28800, 28781, 28810, 28800, 28783,
+  28804, 28800, 28788, 28801, 28800, 28791, 28804, 28800, 28788, 28801,
+  28808, 28783, 28810, 28800, 28783, 28809, 28800, 28783, 28808, 28800,
+  28785, 28809, 28800, 16477, 28800, 28800, 15266
+];
+
+// Compute total playlist duration
+let totalDuration = videoDurations.reduce((sum, duration) => sum + duration, 0);
+
+// Define checkpoint intervals at 4-hour marks
+let checkpointInterval = 4 * 60 * 60; // 4 hours in seconds
+let currentTime = 0;
+
+// Generate checkpoints based on actual video durations
+for (let i = 0; currentTime < totalDuration; i++) {
+  checkpoints.push({
+    name: `Checkpoint ${i + 1}`,
+    time: currentTime
+  });
+
+  currentTime += checkpointInterval;
+}
+
+// Inject checkpoints into the UI
+const checkpointsList = document.createElement('div');
+checkpointsList.id = 'checkpoints-list';
+checkpointsList.className = 'hidden';
+document.body.appendChild(checkpointsList);
+
+checkpoints.forEach((checkpoint, index) => {
+  const checkpointItem = document.createElement('div');
+  checkpointItem.className = 'checkpoint';
+  checkpointItem.textContent = checkpoint.name;
+  checkpointItem.dataset.index = index;
+  checkpointItem.addEventListener('click', () => {
+    player.seekTo(checkpoint.time, true);
+  });
+  checkpointsList.appendChild(checkpointItem);
+});
 
 export function initLogisticsTheme() {
   if (!document.body.classList.contains('theme-logistics')) return null;
@@ -45,13 +93,6 @@ export function initLogisticsTheme() {
   document.body.appendChild(checkpointsList);
 
   checkpointButton = document.querySelector('[data-action="list"]');
-
-  // Generate checkpoints
-  for (let i = 0; i <= totalDurationInSeconds / checkpointInterval; i++) {
-    const checkpointTime = i * checkpointInterval;
-    const checkpoint = new Date(checkpointTime * 1000).toISOString().substr(11, 8); // Convert seconds to HH:mm:ss format
-    checkpoints.push({ name: `Checkpoint ${i + 1}`, time: checkpointTime });
-  }
 
   // Populate the checkpoints list with clickable items
   checkpoints.forEach((checkpoint, index) => {
