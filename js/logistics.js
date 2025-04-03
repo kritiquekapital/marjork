@@ -79,6 +79,8 @@ export function initLogisticsTheme() {
     </div>
   `;
 
+  document.body.appendChild(mediaControls);
+
   // Create shipper arrow
   const shipper = document.createElement('div');
   shipper.className = 'logistics-shipper';
@@ -110,27 +112,6 @@ export function initLogisticsTheme() {
 const playerContainer = document.createElement('div');
 playerContainer.id = 'logistics-player';
 document.body.prepend(playerContainer);
-
-const mediaControls = document.createElement('div'); // ✅ Fixed duplicate declaration
-mediaControls.className = 'media-controls';
-mediaControls.innerHTML = `
-  <button data-action="-4h">-4h</button>
-  <button data-action="-2h">-2h</button>
-  <button data-action="-1h">-1h</button>
-  <button data-action="-1m">-1m</button>
-  <button data-action="playpause">⏯</button>
-  <button data-action="+1m">+1m</button>
-  <button data-action="+1h">+1h</button>
-  <button data-action="+2h">+2h</button>
-  <button data-action="+4h">+4h</button>
-  <button data-action="list">📋</button>
-  <button data-action="unmute">🔇</button>
-  <div class="progress-container">
-    <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
-  </div>
-`;
-
-document.body.appendChild(mediaControls);
 
 player = new YT.Player('logistics-player', {
   height: '100%',
