@@ -171,35 +171,62 @@ export function initLogisticsTheme() {
     progressBar.value = currentTime;
   };
 
-  // Initialize YouTube Player
-  player = new YT.Player('logistics-player', {
-    height: '100%',
-    width: '100%',
-    playerVars: {
-      listType: 'playlist',
-      list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
-      autoplay: 1,
-      controls: 0,
-      loop: 1,
-      modestbranding: 1,
-      rel: 0
-    },
-    events: {
-      onReady: (event) => {
-        event.target.mute(); // Start muted
-        transportContainer.style.display = 'block';
-        document.querySelector('[data-action="unmute"]').textContent = '🔇';
-      },
-      onStateChange: () => {
-        const playButton = document.querySelector('[data-action="playpause"]');
-        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-          playButton.textContent = '⏸';
-        } else {
-          playButton.textContent = '▶';
-        }
-      }
+ // Initialize YouTube Player
+const playerContainer = document.createElement('div');
+playerContainer.id = 'logistics-player';
+document.body.prepend(playerContainer);
+
+const mediaControls = document.createElement('div'); // ✅ Fixed duplicate declaration
+mediaControls.className = 'media-controls';
+mediaControls.innerHTML = `
+  <button data-action="-4h">-4h</button>
+  <button data-action="-2h">-2h</button>
+  <button data-action="-1h">-1h</button>
+  <button data-action="-1m">-1m</button>
+  <button data-action="playpause">⏯</button>
+  <button data-action="+1m">+1m</button>
+  <button data-action="+1h">+1h</button>
+  <button data-action="+2h">+2h</button>
+  <button data-action="+4h">+4h</button>
+  <button data-action="list">📋</button>
+  <button data-action="unmute">🔇</button>
+  <div class="progress-container">
+    <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
+  </div>
+`;
+
+document.body.appendChild(mediaControls);
+
+player = new YT.Player('logistics-player', {
+  height: '100%',
+  width: '100%',
+  playerVars: {
+    listType: 'playlist',
+    list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
+    autoplay: 1,
+    controls: 0,
+    loop: 1,
+    modestbranding: 1,
+    rel: 0
+  },
+  events: {
+    onReady: (event) => {
+      event.target.mute();
+      mediaControls.style.display = 'block';
+      document.querySelector('[data-action="unmute"]').textContent = '🔇';
     }
-  });
+  }
+});
+
+// Function to update progress bar
+const updateProgressBar = () => {
+  if (!player) return;
+  const currentTime = player.getCurrentTime();
+  document.querySelector('.progress-bar').value = currentTime;
+};
+
+// Periodically update progress bar
+setInterval(updateProgressBar, 1000);
 
   let inactivityTimer;
 const mediaControls = document.querySelector('.media-controls');
@@ -249,9 +276,6 @@ document.querySelector('.media-controls').appendChild(skipAdButton);
     const action = e.target.closest('button')?.dataset.action;
     if (action) handleControlClick(action);
   });
-
-  // Periodically update progress bar
-  setInterval(updateProgressBar, 1000);
 
   // Cleanup function
   return () => {
