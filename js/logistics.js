@@ -80,6 +80,7 @@ export function initLogisticsTheme() {
   `;
 
   document.body.appendChild(mediaControls);
+    let inactivityTimer;
 
   // Create shipper arrow
   const shipper = document.createElement('div');
@@ -196,9 +197,6 @@ const updateProgressBar = () => {
 
 // Periodically update progress bar
 setInterval(updateProgressBar, 1000);
-
-  let inactivityTimer;
-const mediaControls = document.querySelector('.media-controls');
 
 // Function to show  controls
 function showControls() {
