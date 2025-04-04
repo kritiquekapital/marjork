@@ -3,7 +3,7 @@ let player;
 let checkpoints = [];
 let checkpointButton;
 
-// Exact video lengths in seconds (converted from your timestamps)
+// Exact video lengths in seconds
 const videoDurations = [
   28810, 26958, 28807, 28799, 28787, 28803, 28800, 28790, 28800, 28800,
   28792, 28805, 28800, 28787, 28800, 28800, 28792, 28802, 28800, 28791,
@@ -35,27 +35,8 @@ for (let i = 0; currentTime < totalDuration; i++) {
   currentTime += checkpointInterval;
 }
 
-// Inject checkpoints into the UI
-const checkpointsList = document.createElement('div');
-checkpointsList.id = 'checkpoints-list';
-checkpointsList.className = 'hidden';
-document.body.appendChild(checkpointsList);
-
-checkpoints.forEach((checkpoint, index) => {
-  const checkpointItem = document.createElement('div');
-  checkpointItem.className = 'checkpoint';
-  checkpointItem.textContent = checkpoint.name;
-  checkpointItem.dataset.index = index;
-  checkpointItem.addEventListener('click', () => {
-    player.seekTo(checkpoint.time, true);
-  });
-  checkpointsList.appendChild(checkpointItem);
-});
-
-export function initLogisticsTheme() {
-  if (!document.body.classList.contains('theme-logistics')) return null;
-
-  // Create transport controls with new buttons
+// Ensure DOM is fully loaded before running script
+document.addEventListener("DOMContentLoaded", function () {
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
   transportContainer.style.display = 'none';
@@ -75,29 +56,21 @@ export function initLogisticsTheme() {
     <button data-action="list">📋</button>
     <button data-action="unmute">🔇</button>
     <div class="progress-container">
-      <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+      <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
     </div>
   `;
 
-  document.body.appendChild(mediaControls);
-    let inactivityTimer;
-
-  // Create shipper arrow
   const shipper = document.createElement('div');
   shipper.className = 'logistics-shipper';
 
   transportContainer.append(shipper, mediaControls);
   document.body.appendChild(transportContainer);
 
-  // Create the checkpoints list
   const checkpointsList = document.createElement('div');
   checkpointsList.id = 'checkpoints-list';
   checkpointsList.className = 'hidden';
   document.body.appendChild(checkpointsList);
 
-  checkpointButton = document.querySelector('[data-action="list"]');
-
-  // Populate the checkpoints list with clickable items
   checkpoints.forEach((checkpoint, index) => {
     const checkpointItem = document.createElement('div');
     checkpointItem.className = 'checkpoint';
@@ -109,148 +82,39 @@ export function initLogisticsTheme() {
     checkpointsList.appendChild(checkpointItem);
   });
 
- // Initialize YouTube Player
-const playerContainer = document.createElement('div');
-playerContainer.id = 'logistics-player';
-document.body.prepend(playerContainer);
+  // Initialize YouTube Player
+  const playerContainer = document.createElement('div');
+  playerContainer.id = 'logistics-player';
+  document.body.prepend(playerContainer);
 
-player = new YT.Player('logistics-player', {
-  height: '100%',
-  width: '100%',
-  playerVars: {
-    listType: 'playlist',
-    list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
-    autoplay: 1,
-    controls: 0,
-    loop: 1,
-    modestbranding: 1,
-    rel: 0
-  },
-  events: {
-    onReady: (event) => {
-      event.target.mute();
-      mediaControls.style.display = 'block';
-      document.querySelector('[data-action="unmute"]').textContent = '🔇';
+  player = new YT.Player('logistics-player', {
+    height: '100%',
+    width: '100%',
+    playerVars: {
+      listType: 'playlist',
+      list: 'PLJUn5ZRCEXamUuAOpJ5VyTb0PA5_Pqlzw',
+      autoplay: 1,
+      controls: 0,
+      loop: 1,
+      modestbranding: 1,
+      rel: 0
+    },
+    events: {
+      onReady: (event) => {
+        event.target.mute();
+        transportContainer.style.display = 'block';
+        document.querySelector('[data-action="unmute"]').textContent = '🔇';
+      }
     }
-  }
-});
-
-  // Control handlers
-  const handleControlClick = (action) => {
-    if (!player) return;
-
-    const seekTimes = {
-      '-4h': -14400,  // 4 hours in seconds
-      '-2h': -7200,   // 2 hours
-      '-1h': -3600,   // 1 hour
-      '-1m': -60,      // 1 minute
-      '+1m': 60,
-      '+1h': 3600,
-      '+2h': 7200,
-      '+4h': 14400
-    };
-
-    switch(action) {
-      case 'unmute':
-        if (player.isMuted()) {
-          player.unMute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔊';
-        } else {
-          player.mute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔇';
-        }
-        break;
-
-      case 'playpause':
-        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-          player.pauseVideo();
-        } else {
-          player.playVideo();
-        }
-        break;
-
-      case 'list':
-        // Toggle visibility of checkpoints list
-        if (checkpointsList.classList.contains('hidden')) {
-          checkpointsList.classList.remove('hidden');
-          checkpointsList.classList.add('show');
-        } else {
-          checkpointsList.classList.remove('show');
-          checkpointsList.classList.add('hidden');
-        }
-        break;
-
-      default:
-        if (seekTimes[action]) {
-          const newTime = player.getCurrentTime() + seekTimes[action];
-          player.seekTo(Math.max(0, newTime));
-        }
-    }
-  };
-
-// Function to update progress bar
-const updateProgressBar = () => {
-  if (!player) return;
-  const currentTime = player.getCurrentTime();
-  document.querySelector('.progress-bar').value = currentTime;
-};
-
-// Periodically update progress bar
-setInterval(updateProgressBar, 1000);
-
-// Function to show  controls
-function showControls() {
-  Controls.classList.remove('hidden');
-  // Reset the inactivity timer
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(() => {
-    Controls.classList.add('hidden'); // Fade out after 5 seconds of inactivity
-  }, 5000); // 5 seconds of inactivity
-}
-
-// Add event listeners for user interaction (button clicks, mouse movement, etc.)
-document.body.addEventListener('mousemove', showControls);
-document.body.addEventListener('click', showMediaControls);
-
-// Initially, show the media controls when the page is loaded or when autoplay starts
-showMediaControls();
-  
-// Function to simulate skipping the ad using YouTube's API
-function skipAd() {
-  // Check if the player is currently in an ad state
-  if (player && player.getPlayerState() === YT.PlayerState.AD) {
-    // Skip the ad
-    player.stopVideo(); // Stop video to skip the ad
-    player.playVideo(); // Start playing the video after ad
-  } else {
-    console.log('No ad playing.');
-  }
-}
-
-// Create skip ad button
-const skipAdButton = document.createElement('button');
-skipAdButton.id = 'skip-ad-button';
-skipAdButton.textContent = 'Skip Ad';  // Or use an icon, like ⏭️
-
-// Add event listener for the skip ad button
-skipAdButton.addEventListener('click', skipAd);
-
-// Append it to the media controls or desired location
-document.querySelector('.media-controls').appendChild(skipAdButton);
-
-  // Event listeners
-  mediaControls.addEventListener('click', (e) => {
-    const action = e.target.closest('button')?.dataset.action;
-    if (action) handleControlClick(action);
   });
 
-  // Cleanup function
-  return () => {
-    if (player) {
-      player.destroy();
-      player = null;
-    }
-    transportContainer.remove();
-    playerContainer.remove();
+  // Function to update progress bar
+  const updateProgressBar = () => {
+    if (!player) return;
+    const currentTime = player.getCurrentTime();
+    document.querySelector('.progress-bar').value = currentTime;
   };
-}
+
+  // Periodically update progress bar
+  setInterval(updateProgressBar, 1000);
+});
