@@ -1,3 +1,12 @@
+export function initLogisticsTheme() {
+  // Your existing initialization logic (transport container, media controls, etc.)
+  return () => {
+    // Cleanup logic if needed
+    const logisticsPlayer = document.getElementById('logistics-player');
+    if (logisticsPlayer) logisticsPlayer.style.display = 'none';
+  };
+}
+
 let inactivityTimer;
 let player;
 let checkpoints = [];
