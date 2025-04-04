@@ -161,7 +161,6 @@ export function initLogisticsTheme() {
   });
 
   let inactivityTimer;
-const mediaControls = document.querySelector('.media-controls');
 
 // Function to show media controls
 function showMediaControls() {
