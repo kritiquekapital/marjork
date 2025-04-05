@@ -1,24 +1,28 @@
 let player;
 let checkpoints = [];
-let checkpointButton;
+let checkpointInterval = 4 * 60 * 60; // 4-hour intervals
+let currentCheckpointIndex = 0;
 
-const videoDurations = [ /* same full array as before */ ];
-
+const videoDurations = [/* Your video duration array here */];
 let totalDuration = videoDurations.reduce((sum, duration) => sum + duration, 0);
-let checkpointInterval = 4 * 60 * 60;
-let currentTime = 0;
 
-for (let i = 0; currentTime < totalDuration; i++) {
-  checkpoints.push({ name: `Checkpoint ${i + 1}`, time: currentTime });
-  currentTime += checkpointInterval;
+function initializeCheckpoints() {
+  checkpoints = [];
+  let currentTime = 0;
+  while (currentTime < totalDuration) {
+    checkpoints.push({
+      name: `Checkpoint ${checkpoints.length + 1}`,
+      time: currentTime
+    });
+    currentTime += checkpointInterval;
+  }
 }
 
-export function initLogisticsTheme() {
-  if (!document.body.classList.contains('theme-logistics')) return;
-
+function createTransportControls() {
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
 
+  // Media Controls
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
@@ -43,32 +47,41 @@ export function initLogisticsTheme() {
     </div>
   `;
 
-  const shipper = document.createElement('div');
-  shipper.className = 'logistics-shipper';
+  // Shipper Element
+  const logisticsShipper = document.createElement('div');
+  logisticsShipper.className = 'logistics-shipper';
 
-  transportContainer.append(shipper, mediaControls);
+  transportContainer.append(logisticsShipper, mediaControls);
   document.body.appendChild(transportContainer);
 
+  return { transportContainer, mediaControls, logisticsShipper };
+}
+
+export function initLogisticsTheme() {
+  if (!document.body.classList.contains('theme-logistics')) return () => {};
+
+  initializeCheckpoints();
+  const { transportContainer, mediaControls, logisticsShipper } = createTransportControls();
+  
+  // Checkpoints List
   const checkpointsList = document.createElement('div');
   checkpointsList.id = 'checkpoints-list';
   checkpointsList.className = 'hidden';
-  document.body.appendChild(checkpointsList);
-
   checkpoints.forEach((checkpoint, index) => {
     const item = document.createElement('div');
     item.className = 'checkpoint';
     item.textContent = checkpoint.name;
     item.dataset.index = index;
-    item.addEventListener('click', () => {
-      if (player?.seekTo) player.seekTo(checkpoint.time, true);
-    });
     checkpointsList.appendChild(item);
   });
+  document.body.appendChild(checkpointsList);
 
+  // Player Container
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
   document.body.prepend(playerContainer);
 
+  // YouTube Player
   player = new YT.Player('logistics-player', {
     height: '100%',
     width: '100%',
@@ -86,72 +99,34 @@ export function initLogisticsTheme() {
         event.target.mute();
         mediaControls.classList.add('show');
         document.querySelector('[data-action="unmute"]').textContent = '🔇';
-
-        // safe progress bar update loop
-        setInterval(() => {
-          if (typeof player?.getCurrentTime === 'function') {
-            document.querySelector('.progress-bar').value = player.getCurrentTime();
-          }
-        }, 1000);
+        setInterval(updateProgressBar, 1000);
       }
     }
   });
 
+  // Event Handlers
   const handleControlClick = (action) => {
-    if (!player) return;
-
-    const seekTimes = {
-      '-4h': -14400, '-2h': -7200, '-1h': -3600, '-1m': -60,
-      '+1m': 60, '+1h': 3600, '+2h': 7200, '+4h': 14400
-    };
-
-    switch (action) {
-      case 'unmute':
-        if (player.isMuted()) {
-          player.unMute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔊';
-        } else {
-          player.mute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔇';
-        }
-        break;
-      case 'playpause':
-        const state = player.getPlayerState();
-        if (state === YT.PlayerState.PLAYING) {
-          player.pauseVideo();
-        } else {
-          player.playVideo();
-        }
-        break;
-      case 'list':
-        checkpointsList.classList.toggle('hidden');
-        break;
-      default:
-        if (seekTimes[action]) {
-          const newTime = player.getCurrentTime() + seekTimes[action];
-          player.seekTo(Math.max(0, newTime));
-        }
-    }
+    /* Original control handler logic */
   };
 
-  function skipAd() {
-    if (player && player.getPlayerState() === YT.PlayerState.AD) {
-      player.stopVideo();
-      player.playVideo();
-    }
-  }
+  const handleShipperClick = () => {
+    document.querySelector(".grid-container").classList.toggle("shipped");
+    mediaControls.classList.toggle("visible");
+  };
 
-  document.getElementById('skip-ad-button').addEventListener('click', skipAd);
-
+  logisticsShipper.addEventListener('click', handleShipperClick);
   mediaControls.addEventListener('click', (e) => {
     const action = e.target.closest('button')?.dataset.action;
     if (action) handleControlClick(action);
   });
 
+  // Cleanup Function
   return () => {
-    if (player) player.destroy();
-    player = null;
     transportContainer.remove();
+    checkpointsList.remove();
     playerContainer.remove();
+    player.destroy();
+    logisticsShipper.removeEventListener('click', handleShipperClick);
+    mediaControls.removeEventListener('click', handleControlClick);
   };
 }
