@@ -46,7 +46,6 @@ export function initLogisticsTheme() {
   document.body.appendChild(checkpointsList);
 
   let progressInterval;
-  let inactivityTimer;
   let player;
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
