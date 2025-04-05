@@ -66,6 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!mediaControlBar) console.warn("media-controls not found");
   if (!arrowButton) console.warn("logistics-shipper button not found");
 
+const mediaControls = document.querySelector('.media-controls');
+if (!mediaControls) {
+  console.warn('media-controls not found');
+  return;
+}
+
+const logisticsShipper = document.querySelector('.logistics-shipper');
+if (!logisticsShipper) {
+  console.warn('logistics-shipper button not found');
+  return;
+}
+
   const handleUIState = (shouldHide) => {
     if (!gridContainer || !mediaControlBar) return; // Prevent null errors
 
