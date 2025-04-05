@@ -45,25 +45,10 @@ export function initLogisticsTheme() {
   checkpointsList.className = 'hidden';
   document.body.appendChild(checkpointsList);
 
-  let progressInterval;
   let player;
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
   document.body.prepend(playerContainer);
-
-  const cleanup = () => {
-    if (player) {
-      player.destroy();
-      player = null;
-    }
-    transportContainer.remove();
-    checkpointsList.remove();
-    playerContainer.remove();
-    clearInterval(progressInterval);
-    clearTimeout(inactivityTimer);
-    document.body.removeEventListener('mousemove', showControls);
-    document.body.removeEventListener('click', showControls);
-  };
 
   player = new YT.Player('logistics-player', {
     height: '100%',
