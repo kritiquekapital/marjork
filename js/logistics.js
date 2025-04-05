@@ -1,21 +1,24 @@
-let player;
-let checkpoints = [];
-let totalDurationInSeconds = 37 * 24 * 60 * 60; // 37 days in seconds
-let checkpointInterval = 8 * 60 * 60; // 8 hours in seconds
-let checkpointButton;
-
 export function initLogisticsTheme() {
-  if (!document.body.classList.contains('theme-logistics')) return null;
+  if (!document.body.classList.contains('theme-logistics')) return;
 
-  // Create transport controls with new buttons
+  const videoDurations = [/* your durations */];
+  const totalDuration = videoDurations.reduce((sum, duration) => sum + duration, 0);
+  const checkpointInterval = 4 * 60 * 60;
+  const checkpoints = [];
+
+  let currentTime = 0;
+  for (let i = 0; currentTime < totalDuration; i++) {
+    checkpoints.push({ name: `Checkpoint ${i + 1}`, time: currentTime });
+    currentTime += checkpointInterval;
+  }
+
+  // DOM setup
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
-  transportContainer.style.display = 'none';
 
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
-    <button data-action="unmute">🔇</button>
     <button data-action="-4h">-4h</button>
     <button data-action="-2h">-2h</button>
     <button data-action="-1h">-1h</button>
@@ -26,119 +29,27 @@ export function initLogisticsTheme() {
     <button data-action="+2h">+2h</button>
     <button data-action="+4h">+4h</button>
     <button data-action="list">📋</button>
+    <button data-action="unmute">🔇</button>
+    <div class="progress-container">
+      <progress class="progress-bar" max="${totalDuration}" value="0"></progress>
+    </div>
   `;
 
-  // Create shipper arrow
   const shipper = document.createElement('div');
   shipper.className = 'logistics-shipper';
-
   transportContainer.append(shipper, mediaControls);
   document.body.appendChild(transportContainer);
 
-  // Create the progress bar container
-  const progressContainer = document.createElement('div');
-  progressContainer.className = 'journey-progress';
-
-  // Progress Bar
-  const progressBar = document.createElement('progress');
-  progressBar.max = totalDurationInSeconds;  // Set the max value to the total duration of the playlist
-  progressBar.value = 0;  // Initially set the value to 0
-
-  progressContainer.appendChild(progressBar);
-  document.body.appendChild(progressContainer);
-
-  // Create the checkpoints list
   const checkpointsList = document.createElement('div');
   checkpointsList.id = 'checkpoints-list';
   checkpointsList.className = 'hidden';
   document.body.appendChild(checkpointsList);
 
-  checkpointButton = document.querySelector('[data-action="list"]');
-
-  // Generate checkpoints
-  for (let i = 0; i <= totalDurationInSeconds / checkpointInterval; i++) {
-    const checkpointTime = i * checkpointInterval;
-    const checkpoint = new Date(checkpointTime * 1000).toISOString().substr(11, 8); // Convert seconds to HH:mm:ss format
-    checkpoints.push({ name: `Checkpoint ${i + 1}`, time: checkpointTime });
-  }
-
-  // Populate the checkpoints list with clickable items
-  checkpoints.forEach((checkpoint, index) => {
-    const checkpointItem = document.createElement('div');
-    checkpointItem.className = 'checkpoint';
-    checkpointItem.textContent = checkpoint.name;
-    checkpointItem.dataset.index = index;
-    checkpointItem.addEventListener('click', () => {
-      player.seekTo(checkpoint.time, true);
-    });
-    checkpointsList.appendChild(checkpointItem);
-  });
-
-  // YouTube Player initialization
+  let player;
   const playerContainer = document.createElement('div');
   playerContainer.id = 'logistics-player';
   document.body.prepend(playerContainer);
 
-  // Control handlers
-  const handleControlClick = (action) => {
-    if (!player) return;
-
-    const seekTimes = {
-      '-4h': -14400,  // 4 hours in seconds
-      '-2h': -7200,   // 2 hours
-      '-1h': -3600,   // 1 hour
-      '-1m': -60,      // 1 minute
-      '+1m': 60,
-      '+1h': 3600,
-      '+2h': 7200,
-      '+4h': 14400
-    };
-
-    switch(action) {
-      case 'unmute':
-        if (player.isMuted()) {
-          player.unMute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔊';
-        } else {
-          player.mute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔇';
-        }
-        break;
-
-      case 'playpause':
-        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-          player.pauseVideo();
-        } else {
-          player.playVideo();
-        }
-        break;
-
-      case 'list':
-        // Toggle visibility of checkpoints list
-        if (checkpointsList.classList.contains('hidden')) {
-          checkpointsList.classList.remove('hidden');
-          checkpointsList.classList.add('show');
-        } else {
-          checkpointsList.classList.remove('show');
-          checkpointsList.classList.add('hidden');
-        }
-        break;
-
-      default:
-        if (seekTimes[action]) {
-          const newTime = player.getCurrentTime() + seekTimes[action];
-          player.seekTo(Math.max(0, newTime));
-        }
-    }
-  };
-
-  // Update progress bar based on video time
-  const updateProgressBar = () => {
-    const currentTime = player.getCurrentTime();
-    progressBar.value = currentTime;
-  };
-
-  // Initialize YouTube Player
   player = new YT.Player('logistics-player', {
     height: '100%',
     width: '100%',
@@ -153,36 +64,94 @@ export function initLogisticsTheme() {
     },
     events: {
       onReady: (event) => {
-        event.target.mute(); // Start muted
-        transportContainer.style.display = 'block';
+        event.target.mute();
+        transportContainer.style.display = 'flex';
         document.querySelector('[data-action="unmute"]').textContent = '🔇';
-      },
-      onStateChange: () => {
-        const playButton = document.querySelector('[data-action="playpause"]');
-        if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-          playButton.textContent = '⏸';
-        } else {
-          playButton.textContent = '▶';
-        }
       }
     }
   });
 
-  // Event listeners
-  mediaControls.addEventListener('click', (e) => {
-    const action = e.target.closest('button')?.dataset.action;
-    if (action) handleControlClick(action);
+  checkpoints.forEach((checkpoint, index) => {
+    const checkpointItem = document.createElement('div');
+    checkpointItem.className = 'checkpoint';
+    checkpointItem.textContent = checkpoint.name;
+    checkpointItem.dataset.index = index;
+    checkpointItem.addEventListener('click', () => {
+      player.seekTo(checkpoint.time, true);
+    });
+    checkpointsList.appendChild(checkpointItem);
   });
 
-  // Periodically update progress bar
-  setInterval(updateProgressBar, 1000);
-
-  // Cleanup function
-  return () => {
-    if (player) {
-      player.destroy();
-      player = null;
+  // Skip ad button
+  const skipAdButton = document.createElement('button');
+  skipAdButton.id = 'skip-ad-button';
+  skipAdButton.textContent = 'Skip Ad';
+  skipAdButton.addEventListener('click', () => {
+    if (player.getPlayerState() === YT.PlayerState.AD) {
+      player.stopVideo();
+      player.playVideo();
     }
+  });
+  mediaControls.appendChild(skipAdButton);
+
+  // Progress bar update
+  setInterval(() => {
+    if (!player) return;
+    document.querySelector('.progress-bar').value = player.getCurrentTime();
+  }, 1000);
+
+  // Inactivity controls
+  let inactivityTimer;
+  const showControls = () => {
+    transportContainer.classList.remove('hidden');
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      transportContainer.classList.add('hidden');
+    }, 5000);
+  };
+
+  document.body.addEventListener('mousemove', showControls);
+  document.body.addEventListener('click', showControls);
+
+  // Button control handling
+  const seekTimes = {
+    '-4h': -14400, '-2h': -7200, '-1h': -3600, '-1m': -60,
+    '+1m': 60, '+1h': 3600, '+2h': 7200, '+4h': 14400
+  };
+
+  mediaControls.addEventListener('click', (e) => {
+    const action = e.target.closest('button')?.dataset.action;
+    if (!action || !player) return;
+
+    switch (action) {
+      case 'unmute':
+        if (player.isMuted()) {
+          player.unMute();
+          e.target.textContent = '🔊';
+        } else {
+          player.mute();
+          e.target.textContent = '🔇';
+        }
+        break;
+      case 'playpause':
+        const state = player.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+        else player.playVideo();
+        break;
+      case 'list':
+        checkpointsList.classList.toggle('hidden');
+        break;
+      default:
+        if (seekTimes[action]) {
+          const newTime = player.getCurrentTime() + seekTimes[action];
+          player.seekTo(Math.max(0, newTime));
+        }
+    }
+  });
+
+  // Cleanup
+  return () => {
+    if (player) player.destroy();
     transportContainer.remove();
     playerContainer.remove();
   };
