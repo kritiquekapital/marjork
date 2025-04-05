@@ -1,94 +1,159 @@
-/* Media Controls Grid Layout */
-.media-controls {
-  display: grid;
-  grid-template-columns: 
-    [col1] 1fr [col2] 1fr [col3] 1fr [col4] 1fr 
-    [col5] 2fr [col6] 2fr [col7] 1fr [col8] 1fr 
-    [col9] 1fr [col10] 1fr;
-  grid-template-rows: auto auto;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
+/* Shipping Controls */
+#logistics-player {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* First Row - Time Controls */
-button[data-action="-4h"] { grid-column: col1 / col2; }
-button[data-action="-2h"] { grid-column: col2 / col3; }
-button[data-action="-1h"] { grid-column: col3 / col4; }
-button[data-action="-1m"] { grid-column: col4 / col5; }
-button[data-action="playpause"] { 
-  grid-column: col5 / col7; 
-  grid-row: 1;
-}
-button[data-action="+1m"] { grid-column: col7 / col8; }
-button[data-action="+1h"] { grid-column: col8 / col9; }
-button[data-action="+2h"] { grid-column: col9 / col10; }
-button[data-action="+4h"] { grid-column: col10 / end; }
-
-/* Second Row - Utility Controls */
-button[data-action="list"] {
-  grid-column: col1 / col3;
-  grid-row: 2;
-}
-
-button[data-action="unmute"] {
-  grid-column: col3 / col5;
-  grid-row: 2;
-}
-
-#skip-ad-button {
-  grid-column: col9 / end;
-  grid-row: 2;
-}
-
-.progress-container {
-  grid-column: col5 / col9;
-  grid-row: 2;
-  margin: 0 1rem;
-  display: flex;
-  align-items: center;
-}
-
-/* Progress Bar Adjustments */
-.progress-bar {
-  width: 100%;
-  margin: 0 0.5rem;
-  height: 8px;
-  border-radius: 4px;
-}
-
-/* Button Alignment */
-.media-controls button {
-  justify-self: center;
-  min-width: 60px;
-}
-
-button[data-action="playpause"] {
-  justify-self: stretch;
-  min-width: auto;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .media-controls {
-    grid-template-columns: repeat(8, 1fr);
-    padding: 1rem;
-  }
-  
-  button[data-action] {
-    font-size: 0.9rem;
-    padding: 0.6rem;
-  }
-  
-  .progress-container {
-    margin: 0 0.25rem;
-  }
-}
-
-/* Maintain Existing Transitions */
-.media-controls {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+.logistics-transport {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  width: min(90%, 800px);
 }
 
 .logistics-shipper {
+  cursor: pointer;
+  opacity: 0.4;
   transition: all 0.3s ease;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logistics-shipper::before {
+  content: '↑';
+  font-size: 2.5rem;
+  color: var(--accent-color, #fff);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.logistics-shipper:hover {
+  opacity: 0.8;
+  transform: translateX(-50%) scale(1.1);
+}
+
+/* Media Controls */
+.media-controls {
+  background: var(--grid-bg-color);
+  border-radius: 15px 15px 0 0;
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0.5rem;
+  transform: translateY(100%); /* Starts off-screen */
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Smooth upward exit */
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto; /* Center media controls */
+}
+
+.media-controls.visible {
+  transform: translateY(0); /* When visible */
+}
+
+.media-controls button {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.media-controls button:hover {
+  background: rgba(255,255,255,0.1);
+  transform: scale(1.05);
+}
+
+.media-controls button[data-action="playpause"] {
+  grid-column: span 2;
+  font-size: 1.2rem;
+}
+
+.media-controls button[data-action="list"] {
+  grid-column: span 2;
+  justify-self: end; /* Positioned to the far right */
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  appearance: none;
+}
+
+.progress-bar::-webkit-progress-bar {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar::-webkit-progress-value {
+  background-color: #4CAF50;
+}
+
+/* Checkpoints List */
+#checkpoints-list {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 250px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 2000;
+}
+
+#checkpoints-list.show {
+  display: block;
+}
+
+.checkpoint {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.checkpoint:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Arrow animation */
+.logistics-shipper {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  z-index: 2000;
+}
+
+/* Transition for grid/container visibility */
+.grid-container.shipped {
+  transform: translateY(calc(-100vh + 100px)); /* Grid slides up */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Matching transition speed */
+}
+
+.logistics-transport.shipped-off {
+  transform: translateY(100%); /* Moves off-screen */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.media-controls.visible-off {
+  transform: translateY(100%); /* Media controls exit upward */
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); /* Same exit speed */
 }
