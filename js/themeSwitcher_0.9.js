@@ -16,59 +16,69 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let cleanupLogistics = () => {};
-  let currentThemeIndex = 0;
 
-  const createBackground = () => {
+  const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
-    iframe.className = "space-background-stream";
+    iframe.classList.add(className);
     iframe.setAttribute("frameborder", "0");
     iframe.setAttribute("allow", "autoplay; encrypted-media");
-    iframe.setAttribute("src", "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("src", url);
     return iframe;
   };
 
-  const spaceBackground = createBackground();
+  const spaceBackground = createBackground(
+    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
+    "space-background-stream"
+  );
+
   document.body.prepend(spaceBackground);
 
+  let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
-  if (!themeButton) throw new Error("Theme button not found");
 
   function applyTheme() {
     cleanupLogistics();
-    const previousTheme = themes[currentThemeIndex].name;
-    const newTheme = themes[currentThemeIndex];
     
-    document.body.className = `theme-${newTheme.name}`;
-    themeButton.textContent = newTheme.displayName;
+    const currentTheme = themes[currentThemeIndex];
+    document.body.className = `theme-${currentTheme.name}`;
+    themeButton.textContent = currentTheme.displayName;
 
-    // Handle background visibility
-    spaceBackground.style.display = newTheme.name === "space" ? "block" : "none";
+    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
-    // Initialize theme-specific components
-    if (newTheme.name === "logistics") {
+    const logisticsPlayer = document.getElementById('logistics-player');
+    if (currentTheme.name === "logistics") {
+      if (logisticsPlayer) logisticsPlayer.style.display = "block";
       cleanupLogistics = initLogisticsTheme() || (() => {});
+    } else {
+      if (logisticsPlayer) logisticsPlayer.style.display = "none";
     }
-
-    // Update draggable mode
-    draggable.setZeroGravityMode(newTheme.name === "space");
+    
+    draggable.setZeroGravityMode(currentTheme.name === "space");
   }
 
-  // UI State Management
   let inactivityTimer;
+  const gridContainer = document.querySelector(".grid-container");
+  const mediaControlBar = document.querySelector(".media-controls");
+  const arrowButton = document.querySelector(".logistics-shipper");
+
+  if (!gridContainer) console.warn("grid-container not found");
+  if (!mediaControlBar) console.warn("media-controls not found");
+  if (!arrowButton) console.warn("logistics-shipper button not found");
+
   const handleUIState = (shouldHide) => {
-    if (!document.body.classList.contains("theme-logistics")) return;
+    if (!gridContainer || !mediaControlBar) return; // Prevent null errors
 
-    const gridContainer = document.querySelector(".grid-container");
-    const mediaControls = document.querySelector(".media-controls");
+    if (document.body.classList.contains("theme-space") || 
+       document.body.classList.contains("theme-logistics")) {
+      gridContainer.style.opacity = shouldHide ? "0" : "1";
+      gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
+      gridContainer.style.transition = "opacity 0.5s ease-in-out";
 
-    [gridContainer, mediaControls].forEach(element => {
-      if (!element) return;
-      element.style.opacity = shouldHide ? "0" : "1";
-      element.style.pointerEvents = shouldHide ? "none" : "auto";
-      if (element === mediaControls) {
-        element.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
-      }
-    });
+      mediaControlBar.style.opacity = shouldHide ? "0" : "1";
+      mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
+      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+    }
   };
 
   const resetInactivityTimer = () => {
@@ -77,29 +87,30 @@ document.addEventListener('DOMContentLoaded', () => {
     inactivityTimer = setTimeout(() => handleUIState(true), 7000);
   };
 
-  // Event Listeners
-  const handleThemeSwitch = () => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    applyTheme();
-  };
-
-  const handleShipperClick = (event) => {
-    if (event.target.closest('.logistics-shipper')) {
-      const gridContainer = document.querySelector(".grid-container");
-      const mediaControls = document.querySelector(".media-controls");
-      [gridContainer, mediaControls].forEach(element => {
-        if (element) element.classList.toggle("visible");
-      });
-    }
-  };
-
-  themeButton.addEventListener('click', handleThemeSwitch);
-  document.addEventListener('click', handleShipperClick);
   ['mousemove', 'keydown', 'click', 'touchstart'].forEach(event => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-  // Initial setup
-  applyTheme();
+document.addEventListener('click', (event) => {
+  if (event.target.closest('.logistics-shipper')) {
+    const gridContainer = document.querySelector(".grid-container");
+    const mediaControlBar = document.querySelector(".media-controls");
+    if (!gridContainer || !mediaControlBar) return;
+
+    gridContainer.classList.toggle("shipped");
+    mediaControlBar.classList.toggle("visible");
+  }
+});
+
+  themeButton.addEventListener("click", () => {
+    themeButton.style.animation = "spin 0.5s ease-in-out";
+    setTimeout(() => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      applyTheme();
+      themeButton.style.animation = "";
+    }, 500);
+  });
+
   resetInactivityTimer();
+  applyTheme();
 });
