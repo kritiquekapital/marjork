@@ -128,13 +128,16 @@ body.theme-nature .grid-container {
 }
 
 .theme-retro .grid-container button:not(.kiss-button) {
-  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
-  background-size: 400% 400%;
-  animation: retroPulse 0.25s infinite, rainbow 5s ease infinite;
-  filter: contrast(1.2) brightness(1.1);
-  box-shadow: 0 0 20px #00ffcc, 0 0 30px #ff00ff;
+  background-color: #000;
+  color: #ff00ff;
   border: 2px solid #00ffcc;
-  color: #000;
+  box-shadow:
+    0 0 10px #ff00ff,
+    0 0 20px #00ffcc,
+    0 0 30px #ffcc00,
+    0 0 40px rgba(255, 0, 255, 0.4);
+  filter: contrast(1.2) brightness(1.1);
+  animation: retroPulse 0.25s infinite;
 }
 
 body.theme-retro .grid-backdrop {
@@ -216,11 +219,11 @@ body.theme-retro .grid-backdrop {
 .theme-retro .propaganda,
 .theme-retro .statsfm,
 .theme-retro .twitter {
-  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
-  background-size: 400% 400%;
-  animation: retroPulse 0.25s infinite, rainbow 5s ease infinite;
-  box-shadow: 0 0 20px #00ffcc, 0 0 30px #ff00ff;
-  border: 2px solid #00ffcc;
+  box-shadow:
+    0 0 10px #ff00ff,
+    0 0 20px #00ffcc,
+    0 0 30px #ffcc00;
+  animation: retroPulse 0.25s infinite;
   filter: contrast(1.2) brightness(1.1);
 }
 
