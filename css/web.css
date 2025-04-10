@@ -128,11 +128,13 @@ body.theme-nature .grid-container {
 }
 
 .theme-retro .grid-container button:not(.kiss-button) {
-  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
-  background-size: 8px 8px;
-  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
+  background-size: 400% 400%;
+  animation: retroPulse 0.25s infinite, rainbow 5s ease infinite;
   filter: contrast(1.2) brightness(1.1);
-  box-shadow: 0 0 10px #ff00ff;
+  box-shadow: 0 0 20px #00ffcc, 0 0 30px #ff00ff;
+  border: 2px solid #00ffcc;
+  color: #000;
 }
 
 body.theme-retro .grid-backdrop {
