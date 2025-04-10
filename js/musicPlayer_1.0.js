@@ -1,5 +1,4 @@
 import { Draggable } from './draggable.js';
-import { Bounceable } from './bounceable.js';
 
 // Create overlay
 const overlay = document.createElement('div');
