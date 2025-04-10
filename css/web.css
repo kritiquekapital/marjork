@@ -216,9 +216,12 @@ body.theme-retro .grid-backdrop {
 .theme-retro .propaganda,
 .theme-retro .statsfm,
 .theme-retro .twitter {
-  animation: retroPulse 0.25s infinite;
-  filter: contrast(1.3) brightness(1.2);
-  box-shadow: 0 0 12px #ff00ff;
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
+  background-size: 400% 400%;
+  animation: retroPulse 0.25s infinite, rainbow 5s ease infinite;
+  box-shadow: 0 0 20px #00ffcc, 0 0 30px #ff00ff;
+  border: 2px solid #00ffcc;
+  filter: contrast(1.2) brightness(1.1);
 }
 
 /* Space Theme */
