@@ -1,0 +1,41 @@
+/* ==================== */
+/* Base Styles */
+/* ==================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body {
+  background: linear-gradient(to right, #2b3a3e, #3f5b5d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: white;
+}
+
+/* ==================== */
+/* Selection Control */
+/* ==================== */
+.allow-select {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* ==================== */
+/* Root Variables */
+/* ==================== */
+:root {
+  --grid-bg-color: rgba(43, 58, 62, 0.8);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --accent-color: #fff;
+}

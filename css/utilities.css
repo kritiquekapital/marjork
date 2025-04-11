@@ -1,0 +1,114 @@
+/* ==================== */
+/* Animation Library */
+/* ==================== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pixelate {
+  0% { filter: blur(0); }
+  50% { filter: blur(2px); }
+  100% { filter: blur(0); }
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes flashEffect {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+
+@keyframes boomBoxPulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+/* ==================== */
+/* Transition Helpers */
+/* ==================== */
+.smooth-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fast-transition {
+  transition: all 0.2s ease-out;
+}
+
+.theme-transition {
+  transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+/* ==================== */
+/* Visibility Utilities */
+/* ==================== */
+.invisible-but-present {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.force-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* ==================== */
+/* Z-index Layers */
+/* ==================== */
+.z-modal {
+  z-index: 9999;
+}
+
+.z-overlay {
+  z-index: 9998;
+}
+
+.z-above-content {
+  z-index: 1000;
+}
+
+/* ==================== */
+/* Shadow Utilities */
+/* ==================== */
+.neon-glow {
+  box-shadow: 0 0 15px var(--accent-color);
+}
+
+.deep-shadow {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== */
+/* Blur Effects */
+/* ==================== */
+.backdrop-blur {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ==================== */
+/* Special Effects */
+/* ==================== */
+.scanlines::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.1) 2px,
+    rgba(255, 255, 255, 0.1) 4px
+  );
+}
