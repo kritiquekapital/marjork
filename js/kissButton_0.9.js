@@ -6,7 +6,7 @@ const messages = [
   "я тебя люблю!",
   "☀️ solnyshko ☀️",
   "Horse Balls!",
-  "красивый!",
+  "красивая!",
 ];
 
 if (kissButton) {
