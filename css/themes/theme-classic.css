@@ -1,0 +1,17 @@
+/* ==================== */
+/* Classic Theme */
+/* ==================== */
+body.theme-classic {
+  background-color: #f4f4f4;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+body.theme-classic .grid-backdrop {
+  background: rgba(43, 58, 62, 0.8);
+}
+
+body.theme-classic .grid-container {
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}

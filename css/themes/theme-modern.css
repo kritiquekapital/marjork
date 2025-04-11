@@ -1,0 +1,15 @@
+/* ==================== */
+/* Modern Theme */
+/* ==================== */
+body.theme-modern {
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #533483);
+}
+
+body.theme-modern .grid-backdrop {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+body.theme-modern .grid-container {
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,32 @@
+/* ==================== */
+/* Retro Theme */
+/* ==================== */
+body.theme-retro {
+  background-color: #000000;
+  color: #ff00ff;
+  font-family: "Press Start 2P", cursive;
+}
+
+body.theme-retro .grid-backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+body.theme-retro button {
+  background-color: #ffcc00;
+  color: #000000;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 10px #ff00ff;
+  font-family: "Press Start 2P", cursive;
+}
+
+body.theme-retro::before {
+  content: "";
+  position: fixed;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.1) 2px,
+    rgba(255, 255, 255, 0.1) 4px
+  );
+}

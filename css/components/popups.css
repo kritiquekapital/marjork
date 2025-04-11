@@ -1,0 +1,196 @@
+/* ==================== */
+/* Popup Core Styles */
+/* ==================== */
+.-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 9998;
+  display: none;
+}
+
+.draggable {
+  position: fixed;
+  cursor: move;
+  user-select: none;
+  z-index: 10000;
+}
+
+/* ==================== */
+/* Music Player Popup */
+/* ==================== */
+#musicPlayer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  display: none;
+}
+
+.drag-handle {
+  height: 30px;
+  width: 100%;
+  background: #333;
+  cursor: move;
+  border-radius: 5px 5px 0 0;
+}
+
+/* ==================== */
+/* Vinyl Player Styles */
+/* ==================== */
+.vinyl-link {
+  text-decoration: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.vinyl {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #333, #555);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.record {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #000 60%, #111 85%, #000 100%);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.record .center-hole {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: black;
+    border-radius: 10%;
+    z-index: 3;
+}
+
+  .record .center-hole::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, #000 0%, #111 100%);
+    border-radius: 50%;
+    top: -9px;
+    left: -9px;
+    z-index: 2;
+}
+
+  .grooves {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: repeating-conic-gradient(black 0deg 45deg, transparent 45deg 90deg, black 90deg 135deg);
+    opacity: 0.6;
+}
+
+/* ==================== */
+/* Video Popups */
+/* ==================== */
+.video-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  max-width: 1200px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  z-index: 999;
+}
+
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ==================== */
+/* iPod-Style Modal */
+/* ==================== */
+.ipod-popup {
+  position: fixed;
+  width: 320px;
+  background: #f0f0f0;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  z-index: 10000;
+}
+
+.ipod-screen {
+  background: #000;
+  border-radius: 5px;
+  height: 180px;
+  margin-bottom: 15px;
+}
+
+.click-wheel {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #e0e0e0;
+}
+
+.shuffle-btn {
+    position: absolute;
+    top: 10px;
+    background-color: #505050;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+  
+  .shuffle-btn:hover .shuffle-icon {
+    color: #00ccff;
+}
+  
+  .shuffle-btn:active .shuffle-icon {
+    color: #ffcc00;
+    background-color: #00ccff;
+    box-shadow: 0 0 10px #00ccff;
+}
+
+/* ==================== */
+/* Popup States & Transitions */
+/* ==================== */
+#musicPlayer.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.video-popup.show {
+  display: block;
+}
+
+.video-container.visible {
+  display: flex;
+}
+
+/* ==================== */
+/* Theme Adaptations */
+/* ==================== */
+body.theme-retro .ipod-popup {
+  background: #383838;
+  color: #00ffcc;
+}
+
+body.theme-retro .click-wheel {
+  background: #505050;
+}

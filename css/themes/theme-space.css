@@ -1,0 +1,26 @@
+/* ==================== */
+/* Space Theme */
+/* ==================== */
+body.theme-space {
+  position: relative;
+  background: transparent;
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+}
+
+body.theme-space .grid-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+body.theme-space button {
+  background-color: #ffd700;
+  color: #0b3d91;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+.space-tint {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+}
