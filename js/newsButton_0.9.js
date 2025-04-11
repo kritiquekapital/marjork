@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const newsLinks = [
+    "https://www.slideshare.net/slideshow/the-frames-of-a-nation-3-stills-from-3-movies-pptx-fc4f/277799242#2",
     "https://open.substack.com/pub/dropsitenews/p/gaza-children-israel-sniper-shoot-jazeera?r=jonc4&utm_medium=ios",
     "https://www.documentcloud.org/documents/25592020-letter-from-a-palestinian-political-prisoner-in-louisiana-march-18-2025/",
     "https://www.diagonalthoughts.com/?p=1728",
