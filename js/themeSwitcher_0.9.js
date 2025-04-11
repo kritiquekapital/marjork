@@ -37,12 +37,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
+  // Cleanup previous theme
+  document.querySelectorAll('[data-theme]').forEach(link => link.remove());
+
   function applyTheme() {
     cleanupLogistics();
-    
+    document.querySelectorAll('[data-theme]').forEach(link => link.remove());
+
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
+    themeLink.dataset.theme = true;
+  
+    const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
+    document.head.insertBefore(themeLink, responsiveLink);
+
     const currentTheme = themes[currentThemeIndex];
     document.body.className = `theme-${currentTheme.name}`;
-    themeButton.textContent = currentTheme.displayName;
+   themeButton.textContent = currentTheme.displayName;
 
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
