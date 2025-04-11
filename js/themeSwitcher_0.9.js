@@ -37,13 +37,29 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
+  // Cleanup previous theme
+  document.querySelectorAll('[data-theme]').forEach(link => link.remove());
+
   function applyTheme() {
+    // 1. FIRST: Cleanup previous theme CSS
     cleanupLogistics();
-    
+    document.querySelectorAll('[data-theme]').forEach(link => link.remove());
+
+    // 2. THEN: Load new theme CSS
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
+    themeLink.dataset.theme = true;
+  
+    // Insert before responsive.css
+    const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
+    document.head.insertBefore(themeLink, responsiveLink);
+
+    // 3. AFTER CSS LOAD: Apply remaining theme changes
     const currentTheme = themes[currentThemeIndex];
     document.body.className = `theme-${currentTheme.name}`;
-    themeButton.textContent = currentTheme.displayName;
-
+   themeButton.textContent = currentTheme.displayName;
+  
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
     const logisticsPlayer = document.getElementById('logistics-player');
