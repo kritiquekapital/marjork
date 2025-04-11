@@ -1,5 +1,5 @@
 /* ==================== */
-/* Base Styles */
+/* Global Reset & Base Styles */
 /* ==================== */
 * {
   margin: 0;
@@ -12,6 +12,9 @@
   user-select: none;
 }
 
+/* ==================== */
+/* Body & Root Styles */
+/* ==================== */
 body {
   background: linear-gradient(to right, #2b3a3e, #3f5b5d);
   display: flex;
@@ -19,6 +22,8 @@ body {
   align-items: center;
   min-height: 100vh;
   color: white;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* ==================== */
@@ -32,10 +37,31 @@ body {
 }
 
 /* ==================== */
-/* Root Variables */
+/* CSS Variables */
 /* ==================== */
 :root {
   --grid-bg-color: rgba(43, 58, 62, 0.8);
   --border-color: rgba(255, 255, 255, 0.1);
-  --accent-color: #fff;
+  --accent-color: #ffffff;
+  --text-primary: white;
+  --text-secondary: #cccccc;
+}
+
+/* ==================== */
+/* Core Element Styles */
+/* ==================== */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
