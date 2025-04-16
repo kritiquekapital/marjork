@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
-  natureVideo.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/pic/book_mill_lapse.mp4";
+  natureVideo.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/css/pic/book_mill_lapse.mp4";
   natureVideo.autoplay = true;
   natureVideo.loop = true;
   natureVideo.muted = true; // optional: set to false if you want natural sound only from here
   natureVideo.playsInline = true;
 
   const natureAudio = document.createElement("audio");
-  natureAudio.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/css/pic/book_mill_flow";
+  natureAudio.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/css/pic/book_mill_flow.m4a";
   natureAudio.loop = true;
   natureAudio.volume = 0.4; // optional, tweak volume
 
