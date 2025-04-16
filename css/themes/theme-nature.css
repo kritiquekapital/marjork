@@ -57,7 +57,7 @@ body.theme-nature .grid-container {
 .nature-speed-slider {
   position: fixed;
   top: 30%;
-  left: calc(25% + 140px); /* right of volume slider */
+  left: calc(25% + 40px); /* right of volume slider */
   width: 120px;
   opacity: 0.7;
   z-index: 1000;
