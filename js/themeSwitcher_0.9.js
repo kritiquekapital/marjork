@@ -55,9 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   volumeSlider.addEventListener("input", () => {
     natureAudio.volume = volumeSlider.value;
+
+  const speedSlider = document.createElement("input");
+  speedSlider.type = "range";
+  speedSlider.min = "0.25";
+  speedSlider.max = "2.0";
+  speedSlider.step = "0.05";
+  speedSlider.value = "1.0";
+  speedSlider.classList.add("nature-speed-slider");
+
+  speedSlider.addEventListener("input", () => {
+    natureVideo.playbackRate = speedSlider.value;
   });
 
   document.body.appendChild(volumeSlider);
+  document.body.appendChild(speedSlider);
   document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
@@ -92,7 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
       natureVideo.style.display = "none";
       natureAudio.pause();
     }
-    
+   
+    speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
