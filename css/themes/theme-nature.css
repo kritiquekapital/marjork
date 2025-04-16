@@ -1,13 +1,6 @@
 /* ==================== */
 /* Nature Theme */
 /* ==================== */
-body.theme-nature {
-  background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_01/roll_01_01.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 body.theme-nature .grid-backdrop {
   background: rgba(128, 128, 128, 0.05);
 }
