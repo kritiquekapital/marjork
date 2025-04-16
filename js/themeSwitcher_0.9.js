@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   volumeSlider.addEventListener("input", () => {
     natureAudio.volume = volumeSlider.value;
+  });
 
   const speedSlider = document.createElement("input");
   speedSlider.type = "range";
@@ -73,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
-
 
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
