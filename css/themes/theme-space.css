@@ -1,26 +1,67 @@
 /* ==================== */
 /* Space Theme */
 /* ==================== */
-body.theme-space {
-  position: relative;
+.theme-space {
+  position: relative; /* Required for z-index context */
   background: transparent;
   color: #ffffff;
   font-family: "Orbitron", sans-serif;
 }
 
-body.theme-space .grid-backdrop {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
+/* Target the iframe created by JS */
+.space-background-stream {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  object-fit: cover;
+  display: none; /* JS will control visibility */
 }
 
-body.theme-space button {
+/* Space Theme Grid Container */
+body.theme-space .grid-backdrop {
+  background: rgba(0, 0, 0, 0.6); /* Space-appropriate darkness */
+  backdrop-filter: blur(8px); /* Deeper blur for space theme */
+  z-index: -1;
+}
+
+/* Theme-specific adjustments */
+.theme-space button {
   background-color: #ffd700;
   color: #0b3d91;
   border: 1px solid #ffffff;
   box-shadow: 0 0 10px #ffd700;
 }
 
+/* Space Theme Inactivity Tint */
 .space-tint {
   position: fixed;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Persistent dark tint */
+  z-index: 0; /* Keep it behind everything */
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none; /* Ensure it does not block clicks */
+}
+
+.theme-space .space-tint.hidden {
+  opacity: 0; /* Make sure tint fades out if switching themes */
+}
+
+.theme-space .-button {
+  background-color: #6a0dad;
+  color: #ffffff;
+  border: 1px solid #ffd700;
+}
+
+body.theme-retro .grid-container,
+body.theme-space .grid-container {
+  z-index: 0;
+  position: relative;
 }
