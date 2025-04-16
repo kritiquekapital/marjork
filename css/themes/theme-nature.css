@@ -21,3 +21,36 @@ body.theme-nature .grid-container {
   object-fit: cover;
   display: none; /* JS will toggle this */
 }
+
+.nature-volume-slider {
+  position: fixed;
+  top: 5%;
+  left: 3%;
+  transform: rotate(-90deg); /* feel free to rotate based on placement */
+  width: 100px;
+  opacity: 0.6;
+  z-index: 5;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  height: 6px;
+}
+
+.nature-volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.nature-volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
