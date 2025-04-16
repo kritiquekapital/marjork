@@ -24,8 +24,8 @@ body.theme-nature .grid-container {
 
 .nature-volume-slider {
   position: fixed;
-  top: 20%;
-  left: 2%;
+  top: 25%;
+  left: 10%;
   width: 120px;
   opacity: 0.7;
   z-index: 1000;
