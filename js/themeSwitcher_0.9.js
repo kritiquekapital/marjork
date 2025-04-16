@@ -32,7 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
     "space-background-stream"
   );
 
+  const natureVideo = document.createElement("video");
+  natureVideo.classList.add("nature-background-video");
+  natureVideo.src = "/media/nature-video.mp4";
+  natureVideo.autoplay = true;
+  natureVideo.loop = true;
+  natureVideo.muted = true; // optional: set to false if you want natural sound only from here
+  natureVideo.playsInline = true;
+
+  const natureAudio = document.createElement("audio");
+  natureAudio.src = "/media/nature-sound.mp3";
+  natureAudio.loop = true;
+  natureAudio.volume = 0.4; // optional, tweak volume
+
   document.body.prepend(spaceBackground);
+  document.body.prepend(natureVideo);
+  document.body.appendChild(natureAudio);
+
 
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
@@ -56,6 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.className = `theme-${currentTheme.name}`;
    themeButton.textContent = currentTheme.displayName;
 
+    if (currentTheme.name === "nature") {
+      natureVideo.style.display = "block";
+      natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
+    } else {
+      natureVideo.style.display = "none";
+      natureAudio.pause();
+    }
+    
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
     const logisticsPlayer = document.getElementById('logistics-player');
