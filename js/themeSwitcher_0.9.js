@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
-  natureVideo.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/book_mill_lapse.mp4";
+  natureVideo.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/book_mill_lapse_x07.mp4";
   natureVideo.autoplay = true;
   natureVideo.loop = true;
   natureVideo.muted = true; // optional: set to false if you want natural sound only from here
