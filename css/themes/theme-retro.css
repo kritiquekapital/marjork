@@ -1,32 +1,85 @@
 /* ==================== */
 /* Retro Theme */
 /* ==================== */
-body.theme-retro {
-  background-color: #000000;
-  color: #ff00ff;
-  font-family: "Press Start 2P", cursive;
+.theme-retro {
+  background-color: #000000; /* Black background */
+  color: #ff00ff; /* Neon pink text */
+  font-family: "Press Start 2P", cursive; /* Retro pixel font */
+}
+
+.theme-retro .grid-container button {
+  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
+  background-size: 8px 8px;
+  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
 }
 
 body.theme-retro .grid-backdrop {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  backdrop-filter: blur(5px); /* Retro blur effect */
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-body.theme-retro button {
-  background-color: #ffcc00;
-  color: #000000;
-  border: 2px solid #00ffcc;
-  box-shadow: 0 0 10px #ff00ff;
+/* Buttons */
+.theme-retro button {
+  background-color: #ffcc00; /* Bright yellow */
+  color: #000000; /* Black text */
+  border: 2px solid #00ffcc; /* Neon teal */
+  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
   font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
 }
 
-body.theme-retro::before {
+/*  Button */
+.theme-retro .-button {
+  background-color: #00ffcc; /* Neon teal */
+  color: #ff00ff; /* Neon pink */
+  border: 2px solid #ffcc00; /* Bright yellow */
+  box-shadow: 0 0 15px #ff00ff; /* Glow effect */
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
+}
+
+/* Scanline Effect */
+.theme-retro::before {
   content: "";
   position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: repeating-linear-gradient(
     transparent,
     transparent 2px,
     rgba(255, 255, 255, 0.1) 2px,
     rgba(255, 255, 255, 0.1) 4px
   );
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes pixelate {
+  0% {
+    filter: blur(0);
+  }
+  50% {
+    filter: blur(2px);
+  }
+  100% {
+    filter: blur(0);
+  }
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.theme-retro button:hover {
+  animation: pixelate 0.5s ease-in-out;
 }
