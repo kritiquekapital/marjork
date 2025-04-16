@@ -45,6 +45,19 @@ document.addEventListener('DOMContentLoaded', () => {
   natureAudio.loop = true;
   natureAudio.volume = 0.4; // optional, tweak volume
 
+  const volumeSlider = document.createElement("input");
+  volumeSlider.type = "range";
+  volumeSlider.min = "0";
+  volumeSlider.max = "1";
+  volumeSlider.step = "0.01";
+  volumeSlider.value = natureAudio.volume;
+  volumeSlider.classList.add("nature-volume-slider");
+
+  volumeSlider.addEventListener("input", () => {
+    natureAudio.volume = volumeSlider.value;
+  });
+
+  document.body.appendChild(volumeSlider);
   document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
@@ -80,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       natureAudio.pause();
     }
     
+    volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
     const logisticsPlayer = document.getElementById('logistics-player');
