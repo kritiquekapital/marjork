@@ -18,14 +18,14 @@ body.theme-nature .grid-container {
   height: 100%;
   z-index: -1;
   pointer-events: none;
-  object-fit: cover;
+  object-fit: fill;
   display: none;
 }
 
 .nature-volume-slider {
   position: fixed;
-  top: 30%; /* lower it */
-  left: 5%; /* move it to the far left */
+  top: 32%; /* lower it */
+  left: 15%; /* move it to the far left */
   width: 120px;
   opacity: 0.7;
   z-index: 1000;
@@ -37,8 +37,8 @@ body.theme-nature .grid-container {
 
 .nature-volume-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
@@ -46,8 +46,8 @@ body.theme-nature .grid-container {
 }
 
 .nature-volume-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 15x;
+  height: 15px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
@@ -56,8 +56,8 @@ body.theme-nature .grid-container {
 
 .nature-speed-slider {
   position: fixed;
-  top: 30%; /* match volume slider */
-  left: calc(5% + 140px); /* 120px slider + 20px gap */
+  top: 32%; /* match volume slider */
+  left: calc(15% - 140px); /* 120px slider + 20px gap */
   width: 120px;
   opacity: 0.7;
   z-index: 1000;
@@ -69,8 +69,8 @@ body.theme-nature .grid-container {
 
 .nature-speed-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
@@ -78,8 +78,8 @@ body.theme-nature .grid-container {
 }
 
 .nature-speed-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   background: white;
   border-radius: 50%;
   cursor: pointer;
