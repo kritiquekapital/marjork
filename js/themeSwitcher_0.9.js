@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   natureVideo.playsInline = true;
 
   const natureAudio = document.createElement("audio");
-  natureAudio.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/book_mill_flow.m4a";
+  natureAudio.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/book_mill_flow.mp3";
   natureAudio.loop = true;
   natureAudio.volume = 0.4; // optional, tweak volume
 
