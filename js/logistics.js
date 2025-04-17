@@ -41,8 +41,8 @@ export function initLogisticsTheme() {
     const volumeSlider = document.createElement("input");
     volumeSlider.type = "range";
     volumeSlider.min = "0";
-    volumeSlider.max = "4";
-    volumeSlider.step = "0.04";
+    volumeSlider.max = "1";
+    volumeSlider.step = "0.01";
     volumeSlider.value = "0.5";
     volumeSlider.classList.add("logistics-volume-slider");
     volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
@@ -60,9 +60,9 @@ export function initLogisticsTheme() {
   // Append a speed slider to the end of the controls
   const speedSlider = document.createElement("input");
   speedSlider.type = "range";
-  speedSlider.min = "0.25";
-  speedSlider.max = "2.0";
-  speedSlider.step = "0.05";
+  speedSlider.min = "1.0";
+  speedSlider.max = "4.0";
+  speedSlider.step = "0.25";
   speedSlider.value = "1.0";
   speedSlider.classList.add("logistics-speed-slider");
   volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
