@@ -1,3 +1,4 @@
+
 /* ==================== */
 /* Retro Theme */
 /* ==================== */
@@ -7,15 +8,10 @@
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
-.theme-retro .grid-container button:not(.kiss-button) {
-  background: none;
-  color: #ff00ff;
-  border: 2px solid #00ffcc;
-  box-shadow: 0 0 10px #ff00ff;
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
+.theme-retro .grid-container button {
+  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
+  background-size: 8px 8px;
   animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
-  padding: 0.5em 1em; /* keeps sizing compact */
 }
 
 body.theme-retro .grid-backdrop {
@@ -47,17 +43,6 @@ body.theme-retro .grid-backdrop {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
   background-size: 400% 400%;
   animation: rainbow 5s ease infinite;
-}
-
-.theme-retro .theme-button {
-  display: inline-block;
-  width: auto;
-  padding: 0.25em 0.5em;
-  background: none;
-  color: #ff00ff;
-  border: 2px solid #00ffcc;
-  box-shadow: 0 0 10px #ff00ff;
-  font-family: "Press Start 2P", cursive;
 }
 
 /* Scanline Effect */
