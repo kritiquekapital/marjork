@@ -14,3 +14,27 @@
 .theme-logistics .grid-container {
   transition: opacity 0.5s ease-in-out;
 }
+.logistics-volume-slider,
+.logistics-speed-slider {
+  width: 100px;
+  height: 6px;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  opacity: 0.8;
+  z-index: 1000;
+  align-self: center;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.logistics-volume-slider::-webkit-slider-thumb,
+.logistics-speed-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
