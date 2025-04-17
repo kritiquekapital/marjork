@@ -10,7 +10,7 @@ export class Bounceable {
         this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
         Bounceable.instances.push(this);
-        
+
         this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
         this.element.style.position = 'absolute';
         this.element.addEventListener('click', this.handleClick.bind(this));
@@ -46,64 +46,65 @@ export class Bounceable {
     }
 
     applyBouncePhysics() {
-    if (!this.isFree) return;
+        if (!this.isFree) return;
 
-    Bounceable.instances.forEach(other => {
-        if (other !== this && this.isColliding(other)) {
-            this.resolveCollision(other);
-        }
-    });
+        Bounceable.instances.forEach(other => {
+            if (other !== this && this.isColliding(other)) {
+                this.resolveCollision(other);
+            }
+        });
+
+        let lastFrameTime = 0;
 
         const animate = (time) => {
-        if (time - lastFrameTime < 1000 / 15) { // 15 FPS cap
-            let lastFrameTime = 0;
-            requestAnimationFrame(animate);
-            return;
-        }
-        lastFrameTime = time;
+            if (time - lastFrameTime < 1000 / 15) { // 15 FPS cap
+                requestAnimationFrame(animate);
+                return;
+            }
+            lastFrameTime = time;
 
-        this.velocity.x *= this.friction;
-        this.velocity.y *= this.friction;
+            this.velocity.x *= this.friction;
+            this.velocity.y *= this.friction;
 
-        let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-        let newTop = parseFloat(this.element.style.top) + this.velocity.y;
-    
-        const maxX = window.innerWidth - this.element.offsetWidth;
-        const maxY = window.innerHeight - this.element.offsetHeight;
-    
-        if (newLeft < 0) {
-            newLeft = 0;
-            this.velocity.x *= -0.9;
-        }
-        if (newLeft > maxX) {
-            newLeft = maxX;
-            this.velocity.x *= -0.9;
-        }
-        if (newTop < 0) {
-            newTop = 0;
-            this.velocity.y *= -0.9;
-        }
-        if (newTop > maxY) {
-            newTop = maxY;
-            this.velocity.y *= -0.9;
-        }
+            let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+            let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-        if (document.body.classList.contains('theme-retro')) {
-            newLeft = Math.round(newLeft / 4) * 4;
-            newTop = Math.round(newTop / 4) * 4;
-            Bounceable.createTrailDot(this.element);
-        }
+            const maxX = window.innerWidth - this.element.offsetWidth;
+            const maxY = window.innerHeight - this.element.offsetHeight;
 
-        this.element.style.left = `${newLeft}px`;
-        this.element.style.top = `${newTop}px`;
+            if (newLeft < 0) {
+                newLeft = 0;
+                this.velocity.x *= -0.9;
+            }
+            if (newLeft > maxX) {
+                newLeft = maxX;
+                this.velocity.x *= -0.9;
+            }
+            if (newTop < 0) {
+                newTop = 0;
+                this.velocity.y *= -0.9;
+            }
+            if (newTop > maxY) {
+                newTop = maxY;
+                this.velocity.y *= -0.9;
+            }
 
-        if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
-            requestAnimationFrame(animate);
-        }
-    };
+            if (document.body.classList.contains('theme-retro')) {
+                newLeft = Math.round(newLeft / 4) * 4;
+                newTop = Math.round(newTop / 4) * 4;
+                Bounceable.createTrailDot(this.element);
+            }
 
-    requestAnimationFrame(animate);
-}
+            this.element.style.left = `${newLeft}px`;
+            this.element.style.top = `${newTop}px`;
+
+            if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        requestAnimationFrame(animate);
+    }
 
     static createTrailDot(sourceEl) {
         if (!Bounceable.trailLayer) {
@@ -132,7 +133,6 @@ export class Bounceable {
         }, 500);
     }
 
-
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
         const rect2 = other.element.getBoundingClientRect();
@@ -145,7 +145,7 @@ export class Bounceable {
     resolveCollision(other) {
         const rect1 = this.element.getBoundingClientRect();
         const rect2 = other.element.getBoundingClientRect();
-        
+
         const dx = (rect1.left + rect1.width / 2) - (rect2.left + rect2.width / 2);
         const dy = (rect1.top + rect1.height / 2) - (rect2.top + rect2.height / 2);
         const distance = Math.sqrt(dx * dx + dy * dy);
