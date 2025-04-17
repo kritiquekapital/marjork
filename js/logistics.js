@@ -11,6 +11,10 @@ export function initLogisticsTheme() {
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
   transportContainer.style.display = 'none';
+  setTimeout(() => {
+    shipper.classList.add("visible");
+  }, 200); 
+
 
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
