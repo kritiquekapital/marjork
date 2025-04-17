@@ -8,14 +8,14 @@
 }
 
 .theme-retro .grid-container button:not(.kiss-button) {
-  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
-  background-size: 8px 8px;
-  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
-  color: #000000;
+  background: none;
+  color: #ff00ff;
   border: 2px solid #00ffcc;
   box-shadow: 0 0 10px #ff00ff;
   font-family: "Press Start 2P", cursive;
   text-transform: uppercase;
+  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
+  padding: 0.5em 1em; /* keeps sizing compact */
 }
 
 body.theme-retro .grid-backdrop {
@@ -29,13 +29,13 @@ body.theme-retro .grid-backdrop {
 }
 
 /* Buttons */
-.theme-retro .theme-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  font-size: 1.2em;
-  padding: 0.2em 0.4em;
+.theme-retro button {
+  background-color: #ffcc00; /* Bright yellow */
+  color: #000000; /* Black text */
+  border: 2px solid #00ffcc; /* Neon teal */
+  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
 }
 
 /*  Button */
