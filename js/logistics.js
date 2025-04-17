@@ -45,7 +45,7 @@ export function initLogisticsTheme() {
     volumeSlider.step = "0.01";
     volumeSlider.value = "0.5";
     volumeSlider.classList.add("logistics-volume-slider");
-    volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
+    volumeSlider.style.gridColumn = "3"; // between list and progress bar
     volumeSlider.style.alignSelf = "center";
 
     volumeSlider.addEventListener("input", () => {
@@ -65,7 +65,7 @@ export function initLogisticsTheme() {
   speedSlider.step = "0.25";
   speedSlider.value = "1.0";
   speedSlider.classList.add("logistics-speed-slider");
-  volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
+  volumeSlider.style.gridColumn = "10"; // between list and progress bar
   volumeSlider.style.alignSelf = "center";
 
   speedSlider.addEventListener("input", () => {
