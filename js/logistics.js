@@ -31,6 +31,42 @@ export function initLogisticsTheme() {
     </div>
   `;
 
+  const muteButton = mediaControls.querySelector('[data-action="unmute"]');
+  if (muteButton) {
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.min = "0";
+    volumeSlider.max = "1";
+    volumeSlider.step = "0.01";
+    volumeSlider.value = "0.5";
+    volumeSlider.classList.add("logistics-volume-slider");
+
+    volumeSlider.addEventListener("input", () => {
+      if (player && player.setVolume) {
+        player.setVolume(volumeSlider.value * 100);
+      }
+    });
+
+    muteButton.replaceWith(volumeSlider);
+  }
+
+  // Append a speed slider to the end of the controls
+  const speedSlider = document.createElement("input");
+  speedSlider.type = "range";
+  speedSlider.min = "0.25";
+  speedSlider.max = "2.0";
+  speedSlider.step = "0.05";
+  speedSlider.value = "1.0";
+  speedSlider.classList.add("logistics-speed-slider");
+
+  speedSlider.addEventListener("input", () => {
+    if (player && player.setPlaybackRate) {
+      player.setPlaybackRate(parseFloat(speedSlider.value));
+    }
+  });
+
+  mediaControls.appendChild(speedSlider);
+
   // Create shipper arrow
   const shipper = document.createElement('div');
   shipper.className = 'logistics-shipper';
@@ -85,40 +121,16 @@ export function initLogisticsTheme() {
       '+4h': 14400
     };
 
-  const muteButton = mediaControls.querySelector('[data-action="unmute"]');
-  if (muteButton) {
-    const volumeSlider = document.createElement("input");
-    volumeSlider.type = "range";
-    volumeSlider.min = "0";
-    volumeSlider.max = "1";
-    volumeSlider.step = "0.01";
-    volumeSlider.value = player && player.getVolume ? player.getVolume() / 100 : 1;
-    volumeSlider.classList.add("logistics-volume-slider");
-
-    volumeSlider.addEventListener("input", () => {
-      if (player && player.setVolume) {
-        player.setVolume(volumeSlider.value * 100);
-      }
-    });
-
-    muteButton.replaceWith(volumeSlider);
-  }
-    const speedSlider = document.createElement("input");
-  speedSlider.type = "range";
-  speedSlider.min = "0.25";
-  speedSlider.max = "2.0";
-  speedSlider.step = "0.05";
-  speedSlider.value = "1.0";
-  speedSlider.classList.add("logistics-speed-slider");
-
-  speedSlider.addEventListener("input", () => {
-    if (player && player.setPlaybackRate) {
-      player.setPlaybackRate(parseFloat(speedSlider.value));
-    }
-  });
-
-  mediaControls.appendChild(speedSlider);
-
+    switch(action) {
+      case 'unmute':
+        if (player.isMuted()) {
+          player.unMute();
+          document.querySelector('[data-action="unmute"]').textContent = '🔊';
+        } else {
+          player.mute();
+          document.querySelector('[data-action="unmute"]').textContent = '🔇';
+        }
+        break;
 
       case 'playpause':
         if (player.getPlayerState() === YT.PlayerState.PLAYING) {
