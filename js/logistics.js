@@ -36,7 +36,6 @@ export function initLogisticsTheme() {
     <button id="skip-ad-button" style="grid-column: 12;">Skip Ad</button>
   `;
 
-
   const muteButton = mediaControls.querySelector('[data-action="unmute"]');
   if (muteButton) {
     const volumeSlider = document.createElement("input");
@@ -46,6 +45,8 @@ export function initLogisticsTheme() {
     volumeSlider.step = "0.01";
     volumeSlider.value = "0.5";
     volumeSlider.classList.add("logistics-volume-slider");
+    volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
+    volumeSlider.style.alignSelf = "center";
 
     volumeSlider.addEventListener("input", () => {
       if (player && player.setVolume) {
@@ -64,6 +65,8 @@ export function initLogisticsTheme() {
   speedSlider.step = "0.05";
   speedSlider.value = "1.0";
   speedSlider.classList.add("logistics-speed-slider");
+  volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
+  volumeSlider.style.alignSelf = "center";
 
   speedSlider.addEventListener("input", () => {
     if (player && player.setPlaybackRate) {
@@ -71,7 +74,8 @@ export function initLogisticsTheme() {
     }
   });
 
-  mediaControls.appendChild(speedSlider);
+ qmediaControls.appendChild(volumeSlider);
+ qmediaControls.appendChild(speedSlider);
 
   // Create shipper arrow
   const shipper = document.createElement('div');
