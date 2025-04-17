@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "classic", displayName: "😎" },
     { name: "modern", displayName: "🌚" },
     { name: "nature", displayName: "🌞" },
-    { name: "logistics", displayName: "📦" },
     { name: "retro", displayName: "🕹️" },
-    { name: "space", displayName: "🚀" }
+    { name: "space", displayName: "🚀" },
+    { name: "logistics", displayName: "📦" }
   ];
 
   let cleanupLogistics = () => {};
