@@ -158,10 +158,13 @@ document.addEventListener('click', (event) => {
   if (event.target.closest('.logistics-shipper')) {
     const gridContainer = document.querySelector(".grid-container");
     const mediaControlBar = document.querySelector(".media-controls");
-    if (!gridContainer || !mediaControlBar) return;
+    const shipper = document.querySelector(".logistics-shipper");
+
+    if (!gridContainer || !mediaControlBar || !shipper) return;
 
     gridContainer.classList.toggle("shipped");
     mediaControlBar.classList.toggle("visible");
+    shipper.classList.toggle("visible");
   }
 });
 
