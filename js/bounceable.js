@@ -57,7 +57,7 @@ export class Bounceable {
         let lastFrameTime = 0;
 
         const animate = (time) => {
-            if (time - lastFrameTime < 1000 / 15) { // 15 FPS cap
+            if (time - lastFrameTime < 1000 / 15) { // 15 FPS cap for stutter
                 requestAnimationFrame(animate);
                 return;
             }
@@ -89,10 +89,13 @@ export class Bounceable {
                 this.velocity.y *= -0.9;
             }
 
+            // Retro theme movement
             if (document.body.classList.contains('theme-retro')) {
+                // Apply pixel quantization for 8-bit effect
                 newLeft = Math.round(newLeft / 4) * 4;
                 newTop = Math.round(newTop / 4) * 4;
-                Bounceable.createTrailDot(this.element);
+
+                Bounceable.createTrailDot(this.element, newLeft, newTop);
             }
 
             this.element.style.left = `${newLeft}px`;
@@ -106,7 +109,7 @@ export class Bounceable {
         requestAnimationFrame(animate);
     }
 
-    static createTrailDot(sourceEl) {
+    static createTrailDot(sourceEl, newLeft, newTop) {
         if (!Bounceable.trailLayer) {
             Bounceable.trailLayer = document.createElement('div');
             Bounceable.trailLayer.className = 'bounce-trail';
@@ -116,15 +119,13 @@ export class Bounceable {
         const dot = document.createElement('div');
         dot.className = 'bounce-dot';
 
-        const elLeft = parseFloat(sourceEl.style.left);
-        const elTop = parseFloat(sourceEl.style.top);
         const width = sourceEl.offsetWidth;
         const height = sourceEl.offsetHeight;
 
         dot.style.width = `${width}px`;
         dot.style.height = '6px';
-        dot.style.left = `${elLeft}px`;
-        dot.style.top = `${elTop + height / 2 - 3}px`; // center vertically
+        dot.style.left = `${newLeft}px`;
+        dot.style.top = `${newTop + height / 2 - 3}px`; // Center trail dot vertically
 
         Bounceable.trailLayer.appendChild(dot);
 
