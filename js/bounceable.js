@@ -119,13 +119,15 @@ export class Bounceable {
         const dot = document.createElement('div');
         dot.className = 'bounce-dot';
 
+        const rect = sourceEl.getBoundingClientRect(); // Get the updated position of the button
         const width = sourceEl.offsetWidth;
         const height = sourceEl.offsetHeight;
 
+        // Use rect.left and rect.top to place the trail dot at the exact position of the button
         dot.style.width = `${width}px`;
         dot.style.height = '6px';
-        dot.style.left = `${newLeft}px`;
-        dot.style.top = `${newTop + height / 2 - 3}px`; // Center trail dot vertically
+        dot.style.left = `${rect.left}px`;
+        dot.style.top = `${rect.top + height / 2 - 3}px`; // Center trail dot vertically
 
         Bounceable.trailLayer.appendChild(dot);
 
