@@ -85,16 +85,24 @@ export function initLogisticsTheme() {
       '+4h': 14400
     };
 
-    switch(action) {
-      case 'unmute':
-        if (player.isMuted()) {
-          player.unMute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔊';
-        } else {
-          player.mute();
-          document.querySelector('[data-action="unmute"]').textContent = '🔇';
-        }
-        break;
+  const muteButton = mediaControls.querySelector('[data-action="unmute"]');
+  if (muteButton) {
+    const volumeSlider = document.createElement("input");
+    volumeSlider.type = "range";
+    volumeSlider.min = "0";
+    volumeSlider.max = "1";
+    volumeSlider.step = "0.01";
+    volumeSlider.value = player && player.getVolume ? player.getVolume() / 100 : 1;
+    volumeSlider.classList.add("logistics-volume-slider");
+
+    volumeSlider.addEventListener("input", () => {
+      if (player && player.setVolume) {
+        player.setVolume(volumeSlider.value * 100);
+      }
+    });
+
+    muteButton.replaceWith(volumeSlider);
+  }
 
       case 'playpause':
         if (player.getPlayerState() === YT.PlayerState.PLAYING) {
