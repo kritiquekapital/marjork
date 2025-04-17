@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const themes = [
     { name: "classic", displayName: "😎" },
     { name: "modern", displayName: "🌚" },
-    { name: "nature", displayName: "🌞" },
     { name: "retro", displayName: "🕹️" },
+    { name: "nature", displayName: "🌞" },
     { name: "space", displayName: "🚀" },
     { name: "logistics", displayName: "📦" }
   ];
