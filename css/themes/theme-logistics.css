@@ -52,3 +52,26 @@
 .logistics-shipper.visible {
   transform: translateX(-50%) translateY(0); /* lift it to its final position */
 }
+
+.media-controls button {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
+
+.logistics-volume-slider,
+.logistics-speed-slider {
+  width: 100%;
+  max-width: 100px;
+  height: 6px;
+  appearance: none;
+  background: rgba(255,255,255,0.2);
+  border-radius: 5px;
+  opacity: 0.8;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: 6px;
+}
