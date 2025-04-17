@@ -54,9 +54,15 @@
 }
 
 .media-controls button {
-  font-size: 0.9rem;
-  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%; /* force uniform width via grid */
 }
 
 .logistics-volume-slider,
