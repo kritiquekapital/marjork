@@ -29,13 +29,13 @@ body.theme-retro .grid-backdrop {
 }
 
 /* Buttons */
-.theme-retro button {
-  background-color: #ffcc00; /* Bright yellow */
-  color: #000000; /* Black text */
-  border: 2px solid #00ffcc; /* Neon teal */
-  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
+.theme-retro .theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.2em;
+  padding: 0.2em 0.4em;
 }
 
 /*  Button */
