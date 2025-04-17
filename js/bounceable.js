@@ -46,15 +46,15 @@ export class Bounceable {
     }
 
     applyBouncePhysics() {
-        if (!this.isFree) return;
+    if (!this.isFree) return;
 
-        Bounceable.instances.forEach(other => {
-            if (other !== this && this.isColliding(other)) {
-                this.resolveCollision(other);
-            }
-        });
+    Bounceable.instances.forEach(other => {
+        if (other !== this && this.isColliding(other)) {
+            this.resolveCollision(other);
+        }
+    });
 
-            const animate = () => {
+    const animate = () => {
         this.velocity.x *= this.friction;
         this.velocity.y *= this.friction;
 
@@ -75,13 +75,18 @@ export class Bounceable {
         if (newTop < 0) {
             newTop = 0;
             this.velocity.y *= -0.9;
-    }
+        }
         if (newTop > maxY) {
             newTop = maxY;
             this.velocity.y *= -0.9;
         }
 
         if (document.body.classList.contains('theme-retro')) {
+            // Snap to pixel grid
+            newLeft = Math.round(newLeft / 4) * 4;
+            newTop = Math.round(newTop / 4) * 4;
+
+            // Trail creation AFTER position logic
             Bounceable.createTrailDot(this.element);
         }
 
@@ -93,11 +98,10 @@ export class Bounceable {
         }
     };
 
+    requestAnimationFrame(animate);
+}
 
-        requestAnimationFrame(animate);
-    }
-
-        static createTrailDot(sourceEl) {
+    static createTrailDot(sourceEl) {
         if (!Bounceable.trailLayer) {
             Bounceable.trailLayer = document.createElement('div');
             Bounceable.trailLayer.className = 'bounce-trail';
@@ -106,16 +110,19 @@ export class Bounceable {
 
         const dot = document.createElement('div');
         dot.className = 'bounce-dot';
+
         const rect = sourceEl.getBoundingClientRect();
-        dot.style.left = `${rect.left + rect.width / 2}px`;
-        dot.style.top = `${rect.top + rect.height / 2}px`;
+        dot.style.width = `${rect.width}px`;
+        dot.style.height = '6px';
+        dot.style.left = `${rect.left}px`;
+        dot.style.top = `${rect.top + rect.height / 2 - 3}px`;
+
         Bounceable.trailLayer.appendChild(dot);
 
         setTimeout(() => {
             dot.remove();
         }, 500);
     }
-
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
