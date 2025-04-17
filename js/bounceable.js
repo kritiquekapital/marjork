@@ -54,44 +54,45 @@ export class Bounceable {
             }
         });
 
-        const animate = () => {
-            this.velocity.x *= this.friction;
-            this.velocity.y *= this.friction;
+            const animate = () => {
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
 
-            let newLeft = parseFloat(t) + this.velocity.x;
-            let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+        let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+        let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-            const maxX = window.innerWidth - this.element.offsetWidth;
-            const maxY = window.innerHeight - this.element.offsetHeight;
+        const maxX = window.innerWidth - this.element.offsetWidth;
+        const maxY = window.innerHeight - this.element.offsetHeight;
 
-            if (newLeft < 0) {
-                newLeft = 0;
-                this.velocity.x *= -0.9;
-            }
-            if (newLeft > maxX) {
-                newLeft = maxX;
-                this.velocity.x *= -0.9;
-            }
-            if (newTop < 0) {
-                newTop = 0;
-                this.velocity.y *= -0.9;
-            }
-            if (newTop > maxY) {
-                newTop = maxY;
-                this.velocity.y *= -0.9;
-            }
+        if (newLeft < 0) {
+            newLeft = 0;
+            this.velocity.x *= -0.9;
+        }
+        if (newLeft > maxX) {
+            newLeft = maxX;
+            this.velocity.x *= -0.9;
+        }
+        if (newTop < 0) {
+            newTop = 0;
+            this.velocity.y *= -0.9;
+    }
+        if (newTop > maxY) {
+            newTop = maxY;
+            this.velocity.y *= -0.9;
+        }
 
-            if (document.body.classList.contains('theme-retro')) {
-                Bounceable.createTrailDot(this.element);
-            }
+        if (document.body.classList.contains('theme-retro')) {
+            Bounceable.createTrailDot(this.element);
+        }
 
-            this.element.style.left = `${newLeft}px`;
-            this.element.style.top = `${newTop}px`;
+        this.element.style.left = `${newLeft}px`;
+        this.element.style.top = `${newTop}px`;
 
-            if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
-                requestAnimationFrame(animate);
-            }
-        };
+        if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+            requestAnimationFrame(animate);
+        }
+    };
+
 
         requestAnimationFrame(animate);
     }
