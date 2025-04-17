@@ -17,32 +17,32 @@ export function initLogisticsTheme() {
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
-    <!-- Top row -->
-    <button data-action="-4h" style="grid-column: 1;">-4h</button>
-    <button data-action="-2h" style="grid-column: 2;">-2h</button>
-    <button data-action="-1h" style="grid-column: 3;">-1h</button>
-    <button data-action="-1m" style="grid-column: 4;">-1m</button>
-    <button data-action="playpause" style="grid-column: 6 / span 2; justify-self: center;">⏯</button>
-    <button data-action="+1m" style="grid-column: 9;">+1m</button>
-    <button data-action="+1h" style="grid-column: 10;">+1h</button>
-    <button data-action="+2h" style="grid-column: 11;">+2h</button>
-    <button data-action="+4h" style="grid-column: 12;">+4h</button>
+  <!-- Top Row -->
+  <button data-action="-4h" style="grid-column: 1;">-4h</button>
+  <button data-action="-2h" style="grid-column: 2;">-2h</button>
+  <button data-action="-1h" style="grid-column: 3;">-1h</button>
+  <button data-action="-1m" style="grid-column: 4;">-1m</button>
+  <button data-action="playpause" style="grid-column: 6 / span 2; justify-self: center;">⏯</button>
+  <button data-action="+1m" style="grid-column: 9;">+1m</button>
+  <button data-action="+1h" style="grid-column: 10;">+1h</button>
+  <button data-action="+2h" style="grid-column: 11;">+2h</button>
+  <button data-action="+4h" style="grid-column: 12;">+4h</button>
 
-    <!-- Bottom row -->
-    <button data-action="list" style="grid-column: 1 / 2;">📋</button>
-    <div class="progress-container" style="grid-column: 3 / 11; align-self: center;">
-      <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
-    </div>
-    <button id="skip-ad-button" style="grid-column: 12;">Skip Ad</button>
-  `;
+  <!-- Bottom Row -->
+  <button data-action="list" style="grid-column: 1;">📋</button>
+  <div class="progress-container" style="grid-column: 3 / 10; align-self: center;">
+    <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+  </div>
+  <button id="skip-ad-button" style="grid-column: 12;">Skip Ad</button>
+`;
 
   const muteButton = mediaControls.querySelector('[data-action="unmute"]');
   if (muteButton) {
     const volumeSlider = document.createElement("input");
     volumeSlider.type = "range";
     volumeSlider.min = "0";
-    volumeSlider.max = "1";
-    volumeSlider.step = "0.01";
+    volumeSlider.max = "4";
+    volumeSlider.step = "0.04";
     volumeSlider.value = "0.5";
     volumeSlider.classList.add("logistics-volume-slider");
     volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
