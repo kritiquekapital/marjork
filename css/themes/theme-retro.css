@@ -7,15 +7,13 @@
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
-.theme-retro .grid-container button:not(.kiss-button) {
-  background: none;
-  color: #ff00ff;
+.theme-retro button:not(.kiss-button) {
+  background-color: #ffcc00;
+  color: #000000;
   border: 2px solid #00ffcc;
   box-shadow: 0 0 10px #ff00ff;
   font-family: "Press Start 2P", cursive;
   text-transform: uppercase;
-  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
-  padding: 0.5em 1em; /* keeps sizing compact */
 }
 
 body.theme-retro .grid-backdrop {
