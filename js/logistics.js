@@ -103,6 +103,22 @@ export function initLogisticsTheme() {
 
     muteButton.replaceWith(volumeSlider);
   }
+    const speedSlider = document.createElement("input");
+  speedSlider.type = "range";
+  speedSlider.min = "0.25";
+  speedSlider.max = "2.0";
+  speedSlider.step = "0.05";
+  speedSlider.value = "1.0";
+  speedSlider.classList.add("logistics-speed-slider");
+
+  speedSlider.addEventListener("input", () => {
+    if (player && player.setPlaybackRate) {
+      player.setPlaybackRate(parseFloat(speedSlider.value));
+    }
+  });
+
+  mediaControls.appendChild(speedSlider);
+
 
       case 'playpause':
         if (player.getPlayerState() === YT.PlayerState.PLAYING) {
