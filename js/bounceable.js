@@ -95,7 +95,7 @@ export class Bounceable {
                 newLeft = Math.round(newLeft / 4) * 4;
                 newTop = Math.round(newTop / 4) * 4;
 
-                Bounceable.createTrailDot(this.element, newLeft, newTop, -50, -50);
+                Bounceable.createTrailDot(this.element, newLeft, newTop, -300, 300);
             }
 
             this.element.style.left = `${newLeft}px`;
