@@ -99,3 +99,40 @@ body.theme-retro .grid-backdrop {
 .theme-retro button:hover {
   animation: pixelate 0.5s ease-in-out;
 }
+
+.bounce-trail {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.bounce-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff00ff88; /* neon pink with transparency */
+  box-shadow: 0 0 6px #ff00ff;
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.theme-retro .free {
+  animation: retroJank 0.1s steps(1) infinite;
+}
+
+@keyframes retroJank {
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(1px, 0) scale(1); }
+  50% { transform: translate(-1px, 1px) scale(0.98); }
+  75% { transform: translate(0, -1px) scale(1); }
+  100% { transform: translate(1px, 1px) scale(1); }
+}
