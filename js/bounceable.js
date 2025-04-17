@@ -109,12 +109,12 @@ export class Bounceable {
         requestAnimationFrame(animate);
     }
 
-    static createTrailDot(sourceEl, newLeft, newTop) {
+    static createTrailDot(sourceEl, newLeft, newTop, offsetX = 0, offsetY = 0) {
         if (!Bounceable.trailLayer) {
             Bounceable.trailLayer = document.createElement('div');
             Bounceable.trailLayer.className = 'bounce-trail';
             document.body.appendChild(Bounceable.trailLayer);
-        }
+    }
 
         const dot = document.createElement('div');
         dot.className = 'bounce-dot';
@@ -123,11 +123,11 @@ export class Bounceable {
         const width = sourceEl.offsetWidth;
         const height = sourceEl.offsetHeight;
 
-        // Use rect.left and rect.top to place the trail dot at the exact position of the button
+        // Apply offsetX and offsetY to adjust the trail origin manually
         dot.style.width = `${width}px`;
         dot.style.height = '6px';
-        dot.style.left = `${rect.left}px`;
-        dot.style.top = `${rect.top + height / 2 - 3}px`; // Center trail dot vertically
+        dot.style.left = `${rect.left + offsetX}px`; // Apply the horizontal offset
+        dot.style.top = `${rect.top + height / 2 - 3 + offsetY}px`; // Apply the vertical offset
 
         Bounceable.trailLayer.appendChild(dot);
 
