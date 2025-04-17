@@ -14,7 +14,6 @@ export function initLogisticsTheme() {
     shipper.classList.add("visible");
   }, 200); 
 
-
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
