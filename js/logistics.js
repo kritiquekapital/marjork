@@ -17,36 +17,31 @@ export function initLogisticsTheme() {
   const mediaControls = document.createElement('div');
   mediaControls.className = 'media-controls';
   mediaControls.innerHTML = `
-  <!-- Top Row -->
-  <button data-action="-4h" style="grid-column: 1;">-4h</button>
-  <button data-action="-2h" style="grid-column: 2;">-2h</button>
-  <button data-action="-1h" style="grid-column: 3;">-1h</button>
-  <button data-action="-1m" style="grid-column: 4;">-1m</button>
-  <button data-action="playpause" style="grid-column: 6 / span 2; justify-self: center;">⏯</button>
-  <button data-action="+1m" style="grid-column: 9;">+1m</button>
-  <button data-action="+1h" style="grid-column: 10;">+1h</button>
-  <button data-action="+2h" style="grid-column: 11;">+2h</button>
-  <button data-action="+4h" style="grid-column: 12;">+4h</button>
-
-  <!-- Bottom Row -->
-  <button data-action="list" style="grid-column: 1;">📋</button>
-  <div class="progress-container" style="grid-column: 3 / 10; align-self: center;">
-    <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
-  </div>
-  <button id="skip-ad-button" style="grid-column: 12;">Skip Ad</button>
-`;
+    <button data-action="-4h">-4h</button>
+    <button data-action="-2h">-2h</button>
+    <button data-action="-1h">-1h</button>
+    <button data-action="-1m">-1m</button>
+    <button data-action="playpause">⏯</button>
+    <button data-action="+1m">+1m</button>
+    <button data-action="+1h">+1h</button>
+    <button data-action="+2h">+2h</button>
+    <button data-action="+4h">+4h</button>
+    <button data-action="list">📋</button>
+    <button data-action="unmute">🔇</button>
+    <div class="progress-container">
+      <progress class="progress-bar" max="${totalDurationInSeconds}" value="0"></progress>
+    </div>
+  `;
 
   const muteButton = mediaControls.querySelector('[data-action="unmute"]');
   if (muteButton) {
     const volumeSlider = document.createElement("input");
     volumeSlider.type = "range";
     volumeSlider.min = "0";
-    volumeSlider.max = "4";
-    volumeSlider.step = "0.04";
+    volumeSlider.max = "1";
+    volumeSlider.step = "0.01";
     volumeSlider.value = "0.5";
     volumeSlider.classList.add("logistics-volume-slider");
-    volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
-    volumeSlider.style.alignSelf = "center";
 
     volumeSlider.addEventListener("input", () => {
       if (player && player.setVolume) {
@@ -65,8 +60,6 @@ export function initLogisticsTheme() {
   speedSlider.step = "0.05";
   speedSlider.value = "1.0";
   speedSlider.classList.add("logistics-speed-slider");
-  volumeSlider.style.gridColumn = "2 / 3"; // between list and progress bar
-  volumeSlider.style.alignSelf = "center";
 
   speedSlider.addEventListener("input", () => {
     if (player && player.setPlaybackRate) {
@@ -74,8 +67,7 @@ export function initLogisticsTheme() {
     }
   });
 
- qmediaControls.appendChild(volumeSlider);
- qmediaControls.appendChild(speedSlider);
+  mediaControls.appendChild(speedSlider);
 
   // Create shipper arrow
   const shipper = document.createElement('div');
