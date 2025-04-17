@@ -7,7 +7,6 @@ let checkpointButton;
 export function initLogisticsTheme() {
   if (!document.body.classList.contains('theme-logistics')) return null;
 
-  // Create transport controls with new buttons
   const transportContainer = document.createElement('div');
   transportContainer.className = 'logistics-transport';
   transportContainer.style.display = 'none';
