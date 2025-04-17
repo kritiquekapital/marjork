@@ -58,7 +58,7 @@ export class Bounceable {
             this.velocity.x *= this.friction;
             this.velocity.y *= this.friction;
 
-            let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+            let newLeft = parseFloat(t) + this.velocity.x;
             let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
             const maxX = window.innerWidth - this.element.offsetWidth;
@@ -81,6 +81,10 @@ export class Bounceable {
                 this.velocity.y *= -0.9;
             }
 
+            if (document.body.classList.contains('theme-retro')) {
+                Bounceable.createTrailDot(this.element);
+            }
+
             this.element.style.left = `${newLeft}px`;
             this.element.style.top = `${newTop}px`;
 
@@ -91,6 +95,26 @@ export class Bounceable {
 
         requestAnimationFrame(animate);
     }
+
+        static createTrailDot(sourceEl) {
+        if (!Bounceable.trailLayer) {
+            Bounceable.trailLayer = document.createElement('div');
+            Bounceable.trailLayer.className = 'bounce-trail';
+            document.body.appendChild(Bounceable.trailLayer);
+        }
+
+        const dot = document.createElement('div');
+        dot.className = 'bounce-dot';
+        const rect = sourceEl.getBoundingClientRect();
+        dot.style.left = `${rect.left + rect.width / 2}px`;
+        dot.style.top = `${rect.top + rect.height / 2}px`;
+        Bounceable.trailLayer.appendChild(dot);
+
+        setTimeout(() => {
+            dot.remove();
+        }, 500);
+    }
+
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
