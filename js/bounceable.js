@@ -89,14 +89,13 @@ export class Bounceable {
                 this.velocity.y *= -0.9;
             }
 
-            // Retro theme movement
-            if (document.body.classList.contains('theme-retro')) {
-                // Apply pixel quantization for 8-bit effect
-                newLeft = Math.round(newLeft / 4) * 4;
-                newTop = Math.round(newTop / 4) * 4;
+    if (document.body.classList.contains('theme-retro')) {
+        // Quantize to 4px steps for pixel-stutter feel
+        newLeft = Math.round(newLeft / 4) * 4;
+        newTop = Math.round(newTop / 4) * 4;
 
-                Bounceable.createTrailDot(this.element, newLeft, newTop, -300, 300);
-            }
+        Bounceable.createTrailDot(this.element, newLeft, newTop);
+    }
 
             this.element.style.left = `${newLeft}px`;
             this.element.style.top = `${newTop}px`;
