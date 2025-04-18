@@ -109,12 +109,18 @@ export class Bounceable {
         requestAnimationFrame(animate);
     }
 
-        static createTrailDot(sourceEl, left, top) {
-        if (!Bounceable.trailLayer) {
-            Bounceable.trailLayer = document.createElement('div');
-            Bounceable.trailLayer.className = 'bounce-trail';
-            document.body.appendChild(Bounceable.trailLayer);
-    }
+if (!Bounceable.trailLayer) {
+    Bounceable.trailLayer = document.createElement('div');
+    Bounceable.trailLayer.className = 'bounce-trail';
+    Bounceable.trailLayer.style.position = 'fixed';
+    Bounceable.trailLayer.style.left = '0';
+    Bounceable.trailLayer.style.top = '0';
+    Bounceable.trailLayer.style.width = '100vw';
+    Bounceable.trailLayer.style.height = '100vh';
+    Bounceable.trailLayer.style.pointerEvents = 'none';
+    Bounceable.trailLayer.style.zIndex = '0'; // 👈 Ensures it's behind
+    document.body.appendChild(Bounceable.trailLayer);
+}
 
     const dot = document.createElement('div');
     dot.className = 'bounce-dot';
