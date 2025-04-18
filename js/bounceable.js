@@ -46,108 +46,104 @@ export class Bounceable {
         this.applyBouncePhysics();
     }
 
-    applyBouncePhysics() {
+applyBouncePhysics() {
     if (!this.isFree) return;
 
-    // Cancel existing loop if any
-    if (this.animationFrame !== null) {
+    // Cancel existing animation frame to prevent duplicates
+    if (this.animationFrame) {
         cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
     }
 
-        let lastFrameTime = 0;
+    let lastFrameTime = 0;
 
-        const animate = (time) => {
-            if (time - lastFrameTime < 1000 / 15) {
-                this.animationFrame = requestAnimationFrame(animate);
-                return;
-            }
-            lastFrameTime = time;
-
-            this.velocity.x *= this.friction;
-            this.velocity.y *= this.friction;
-
-            let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-            let newTop = parseFloat(this.element.style.top) + this.velocity.y;
-
-            const maxX = window.innerWidth - this.element.offsetWidth;
-            const maxY = window.innerHeight - this.element.offsetHeight;
-
-            if (newLeft < 0) {
-                newLeft = 0;
-                this.velocity.x *= -0.9;
-            }
-            if (newLeft > maxX) {
-                newLeft = maxX;
-                this.velocity.x *= -0.9;
-            }
-            if (newTop < 0) {
-                newTop = 0;
-                this.velocity.y *= -0.9;
-            }
-            if (newTop > maxY) {
-                newTop = maxY;
-                this.velocity.y *= -0.9;
-            }
-
-            // Retro mode check every frame
-            const isRetro = document.body.classList.contains('theme-retro');
-            if (isRetro) {
-        const snappedLeft = Math.round(newLeft / 4) * 4;
-        const snappedTop = Math.round(newTop / 4) * 4;
-        Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
-        this.element.style.left = `${snappedLeft}px`;
-        this.element.style.top = `${snappedTop}px`;
-    } else {
-        this.element.style.left = `${newLeft}px`;
-        this.element.style.top = `${newTop}px`;
-    }
-
-            this.element.style.left = `${newLeft}px`;
-            this.element.style.top = `${newTop}px`;
-
-            // Check collisions
-            Bounceable.instances.forEach(other => {
-                if (other !== this && this.isColliding(other)) {
-                    this.resolveCollision(other);
-                }
-            });
-
-            if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
-                this.animationFrame = requestAnimationFrame(animate);
-            } else {
-                this.animationFrame = null;
-            }
-        };
-
+    const animate = (time) => {
         this.animationFrame = requestAnimationFrame(animate);
-    }
 
-    static createTrailDot(sourceEl, left, top) {
-        if (!Bounceable.trailLayer) {
-            Bounceable.trailLayer = document.createElement('div');
-            Bounceable.trailLayer.className = 'bounce-trail';
-            Bounceable.trailLayer.style.position = 'fixed';
-            Bounceable.trailLayer.style.left = '0';
-            Bounceable.trailLayer.style.top = '0';
-            Bounceable.trailLayer.style.width = '100vw';
-            Bounceable.trailLayer.style.height = '100vh';
-            Bounceable.trailLayer.style.pointerEvents = 'none';
-            Bounceable.trailLayer.style.zIndex = '0'; // Behind everything
-            document.body.appendChild(Bounceable.trailLayer);
+        if (time - lastFrameTime < 1000 / 15) return;
+        lastFrameTime = time;
+
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+
+        let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+        let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+
+        const maxX = window.innerWidth - this.element.offsetWidth;
+        const maxY = window.innerHeight - this.element.offsetHeight;
+
+        if (newLeft < 0) {
+            newLeft = 0;
+            this.velocity.x *= -0.9;
+        }
+        if (newLeft > maxX) {
+            newLeft = maxX;
+            this.velocity.x *= -0.9;
+        }
+        if (newTop < 0) {
+            newTop = 0;
+            this.velocity.y *= -0.9;
+        }
+        if (newTop > maxY) {
+            newTop = maxY;
+            this.velocity.y *= -0.9;
         }
 
-        const dot = document.createElement('div');
-        dot.className = 'bounce-dot';
-        dot.style.width = `${sourceEl.offsetWidth}px`;
-        dot.style.height = '6px';
-        dot.style.position = 'fixed';
-        dot.style.left = `${left}px`;
-        dot.style.top = `${top + sourceEl.offsetHeight / 2 - 3}px`;
+        const isRetro = document.body.classList.contains('theme-retro');
 
-        Bounceable.trailLayer.appendChild(dot);
-        setTimeout(() => dot.remove(), 500);
+        if (isRetro) {
+            const snappedLeft = Math.round(newLeft / 4) * 4;
+            const snappedTop = Math.round(newTop / 4) * 4;
+
+            Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+            this.element.style.left = `${snappedLeft}px`;
+            this.element.style.top = `${snappedTop}px`;
+        } else {
+            this.element.style.left = `${newLeft}px`;
+            this.element.style.top = `${newTop}px`;
+        }
+
+        if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+            cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = null;
+        }
+    };
+
+    this.animationFrame = requestAnimationFrame(animate);
+}
+
+    static createTrailDot(sourceEl, left, top) {
+    if (!Bounceable.trailLayer) {
+        Bounceable.trailLayer = document.createElement('div');
+        Bounceable.trailLayer.className = 'bounce-trail';
+        Bounceable.trailLayer.style.position = 'fixed';
+        Bounceable.trailLayer.style.left = '0';
+        Bounceable.trailLayer.style.top = '0';
+        Bounceable.trailLayer.style.width = '100vw';
+        Bounceable.trailLayer.style.height = '100vh';
+        Bounceable.trailLayer.style.pointerEvents = 'none';
+        Bounceable.trailLayer.style.zIndex = '0'; // stays behind
+        document.body.appendChild(Bounceable.trailLayer);
     }
+
+    // Guard: only show trail in retro mode
+    if (!document.body.classList.contains('theme-retro')) return;
+
+    const dot = document.createElement('div');
+    dot.className = 'bounce-dot';
+
+    dot.style.width = `${sourceEl.offsetWidth}px`;
+    dot.style.height = '6px';
+    dot.style.position = 'fixed';
+    dot.style.left = `${left}px`;
+    dot.style.top = `${top + sourceEl.offsetHeight / 2 - 3}px`; // vertical center
+
+    Bounceable.trailLayer.appendChild(dot);
+
+    setTimeout(() => {
+        dot.remove();
+    }, 500);
+}
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
