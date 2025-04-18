@@ -98,6 +98,7 @@ body.theme-retro .grid-backdrop {
     background-color: #00bfa5; /* retro teal */
     opacity: 0.6;
     animation: trailFade 0.5s forwards;
+    z-index: 0;
 }
 
 @keyframes trailFade {
