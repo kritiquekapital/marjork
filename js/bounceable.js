@@ -123,10 +123,10 @@ export class Bounceable {
         const height = sourceEl.offsetHeight;
 
         // Apply offsetX and offsetY to adjust the trail origin manually
-        dot.style.width = `${width}px`;
-        dot.style.height = '6px';
-        dot.style.left = `${rect.left + offsetX}px`; // Apply the horizontal offset
-        dot.style.top = `${rect.top + height / 2 - 3 + offsetY}px`; // Apply the vertical offset
+    dot.style.width = `${sourceEl.offsetWidth}px`;
+    dot.style.height = '6px';
+    dot.style.left = `${newLeft}px`;
+    dot.style.top = `${newTop + sourceEl.offsetHeight / 2 - 3}px`; // center vertically
 
         Bounceable.trailLayer.appendChild(dot);
 
