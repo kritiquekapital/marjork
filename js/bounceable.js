@@ -46,6 +46,14 @@ export class Bounceable {
         this.applyBouncePhysics();
     }
 
+    if (!this.isFree) return;
+
+    // Cancel existing loop if any
+    if (this.animationFrame !== null) {
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+    }
+
     applyBouncePhysics() {
         if (!this.isFree) return;
 
@@ -92,10 +100,15 @@ export class Bounceable {
             // Retro mode check every frame
             const isRetro = document.body.classList.contains('theme-retro');
             if (isRetro) {
-                newLeft = Math.round(newLeft / 4) * 4;
-                newTop = Math.round(newTop / 4) * 4;
-                Bounceable.createTrailDot(this.element, newLeft, newTop);
-            }
+        const snappedLeft = Math.round(newLeft / 4) * 4;
+        const snappedTop = Math.round(newTop / 4) * 4;
+        Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+        this.element.style.left = `${snappedLeft}px`;
+        this.element.style.top = `${snappedTop}px`;
+    } else {
+        this.element.style.left = `${newLeft}px`;
+        this.element.style.top = `${newTop}px`;
+    }
 
             this.element.style.left = `${newLeft}px`;
             this.element.style.top = `${newTop}px`;
