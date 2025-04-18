@@ -89,8 +89,10 @@ export class Bounceable {
                 this.velocity.y *= -0.9;
             }
 
-    if (document.body.classList.contains('theme-retro')) {
-        // Quantize to 4px steps for pixel-stutter feel
+    const isRetro = document.body.classList.contains('theme-retro');
+
+    if (isRetro) {
+        // Snap to pixel grid for retro effect
         newLeft = Math.round(newLeft / 4) * 4;
         newTop = Math.round(newTop / 4) * 4;
 
