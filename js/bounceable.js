@@ -57,55 +57,54 @@ export class Bounceable {
         let lastFrameTime = 0;
 
         const animate = (time) => {
-            if (time - lastFrameTime < 1000 / 15) { // 15 FPS cap for stutter
-                requestAnimationFrame(animate);
-                return;
-            }
-            lastFrameTime = time;
+    if (time - lastFrameTime < 1000 / 15) {
+        requestAnimationFrame(animate);
+        return;
+    }
+    lastFrameTime = time;
 
-            this.velocity.x *= this.friction;
-            this.velocity.y *= this.friction;
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
 
-            let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-            let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+    let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+    let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-            const maxX = window.innerWidth - this.element.offsetWidth;
-            const maxY = window.innerHeight - this.element.offsetHeight;
+    const maxX = window.innerWidth - this.element.offsetWidth;
+    const maxY = window.innerHeight - this.element.offsetHeight;
 
-            if (newLeft < 0) {
-                newLeft = 0;
-                this.velocity.x *= -0.9;
-            }
-            if (newLeft > maxX) {
-                newLeft = maxX;
-                this.velocity.x *= -0.9;
-            }
-            if (newTop < 0) {
-                newTop = 0;
-                this.velocity.y *= -0.9;
-            }
-            if (newTop > maxY) {
-                newTop = maxY;
-                this.velocity.y *= -0.9;
-            }
+    if (newLeft < 0) {
+        newLeft = 0;
+        this.velocity.x *= -0.9;
+    }
+    if (newLeft > maxX) {
+        newLeft = maxX;
+        this.velocity.x *= -0.9;
+    }
+    if (newTop < 0) {
+        newTop = 0;
+        this.velocity.y *= -0.9;
+    }
+    if (newTop > maxY) {
+        newTop = maxY;
+        this.velocity.y *= -0.9;
+    }
 
+    // Re-check retro mode *every frame*
     const isRetro = document.body.classList.contains('theme-retro');
-
     if (isRetro) {
-        // Snap to pixel grid for retro effect
         newLeft = Math.round(newLeft / 4) * 4;
         newTop = Math.round(newTop / 4) * 4;
 
         Bounceable.createTrailDot(this.element, newLeft, newTop);
     }
 
-            this.element.style.left = `${newLeft}px`;
-            this.element.style.top = `${newTop}px`;
+    this.element.style.left = `${newLeft}px`;
+    this.element.style.top = `${newTop}px`;
 
-            if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
-                requestAnimationFrame(animate);
-            }
-        };
+    if (Math.abs(this.velocity.x) > 0.1 || Math.abs(this.velocity.y) > 0.1) {
+        requestAnimationFrame(animate);
+    }
+};
 
         requestAnimationFrame(animate);
     }
