@@ -49,7 +49,7 @@ export class Bounceable {
 applyBouncePhysics() {
     if (!this.isFree) return;
 
-    // Cancel existing animation frame to prevent duplicates
+    // Cancel previous animation if it exists
     if (this.animationFrame) {
         cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
@@ -60,6 +60,7 @@ applyBouncePhysics() {
     const animate = (time) => {
         this.animationFrame = requestAnimationFrame(animate);
 
+        // limit to 15fps for stutter effect
         if (time - lastFrameTime < 1000 / 15) return;
         lastFrameTime = time;
 
@@ -92,16 +93,13 @@ applyBouncePhysics() {
         const isRetro = document.body.classList.contains('theme-retro');
 
         if (isRetro) {
-            const snappedLeft = Math.round(newLeft / 4) * 4;
-            const snappedTop = Math.round(newTop / 4) * 4;
-
-            Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
-            this.element.style.left = `${snappedLeft}px`;
-            this.element.style.top = `${snappedTop}px`;
-        } else {
-            this.element.style.left = `${newLeft}px`;
-            this.element.style.top = `${newTop}px`;
+            newLeft = Math.round(newLeft / 4) * 4;
+            newTop = Math.round(newTop / 4) * 4;
+            Bounceable.createTrailDot(this.element, newLeft, newTop);
         }
+
+        this.element.style.left = `${newLeft}px`;
+        this.element.style.top = `${newTop}px`;
 
         if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
             cancelAnimationFrame(this.animationFrame);
