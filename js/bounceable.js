@@ -46,6 +46,7 @@ export class Bounceable {
         this.applyBouncePhysics();
     }
 
+    applyBouncePhysics() {
     if (!this.isFree) return;
 
     // Cancel existing loop if any
@@ -53,14 +54,6 @@ export class Bounceable {
         cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
     }
-
-    applyBouncePhysics() {
-        if (!this.isFree) return;
-
-        // Cancel any previous animation loop
-        if (this.animationFrame !== null) {
-            cancelAnimationFrame(this.animationFrame);
-        }
 
         let lastFrameTime = 0;
 
