@@ -90,13 +90,17 @@ export class Bounceable {
     }
 
     // Re-check retro mode *every frame*
-    const isRetro = document.body.classList.contains('theme-retro');
-    if (isRetro) {
-        newLeft = Math.round(newLeft / 4) * 4;
-        newTop = Math.round(newTop / 4) * 4;
+const isRetro = document.body.classList.contains('theme-retro');
+if (isRetro) {
+    console.log('Retro mode ON — applying pixel rounding');
+    newLeft = Math.round(newLeft / 4) * 4;
+    newTop = Math.round(newTop / 4) * 4;
 
-        Bounceable.createTrailDot(this.element, newLeft, newTop);
-    }
+    Bounceable.createTrailDot(this.element, newLeft, newTop);
+} else {
+    console.log('Retro mode OFF — smooth motion');
+}
+
 
     this.element.style.left = `${newLeft}px`;
     this.element.style.top = `${newTop}px`;
