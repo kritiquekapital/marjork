@@ -110,32 +110,29 @@ export class Bounceable {
         requestAnimationFrame(animate);
     }
 
-    static createTrailDot(sourceEl, newLeft, newTop, offsetX = 0, offsetY = 0) {
+        static createTrailDot(sourceEl, left, top) {
         if (!Bounceable.trailLayer) {
             Bounceable.trailLayer = document.createElement('div');
             Bounceable.trailLayer.className = 'bounce-trail';
             document.body.appendChild(Bounceable.trailLayer);
     }
 
-        const dot = document.createElement('div');
-        dot.className = 'bounce-dot';
+    const dot = document.createElement('div');
+    dot.className = 'bounce-dot';
 
-        const rect = sourceEl.getBoundingClientRect(); // Get the updated position of the button
-        const width = sourceEl.offsetWidth;
-        const height = sourceEl.offsetHeight;
-
-        // Apply offsetX and offsetY to adjust the trail origin manually
     dot.style.width = `${sourceEl.offsetWidth}px`;
     dot.style.height = '6px';
-    dot.style.left = `${newLeft}px`;
-    dot.style.top = `${newTop + sourceEl.offsetHeight / 2 - 3}px`; // center vertically
+    dot.style.position = 'fixed';
+    dot.style.left = `${left}px`;
+    dot.style.top = `${top + sourceEl.offsetHeight / 2 - 3}px`; // vertical center
 
-        Bounceable.trailLayer.appendChild(dot);
+    Bounceable.trailLayer.appendChild(dot);
 
-        setTimeout(() => {
-            dot.remove();
-        }, 500);
-    }
+    setTimeout(() => {
+        dot.remove();
+    }, 500);
+}
+
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
