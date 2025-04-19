@@ -8,11 +8,6 @@
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
-.kiss-button {
-  position: fixed;
-  z-index: 2; /* higher than the trail */
-}
-
 .theme-retro .grid-container button {
   background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
   background-size: 8px 8px;
@@ -90,20 +85,29 @@ body.theme-retro .grid-backdrop {
   animation: pixelate 0.5s ease-in-out;
 }
 
+.kiss-button {
+  position: fixed;
+  z-index: 10 !important; /* ensure it's above trail */
+}
+
 .bounce-trail {
-    position: fixed;
-    pointer-events: none;
-    z-index: 0; /* stays behind buttons */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* just under the button */
+  pointer-events: none;
 }
 
 .bounce-dot {
-    position: absolute;
-    height: 6px;
-    border-radius: 0;
-    background-color: #00bfa5; /* retro teal */
-    opacity: 0.6;
-    animation: trailFade 0.5s forwards;
-    z-index: 0;
+  background-color: teal;
+  opacity: 0.6;
+  height: 6px;
+  border-radius: 1px;
+  z-index: 1; /* under button */
+  pointer-events: none;
+  position: fixed;
 }
 
 @keyframes trailFade {
