@@ -131,6 +131,7 @@ export class Bounceable {
 
         const dot = document.createElement('div');
         dot.className = 'bounce-dot';
+
         Object.assign(dot.style, {
             width: `${sourceEl.offsetWidth}px`,
             height: '6px',
@@ -140,14 +141,17 @@ export class Bounceable {
             borderRadius: '1px',
             left: `${left}px`,
             top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-            dot.style.zIndex = '1';
-            sourceEl.style.zIndex = '10';
+            zIndex: '1',
             pointerEvents: 'none'
         });
+
+        // Ensure the bounceable button (like kiss) stays visually on top
+        sourceEl.style.zIndex = '10';
 
         Bounceable.trailLayer.appendChild(dot);
         setTimeout(() => dot.remove(), 500);
     }
+
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
