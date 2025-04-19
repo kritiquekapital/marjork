@@ -93,9 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
     document.head.insertBefore(themeLink, responsiveLink);
 
-    const currentTheme = themes[currentThemeIndex];
-    document.body.className = `theme-${currentTheme.name}`;
-   themeButton.textContent = currentTheme.displayName;
+    const currentTheme = themes[currentThemeIndex];s
+      document.body.classList.remove(
+      'theme-classic',
+      'theme-modern',
+      'theme-retro',
+      'theme-nature',
+      'theme-space',
+      'theme-logistics'
+    );
+
+    document.body.classList.add(`theme-${currentTheme.name}`);
+    themeButton.textContent = currentTheme.displayName;
 
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
