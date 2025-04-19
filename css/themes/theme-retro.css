@@ -8,6 +8,11 @@
   font-family: "Press Start 2P", cursive; /* Retro pixel font */
 }
 
+.kiss-button {
+  position: fixed;
+  z-index: 2; /* higher than the trail */
+}
+
 .theme-retro .grid-container button {
   background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
   background-size: 8px 8px;
