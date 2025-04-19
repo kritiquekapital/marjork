@@ -91,15 +91,16 @@ export class Bounceable {
             const isRetro = document.body.classList.contains('theme-retro');
 
             if (isRetro) {
-                const snappedLeft = Math.round(newLeft / 4) * 4;
-                const snappedTop = Math.round(newTop / 4) * 4;
-                this.element.style.left = `${snappedLeft}px`;
-                this.element.style.top = `${snappedTop}px`;
-                Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+              const snappedLeft = Math.round(newLeft / 4) * 4;
+              const snappedTop = Math.round(newTop / 4) * 4;
+              this.element.style.left = `${snappedLeft}px`;
+              this.element.style.top = `${snappedTop}px`;
+              Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
             } else {
-                this.element.style.left = `${newLeft}px`;
-                this.element.style.top = `${newTop}px`;
+              this.element.style.left = `${newLeft}px`;
+              this.element.style.top = `${newTop}px`;
             }
+
 
             if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
                 cancelAnimationFrame(this.animationFrame);
@@ -139,7 +140,8 @@ export class Bounceable {
             borderRadius: '1px',
             left: `${left}px`,
             top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-            zIndex: '0',
+            dot.style.zIndex = '1';
+            sourceEl.style.zIndex = '10';
             pointerEvents: 'none'
         });
 
