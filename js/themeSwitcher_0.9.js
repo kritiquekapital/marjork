@@ -37,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
   natureVideo.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_lapse_x07.mp4";
   natureVideo.autoplay = true;
   natureVideo.loop = true;
-  natureVideo.muted = true; // optional: set to false if you want natural sound only from here
+  natureVideo.muted = true;
   natureVideo.playsInline = true;
 
   const natureAudio = document.createElement("audio");
   natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
   natureAudio.loop = true;
-  natureAudio.volume = 0.4; // optional, tweak volume
+  natureAudio.volume = 0.4;
 
   const volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
-  // Cleanup previous theme
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
@@ -89,12 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     themeLink.rel = 'stylesheet';
     themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
     themeLink.dataset.theme = true;
-  
+
     const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
     document.head.insertBefore(themeLink, responsiveLink);
 
-    const currentTheme = themes[currentThemeIndex];s
-      document.body.classList.remove(
+    const currentTheme = themes[currentThemeIndex];
+
+    // 🚨 Fix: clean body class list before setting new theme
+    document.body.classList.remove(
       'theme-classic',
       'theme-modern',
       'theme-retro',
@@ -102,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
       'theme-space',
       'theme-logistics'
     );
-
     document.body.classList.add(`theme-${currentTheme.name}`);
+
     themeButton.textContent = currentTheme.displayName;
 
     if (currentTheme.name === "nature") {
@@ -113,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       natureVideo.style.display = "none";
       natureAudio.pause();
     }
-   
+
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
@@ -125,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (logisticsPlayer) logisticsPlayer.style.display = "none";
     }
-    
+
     draggable.setZeroGravityMode(currentTheme.name === "space");
   }
 
@@ -139,10 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!arrowButton) console.warn("logistics-shipper button not found");
 
   const handleUIState = (shouldHide) => {
-    if (!gridContainer || !mediaControlBar) return; // Prevent null errors
+    if (!gridContainer || !mediaControlBar) return;
 
-    if (document.body.classList.contains("theme-space") || 
-       document.body.classList.contains("theme-logistics")) {
+    if (document.body.classList.contains("theme-space") ||
+        document.body.classList.contains("theme-logistics")) {
       gridContainer.style.opacity = shouldHide ? "0" : "1";
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
       gridContainer.style.transition = "opacity 0.5s ease-in-out";
@@ -163,19 +164,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener(event, resetInactivityTimer);
   });
 
-document.addEventListener('click', (event) => {
-  if (event.target.closest('.logistics-shipper')) {
-    const gridContainer = document.querySelector(".grid-container");
-    const mediaControlBar = document.querySelector(".media-controls");
-    const shipper = document.querySelector(".logistics-shipper");
+  document.addEventListener('click', (event) => {
+    if (event.target.closest('.logistics-shipper')) {
+      const gridContainer = document.querySelector(".grid-container");
+      const mediaControlBar = document.querySelector(".media-controls");
+      const shipper = document.querySelector(".logistics-shipper");
 
-    if (!gridContainer || !mediaControlBar || !shipper) return;
+      if (!gridContainer || !mediaControlBar || !shipper) return;
 
-    gridContainer.classList.toggle("shipped");
-    mediaControlBar.classList.toggle("visible");
-    shipper.classList.toggle("visible");
-  }
-});
+      gridContainer.classList.toggle("shipped");
+      mediaControlBar.classList.toggle("visible");
+      shipper.classList.toggle("visible");
+    }
+  });
 
   themeButton.addEventListener("click", () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
