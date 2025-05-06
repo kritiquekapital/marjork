@@ -1311,19 +1311,6 @@ body.theme-retro .click-wheel {
   transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
 }
 
-/* Remove the image or hide it only for specific themes (Modern, Space) */
-.theme-modern .substack-button,
-.theme-space .substack-button {
-  border-color: transparent; /* Hide border */
-  background-image: none; /* Remove the background image */
-  animation: spin 3s linear infinite; /* Add spinning animation */
-}
-
-.theme-modern .substack-button img,
-.theme-space .substack-button img {
-  display: none; /* Hide image in Modern and Space themes */
-}
-
 /* Spinning animation for Substack button */
 @keyframes spin {
   0% { transform: rotate(0deg); }
