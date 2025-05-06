@@ -78,6 +78,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
+  // Preload all themes dynamically
+  function preloadThemes() {
+    themes.forEach(theme => {
+      const themeLink = document.createElement("link");
+      themeLink.rel = "preload";
+      themeLink.href = `css/themes/theme-${theme.name}.css`;  // Correct path to your theme file
+      themeLink.as = "style";
+      document.head.appendChild(themeLink);
+    });
+  }
+
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
@@ -132,15 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update Substack button styles based on theme
     const substackButton = document.querySelector('.substack-button');
     const substackImage = substackButton.querySelector('img');
+
+    // No border hiding logic anymore; just update the image based on the theme
     if (currentTheme.name === "modern") {
-      substackButton.style.borderColor = "transparent"; // Hide border for modern
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Modern image
+      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png"; // Modern image
     } else if (currentTheme.name === "space") {
-      substackButton.style.borderColor = "transparent"; // Hide border for space
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%23001.png"; // Space-themed image
+      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%23001.png"; // Space-themed image
     } else {
-      substackButton.style.borderColor = "#FF6A13"; // Default orange border
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Default image
+      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png"; // Default image
     }
   }
 
@@ -203,4 +213,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   resetInactivityTimer();
   applyTheme();
+  preloadThemes();  // Preload themes dynamically
 });
