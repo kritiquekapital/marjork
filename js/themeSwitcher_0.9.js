@@ -128,6 +128,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
+
+    // Update Substack button for modern theme
+    if (currentTheme.name === "modern") {
+      document.querySelector('.substack-button').style.borderColor = "#1E3A8A"; // Blue border
+      document.querySelector('.substack-button img').src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Blue flower image
+    } else if (currentTheme.name === "space") {
+      document.querySelector('.substack-button').style.borderColor = "#1E3A8A"; // Space theme border
+      document.querySelector('.substack-button img').src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Space-themed image (can be replaced)
+    } else {
+      document.querySelector('.substack-button').style.borderColor = "#FF6A13"; // Original orange border
+      document.querySelector('.substack-button img').src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Original image
+    }
   }
 
   let inactivityTimer;
