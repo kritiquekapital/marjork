@@ -1111,8 +1111,8 @@ body.theme-retro .click-wheel {
 /* Substack Avatar Button Styling */
 .substack-button {
   display: inline-block;
-  width: 100px;  /* Set the size of the button */
-  height: 100px;
+  width: 120px;  /* Set the size of the button */
+  height: 120px;
   border-radius: 50%;  /* Makes the button circular */
   overflow: hidden;  /* Ensures the image stays within the circular button */
   background-color: #7D7D7D;  /* Substack's gray color */
