@@ -99,16 +99,19 @@ export class Bounceable {
             const isRetro = document.body.classList.contains('theme-retro');
 
             if (isRetro) {
+              // Apply snapping effect and create the trail dot in retro mode
               const snappedLeft = Math.round(newLeft / 4) * 4;
               const snappedTop = Math.round(newTop / 4) * 4;
               this.element.style.left = `${snappedLeft}px`;
               this.element.style.top = `${snappedTop}px`;
               Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
             } else {
+              // In non-retro mode, move normally
               this.element.style.left = `${newLeft}px`;
               this.element.style.top = `${newTop}px`;
             }
 
+            // Stop animation if movement is minimal (this helps with performance)
             if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
                 cancelAnimationFrame(this.animationFrame);
                 this.animationFrame = null;
@@ -119,6 +122,7 @@ export class Bounceable {
     }
 
     static createTrailDot(sourceEl, left, top) {
+        // Only create trail in retro theme
         if (!document.body.classList.contains('theme-retro')) return;
 
         if (!Bounceable.trailLayer) {
