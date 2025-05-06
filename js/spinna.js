@@ -16,12 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
     isHovered = true;
     rotationSpeed = 3; // Reset to default speed on hover
     updateSpinSpeed();
+    substackButton.style.animation = "spin 3s linear infinite"; // Start spinning when hovered
   });
 
   // When mouse leaves: continue spinning with the updated speed
   substackButton.addEventListener('mouseleave', () => {
     isHovered = false;
     updateSpinSpeed();
+    // Stop spinning when mouse leaves
+    substackButton.style.animation = "none";
   });
 
   // Click effect: Increase spin velocity (decrease the duration)
@@ -33,4 +36,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial spin animation
   updateSpinSpeed(); // Set the default spin speed on page load
+
+  // Update Substack button styles based on the current theme
+  const themeButton = document.getElementById("themeButton");
+  themeButton.addEventListener("click", () => {
+    const currentTheme = themes[currentThemeIndex]; // Update according to your theme logic
+    if (currentTheme.name === "modern" || currentTheme.name === "space") {
+      substackButton.style.borderColor = "transparent"; // Hide border
+      substackImage.src = ""; // Remove the image for modern and space
+    } else {
+      substackButton.style.borderColor = "#FF6A13"; // Default orange border for other themes
+      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Original image
+    }
+  });
 });
