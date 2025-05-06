@@ -1150,19 +1150,19 @@ body.theme-retro .click-wheel {
   position: relative;
   overflow: hidden; /* Prevent overflow */
   cursor: pointer;
-  transition: all 0.6s ease; /* Smooth transition */
+  transition: transform 0.6s ease; /* Smooth transition for scaling */
+  transform-origin: center; /* Make sure the expansion happens from the center */
+  z-index: 10; /* Ensure the button is on top of other elements */
 }
 
+/* On hover, expand the button into a squared circle */
 .dropkickd-button:hover {
-  width: 300px; /* Expands to a squared circle */
-  height: 300px;
-  border-radius: 15px; /* Slight rounded corners */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transform: scale(2.5); /* Expand the button */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  z-index: 20; /* Ensure it covers other elements when expanded */
 }
 
 /* Ring posts at the four corners */
-.dropkickd-button::before,
-.dropkickd-button::after,
 .dropkickd-button .top-left-post,
 .dropkickd-button .top-right-post,
 .dropkickd-button .bottom-left-post,
@@ -1175,23 +1175,28 @@ body.theme-retro .click-wheel {
   border-radius: 50%;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 15; /* Make sure posts appear above the button */
 }
 
+/* Top-left corner post */
 .dropkickd-button .top-left-post {
   top: -10px;
   left: -10px;
 }
 
+/* Top-right corner post */
 .dropkickd-button .top-right-post {
   top: -10px;
   right: -10px;
 }
 
+/* Bottom-left corner post */
 .dropkickd-button .bottom-left-post {
   bottom: -10px;
   left: -10px;
 }
 
+/* Bottom-right corner post */
 .dropkickd-button .bottom-right-post {
   bottom: -10px;
   right: -10px;
@@ -1207,6 +1212,7 @@ body.theme-retro .click-wheel {
   background-color: #fff; /* Rope color */
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 5; /* Make sure ropes appear below posts but above the button */
 }
 
 /* Top rope */
@@ -1274,11 +1280,13 @@ body.theme-retro .click-wheel {
   background-repeat: no-repeat;
   transition: opacity 0.3s ease;
   opacity: 0; /* Initially hidden */
+  z-index: 10; /* Ensure logo stays on top of the ring */
 }
 
 .dropkickd-button:hover .logo {
   opacity: 1; /* Make logo appear when hovered */
 }
+
 
 /* Substack Button */
 .substack-button {
