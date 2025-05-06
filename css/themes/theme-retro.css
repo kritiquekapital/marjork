@@ -8,14 +8,9 @@
 }
 
 .theme-retro .grid-container button {
-  background: linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546); /* Rainbow gradient */
-  background-size: 400% 400%;
-  animation: rainbow 5s ease infinite;
-  color: #000000; /* Black text */
-  border: 2px solid transparent; /* Transparent border, rainbow border applied separately */
-  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
+  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
+  background-size: 8px 8px;
+  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
 }
 
 body.theme-retro .grid-backdrop {
@@ -28,39 +23,25 @@ body.theme-retro .grid-backdrop {
   height: 100%;
 }
 
-/* Kiss button */
-.theme-retro .kiss-button {
-  border: 2px solid transparent;
-  border-radius: 50%;
+/* Buttons */
+.theme-retro button {
+  background-color: #ffcc00; /* Bright yellow */
+  color: #000000; /* Black text */
+  border: 2px solid #00ffcc; /* Neon teal */
+  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
+}
+
+/*  Button */
+.theme-retro .-button {
+  background-color: #00ffcc; /* Neon teal */
+  color: #ff00ff; /* Neon pink */
+  border: 2px solid #ffcc00; /* Bright yellow */
+  box-shadow: 0 0 15px #ff00ff; /* Glow effect */
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
   background-size: 400% 400%;
   animation: rainbow 5s ease infinite;
-  background-blend-mode: screen;
-  box-shadow: 0 0 10px #ff00ff;
-  z-index: 99999;
-}
-
-/* Substack Button */
-.theme-retro .substack-button {
-  border: 2px solid transparent;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546); /* Rainbow gradient */
-  background-size: 400% 400%;
-  animation: rainbow 5s ease infinite;
-}
-
-.theme-retro .substack-button img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Flower%20%2304.png'); /* Correct raw image link */
-}
-
-/* Retro Twitter Button */
-.theme-retro .twitter img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Twitter.png'); /* Retro Twitter image */
-}
-
-/* Retro Duolingo Button */
-.theme-retro .duolingo img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Duo.png'); /* Retro Duolingo image */
 }
 
 /* Scanline Effect */
@@ -101,60 +82,4 @@ body.theme-retro .grid-backdrop {
 
 .theme-retro button:hover {
   animation: pixelate 0.5s ease-in-out;
-}
-
-.kiss-button {
-  position: fixed;
-  z-index: 10 !important; /* ensure it's above trail */
-}
-
-.bounce-trail {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1; /* just under the button */
-  pointer-events: none;
-}
-
-.bounce-dot {
-  background-color: teal;
-  opacity: 0.6;
-  height: 6px;
-  border-radius: 1px;
-  z-index: 1; /* under button */
-  pointer-events: none;
-  position: fixed;
-}
-
-@keyframes trailFade {
-    from {
-        opacity: 0.6;
-    }
-    to {
-        opacity: 0;
-        transform: scaleX(0.5);
-    }
-}
-
-@keyframes flicker {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
-}
-
-.bounce-dot {
-    animation: trailFade 0.5s forwards, flicker 0.1s infinite;
-}
-
-.theme-retro .free {
-  animation: retroJank 0.1s steps(1) infinite;
-}
-
-@keyframes retroJank {
-  0% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(1px, 0) scale(1); }
-  50% { transform: translate(-1px, 1px) scale(0.98); }
-  75% { transform: translate(0, -1px) scale(1); }
-  100% { transform: translate(1px, 1px) scale(1); }
 }
