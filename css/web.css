@@ -1316,8 +1316,3 @@ body.theme-retro .click-wheel {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-/* Animation for spinning effect */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
