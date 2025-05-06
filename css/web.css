@@ -1,4 +1,3 @@
-
 /* ==================== */
 /* Global Reset and Basic Styles */
 /* ==================== */
@@ -1073,9 +1072,7 @@ body.theme-retro .click-wheel {
   opacity: 1;
 }
 
-/* ==================== */
 /* Twitter Button */
-/* ==================== */
 .twitter {
   background-color: black;
   color: white;
@@ -1098,9 +1095,12 @@ body.theme-retro .click-wheel {
   border-radius: 50%;
 }
 
+/* Twitter Hover: Spinning and rotating towards the viewer */
 .twitter:hover {
   animation: spin 3s linear infinite;
   background-color: black;
+  transform: rotateY(45deg); /* Rotate the button towards the viewer */
+  z-index: 3; /* Ensure the button appears above other elements */
 }
 
 @keyframes spin {
@@ -1289,13 +1289,36 @@ body.theme-retro .click-wheel {
 
 /* Substack Button */
 .substack-button {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   background-color: #7D7D7D; /* Substack's gray color */
-  border-color: #7D7D7D; /* Match the border color to the background */
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  line-height: 120px;
+  border: 5px solid #7D7D7D; /* Border color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 0.6s ease; /* Smooth rotation */
 }
 
+/* Substack Button Rotation (on hover, similar to Twitter) */
 .substack-button:hover {
-  background-color: white;
-  color: #7D7D7D;
-  border-color: #7D7D7D;
-  transform: scale(1.1); /* Hover effect to enlarge the button */
+  transform: rotate(360deg); /* Rotate the button on hover */
+}
+
+/* General Image Styling for Buttons */
+button img, a img {
+  border-radius: 50%;
+  width: 100px; /* Adjust size of the image */
+  height: 100px;
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+/* Optional: On hover, slightly scale the image */
+button:hover img, a:hover img {
+  transform: scale(1.1); /* Slightly enlarge image */
 }
