@@ -1281,9 +1281,9 @@ body.theme-retro .click-wheel {
 
 /* Substack Button Styling (Default) */
 .substack-button {
-  background-color: #FF6A13;
+  background-color: #FF6A13; /* Default orange background */
   color: white;
-  border-radius: 50%;
+  border-radius: 50%; /* Circular shape */
   width: 120px;
   height: 120px;
   display: flex;
@@ -1298,14 +1298,7 @@ body.theme-retro .click-wheel {
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Default image */
   background-size: cover; /* Ensure the image is fully covered within the button */
   background-position: center; /* Center the image */
-}
-
-/* Remove the orange border and image for Modern and Space Themes */
-.theme-modern .substack-button,
-.theme-space .substack-button {
-  border-color: transparent; /* Hide the border */
-  background-image: none; /* Remove the background image */
-  animation: spin 3s linear infinite; /* Add spinning animation */
+  animation: spin 3s linear infinite; /* Spinning animation */
 }
 
 /* Substack Button for Modern Theme */
@@ -1327,7 +1320,7 @@ body.theme-retro .click-wheel {
 .theme-logistics .substack-button {
   border-color: #FF6A13; /* Default orange border */
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
-  animation: none; /* No spinning animation for these themes */
+  animation: spin 3s linear infinite; /* Spinning animation */
 }
 
 /* Image inside the Substack button */
@@ -1340,6 +1333,11 @@ body.theme-retro .click-wheel {
   opacity: 0.8; /* Add slight opacity to the image */
 }
 
+/* Spinning animation for Substack button */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 /* Animation for spinning effect */
 @keyframes spin {
   0% { transform: rotate(0deg); }
