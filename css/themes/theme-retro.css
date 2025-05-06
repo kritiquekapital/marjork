@@ -1,4 +1,3 @@
-
 /* ==================== */
 /* Retro Theme */
 /* ==================== */
@@ -23,6 +22,7 @@ body.theme-retro .grid-backdrop {
   width: 100%;
   height: 100%;
 }
+
 /* Buttons */
 .theme-retro button {
   background-color: #ffcc00; /* Bright yellow */
@@ -49,6 +49,16 @@ body.theme-retro .grid-backdrop {
 
 .theme-retro .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Flower%20%2304.png'); /* Correct raw image link */
+}
+
+/* Retro Twitter Button */
+.theme-retro .twitter img {
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Twitter.png'); /* Retro Twitter image */
+}
+
+/* Retro Duolingo Button */
+.theme-retro .duolingo img {
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Duo.png'); /* Retro Duolingo image */
 }
 
 /* Scanline Effect */
