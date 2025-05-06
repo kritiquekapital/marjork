@@ -37,7 +37,6 @@ body.theme-retro .grid-backdrop {
 }
 
 .theme-retro button {
-  background-color: #ffcc00; /* Bright yellow */
   color: #000000; /* Black text */
   border: 2px solid #00ffcc; /* Neon teal */
   box-shadow: 0 0 10px #ff00ff; /* Glow effect */
@@ -51,7 +50,6 @@ body.theme-retro .grid-backdrop {
   background: 
     linear-gradient(black, black) padding-box,
     linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546) border-box;
-  animation: spin 3s linear infinite;
 }
 
 .theme-retro .substack-button img {
