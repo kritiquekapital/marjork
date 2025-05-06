@@ -1278,7 +1278,7 @@ body.theme-retro .click-wheel {
   z-index: 2; /* Ensure it stays above the grid container */
   transform-style: preserve-3d; /* Enable 3D transformations */
   position: relative; /* Ensure correct positioning */
-  border: 5px solid #FF6A13; /* Orange border color */
+  border: 1.4px solid #FF6A13; /* Orange border color */
   animation: none; /* No animation by default */
 }
 
