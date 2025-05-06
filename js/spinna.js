@@ -28,21 +28,4 @@ document.addEventListener('DOMContentLoaded', () => {
     if (rotationSpeed <= 0.5) rotationSpeed = 0.5; // Minimum speed limit
     updateSpinSpeed();
   });
-
-  // Initial spin animation
-  updateSpinSpeed(); // Set the default spin speed on page load
-
-  // Update Substack button styles based on the current theme
-  const themeButton = document.getElementById("themeButton");
-  themeButton.addEventListener("click", () => {
-    const currentTheme = themes[currentThemeIndex]; // Update according to your theme logic
-
-    if (currentTheme.name === "modern" || currentTheme.name === "space") {
-      substackButton.style.borderColor = "transparent"; // Hide border for modern and space themes
-      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png"; // Modern and Space theme image
-    } else {
-      substackButton.style.borderColor = "#FF6A13"; // Default orange border for other themes
-      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304%20-%20Retro.png"; // Default theme image
-    }
-  });
 });
