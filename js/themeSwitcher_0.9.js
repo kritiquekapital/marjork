@@ -139,10 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
-
-    // Update Substack button styles based on theme
-    const substackButton = document.querySelector('.substack-button');
-    const substackImage = substackButton.querySelector('img');
+  }
 
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
