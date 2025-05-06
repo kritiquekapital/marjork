@@ -62,10 +62,12 @@ body.theme-space .grid-backdrop {
   opacity: 0; /* Make sure tint fades out if switching themes */
 }
 
-.theme-space .-button {
-  background-color: #6a0dad;
-  color: #ffffff;
-  border: 1px solid #ffd700;
+.theme-space .substack-button {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: 
+    linear-gradient(black, black) padding-box, /* Button interior */
+    linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
 body.theme-retro .grid-container,
