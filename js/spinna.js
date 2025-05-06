@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   const substackButton = document.querySelector('.substack-button');
+  if (!substackButton) {
+    console.error('.substack-button not found in the DOM.');
+    return; // Stop the script if the button isn't found
+  }
+
   const substackImage = substackButton.querySelector('img');
+  if (!substackImage) {
+    console.error('Image element inside .substack-button not found.');
+    return; // Stop the script if the image isn't found
+  }
 
   let rotationSpeed = 3; // Default speed (in seconds for a full rotation)
   let isHovered = false;
