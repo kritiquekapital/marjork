@@ -1290,21 +1290,18 @@ body.theme-retro .click-wheel {
   100% { transform: rotate(360deg); }
 }
 
-/* Substack Button for All Themes */
-.substack-button {
-  animation: spin 3s linear infinite; /* Default spin speed */
-}
-
 /* Substack Button for Modern Theme */
 .theme-modern .substack-button {
-  border-color: #1E3A8A; /* Blue border */
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Blue flower image */
+  border-color: transparent; /* Remove border */
+  background-image: none; /* Remove image */
+  animation: none; /* No spinning animation */
 }
 
 /* Substack Button for Space Theme */
 .theme-space .substack-button {
-  border-color: #1E3A8A; /* Blue border */
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
+  border-color: transparent; /* Remove border */
+  background-image: none; /* Remove image */
+  animation: none; /* No spinning animation */
 }
 
 /* The rest of the themes (classic, retro, nature, logistics) */
@@ -1314,6 +1311,12 @@ body.theme-retro .click-wheel {
 .theme-logistics .substack-button {
   border-color: #FF6A13; /* Default orange border */
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
+  animation: none; /* No spin animation for these themes */
+}
+
+/* Substack Button for all themes - to apply animation when hovered */
+.substack-button:hover {
+  animation: spin 3s linear infinite; /* Spin when hovered */
 }
 
 /* Image inside the Substack button */
