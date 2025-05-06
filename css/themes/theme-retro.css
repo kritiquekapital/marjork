@@ -37,6 +37,7 @@ body.theme-retro .grid-backdrop {
   animation: rainbow 5s ease infinite;
   background-blend-mode: screen;
   box-shadow: 0 0 10px #ff00ff;
+  z-index: 99999;
 }
 
 /* Substack Button */
