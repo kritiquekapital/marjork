@@ -1279,23 +1279,32 @@ body.theme-retro .click-wheel {
   transform-style: preserve-3d; /* Enable 3D transformations */
   position: relative; /* Ensure correct positioning */
   border: 2px solid #FF6A13; /* Default orange border */
-  animation: none; /* No animation by default */
   background-size: cover; /* Ensure the image is fully covered within the button */
   background-position: center; /* Center the image */
+  animation: none; /* No animation by default */
 }
 
-/* Substack Button for Modern Theme (Hide the default border and image) */
+/* Animation for spinning effect */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Substack Button for All Themes */
+.substack-button {
+  animation: spin 3s linear infinite; /* Default spin speed */
+}
+
+/* Substack Button for Modern Theme */
 .theme-modern .substack-button {
-  border-color: transparent; /* Hide border */
-  background-image: none; /* Remove background image */
-  animation: spin 3s linear infinite; /* Add spinning animation */
+  border-color: #1E3A8A; /* Blue border */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Blue flower image */
 }
 
-/* Substack Button for Space Theme (Hide the default border and image) */
+/* Substack Button for Space Theme */
 .theme-space .substack-button {
-  border-color: transparent; /* Hide border */
-  background-image: none; /* Remove background image */
-  animation: spin 3s linear infinite; /* Add spinning animation */
+  border-color: #1E3A8A; /* Blue border */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
 }
 
 /* The rest of the themes (classic, retro, nature, logistics) */
@@ -1305,7 +1314,6 @@ body.theme-retro .click-wheel {
 .theme-logistics .substack-button {
   border-color: #FF6A13; /* Default orange border */
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
-  animation: none; /* No spin animation for these themes */
 }
 
 /* Image inside the Substack button */
@@ -1316,10 +1324,4 @@ body.theme-retro .click-wheel {
   object-position: center;
   border-radius: 50%;
   opacity: 0.8; /* Add slight opacity to the image */
-}
-
-/* Animation for spinning effect */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
