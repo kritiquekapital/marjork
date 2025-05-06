@@ -17,16 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add(`theme-${currentTheme.name}`);
     themeButton.textContent = currentTheme.displayName;
 
-    // Handle the Substack button's image and border based on the theme
+    // Update the Substack button's border and image based on the theme
     if (currentTheme.name === "modern" || currentTheme.name === "space") {
-      substackButton.style.borderColor = "transparent"; // Hide the border for modern and space
-      substackImage.src = ""; // Remove the image for modern and space themes
+      substackButton.style.borderColor = "#1E3A8A"; // Blue border for modern and space
+      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Blue flower for modern and space
     } else {
-      substackButton.style.borderColor = "#FF6A13"; // Default orange border for other themes
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Default image
+      substackButton.style.borderColor = "#FF6A13"; // Orange border for other themes
+      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Orange flower for default themes
     }
 
-    // Ensure the correct background image and video display based on the theme
+    // Ensure the background images and videos are displayed based on the theme
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
       natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
