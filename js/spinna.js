@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function() {
   let rotationSpeed = 10; // Default speed for rotation (in seconds)
   let isHovered = false;
   let isClicked = false;
-  let rotationProgress = 0; // Track the progress of the rotation
 
   // Function to handle continuous rotation after hover is removed
   function startContinuousRotation() {
@@ -29,9 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   substackButton.addEventListener('click', function() {
-    // Increase speed progressively on click by reducing the rotation duration
+    // Increase velocity by decreasing the duration (speed up rotation)
     rotationSpeed -= 1; // Reduce the duration by 1 second on each click
     if (rotationSpeed <= 2) rotationSpeed = 2; // Limit the minimum speed to 2 seconds
+
+    // Apply the rotation with the updated speed
     substackButton.style.animation = `rotateSubstack ${rotationSpeed}s linear infinite`;
 
     // Temporarily increase rotation speed on click and then reset
