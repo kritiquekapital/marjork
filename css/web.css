@@ -1180,26 +1180,26 @@ body.theme-retro .click-wheel {
 
 /* Top-left corner post */
 .dropkickd-button .top-left-post {
-  top: -10px;
-  left: -10px;
+  top: -20px; /* Position above the button */
+  left: -20px; /* Position left of the button */
 }
 
 /* Top-right corner post */
 .dropkickd-button .top-right-post {
-  top: -10px;
-  right: -10px;
+  top: -20px; /* Position above the button */
+  right: -20px; /* Position right of the button */
 }
 
 /* Bottom-left corner post */
 .dropkickd-button .bottom-left-post {
-  bottom: -10px;
-  left: -10px;
+  bottom: -20px; /* Position below the button */
+  left: -20px; /* Position left of the button */
 }
 
 /* Bottom-right corner post */
 .dropkickd-button .bottom-right-post {
-  bottom: -10px;
-  right: -10px;
+  bottom: -20px; /* Position below the button */
+  right: -20px; /* Position right of the button */
 }
 
 /* Ring ropes (stretch from each corner) */
