@@ -40,7 +40,7 @@ body.theme-retro::before {
     rgba(255, 255, 255, 0.1) 4px
   );
   pointer-events: none;
-  z-index: 1000; /* Ensure scanline effect stays on top */
+  z-index: 10000000; /* Ensure scanline effect stays on top */
 }
 
 /* Rainbow Animation for Buttons */
