@@ -30,7 +30,12 @@ export class Bounceable {
                 this.element.style.top = `${rect.top + window.scrollY}px`;
 
                 // Set z-index to 99999 when free
-                this.element.style.zIndex = '99999';
+                this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
+
+                // Check if retro theme is active and apply glitch effect
+                if (document.body.classList.contains('theme-retro')) {
+                    this.element.classList.add('free-retro'); // This triggers retro glitch effect
+                }
             }
         } else {
             this.moveOppositeDirection(e.clientX, e.clientY);
@@ -104,7 +109,6 @@ export class Bounceable {
               this.element.style.top = `${newTop}px`;
             }
 
-
             if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
                 cancelAnimationFrame(this.animationFrame);
                 this.animationFrame = null;
@@ -154,7 +158,6 @@ export class Bounceable {
         Bounceable.trailLayer.appendChild(dot);
         setTimeout(() => dot.remove(), 500);
     }
-
 
     isColliding(other) {
         const rect1 = this.element.getBoundingClientRect();
