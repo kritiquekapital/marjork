@@ -1145,21 +1145,19 @@ body.theme-retro .click-wheel {
   font-size: 14px;
   text-align: center;
   line-height: 120px; /* Vertically center text */
-  border: 5px solid #B50000; /* Border color */
+  border: 5px solid #B50000; /* Border color for the circle */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden; /* Prevent overflow */
   cursor: pointer;
-  transition: transform 0.6s ease; /* Smooth transition for scaling */
-  transform-origin: center; /* Make sure the expansion happens from the center */
-  z-index: 10; /* Ensure the button is on top of other elements */
+  transition: all 0.6s ease; /* Smooth transition */
+  transform-origin: center; /* Ensure the expansion happens from the center */
 }
 
-/* On hover, expand the button into a squared circle */
+/* On hover, the circle's borders flood outward to form the squared circle */
 .dropkickd-button:hover {
-  transform: scale(2.5); /* Expand the button */
+  border-radius: 15px; /* Transform the button into a squared circle */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
-  z-index: 20; /* Ensure it covers other elements when expanded */
 }
 
 /* Ring posts at the four corners */
@@ -1175,7 +1173,7 @@ body.theme-retro .click-wheel {
   border-radius: 50%;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 15; /* Make sure posts appear above the button */
+  z-index: 15; /* Ensure posts appear above the button */
 }
 
 /* Top-left corner post */
@@ -1286,7 +1284,6 @@ body.theme-retro .click-wheel {
 .dropkickd-button:hover .logo {
   opacity: 1; /* Make logo appear when hovered */
 }
-
 
 /* Substack Button */
 .substack-button {
