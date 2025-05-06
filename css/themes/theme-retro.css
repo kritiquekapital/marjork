@@ -24,6 +24,18 @@ body.theme-retro .grid-backdrop {
 }
 
 /* Buttons */
+.theme-retro .kiss-button {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background-image: 
+    linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent),
+    linear-gradient(black, black); /* inner fallback */
+  background-size: 8px 8px, 100% 100%;
+  background-blend-mode: screen;
+  animation: retroPulse 0.25s infinite, spin 3s linear infinite;
+  box-shadow: 0 0 10px #ff00ff;
+}
+
 .theme-retro button {
   background-color: #ffcc00; /* Bright yellow */
   color: #000000; /* Black text */
@@ -41,7 +53,6 @@ body.theme-retro .grid-backdrop {
     linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546) border-box;
   animation: spin 3s linear infinite;
 }
-
 
 .theme-retro .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Flower%20%2304.png'); /* Correct raw image link */
