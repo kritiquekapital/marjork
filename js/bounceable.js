@@ -28,6 +28,9 @@ export class Bounceable {
                 this.element.style.position = 'fixed';
                 this.element.style.left = `${rect.left + window.scrollX}px`;
                 this.element.style.top = `${rect.top + window.scrollY}px`;
+
+                // Set z-index to 99999 when free
+                this.element.style.zIndex = '99999';
             }
         } else {
             this.moveOppositeDirection(e.clientX, e.clientY);
@@ -124,7 +127,7 @@ export class Bounceable {
                 width: '100vw',
                 height: '100vh',
                 pointerEvents: 'none',
-                zIndex: '0'
+                zIndex: '9998' // One layer below the kiss button
             });
             document.body.appendChild(Bounceable.trailLayer);
         }
@@ -141,12 +144,12 @@ export class Bounceable {
             borderRadius: '1px',
             left: `${left}px`,
             top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-            zIndex: '1',
+            zIndex: '9998', // Ensure the dot is below the kiss button
             pointerEvents: 'none'
         });
 
         // Ensure the bounceable button (like kiss) stays visually on top
-        sourceEl.style.zIndex = '10';
+        sourceEl.style.zIndex = '99999';
 
         Bounceable.trailLayer.appendChild(dot);
         setTimeout(() => dot.remove(), 500);
