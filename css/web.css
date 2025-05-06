@@ -1109,36 +1109,6 @@ body.theme-retro .click-wheel {
   100% { transform: rotate(360deg); }
 }
 
-/* Substack Button Styling - Continuous Rotation */
-.substack-button {
-  display: inline-block;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #7D7D7D; /* Substack's gray color */
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  text-align: center;
-  line-height: 120px;
-  border: 5px solid #7D7D7D; /* Border color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  transition: transform 0.6s ease; /* Smooth rotation */
-}
-
-/* Substack Button Hover: Slow continuous rotation */
-.substack-button:hover {
-  transform: rotate(360deg); /* Rotate the button continuously */
-  animation: rotateSubstack 10s linear infinite; /* Slow, continuous spin */
-}
-
-/* Keyframes for Substack continuous rotation */
-@keyframes rotateSubstack {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 /* Wrestling Button */
 .dropkickd-button {
   display: inline-block;
