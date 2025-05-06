@@ -1109,15 +1109,28 @@ body.theme-retro .click-wheel {
 }
 
 /* Substack Avatar Button Styling */
-.substack-button img {
-  border-radius: 50%; /* Makes the image circular */
-  width: 100px; /* Adjust the size */
+.substack-button {
+  display: inline-block;
+  width: 100px;  /* Set the size of the button */
   height: 100px;
+  border-radius: 50%;  /* Makes the button circular */
+  overflow: hidden;  /* Ensures the image stays within the circular button */
+  background-color: #7D7D7D;  /* Substack's gray color */
+  border: 2px solid #7D7D7D;  /* Border color to match the background */
   transition: transform 0.3s ease;
 }
 
-.substack-button:hover img {
-  transform: scale(1.1); /* Slightly enlarge the image on hover */
+.substack-button img {
+  width: 100%;  /* Make sure the image fills the button */
+  height: 100%;  /* Ensure the image fully covers the button area */
+  object-fit: cover;  /* Ensures the image is contained within the button without distortion */
+}
+
+.substack-button:hover {
+  background-color: white;
+  color: #7D7D7D;
+  border-color: #7D7D7D;
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
 }
 
 /* DropkickD Button */
