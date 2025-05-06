@@ -1151,7 +1151,7 @@ body.theme-retro .click-wheel {
   border-radius: 50%;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 25; /* Ensure posts are above the button */
+  z-index: 99999; /* Ensure posts are above the button */
 }
 
 /* Top-left corner post */
@@ -1188,7 +1188,7 @@ body.theme-retro .click-wheel {
   background-color: #F0A7D1; /* Light purple ropes */
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 15; /* Make sure ropes appear below posts but above the button */
+  z-index: 9999; /* Make sure ropes appear below posts but above the button */
 }
 
 /* Top rope */
