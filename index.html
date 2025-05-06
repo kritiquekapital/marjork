@@ -18,6 +18,59 @@
   <!-- Theme Color  -->
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
+  <style>
+    /* Substack Avatar Button Styling */
+    .substack-button img {
+      border-radius: 50%; /* Makes the image circular */
+      width: 100px; /* Adjust the size */
+      height: 100px;
+      transition: transform 0.3s ease;
+    }
+
+    .substack-button:hover img {
+      transform: scale(1.1); /* Slightly enlarge the image on hover */
+    }
+
+    /* General button styling */
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 50%;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+      border: 2px solid;
+    }
+
+    /* DropkickD Button */
+    .dropkickd-button {
+      background-color: #FF4C4C; /* Red for DropkickD - wrestling theme */
+      border-color: #FF4C4C; /* Match the border color to the background */
+    }
+
+    .dropkickd-button:hover {
+      background-color: white;
+      color: #FF4C4C;
+      border-color: #FF4C4C;
+      transform: scale(1.1); /* Hover effect to enlarge the button */
+    }
+
+    /* Substack Button */
+    .substack-button {
+      background-color: #7D7D7D; /* Substack's gray color */
+      border-color: #7D7D7D; /* Match the border color to the background */
+    }
+
+    .substack-button:hover {
+      background-color: white;
+      color: #7D7D7D;
+      border-color: #7D7D7D;
+      transform: scale(1.1); /* Hover effect to enlarge the button */
+    }
+  </style>
 </head>
 <script>
     if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
@@ -32,7 +85,9 @@
   <div class="grid-backdrop"></div>
 
   <!-- First Row (Interactive and Content-Related) -->
-  <a href="https://substack.com/@camglhf?utm_source=user-menu" target="_blank" class="substack-button" style="grid-row: 1; grid-column: 1;">Substack</a>
+  <a href="https://substack.com/@camglhf?utm_source=user-menu" target="_blank" class="substack-button" style="grid-row: 1; grid-column: 1;">
+    <img src="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/substack-avatar.png" alt="Substack">
+  </a>
   <a href="https://x.com/cameron_glhf" target="_blank" class="twitter" style="grid-row: 1; grid-column: 2;">
     <img src="https://pbs.twimg.com/profile_images/1778281333531234305/6Vj_j3iH_400x400.jpg" alt="Twitter">
   </a>
@@ -81,7 +136,6 @@
   <button class="wip" style="grid-row: 5; grid-column: 1;">🔜</button>
   <button class="wip" style="grid-row: 5; grid-column: 3;">🔜</button>
 </div>
-
 
   <div id="musicPlayer" class="ipod-popup draggable">
     <div class="ipod-screen">
