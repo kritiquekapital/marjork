@@ -1278,7 +1278,7 @@ body.theme-retro .click-wheel {
   z-index: 2; /* Ensure it stays above the grid container */
   transform-style: preserve-3d; /* Enable 3D transformations */
   position: relative; /* Ensure correct positioning */
-  border: 1.8px groove #FF6A13; /* Orange border color */
+  border: 2px solid #FF6A13; /* Default border color (Orange) */
   animation: none; /* No animation by default */
 }
 
@@ -1292,11 +1292,13 @@ body.theme-retro .click-wheel {
   opacity: 0.8; /* Add slight opacity to the image */
 }
 
-/* Substack Button Hover: Slow continuous rotation */
-.substack-button:hover {
-  transform: scale(1.1); /* Enlarges the button */
-  animation: rotateSubstack 10s linear infinite; /* Slow, continuous spin */
-  z-index: 3; /* Ensure it’s on top when hovered */
+/* When modern theme is active, change border and image */
+.theme-modern .substack-button {
+  border-color: #1E3A8A; /* Blue border color */
+}
+
+.theme-modern .substack-button img {
+  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Blue flower image */
 }
 
 /* Continuous Rotation Keyframes */
@@ -1309,11 +1311,16 @@ body.theme-retro .click-wheel {
   }
 }
 
+/* Substack Button Hover: Rotation with progressive speed */
+.substack-button:hover {
+  transform: scale(1.1); /* Enlarges the button */
+  z-index: 3; /* Ensure it’s on top when hovered */
+}
+
 /* Optional: On hover, slightly scale the image */
 .substack-button:hover img {
   transform: scale(1.1); /* Slightly enlarge image */
 }
-
 
 /* General Image Styling for Buttons */
 button img, a img {
