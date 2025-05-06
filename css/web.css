@@ -1310,9 +1310,3 @@ body.theme-retro .click-wheel {
   opacity: 1; /* Make sure the image is fully visible */
   transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
 }
-
-/* Spinning animation for Substack button */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
