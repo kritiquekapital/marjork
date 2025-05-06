@@ -36,6 +36,14 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 10px #ffd700;
 }
 
+.theme-space .substack-button {
+  border-color: transparent; /* Hide border */
+  animation: spin 3s linear infinite; /* Spinning animation */
+}
+
+.theme-space .substack-button img {
+  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%23001.png'); /* Space-themed image */
+}
 /* Space Theme Inactivity Tint */
 .space-tint {
   position: fixed;
