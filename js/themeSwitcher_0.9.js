@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
       substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Modern image
     } else if (currentTheme.name === "space") {
       substackButton.style.borderColor = "transparent"; // Hide border for space
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Space-themed image
+      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%23001.png"; // Space-themed image
     } else {
       substackButton.style.borderColor = "#FF6A13"; // Default orange border
       substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Default image
