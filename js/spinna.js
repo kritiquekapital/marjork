@@ -1,61 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
   const substackButton = document.querySelector('.substack-button');
-  if (!substackButton) {
-    console.error('.substack-button not found in the DOM.');
-    return; // Stop the script if the button isn't found
-  }
-
   const substackImage = substackButton.querySelector('img');
-  if (!substackImage) {
-    console.error('Image element inside .substack-button not found.');
-    return; // Stop the script if the image isn't found
-  }
+  let currentThemeIndex = 0;  // Set the starting theme index
 
-  let rotationSpeed = 3; // Default speed (in seconds for a full rotation)
-  let isHovered = false;
+  // Function to apply the theme
+  function applyTheme() {
+    const currentTheme = themes[currentThemeIndex];
+    document.body.classList.remove(
+      'theme-classic',
+      'theme-modern',
+      'theme-retro',
+      'theme-nature',
+      'theme-space',
+      'theme-logistics'
+    );
+    document.body.classList.add(`theme-${currentTheme.name}`);
+    themeButton.textContent = currentTheme.displayName;
 
-  // Function to update the spinning speed
-  function updateSpinSpeed() {
-    // Apply the updated speed to the animation duration
-    substackButton.style.animation = `spin ${rotationSpeed}s linear infinite`;
-  }
-
-  // Hover effect: Reset rotation speed on hover
-  substackButton.addEventListener('mouseenter', () => {
-    isHovered = true;
-    rotationSpeed = 3; // Reset to default speed on hover
-    updateSpinSpeed();
-    substackButton.style.animation = "spin 3s linear infinite"; // Start spinning when hovered
-  });
-
-  // When mouse leaves: continue spinning with the updated speed
-  substackButton.addEventListener('mouseleave', () => {
-    isHovered = false;
-    updateSpinSpeed();
-    // Stop spinning when mouse leaves
-    substackButton.style.animation = "none";
-  });
-
-  // Click effect: Increase spin velocity (decrease the duration)
-  substackButton.addEventListener('click', () => {
-    rotationSpeed -= 0.5; // Increase the spin speed by reducing the time
-    if (rotationSpeed <= 0.5) rotationSpeed = 0.5; // Minimum speed limit
-    updateSpinSpeed();
-  });
-
-  // Initial spin animation
-  updateSpinSpeed(); // Set the default spin speed on page load
-
-  // Update Substack button styles based on the current theme
-  const themeButton = document.getElementById("themeButton");
-  themeButton.addEventListener("click", () => {
-    const currentTheme = themes[currentThemeIndex]; // Update according to your theme logic
+    // Handle the Substack button's image and border based on the theme
     if (currentTheme.name === "modern" || currentTheme.name === "space") {
-      substackButton.style.borderColor = "transparent"; // Hide border
-      substackImage.src = ""; // Remove the image for modern and space
+      substackButton.style.borderColor = "transparent"; // Hide the border for modern and space
+      substackImage.src = ""; // Remove the image for modern and space themes
     } else {
       substackButton.style.borderColor = "#FF6A13"; // Default orange border for other themes
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Original image
+      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Default image
     }
+
+    // Ensure the correct background image and video display based on the theme
+    if (currentTheme.name === "nature") {
+      natureVideo.style.display = "block";
+      natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
+    } else {
+      natureVideo.style.display = "none";
+      natureAudio.pause();
+    }
+
+    if (currentTheme.name === "space") {
+      spaceBackground.style.display = "block";
+    } else {
+      spaceBackground.style.display = "none";
+    }
+  }
+
+  // Apply the initial theme on page load
+  applyTheme();
+
+  // Theme switcher button click event listener
+  themeButton.addEventListener("click", () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;  // Cycle through themes
+    applyTheme();
   });
 });
