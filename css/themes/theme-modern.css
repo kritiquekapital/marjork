@@ -20,5 +20,5 @@ body.theme-modern .grid-container {
 }
 
 .theme-modern .substack-button img {
-  content: url('https://kritiquekapital.github.io/marjork/css/pic/Psych-Flower%20%2301.png');
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Correct raw GitHub URL */
 }
