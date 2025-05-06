@@ -14,6 +14,15 @@
 .theme-logistics .grid-container {
   transition: opacity 0.5s ease-in-out;
 }
+
+.theme-logistics .substack-button {
+  border-color: #FF6A13; /* Default orange border */
+}
+
+.theme-logistics .substack-button img {
+  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
+}
+
 .logistics-volume-slider,
 .logistics-speed-slider {
   width: 100px;
