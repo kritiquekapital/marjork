@@ -129,20 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
 
-  // Update Substack button styles based on theme
-  if (currentTheme.name === "modern") {
-    document.querySelector('.substack-button').style.borderColor = "#1E3A8A"; // Blue border
-    substackImage.classList.remove('default-image');
-    substackImage.classList.add('modern-image'); // Add specific class for modern theme image
-  } else if (currentTheme.name === "space") {
-    document.querySelector('.substack-button').style.borderColor = "#1A202C"; // Dark space border
-    substackImage.classList.remove('default-image');
-    substackImage.classList.add('space-image'); // Add specific class for space theme image
-  } else {
-    document.querySelector('.substack-button').style.borderColor = "#FF6A13"; // Default orange border
-    substackImage.classList.remove('modern-image', 'space-image');
-    substackImage.classList.add('default-image'); // Revert to default image
-  }
+    // Update Substack button styles based on theme
+    if (currentTheme.name === "modern") {
+      document.querySelector('.substack-button').style.borderColor = "#1E3A8A"; // Blue border
+      substackImage.classList.remove('default-image');
+      substackImage.classList.add('modern-image'); // Add specific class for modern theme image
+    } else if (currentTheme.name === "space") {
+      document.querySelector('.substack-button').style.borderColor = "#1A202C"; // Dark space border
+      substackImage.classList.remove('default-image');
+      substackImage.classList.add('space-image'); // Add specific class for space theme image
+    } else {
+      document.querySelector('.substack-button').style.borderColor = "#FF6A13"; // Default orange border
+      substackImage.classList.remove('modern-image', 'space-image');
+      substackImage.classList.add('default-image'); // Revert to default image
+    }
 
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
