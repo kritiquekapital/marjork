@@ -1278,7 +1278,7 @@ body.theme-retro .click-wheel {
   z-index: 2; /* Ensure it stays above the grid container */
   transform-style: preserve-3d; /* Enable 3D transformations */
   position: relative; /* Ensure correct positioning */
-  border: 2px solid #FF6A13; /* Default orange border */
+  border: 5px solid #FF6A13; /* Default orange border */
   animation: none; /* No animation by default */
 }
 
@@ -1308,17 +1308,9 @@ body.theme-retro .click-wheel {
   border-color: #1E3A8A; /* Blue border */
 }
 
-.theme-modern .substack-button img {
-  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Blue flower image */
-}
-
 /* Substack Button for Space Theme */
 .theme-space .substack-button {
   border-color: #1A202C; /* Dark space border */
-}
-
-.theme-space .substack-button img {
-  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
 }
 
 /* The rest of the themes (classic, retro, nature, logistics) */
@@ -1327,11 +1319,4 @@ body.theme-retro .click-wheel {
 .theme-nature .substack-button,
 .theme-logistics .substack-button {
   border-color: #FF6A13; /* Default orange border */
-}
-
-.theme-classic .substack-button img,
-.theme-retro .substack-button img,
-.theme-nature .substack-button img,
-.theme-logistics .substack-button img {
-  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
 }
