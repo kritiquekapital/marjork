@@ -1293,27 +1293,47 @@ body.theme-retro .click-wheel {
   opacity: 1; /* Make logo appear when hovered */
 }
 
-/* Substack Button */
+/* Substack Button Styling */
 .substack-button {
   display: inline-block;
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: #FF6A13;
+  background-color: #7D7D7D; /* Substack's gray color */
   color: white;
   font-weight: bold;
   font-size: 14px;
   text-align: center;
   line-height: 120px;
-  border: 2px solid #FF6A13;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  border: 5px solid #FF6A13; /* Orange-ish border color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
-  transition: transform 0.6s ease; /* Smooth rotation */
+  transition: transform 0.6s ease; /* Smooth transition for rotation */
+  transform-origin: center; /* Ensure the rotation happens from the center */
+  animation: none; /* No animation by default */
+  z-index: 1;
 }
 
-/* Substack Button Rotation (on hover, similar to Twitter) */
+/* Substack Button Hover: Slow continuous rotation */
 .substack-button:hover {
-  transform: rotate(360deg); /* Rotate the button on hover */
+  transform: scale(1.1); /* Enlarges the button */
+  animation: rotateSubstack 10s linear infinite; /* Slow, continuous spin */
+  z-index: 2; /* Ensure it’s on top when hovered */
+}
+
+/* Continuous Rotation Keyframes */
+@keyframes rotateSubstack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: On hover, slightly scale the image */
+.substack-button:hover img {
+  transform: scale(1.1); /* Slightly enlarge image */
 }
 
 /* General Image Styling for Buttons */
