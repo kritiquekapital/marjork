@@ -80,6 +80,32 @@ body.theme-retro button:hover {
   animation: pixelate 0.5s ease-in-out; /* Apply pixelate effect on hover */
 }
 
+/* Kiss Button when Free */
+.kiss-button.free {
+  z-index: 99999 !important; /* Ensure the kiss button is on top when it's free */
+}
+
+/* Kiss Trail (Bounce Dot) */
+.bounce-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998; /* One layer below the kiss button */
+  pointer-events: none;
+}
+
+.bounce-dot {
+  background-color: teal;
+  opacity: 0.6;
+  height: 6px;
+  border-radius: 1px;
+  z-index: 9998; /* Ensure the dot is below the kiss button */
+  pointer-events: none;
+  position: fixed;
+}
+
 @keyframes pixelate {
   0% {
     filter: blur(0);
