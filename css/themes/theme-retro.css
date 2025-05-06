@@ -25,13 +25,12 @@ body.theme-retro .grid-backdrop {
 
 /* Buttons */
 .theme-retro button {
-  background-color: #00ffcc; /* Neon teal */
-  color: #ff00ff; /* Neon pink */
-  border: 2px solid #ffcc00; /* Bright yellow */
-  box-shadow: 0 0 15px #ff00ff; /* Glow effect */
-  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
-  background-size: 400% 400%;
-  animation: rainbow 5s ease infinite;
+  background-color: #ffcc00; /* Bright yellow */
+  color: #000000; /* Black text */
+  border: 2px solid #00ffcc; /* Neon teal */
+  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
 }
 
 .theme-retro .substack-button {
