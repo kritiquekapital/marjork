@@ -681,14 +681,15 @@ body {
   transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition */
   transform: scale(1); /* Initial size */
   transform-origin: center center; /* Make sure it expands from the center */
+  overflow: hidden; /* Prevents the content from overflowing the new rounded corners */
 }
 
-/* On hover, the circle's borders flood outward to form the squared circle (like Dropkickd) */
+/* On hover, the circle's borders overflow and transform into a rounded square */
 .vinyl:hover {
-  border-radius: 15px; /* Transform the vinyl into a squared circle */
-  transform: scale(1.3); /* Expand outward */
+  border-radius: 15px; /* Transform the vinyl into a rounded square (squared circle) */
+  transform: scale(1.1); /* Slightly expand outward */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
-  z-index: 20; /* Ensure it stays above other elements */
+  z-index: 20; /* Keep it at the same z-index */
 }
 
 /* Record - The inner part of the vinyl doesn't change */
@@ -1294,29 +1295,29 @@ body.theme-retro .click-wheel {
   transform-style: preserve-3d; /* Enable 3D transformations */
   position: relative; /* Ensure correct positioning */
   border: 2px solid #FF6A13; /* Default orange border */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Default image */
   background-size: cover; /* Ensure the image is fully covered within the button */
   background-position: center; /* Center the image */
-  animation: none; /* No animation by default */
 }
 
-/* Animation for spinning effect */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Remove the orange border and image for Modern and Space Themes */
+.theme-modern .substack-button,
+.theme-space .substack-button {
+  border-color: transparent; /* Hide the border */
+  background-image: none; /* Remove the background image */
+  animation: spin 3s linear infinite; /* Add spinning animation */
 }
 
 /* Substack Button for Modern Theme */
 .theme-modern .substack-button {
-  border-color: transparent; /* Remove border */
-  background-image: none; /* Remove image */
-  animation: none; /* No spinning animation */
+  border-color: #1E3A8A; /* Blue border for modern theme */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Modern image */
 }
 
 /* Substack Button for Space Theme */
 .theme-space .substack-button {
-  border-color: transparent; /* Remove border */
-  background-image: none; /* Remove image */
-  animation: none; /* No spinning animation */
+  border-color: #1A202C; /* Dark border for space theme */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
 }
 
 /* The rest of the themes (classic, retro, nature, logistics) */
@@ -1326,12 +1327,7 @@ body.theme-retro .click-wheel {
 .theme-logistics .substack-button {
   border-color: #FF6A13; /* Default orange border */
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
-  animation: none; /* No spin animation for these themes */
-}
-
-/* Substack Button for all themes - to apply animation when hovered */
-.substack-button:hover {
-  animation: spin 3s linear infinite; /* Spin when hovered */
+  animation: none; /* No spinning animation for these themes */
 }
 
 /* Image inside the Substack button */
@@ -1342,4 +1338,10 @@ body.theme-retro .click-wheel {
   object-position: center;
   border-radius: 50%;
   opacity: 0.8; /* Add slight opacity to the image */
+}
+
+/* Animation for spinning effect */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
