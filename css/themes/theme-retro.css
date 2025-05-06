@@ -24,15 +24,6 @@ body.theme-retro .grid-backdrop {
 }
 
 /* Buttons */
-.theme-retro button {
-  background-color: #ffcc00; /* Bright yellow */
-  color: #000000; /* Black text */
-  border: 2px solid #00ffcc; /* Neon teal */
-  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
-}
-
 .theme-retro .-button {
   background-color: #00ffcc; /* Neon teal */
   color: #ff00ff; /* Neon pink */
