@@ -8,9 +8,14 @@
 }
 
 .theme-retro .grid-container button {
-  background-image: linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent);
-  background-size: 8px 8px;
-  animation: retroPulse 0.25s infinite, rainbow 3s ease infinite;
+  background: linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546); /* Rainbow gradient */
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
+  color: #000000; /* Black text */
+  border: 2px solid transparent; /* Transparent border, rainbow border applied separately */
+  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
 }
 
 body.theme-retro .grid-backdrop {
@@ -23,36 +28,24 @@ body.theme-retro .grid-backdrop {
   height: 100%;
 }
 
-/* Buttons */
+/* Kiss button */
 .theme-retro .kiss-button {
   border: 2px solid transparent;
   border-radius: 50%;
-  background-image: 
-    linear-gradient(90deg, #ff00ff33 25%, transparent 25%, transparent 50%, #ff00ff33 50%, #ff00ff33 75%, transparent 75%, transparent),
-    linear-gradient(black, black); /* inner fallback */
-  background-size: 8px 8px, 100% 100%;
-  background-blend-mode: screen;
-  animation: retroPulse 0.25s infinite, spin 3s linear infinite;
-  box-shadow: 0 0 10px #ff00ff;
-}
-
-.theme-retro button {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
   background-size: 400% 400%;
   animation: rainbow 5s ease infinite;
-  color: #000000; /* Black text */
-  border: 2px solid #00ffcc; /* Neon teal */
-  box-shadow: 0 0 10px #ff00ff; /* Glow effect */
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
+  background-blend-mode: screen;
+  box-shadow: 0 0 10px #ff00ff;
 }
 
+/* Substack Button */
 .theme-retro .substack-button {
   border: 2px solid transparent;
   border-radius: 50%;
-  background: 
-    linear-gradient(black, black) padding-box,
-    linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546) border-box;
+  background: linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546); /* Rainbow gradient */
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
 }
 
 .theme-retro .substack-button img {
