@@ -1134,16 +1134,85 @@ body.theme-retro .click-wheel {
 }
 
 /* DropkickD Button */
+/* Wrestling Button Design */
 .dropkickd-button {
-  background-color: #FF4C4C; /* Red for DropkickD - wrestling theme */
-  border-color: #FF4C4C; /* Match the border color to the background */
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #FF4C4C; /* Bold red like the wrestling theme */
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  line-height: 120px; /* Vertically center text */
+  border: 5px solid #B50000; /* A bold border for the wrestling theme */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden; /* Prevent overflow */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.2s ease;
 }
 
 .dropkickd-button:hover {
-  background-color: white;
-  color: #FF4C4C;
-  border-color: #FF4C4C;
-  transform: scale(1.1); /* Hover effect to enlarge the button */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More intense shadow */
+}
+
+/* Ring Corners */
+.dropkickd-button::before, .dropkickd-button::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #B50000; /* Bold red color for the ring corners */
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Top-left corner */
+.dropkickd-button::before {
+  top: -15px;
+  left: -15px;
+  transform: rotate(-45deg);
+}
+
+/* Bottom-right corner */
+.dropkickd-button::after {
+  bottom: -15px;
+  right: -15px;
+  transform: rotate(135deg);
+}
+
+/* Expand and flip corners on hover */
+.dropkickd-button:hover::before {
+  top: -60px;
+  left: -60px;
+  transform: rotate(0deg) scale(2);
+}
+
+.dropkickd-button:hover::after {
+  bottom: -60px;
+  right: -60px;
+  transform: rotate(0deg) scale(2);
+}
+
+/* Add corner flip animations (for more dramatic effect) */
+@keyframes flip-corner {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg); /* Flip corner */
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.dropkickd-button:hover::before,
+.dropkickd-button:hover::after {
+  animation: flip-corner 1s ease-out infinite; /* Continuous flip on hover */
 }
 
 /* Substack Button */
