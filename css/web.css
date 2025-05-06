@@ -1265,30 +1265,35 @@ body.theme-retro .click-wheel {
 
 /* Substack Button Styling */
 .substack-button {
-  display: inline-block;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
   background-color: #7D7D7D; /* Substack's gray color */
   color: white;
-  font-weight: bold;
-  font-size: 14px;
-  text-align: center;
-  line-height: 120px;
-  border: 5px solid #FF6A13; /* Orange-ish border color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  position: relative;
-  transition: transform 0.6s ease; /* Smooth transition for rotation */
-  transform-origin: center; /* Ensure the rotation happens from the center */
-  animation: none; /* No animation by default */
-  z-index: 1;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  z-index: 2; /* Ensure it stays above the grid container */
+  transform-style: preserve-3d; /* Enable 3D transformations */
+  position: relative; /* Ensure correct positioning */
+}
+
+/* Image inside the Substack button */
+.substack-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
 }
 
 /* Substack Button Hover: Slow continuous rotation */
 .substack-button:hover {
   transform: scale(1.1); /* Enlarges the button */
   animation: rotateSubstack 10s linear infinite; /* Slow, continuous spin */
-  z-index: 2; /* Ensure it’s on top when hovered */
+  z-index: 3; /* Ensure it’s on top when hovered */
 }
 
 /* Continuous Rotation Keyframes */
