@@ -1278,7 +1278,6 @@ body.theme-retro .click-wheel {
 .dropkickd-button:hover .logo {
   opacity: 1; /* Make logo appear when hovered */
 }
-
 /* Substack Button Styling (Default) */
 .substack-button {
   background-color: #FF6A13; /* Default orange background */
@@ -1301,36 +1300,28 @@ body.theme-retro .click-wheel {
   animation: spin 3s linear infinite; /* Spinning animation */
 }
 
-/* Substack Button for Modern Theme */
-.theme-modern .substack-button {
-  border-color: #1E3A8A; /* Blue border for modern theme */
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Modern image */
-}
-
-/* Substack Button for Space Theme */
-.theme-space .substack-button {
-  border-color: #1A202C; /* Dark border for space theme */
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
-}
-
-/* The rest of the themes (classic, retro, nature, logistics) */
-.theme-classic .substack-button,
-.theme-retro .substack-button,
-.theme-nature .substack-button,
-.theme-logistics .substack-button {
-  border-color: #FF6A13; /* Default orange border */
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
-  animation: spin 3s linear infinite; /* Spinning animation */
-}
-
-/* Image inside the Substack button */
+/* Ensure the image is fully visible and positioned correctly */
 .substack-button img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
-  opacity: 0.8; /* Add slight opacity to the image */
+  opacity: 1; /* Make sure the image is fully visible */
+  transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+}
+
+/* Remove the image or hide it only for specific themes (Modern, Space) */
+.theme-modern .substack-button,
+.theme-space .substack-button {
+  border-color: transparent; /* Hide border */
+  background-image: none; /* Remove the background image */
+  animation: spin 3s linear infinite; /* Add spinning animation */
+}
+
+.theme-modern .substack-button img,
+.theme-space .substack-button img {
+  display: none; /* Hide image in Modern and Space themes */
 }
 
 /* Spinning animation for Substack button */
