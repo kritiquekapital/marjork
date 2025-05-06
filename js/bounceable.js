@@ -96,17 +96,24 @@ export class Bounceable {
                 this.velocity.y *= -0.9;
             }
 
+            // Check if retro or space mode is active
             const isRetro = document.body.classList.contains('theme-retro');
+            const isSpace = document.body.classList.contains('theme-space');
 
             if (isRetro) {
-              // Apply snapping effect and create the trail dot in retro mode
+              // Apply glitchy movement and snapping effect in retro mode
               const snappedLeft = Math.round(newLeft / 4) * 4;
               const snappedTop = Math.round(newTop / 4) * 4;
               this.element.style.left = `${snappedLeft}px`;
               this.element.style.top = `${snappedTop}px`;
               Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+            } else if (isSpace) {
+              // Apply zero gravity effect in space mode
+              this.element.style.left = `${newLeft}px`;
+              this.element.style.top = `${newTop}px`;
+              // You can add a specific method for zero-gravity movement here
             } else {
-              // In non-retro mode, move normally
+              // Default behavior in other themes
               this.element.style.left = `${newLeft}px`;
               this.element.style.top = `${newTop}px`;
             }
@@ -161,46 +168,5 @@ export class Bounceable {
 
         Bounceable.trailLayer.appendChild(dot);
         setTimeout(() => dot.remove(), 500);
-    }
-
-    isColliding(other) {
-        const rect1 = this.element.getBoundingClientRect();
-        const rect2 = other.element.getBoundingClientRect();
-        return !(
-            rect1.right < rect2.left ||
-            rect1.left > rect2.right ||
-            rect1.bottom < rect2.top ||
-            rect1.top > rect2.bottom
-        );
-    }
-
-    resolveCollision(other) {
-        const rect1 = this.element.getBoundingClientRect();
-        const rect2 = other.element.getBoundingClientRect();
-
-        const dx = (rect1.left + rect1.width / 2) - (rect2.left + rect2.width / 2);
-        const dy = (rect1.top + rect1.height / 2) - (rect2.top + rect2.height / 2);
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const minDistance = this.radius + other.radius;
-
-        if (distance < minDistance) {
-            const nx = dx / distance;
-            const ny = dy / distance;
-            const rvx = other.velocity.x - this.velocity.x;
-            const rvy = other.velocity.y - this.velocity.y;
-            const speed = rvx * nx + rvy * ny;
-            const impulse = 2 * speed / (1 + 1);
-
-            this.velocity.x += impulse * nx;
-            this.velocity.y += impulse * ny;
-            other.velocity.x -= impulse * nx;
-            other.velocity.y -= impulse * ny;
-
-            const overlap = minDistance - distance;
-            this.element.style.left = `${parseFloat(this.element.style.left) + nx * overlap / 2}px`;
-            this.element.style.top = `${parseFloat(this.element.style.top) + ny * overlap / 2}px`;
-            other.element.style.left = `${parseFloat(other.element.style.left) - nx * overlap / 2}px`;
-            other.element.style.top = `${parseFloat(other.element.style.top) - ny * overlap / 2}px`;
-        }
     }
 }
