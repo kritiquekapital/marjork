@@ -37,6 +37,9 @@ body.theme-retro .grid-backdrop {
 }
 
 .theme-retro button {
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00, #ff00ff);
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
   color: #000000; /* Black text */
   border: 2px solid #00ffcc; /* Neon teal */
   box-shadow: 0 0 10px #ff00ff; /* Glow effect */
