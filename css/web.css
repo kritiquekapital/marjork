@@ -1139,25 +1139,27 @@ body.theme-retro .click-wheel {
   width: 120px;
   height: 120px;
   border-radius: 50%; /* Initially circular */
-  background-color: #FF4C4C; /* Bold red color for wrestling theme */
+  background-color: #4A1F44; /* Dark purple background for the wrestling ring */
   color: white;
   font-weight: bold;
   font-size: 14px;
   text-align: center;
   line-height: 120px; /* Vertically center text */
-  border: 5px solid #B50000; /* Border color for the circle */
+  border: 5px solid #3A0E35; /* Darker purple border for the ring */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden; /* Prevent overflow */
   cursor: pointer;
-  transition: all 0.6s ease; /* Smooth transition */
+  transition: all 0.6s ease; /* Smooth transition for scaling */
   transform-origin: center; /* Ensure the expansion happens from the center */
+  z-index: 10; /* Ensure the button is on top of other elements */
 }
 
 /* On hover, the circle's borders flood outward to form the squared circle */
 .dropkickd-button:hover {
   border-radius: 15px; /* Transform the button into a squared circle */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  z-index: 20; /* Ensure it covers other elements when expanded */
 }
 
 /* Ring posts at the four corners */
@@ -1169,11 +1171,11 @@ body.theme-retro .click-wheel {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-color: #B50000; /* Ring post color */
+  background-color: #C74E85; /* Purple color for ring posts */
   border-radius: 50%;
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 15; /* Ensure posts appear above the button */
+  z-index: 25; /* Ensure posts are above the button */
 }
 
 /* Top-left corner post */
@@ -1207,10 +1209,10 @@ body.theme-retro .click-wheel {
 .dropkickd-button .rope-right {
   content: "";
   position: absolute;
-  background-color: #fff; /* Rope color */
+  background-color: #F0A7D1; /* Light purple ropes */
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 5; /* Make sure ropes appear below posts but above the button */
+  z-index: 15; /* Make sure ropes appear below posts but above the button */
 }
 
 /* Top rope */
