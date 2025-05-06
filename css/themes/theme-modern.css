@@ -15,8 +15,11 @@ body.theme-modern .grid-container {
 }
 
 .theme-modern .substack-button {
-  border-color: #1275c7; /* Hide border */
-  animation: spin 3s linear infinite; /* Spinning animation */
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: 
+    linear-gradient(black, black) padding-box, /* Button interior */
+    linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
 .theme-modern .substack-button img {
