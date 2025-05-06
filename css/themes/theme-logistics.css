@@ -15,7 +15,7 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.theme-modern .substack-button {
+.theme-logistics .substack-button {
   border: 2px solid transparent;
   border-radius: 50%;
   background: 
@@ -23,7 +23,7 @@
     linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
-.theme-modern .substack-button img {
+.theme-logisitics .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Correct raw GitHub URL */
 }
 
