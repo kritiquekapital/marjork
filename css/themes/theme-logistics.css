@@ -15,12 +15,16 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.theme-logistics .substack-button {
-  border-color: #FF6A13; /* Default orange border */
+.theme-modern .substack-button {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: 
+    linear-gradient(black, black) padding-box, /* Button interior */
+    linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
-.theme-logistics .substack-button img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
+.theme-modern .substack-button img {
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Correct raw GitHub URL */
 }
 
 .logistics-volume-slider,
