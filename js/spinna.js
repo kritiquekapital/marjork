@@ -36,12 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeButton = document.getElementById("themeButton");
   themeButton.addEventListener("click", () => {
     const currentTheme = themes[currentThemeIndex]; // Update according to your theme logic
+    const substackButton = document.querySelector('.substack-button');
+    const substackImage = substackButton.querySelector('img');  // Get the image inside the button
+
     if (currentTheme.name === "modern" || currentTheme.name === "space") {
       substackButton.style.borderColor = "transparent"; // Hide border for modern and space themes
-      substackImage.src = ""; // Remove the image for modern and space
+      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png"; // Correct raw image URL for Modern and Space themes
     } else {
       substackButton.style.borderColor = "#FF6A13"; // Default orange border for other themes
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Original image for default themes
+      substackImage.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304%20-%20Retro.png"; // Original image for default themes
     }
   });
-});
