@@ -1,44 +1,36 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', () => {
   const substackButton = document.querySelector('.substack-button');
-  let rotationSpeed = 10; // Default speed for rotation (in seconds)
-  let isHovered = false;
-  let isClicked = false;
+  const substackImage = substackButton.querySelector('img');
 
-  // Function to handle continuous rotation after hover is removed
-  function startContinuousRotation() {
-    if (!isHovered && !isClicked) {
-      // Keep rotating smoothly until the button completes the rotation
-      substackButton.style.animation = `rotateSubstack ${rotationSpeed}s linear infinite`;
-    }
+  let rotationSpeed = 3; // Default speed (in seconds for a full rotation)
+  let isHovered = false;
+
+  // Function to update the spinning speed
+  function updateSpinSpeed() {
+    // Apply the updated speed to the animation duration
+    substackButton.style.animation = `spin ${rotationSpeed}s linear infinite`;
   }
 
-  // Add event listeners to control hover and click actions
-  substackButton.addEventListener('mouseenter', function() {
+  // Hover effect: Reset rotation speed on hover
+  substackButton.addEventListener('mouseenter', () => {
     isHovered = true;
-    // Reset rotation speed to default on hover
-    rotationSpeed = 10; // Default speed for hover
-    // Apply the rotation animation
-    substackButton.style.animation = `rotateSubstack ${rotationSpeed}s linear infinite`;
+    rotationSpeed = 3; // Reset to default speed on hover
+    updateSpinSpeed();
   });
 
-  substackButton.addEventListener('mouseleave', function() {
+  // When mouse leaves: continue spinning with the updated speed
+  substackButton.addEventListener('mouseleave', () => {
     isHovered = false;
-    // Continue rotating after hover ends until it completes the rotation
-    startContinuousRotation();
+    updateSpinSpeed();
   });
 
-  substackButton.addEventListener('click', function() {
-    // Increase velocity by decreasing the duration (speed up rotation)
-    rotationSpeed -= 1; // Reduce the duration by 1 second on each click
-    if (rotationSpeed <= 2) rotationSpeed = 2; // Limit the minimum speed to 2 seconds
-
-    // Apply the rotation with the updated speed
-    substackButton.style.animation = `rotateSubstack ${rotationSpeed}s linear infinite`;
-
-    // Temporarily increase rotation speed on click and then reset
-    isClicked = true;
-    setTimeout(() => {
-      isClicked = false;
-    }, 100); // Reset the click state after a short delay (to avoid rapid triggering)
+  // Click effect: Increase spin velocity (decrease the duration)
+  substackButton.addEventListener('click', () => {
+    rotationSpeed -= 0.5; // Increase the spin speed by reducing the time
+    if (rotationSpeed <= 0.5) rotationSpeed = 0.5; // Minimum speed limit
+    updateSpinSpeed();
   });
+
+  // Initial spin animation
+  updateSpinSpeed(); // Set the default spin speed on page load
 });
