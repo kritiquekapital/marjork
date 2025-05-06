@@ -35,8 +35,14 @@ body.theme-retro .grid-backdrop {
 }
 
 .theme-retro .substack-button {
-  border-color: #FF6A13; /* Default orange border */
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(45deg, #f44d39, #fdaf3a, #f3e546) border-box;
+  animation: spin 3s linear infinite;
 }
+
 
 .theme-retro .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Retro-Flower%20%2304.png'); /* Correct raw image link */
