@@ -674,18 +674,21 @@ body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-radius: 8%; /* Square ring effect */
+  border-radius: 50%; /* Circle by default */
   background: radial-gradient(circle, #4E3629, #8C5E3C); /* Brown vinyl background */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   z-index: 20; /* Keeps the same z-index */
-  transition: transform 0.3s ease-in-out; /* Smooth transition */
+  transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition */
   transform: scale(1); /* Initial size */
   transform-origin: center center; /* Make sure it expands from the center */
 }
 
-/* On hover, make only the vinyl (outer part) grow outward */
+/* On hover, the circle's borders flood outward to form the squared circle (like Dropkickd) */
 .vinyl:hover {
+  border-radius: 15px; /* Transform the vinyl into a squared circle */
   transform: scale(1.3); /* Expand outward */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  z-index: 20; /* Ensure it stays above other elements */
 }
 
 /* Record - The inner part of the vinyl doesn't change */
