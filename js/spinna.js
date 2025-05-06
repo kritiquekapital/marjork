@@ -1,6 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   const substackButton = document.querySelector('.substack-button');
   const substackImage = substackButton.querySelector('img');
+  
+  // Define the themes array
+  const themes = [
+    { name: "classic", displayName: "😎" },
+    { name: "modern", displayName: "🌚" },
+    { name: "retro", displayName: "🕹️" },
+    { name: "nature", displayName: "🌞" },
+    { name: "space", displayName: "🚀" },
+    { name: "logistics", displayName: "📦" }
+  ];
+
   let currentThemeIndex = 0;  // Set the starting theme index
 
   // Function to apply the theme
@@ -46,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
 
   // Theme switcher button click event listener
+  const themeButton = document.getElementById("themeButton"); // Make sure to define themeButton
   themeButton.addEventListener("click", () => {
     currentThemeIndex = (currentThemeIndex + 1) % themes.length;  // Cycle through themes
     applyTheme();
