@@ -1133,86 +1133,151 @@ body.theme-retro .click-wheel {
   transform: scale(1.1); /* Slightly enlarge the button on hover */
 }
 
-/* DropkickD Button */
-/* Wrestling Button Design */
+/* Wrestling Button */
 .dropkickd-button {
   display: inline-block;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  background-color: #FF4C4C; /* Bold red like the wrestling theme */
+  border-radius: 50%; /* Initially circular */
+  background-color: #FF4C4C; /* Bold red color for wrestling theme */
   color: white;
   font-weight: bold;
   font-size: 14px;
   text-align: center;
   line-height: 120px; /* Vertically center text */
-  border: 5px solid #B50000; /* A bold border for the wrestling theme */
+  border: 5px solid #B50000; /* Border color */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden; /* Prevent overflow */
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.2s ease;
+  transition: all 0.6s ease; /* Smooth transition */
 }
 
 .dropkickd-button:hover {
-  transform: scale(1.1); /* Slightly enlarge on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* More intense shadow */
+  width: 300px; /* Expands to a squared circle */
+  height: 300px;
+  border-radius: 15px; /* Slight rounded corners */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-/* Ring Corners */
-.dropkickd-button::before, .dropkickd-button::after {
+/* Ring posts at the four corners */
+.dropkickd-button::before,
+.dropkickd-button::after,
+.dropkickd-button .top-left-post,
+.dropkickd-button .top-right-post,
+.dropkickd-button .bottom-left-post,
+.dropkickd-button .bottom-right-post {
   content: "";
   position: absolute;
-  width: 40px;
-  height: 40px;
-  background-color: #B50000; /* Bold red color for the ring corners */
-  transition: all 0.3s ease;
-  transform-origin: center;
+  width: 20px;
+  height: 20px;
+  background-color: #B50000; /* Ring post color */
+  border-radius: 50%;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-/* Top-left corner */
-.dropkickd-button::before {
-  top: -15px;
-  left: -15px;
-  transform: rotate(-45deg);
+.dropkickd-button .top-left-post {
+  top: -10px;
+  left: -10px;
 }
 
-/* Bottom-right corner */
-.dropkickd-button::after {
-  bottom: -15px;
-  right: -15px;
-  transform: rotate(135deg);
+.dropkickd-button .top-right-post {
+  top: -10px;
+  right: -10px;
 }
 
-/* Expand and flip corners on hover */
-.dropkickd-button:hover::before {
-  top: -60px;
-  left: -60px;
-  transform: rotate(0deg) scale(2);
+.dropkickd-button .bottom-left-post {
+  bottom: -10px;
+  left: -10px;
 }
 
-.dropkickd-button:hover::after {
-  bottom: -60px;
-  right: -60px;
-  transform: rotate(0deg) scale(2);
+.dropkickd-button .bottom-right-post {
+  bottom: -10px;
+  right: -10px;
 }
 
-/* Add corner flip animations (for more dramatic effect) */
-@keyframes flip-corner {
-  0% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(180deg); /* Flip corner */
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+/* Ring ropes (stretch from each corner) */
+.dropkickd-button .rope-top,
+.dropkickd-button .rope-bottom,
+.dropkickd-button .rope-left,
+.dropkickd-button .rope-right {
+  content: "";
+  position: absolute;
+  background-color: #fff; /* Rope color */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.dropkickd-button:hover::before,
-.dropkickd-button:hover::after {
-  animation: flip-corner 1s ease-out infinite; /* Continuous flip on hover */
+/* Top rope */
+.dropkickd-button .rope-top {
+  top: 50%;
+  left: -40px;
+  width: 120%;
+  height: 5px;
+  transform: translateY(-50%);
+}
+
+/* Bottom rope */
+.dropkickd-button .rope-bottom {
+  bottom: 50%;
+  left: -40px;
+  width: 120%;
+  height: 5px;
+  transform: translateY(50%);
+}
+
+/* Left rope */
+.dropkickd-button .rope-left {
+  top: -40px;
+  left: 50%;
+  height: 120%;
+  width: 5px;
+  transform: translateX(-50%);
+}
+
+/* Right rope */
+.dropkickd-button .rope-right {
+  top: -40px;
+  right: 50%;
+  height: 120%;
+  width: 5px;
+  transform: translateX(50%);
+}
+
+/* On hover, make the ropes and posts visible and animate */
+.dropkickd-button:hover .top-left-post,
+.dropkickd-button:hover .top-right-post,
+.dropkickd-button:hover .bottom-left-post,
+.dropkickd-button:hover .bottom-right-post {
+  opacity: 1; /* Show the ring posts */
+}
+
+.dropkickd-button:hover .rope-top,
+.dropkickd-button:hover .rope-bottom,
+.dropkickd-button:hover .rope-left,
+.dropkickd-button:hover .rope-right {
+  opacity: 1; /* Show the ropes */
+  transform: translateX(0) translateY(0); /* Stretch the ropes to the corners */
+}
+
+/* Center logo in the middle of the ring */
+.dropkickd-button .logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the logo */
+  width: 80px;
+  height: 80px;
+  background-image: url('https://dropkickd.com/assets/logoMobile-Bvdlcwd2.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: opacity 0.3s ease;
+  opacity: 0; /* Initially hidden */
+}
+
+.dropkickd-button:hover .logo {
+  opacity: 1; /* Make logo appear when hovered */
 }
 
 /* Substack Button */
