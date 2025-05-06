@@ -15,3 +15,11 @@ body.theme-classic .grid-container {
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+
+.theme-classic .substack-button {
+  border-color: #FF6A13; /* Default orange border */
+}
+
+.theme-classic .substack-button img {
+  content: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Original image */
+}
