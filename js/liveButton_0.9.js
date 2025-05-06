@@ -3,6 +3,7 @@ import { Draggable } from './draggable.js';
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
+    "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
