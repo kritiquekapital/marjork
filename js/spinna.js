@@ -1,65 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
   const substackButton = document.querySelector('.substack-button');
-  const substackImage = substackButton.querySelector('img');
-  
-  // Define the themes array
-  const themes = [
-    { name: "classic", displayName: "😎" },
-    { name: "modern", displayName: "🌚" },
-    { name: "retro", displayName: "🕹️" },
-    { name: "nature", displayName: "🌞" },
-    { name: "space", displayName: "🚀" },
-    { name: "logistics", displayName: "📦" }
-  ];
+  let rotationSpeed = 3; // Default speed (in seconds for a full rotation)
 
-  let currentThemeIndex = 0;  // Set the starting theme index
-
-  // Function to apply the theme
-  function applyTheme() {
-    const currentTheme = themes[currentThemeIndex];
-    document.body.classList.remove(
-      'theme-classic',
-      'theme-modern',
-      'theme-retro',
-      'theme-nature',
-      'theme-space',
-      'theme-logistics'
-    );
-    document.body.classList.add(`theme-${currentTheme.name}`);
-    themeButton.textContent = currentTheme.displayName;
-
-    // Update the Substack button's border and image based on the theme
-    if (currentTheme.name === "modern" || currentTheme.name === "space") {
-      substackButton.style.borderColor = "#1E3A8A"; // Blue border for modern and space
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png"; // Blue flower for modern and space
-    } else {
-      substackButton.style.borderColor = "#FF6A13"; // Orange border for other themes
-      substackImage.src = "https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2301.png"; // Orange flower for default themes
-    }
-
-    // Ensure the background images and videos are displayed based on the theme
-    if (currentTheme.name === "nature") {
-      natureVideo.style.display = "block";
-      natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
-    } else {
-      natureVideo.style.display = "none";
-      natureAudio.pause();
-    }
-
-    if (currentTheme.name === "space") {
-      spaceBackground.style.display = "block";
-    } else {
-      spaceBackground.style.display = "none";
-    }
+  // Function to update the spinning speed
+  function updateSpinSpeed() {
+    // Apply the updated speed to the animation duration
+    substackButton.style.animation = `spin ${rotationSpeed}s linear infinite`;
   }
 
-  // Apply the initial theme on page load
-  applyTheme();
-
-  // Theme switcher button click event listener
-  const themeButton = document.getElementById("themeButton"); // Make sure to define themeButton
-  themeButton.addEventListener("click", () => {
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length;  // Cycle through themes
-    applyTheme();
+  // Hover effect: Reset rotation speed on hover
+  substackButton.addEventListener('mouseenter', () => {
+    rotationSpeed = 3; // Reset to default speed on hover
+    updateSpinSpeed();
+    substackButton.style.animation = "spin 3s linear infinite"; // Start spinning when hovered
   });
+
+  // When mouse leaves: continue spinning with the updated speed
+  substackButton.addEventListener('mouseleave', () => {
+    updateSpinSpeed();
+    // Stop spinning when mouse leaves
+    substackButton.style.animation = "none";
+  });
+
+  // Click effect: Increase spin velocity (decrease the duration)
+  substackButton.addEventListener('click', () => {
+    rotationSpeed -= 0.5; // Increase the spin speed by reducing the time
+    if (rotationSpeed <= 0.5) rotationSpeed = 0.5; // Minimum speed limit
+    updateSpinSpeed();
+  });
+
+  // Initial spin animation
+  updateSpinSpeed(); // Set the default spin speed on page load
 });
