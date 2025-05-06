@@ -15,7 +15,7 @@ body.theme-modern .grid-container {
 }
 
 .theme-modern .substack-button {
-  border-color: transparent; /* Hide border */
+  border-color: #1275c7; /* Hide border */
   animation: spin 3s linear infinite; /* Spinning animation */
 }
 
