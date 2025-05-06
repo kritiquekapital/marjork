@@ -1297,7 +1297,6 @@ body.theme-retro .click-wheel {
   background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Default image */
   background-size: cover; /* Ensure the image is fully covered within the button */
   background-position: center; /* Center the image */
-  animation: spin 3s linear infinite; /* Spinning animation */
 }
 
 /* Ensure the image is fully visible and positioned correctly */
