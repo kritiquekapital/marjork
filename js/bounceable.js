@@ -6,7 +6,6 @@ export class Bounceable {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
         this.friction = 0.92;
-        this.clickCount = 0;
         this.isFree = false;
         this.animationFrame = null;
         this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
@@ -19,26 +18,21 @@ export class Bounceable {
 
     handleClick(e) {
         if (!this.isFree) {
-            this.clickCount++;
-            if (this.clickCount >= 10) {
-                this.isFree = true;
-                this.velocity = { x: 0, y: 0 };
-                this.element.classList.add('free');
-                const rect = this.element.getBoundingClientRect();
-                this.element.style.position = 'fixed';
-                this.element.style.left = `${rect.left + window.scrollX}px`;
-                this.element.style.top = `${rect.top + window.scrollY}px`;
+            this.isFree = true;
+            this.velocity = { x: 0, y: 0 };
+            this.element.classList.add('free');
+            const rect = this.element.getBoundingClientRect();
+            this.element.style.position = 'fixed';
+            this.element.style.left = `${rect.left + window.scrollX}px`;
+            this.element.style.top = `${rect.top + window.scrollY}px`;
 
-                // Set z-index to 99999 when free
-                this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
+            // Set z-index to 99999 when free
+            this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
 
-                // Check if retro theme is active and apply glitch effect
-                if (document.body.classList.contains('theme-retro')) {
-                    this.element.classList.add('free-retro'); // This triggers retro glitch effect
-                }
-            }
-        } else {
+            // Apply inertia based on click position
             this.moveOppositeDirection(e.clientX, e.clientY);
+        } else {
+            this.moveOppositeDirection(e.clientX, e.clientY); // Continue movement in the opposite direction
         }
     }
 
@@ -49,12 +43,12 @@ export class Bounceable {
         const dirX = centerX - clickX;
         const dirY = centerY - clickY;
         const length = Math.sqrt(dirX * dirX + dirY * dirY);
-        this.velocity.x = (dirX / length) * 25;
-        this.velocity.y = (dirY / length) * 25;
-        this.applyBouncePhysics();
+        this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
+        this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
+        this.applyZeroGravityPhysics();
     }
 
-    applyBouncePhysics() {
+    applyZeroGravityPhysics() {
         if (!this.isFree) return;
 
         if (this.animationFrame) {
@@ -67,10 +61,10 @@ export class Bounceable {
         const animate = (time) => {
             this.animationFrame = requestAnimationFrame(animate);
 
-            if (time - lastFrameTime < 1000 / 15) return;
+            if (time - lastFrameTime < 1000 / 15) return;  // Update framerate
             lastFrameTime = time;
 
-            this.velocity.x *= this.friction;
+            this.velocity.x *= this.friction; // Apply friction
             this.velocity.y *= this.friction;
 
             let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
@@ -81,41 +75,39 @@ export class Bounceable {
 
             if (newLeft < 0) {
                 newLeft = 0;
-                this.velocity.x *= -0.9;
+                this.velocity.x *= -0.9; // Bounce back
             }
             if (newLeft > maxX) {
                 newLeft = maxX;
-                this.velocity.x *= -0.9;
+                this.velocity.x *= -0.9; // Bounce back
             }
             if (newTop < 0) {
                 newTop = 0;
-                this.velocity.y *= -0.9;
+                this.velocity.y *= -0.9; // Bounce back
             }
             if (newTop > maxY) {
                 newTop = maxY;
-                this.velocity.y *= -0.9;
+                this.velocity.y *= -0.9; // Bounce back
             }
 
-            // Check if retro or space mode is active
             const isRetro = document.body.classList.contains('theme-retro');
             const isSpace = document.body.classList.contains('theme-space');
 
             if (isRetro) {
-              // Apply glitchy movement and snapping effect in retro mode
-              const snappedLeft = Math.round(newLeft / 4) * 4;
-              const snappedTop = Math.round(newTop / 4) * 4;
-              this.element.style.left = `${snappedLeft}px`;
-              this.element.style.top = `${snappedTop}px`;
-              Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+                // Apply glitchy movement and snapping effect in retro mode
+                const snappedLeft = Math.round(newLeft / 4) * 4;
+                const snappedTop = Math.round(newTop / 4) * 4;
+                this.element.style.left = `${snappedLeft}px`;
+                this.element.style.top = `${snappedTop}px`;
+                Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
             } else if (isSpace) {
-              // Apply zero gravity effect in space mode
-              this.element.style.left = `${newLeft}px`;
-              this.element.style.top = `${newTop}px`;
-              // You can add a specific method for zero-gravity movement here
+                // Apply zero gravity effect in space mode
+                this.element.style.left = `${newLeft}px`;
+                this.element.style.top = `${newTop}px`;
             } else {
-              // Default behavior in other themes
-              this.element.style.left = `${newLeft}px`;
-              this.element.style.top = `${newTop}px`;
+                // Default behavior in other themes
+                this.element.style.left = `${newLeft}px`;
+                this.element.style.top = `${newTop}px`;
             }
 
             // Stop animation if movement is minimal (this helps with performance)
