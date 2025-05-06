@@ -24,7 +24,7 @@ body.theme-retro .grid-backdrop {
 }
 
 /* Buttons */
-.theme-retro .button {
+.theme-retro button {
   background-color: #00ffcc; /* Neon teal */
   color: #ff00ff; /* Neon pink */
   border: 2px solid #ffcc00; /* Bright yellow */
