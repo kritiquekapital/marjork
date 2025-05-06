@@ -1265,7 +1265,7 @@ body.theme-retro .click-wheel {
 
 /* Substack Button Styling */
 .substack-button {
-  background-color: #7D7D7D; /* Substack's gray color */
+  background-color: #FF6A13; 
   color: white;
   border-radius: 50%;
   width: 120px;
@@ -1275,9 +1275,10 @@ body.theme-retro .click-wheel {
   align-items: center;
   overflow: hidden;
   transition: transform 0.3s ease-in-out;
-  z-index: 2; /* Ensure it stays above the grid container */
-  transform-style: preserve-3d; /* Enable 3D transformations */
-  position: relative; /* Ensure correct positioning */
+  z-index: 2; 
+  transform-style: preserve-3d; 
+  position: relative; 
+  border: 2px solid #FF6A13; 
 }
 
 /* Image inside the Substack button */
