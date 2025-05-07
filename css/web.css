@@ -366,9 +366,9 @@ body {
 }
 
 @keyframes flashEffect {
-  0% { z-index: 9999; opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  50% { z-index: 9999; opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
-  100% { z-index: 9999; opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+  0% { z-index: 99999; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { z-index: 99999; opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+  100% { z-index: 99999; opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
 }
 
 /* News Button */
