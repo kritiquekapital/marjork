@@ -91,4 +91,36 @@ document.addEventListener("DOMContentLoaded", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
     updateLiveStream(); // Update the live stream URL
   });
+  
+  // Resize the video player
+  const resizeHandle = document.querySelector('.resize-handle');
+  if (resizeHandle) {
+    let isResizing = false;
+
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoContainer.querySelector('.video-popup').offsetWidth;
+      const initialHeight = videoContainer.querySelector('.video-popup').offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = initialHeight + (e.clientY - initialMouseY);
+          videoContainer.querySelector('.video-popup').style.width = `${newWidth}px`;
+          videoContainer.querySelector('.video-popup').style.height = `${newHeight}px`;
+        }
+      }
+
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+  }
 });
