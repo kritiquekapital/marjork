@@ -1,5 +1,3 @@
-import { Draggable } from './draggable.js';
-
 document.addEventListener("DOMContentLoaded", () => {
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
@@ -41,25 +39,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const draggableVideoPopup = new Draggable(videoPopup);
     draggableVideoPopup.isFree = false;
 
-    // Center the video popup when it is freed
+    // Set initial position for the video popup (centered)
+    videoPopup.style.position = "fixed";
+    videoPopup.style.top = "50%";
+    videoPopup.style.left = "50%";
+    videoPopup.style.transform = "translate(-50%, -50%)";
+
+    // Adjust the boundaries by 250px for left and right
+    const minX = -250; // 250px offset from the left edge of the screen
+    const maxX = window.innerWidth - videoPopup.offsetWidth + 250; // 250px offset from the right edge
+    const minY = 100; // Top offset (can be adjusted)
+    const maxY = window.innerHeight - videoPopup.offsetHeight - 100; // Bottom offset
+
+    // Adjust the draggable physics to respect these boundaries
+    draggableVideoPopup.applyPhysics = function() {
+      const animate = () => {
+        if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+          cancelAnimationFrame(this.animationFrame);
+          return;
+        }
+
+        if (!this.isZeroGravity) {
+          this.velocity.x *= this.friction;
+          this.velocity.y *= this.friction;
+        }
+
+        let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+        let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+
+        // Apply boundary checks
+        if (newLeft < minX || newLeft > maxX) {
+          this.velocity.x *= -1; // Bounce horizontally
+        }
+        if (newTop < minY || newTop > maxY) {
+          this.velocity.y *= -1; // Bounce vertically
+        }
+
+        this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+        this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
+
+        this.animationFrame = requestAnimationFrame(animate);
+      };
+
+      this.animationFrame = requestAnimationFrame(animate);
+    };
+
+    // Popout button logic to make the video popup draggable
     popoutButton.addEventListener("click", (event) => {
       event.preventDefault();
       if (!draggableVideoPopup.isFree) {
         draggableVideoPopup.isFree = true;
-        videoPopup.style.position = "fixed"; // Fix position to the screen
-        videoPopup.style.top = "50%";  // Center it vertically
-        videoPopup.style.left = "50%";  // Center it horizontally
-        videoPopup.style.transform = "translate(-50%, -50%)"; // Center using transform
+        videoPopup.style.position = "fixed";
+        videoPopup.style.top = "50%";
+        videoPopup.style.left = "50%";
+        videoPopup.style.transform = "translate(-50%, -50%)";
       }
       if (overlay) {
-        overlay.style.display = "none"; // Hide the black background tint
+        overlay.style.display = "none";
       }
     });
 
     closeButton.addEventListener("click", () => {
       videoContainer.style.display = "none";
       if (overlay) {
-        overlay.style.display = "block"; // Show the black background tint
+        overlay.style.display = "block";
       }
     });
 
