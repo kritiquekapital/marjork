@@ -1,4 +1,4 @@
-import { Bounceable } from './bounceable.js';
+import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player (same as before)
@@ -39,22 +39,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.-overlay');  // Reference to the black background overlay
   
-  // Initialize the Draggable instance for the video popup (not activated yet)
+  // Initialize the Draggable instance for the video popup
   const videoPopup = videoContainer.querySelector('.video-popup');
-  
-  // Make the video popup draggable and apply the bounce behavior (like the music player)
-  const bounceableVideoPopup = new Bounceable(videoPopup);
+  const draggableVideoPopup = new Draggable(videoPopup); // Only the video popup will be draggable
 
   // Initially, don't allow the popup to be dragged
-  bounceableVideoPopup.isFree = false;
+  draggableVideoPopup.isFree = false;
 
   // Make the video player modal draggable once the popout button is clicked
   popoutButton.addEventListener("click", (event) => {
     event.preventDefault();
     
     // Prevent video restart (do not change the iframe source)
-    if (!bounceableVideoPopup.isFree) {
-      bounceableVideoPopup.isFree = true;  // Now the video popup can be dragged
+    if (!draggableVideoPopup.isFree) {
+      draggableVideoPopup.isFree = true;  // Now the video popup can be dragged
     }
     
     // Hide the background overlay (black tint)
@@ -95,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
     updateLiveStream(); // Update the live stream URL
   });
-  
+
   // Resize the video player
   const resizeHandle = document.querySelector('.resize-handle');
   if (resizeHandle) {
