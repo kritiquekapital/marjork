@@ -796,11 +796,13 @@ body {
 .vinyl:hover .arm {
   opacity: 1;
   transform: rotate(320deg);
+  overflow: visible;
 }
 
 .vinyl:hover .stylus-base {
   opacity: 1;
   transform: translate(-50%, -50%) rotate(320deg);
+  overflow: visible;
 }
 
 .draggable {
