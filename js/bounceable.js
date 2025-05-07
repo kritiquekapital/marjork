@@ -71,7 +71,7 @@ export class Bounceable {
         const animate = (time) => {
             this.animationFrame = requestAnimationFrame(animate);
 
-            if (time - lastFrameTime < 1000 / 15) return;  // Adjust the framerate
+            if (time - lastFrameTime < 1000 / 15) return; // Adjust the framerate
             lastFrameTime = time;
 
             let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
@@ -97,9 +97,6 @@ export class Bounceable {
                 newTop = maxY;
                 this.velocity.y *= -0.9;
             }
-
-            const isRetro = document.body.classList.contains('theme-retro');
-            const isSpace = document.body.classList.contains('theme-space');
 
             // Apply logic based on the active mode
             if (this.currentMode === Bounceable.modes.RETRO) {
