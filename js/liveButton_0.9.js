@@ -3,7 +3,7 @@ import { Draggable } from './draggable.js';
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player (same as before)
   const liveLinks1 = [
-    "https://geo.dailymotion.com/player.html?video=x9irfr8",          // the settlers
+    "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   popoutButton.addEventListener("click", (event) => {
     event.preventDefault();
     updateLiveStream(); // Update the live stream URL
-
+    
     // Toggle "free" state to make the video player moveable (like the music player)
     draggableVideoContainer.isFree = !draggableVideoContainer.isFree;
   });
@@ -54,6 +54,17 @@ document.addEventListener("DOMContentLoaded", () => {
   closeButton.addEventListener("click", () => {
     videoContainer.style.display = "none"; // Hide the player when closing
   });
+
+  // Handle click on the "LIVE" button (fix the link behavior)
+  const propagandaLink = document.querySelector(".propaganda-link");
+  if (propagandaLink) {
+    propagandaLink.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent default behavior (new tab opening)
+      updateLiveStream(); // Update the live stream URL
+      videoContainer.style.visibility = "visible"; // Show the video container (modal)
+      videoContainer.style.display = "flex"; // Make it a flex container to center it
+    });
+  }
 
   // Switch to the previous channel (video)
   prevButton.addEventListener("click", () => {
