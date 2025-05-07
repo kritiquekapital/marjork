@@ -1012,7 +1012,20 @@ body.theme-retro .click-wheel {
   visibility: hidden; /* Hidden by default */
 }
 
-/* The actual video player modal */
+/* Resizing Handle */
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: se-resize;  /* "Southeast" resize cursor */
+  border-radius: 0 10px 0 0;  /* Rounded edge */
+  z-index: 10001;  /* Make sure it's above everything else */
+}
+
+/* Video Popup (Video Player Modal) */
 .video-popup {
   width: 85%;
   height: 85%;
@@ -1028,6 +1041,7 @@ body.theme-retro .click-wheel {
   left: 50%;
   transform: translate(-50%, -50%);
   cursor: move;
+  position: relative;
 }
 
 /* Optional: For making the iframe fill the container */
