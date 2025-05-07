@@ -37,10 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = videoContainer.querySelector('#nextButton');
   const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
-  const overlay = document.querySelector('.overlay');  // Reference to the black background overlay
+  const overlay = document.querySelector('.-overlay');  // Reference to the black background overlay
   
-  // Initialize the Draggable instance for the main video container
-  const draggableVideoContainer = new Draggable(videoContainer);
+  // Initialize the Draggable instance for the video popup (not activated yet)
+  const draggableVideoPopup = new Draggable(videoContainer.querySelector('.video-popup')); // Only the video popup will be draggable
+
+  // Initially, don't allow the popup to be dragged
+  draggableVideoPopup.isFree = false;
 
   // Make the video player modal draggable once the popout button is clicked
   popoutButton.addEventListener("click", (event) => {
@@ -53,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Toggle "free" state to make the video player moveable (like the music player)
-    draggableVideoContainer.isFree = !draggableVideoContainer.isFree;
+    draggableVideoPopup.isFree = true;  // Now the video popup can be dragged
   });
 
   // Handle close button click to hide the video player
