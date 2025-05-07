@@ -1,4 +1,4 @@
-import { Draggable } from './draggable.js';  // Ensure Draggable is imported
+import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player (same as before)
