@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = videoContainer.querySelector('#nextButton');
   const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
-  const overlay = document.querySelector('.-overlay');  // Reference to the black background overlay
+  const overlay = document.querySelector('.-overlay');
   
   // Initialize the Draggable instance for the video popup (only the white box should be draggable)
   const videoPopup = videoContainer.querySelector('.video-popup');
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   closeButton.addEventListener("click", () => {
     videoContainer.style.display = "none"; // Hide the player when closing
 
-    // Ensure the overlay reappears when closing the player
+    // Ensure the overlay reappears when closing
     if (overlay) {
       overlay.style.display = "block"; // Show the black background tint
     }
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       videoContainer.style.visibility = "visible"; // Show the video container (modal)
       videoContainer.style.display = "flex"; // Make it a flex container to center it
     });
-  }
+  });
 
   // Switch to the previous channel (video)
   prevButton.addEventListener("click", () => {
