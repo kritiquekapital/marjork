@@ -1,9 +1,9 @@
-import { Draggable } from './draggable.js';  // Ensure Draggable is imported
+import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Hardcoded list of live links for the Propaganda Button
+  // Hardcoded list of live links for the video player (same as before)
   const liveLinks1 = [
-    "https://geo.dailymotion.com/player.html?video=x9irfr8",
+    "https://geo.dailymotion.com/player.html?video=x9irfr8",          // the settlers
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLinkIndex1 = 0;
 
-  // Function to update the live stream
+  // Function to update the live stream iframe source
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
@@ -30,74 +30,38 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  // Inject the modal HTML structure into the DOM
-  document.body.insertAdjacentHTML("beforeend", `
-    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
-      <div class="video-popup">
-        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        <div class="modal-controls">
-          <button id="prevChannel">Previous</button>
-          <button id="popoutButton">Popout</button>
-          <button id="nextChannel">Next</button>
-        </div>
-      </div>
-    </div>
-  `);
+  // Get references to the modal elements in the main HTML
+  const videoContainer = document.querySelector('.video-container');
+  const liveFrame = videoContainer.querySelector('iframe');
+  const prevButton = videoContainer.querySelector('#prevButton');
+  const nextButton = videoContainer.querySelector('#nextButton');
+  const popoutButton = videoContainer.querySelector('#popoutButton');
+  const closeButton = videoContainer.querySelector('.close-button');
 
-  // Get references to the modal and its elements
-  const liveModal = document.getElementById("liveModal");
-  const liveFrame = document.getElementById("liveFrame");
-  const prevButton = document.getElementById("prevChannel");
-  const nextButton = document.getElementById("nextChannel");
-  const propagandaLink = document.querySelector(".propaganda-link");
-  const popoutButton = document.getElementById("popoutButton");
+  // Initialize the Draggable instance for the main video container
+  const draggableVideoContainer = new Draggable(videoContainer);
 
-  // Draggable for the live player modal
-  let draggableLiveModal;
+  // Make the video player modal draggable once the popout button is clicked
+  popoutButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    updateLiveStream(); // Update the live stream URL
 
-  // Handle click on the "Popout Video" button
-  if (popoutButton) {
-    popoutButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      updateLiveStream(); // Update the live stream URL
-      liveModal.style.visibility = "visible"; // Show the modal
-      liveModal.style.display = "flex";
-
-      // Make the video player draggable once it's popped out
-      // Initialize Draggable with physics (inertia, bounce, etc.)
-      draggableLiveModal = new Draggable(liveModal);
-
-      // Set "free" behavior (allow movement with inertia)
-      draggableLiveModal.isFree = true;  // Similar to the music player logic
-    });
-  }
-
-  // Handle click on the "LIVE" button
-  if (propagandaLink) {
-    propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      updateLiveStream(); // Update the live stream URL
-      liveModal.style.visibility = "visible"; // Show the modal
-      liveModal.style.display = "flex";
-    });
-  }
-
-  // Close the modal when clicking outside of it
-  window.addEventListener("click", (event) => {
-    if (event.target === liveModal) {
-      liveModal.style.visibility = "hidden"; // Hide the modal
-      liveModal.style.display = "none";
-      liveFrame.src = ""; // Stop the video
-    }
+    // Toggle "free" state to make the video player moveable (like the music player)
+    draggableVideoContainer.isFree = !draggableVideoContainer.isFree;
   });
 
-  // Switch to the previous channel
+  // Handle close button click to hide the video player
+  closeButton.addEventListener("click", () => {
+    videoContainer.style.display = "none"; // Hide the player when closing
+  });
+
+  // Switch to the previous channel (video)
   prevButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
     updateLiveStream(); // Update the live stream URL
   });
 
-  // Switch to the next channel
+  // Switch to the next channel (video)
   nextButton.addEventListener("click", () => {
     currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
     updateLiveStream(); // Update the live stream URL
