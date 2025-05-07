@@ -1,6 +1,7 @@
 import { Bounceable } from './bounceable.js';  // Make sure the path is correct
+import { Draggable } from './draggable.js';
+import { initLogisticsTheme } from './logistics.js';
 
-// Your existing themeSwitcher_0.9.js code below
 document.addEventListener('DOMContentLoaded', () => {
   const draggableElement = document.getElementById('musicPlayer');
   if (!draggableElement) throw new Error("Element with ID 'musicPlayer' not found");
