@@ -1,4 +1,4 @@
-import { Draggable } from './draggable.js';
+import { Draggable } from './draggable.js';  // Ensure Draggable is imported
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player (same as before)
@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = videoContainer.querySelector('#nextButton');
   const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
-
+  const overlay = document.querySelector('.overlay');  // Reference to the black background overlay
+  
   // Initialize the Draggable instance for the main video container
   const draggableVideoContainer = new Draggable(videoContainer);
 
@@ -46,6 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     updateLiveStream(); // Update the live stream URL
     
+    // Hide the background overlay (black tint)
+    if (overlay) {
+      overlay.style.display = "none"; // Hide the black background tint
+    }
+
     // Toggle "free" state to make the video player moveable (like the music player)
     draggableVideoContainer.isFree = !draggableVideoContainer.isFree;
   });
@@ -53,6 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Handle close button click to hide the video player
   closeButton.addEventListener("click", () => {
     videoContainer.style.display = "none"; // Hide the player when closing
+
+    // Ensure the overlay reappears when closing the player
+    if (overlay) {
+      overlay.style.display = "block"; // Show the black background tint
+    }
   });
 
   // Handle click on the "LIVE" button (fix the link behavior)
