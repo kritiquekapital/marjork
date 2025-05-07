@@ -998,8 +998,9 @@ body.theme-retro .click-wheel {
   background-color: #A57846;
 }
 
+/* Ensuring the video player stays within bounds of the viewport */
 .video-container {
-  position: fixed;
+  position: fixed; /* Fix the container in place */
   top: 0;
   left: 0;
   width: 100vw;
@@ -1007,10 +1008,11 @@ body.theme-retro .click-wheel {
   display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  visibility: hidden;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  visibility: hidden; /* Hidden by default */
 }
 
+/* The actual video player modal */
 .video-popup {
   width: 85%;
   height: 85%;
@@ -1021,9 +1023,15 @@ body.theme-retro .click-wheel {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute; /* Ensure it moves freely */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: move;
 }
 
-.video-container iframe {
+/* Optional: For making the iframe fill the container */
+.video-popup iframe {
   width: 100%;
   height: 100%;
   aspect-ratio: 16 / 9;
