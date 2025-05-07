@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.-overlay');  // Reference to the black background overlay
   
-  // Initialize the Draggable instance for the video popup
+  // Initialize the Draggable instance for the video popup (only the white box should be draggable)
   const videoPopup = videoContainer.querySelector('.video-popup');
-  const draggableVideoPopup = new Draggable(videoPopup); // Only the video popup will be draggable
+  const draggableVideoPopup = new Draggable(videoPopup); // Only the video popup (white box) will be draggable
 
   // Initially, don't allow the popup to be dragged
   draggableVideoPopup.isFree = false;
