@@ -2,6 +2,13 @@ export class Bounceable {
     static instances = [];
     static trailLayer = null;
 
+    // Define mode states
+    static modes = {
+        NORMAL: 'normal',
+        RETRO: 'retro',
+        ZERO_GRAVITY: 'zero-gravity'
+    };
+
     constructor(element) {
         this.element = element;
         this.velocity = { x: 0, y: 0 };
@@ -14,6 +21,9 @@ export class Bounceable {
         this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
         this.element.style.position = 'absolute';
         this.element.addEventListener('click', this.handleClick.bind(this));
+
+        // Set initial mode to NORMAL
+        this.currentMode = Bounceable.modes.NORMAL;
     }
 
     handleClick(e) {
@@ -45,10 +55,10 @@ export class Bounceable {
         const length = Math.sqrt(dirX * dirX + dirY * dirY);
         this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
         this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
-        this.applyZeroGravityPhysics();
+        this.applyMovement();
     }
 
-    applyZeroGravityPhysics() {
+    applyMovement() {
         if (!this.isFree) return;
 
         if (this.animationFrame) {
@@ -61,11 +71,8 @@ export class Bounceable {
         const animate = (time) => {
             this.animationFrame = requestAnimationFrame(animate);
 
-            if (time - lastFrameTime < 1000 / 15) return;  // Update framerate
+            if (time - lastFrameTime < 1000 / 15) return;  // Adjust the framerate
             lastFrameTime = time;
-
-            this.velocity.x *= this.friction; // Apply friction
-            this.velocity.y *= this.friction;
 
             let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
             let newTop = parseFloat(this.element.style.top) + this.velocity.y;
@@ -73,51 +80,63 @@ export class Bounceable {
             const maxX = window.innerWidth - this.element.offsetWidth;
             const maxY = window.innerHeight - this.element.offsetHeight;
 
+            // Handle boundaries for normal and retro modes
             if (newLeft < 0) {
                 newLeft = 0;
-                this.velocity.x *= -0.9; // Bounce back
+                this.velocity.x *= -0.9;
             }
             if (newLeft > maxX) {
                 newLeft = maxX;
-                this.velocity.x *= -0.9; // Bounce back
+                this.velocity.x *= -0.9;
             }
             if (newTop < 0) {
                 newTop = 0;
-                this.velocity.y *= -0.9; // Bounce back
+                this.velocity.y *= -0.9;
             }
             if (newTop > maxY) {
                 newTop = maxY;
-                this.velocity.y *= -0.9; // Bounce back
+                this.velocity.y *= -0.9;
             }
 
             const isRetro = document.body.classList.contains('theme-retro');
             const isSpace = document.body.classList.contains('theme-space');
 
-            if (isRetro) {
-                // Apply glitchy movement and snapping effect in retro mode
-                const snappedLeft = Math.round(newLeft / 4) * 4;
-                const snappedTop = Math.round(newTop / 4) * 4;
-                this.element.style.left = `${snappedLeft}px`;
-                this.element.style.top = `${snappedTop}px`;
-                Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
-            } else if (isSpace) {
-                // Apply zero gravity effect in space mode
-                this.element.style.left = `${newLeft}px`;
-                this.element.style.top = `${newTop}px`;
+            // Apply logic based on the active mode
+            if (this.currentMode === Bounceable.modes.RETRO) {
+                this.applyRetroMovement(newLeft, newTop);
+            } else if (this.currentMode === Bounceable.modes.ZERO_GRAVITY) {
+                this.applyZeroGravityMovement(newLeft, newTop);
             } else {
-                // Default behavior in other themes
-                this.element.style.left = `${newLeft}px`;
-                this.element.style.top = `${newTop}px`;
-            }
-
-            // Stop animation if movement is minimal (this helps with performance)
-            if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
-                cancelAnimationFrame(this.animationFrame);
-                this.animationFrame = null;
+                this.applyNormalMovement(newLeft, newTop);
             }
         };
 
         this.animationFrame = requestAnimationFrame(animate);
+    }
+
+    applyNormalMovement(newLeft, newTop) {
+        // Normal mode - Apply friction
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+        this.element.style.left = `${newLeft}px`;
+        this.element.style.top = `${newTop}px`;
+    }
+
+    applyRetroMovement(newLeft, newTop) {
+        // Retro Mode - Apply glitchy effect, snapping, and pixelation
+        const snappedLeft = Math.round(newLeft / 4) * 4;
+        const snappedTop = Math.round(newTop / 4) * 4;
+        this.element.style.left = `${snappedLeft}px`;
+        this.element.style.top = `${snappedTop}px`;
+        Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
+    }
+
+    applyZeroGravityMovement(newLeft, newTop) {
+        // Zero Gravity Mode - No friction, move freely
+        this.velocity.x *= 1; // No friction, maintain velocity
+        this.velocity.y *= 1;
+        this.element.style.left = `${newLeft}px`;
+        this.element.style.top = `${newTop}px`;
     }
 
     static createTrailDot(sourceEl, left, top) {
@@ -160,5 +179,10 @@ export class Bounceable {
 
         Bounceable.trailLayer.appendChild(dot);
         setTimeout(() => dot.remove(), 500);
+    }
+
+    // To switch between modes (normal, retro, zero-gravity)
+    static switchMode(newMode) {
+        this.currentMode = newMode;
     }
 }
