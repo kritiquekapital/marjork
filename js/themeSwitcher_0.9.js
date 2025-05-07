@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!draggableElement) throw new Error("Element with ID 'musicPlayer' not found");
 
   const draggable = new Draggable(draggableElement);
+
   const themes = [
     { name: "classic", displayName: "😎" },
     { name: "modern", displayName: "🌚" },
