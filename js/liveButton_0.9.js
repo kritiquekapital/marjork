@@ -3,12 +3,12 @@ import { Draggable } from './draggable.js';
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
-    "https://geo.dailymotion.com/player.html?video=x9irfr8",
+    "https://geo.dailymotion.com/player.html?video=x9irfr8",          // the settlers
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
     "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080", // JRJRJRJRJRJRJRJRJRJRJRJRJR
-    "https://www.youtube.com/embed/w72mLI_FaR0?autoplay=1&vq=hd1080", // USSRRRRRR                                                            
+    "https://www.youtube.com/embed/w72mLI_FaR0?autoplay=1&vq=hd1080", // USSRRRRRR                                                 
     "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1&vq=hd1080", // drive
     "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1&vq=hd1080", // fight
     "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080", // MNR
@@ -57,14 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
     popoutButton.addEventListener("click", (event) => {
       event.preventDefault();
       updateLiveStream(); // Update the live stream URL
-      videoPlayerModal.style.visibility = "visible"; // Show the modal
-      videoPlayerModal.style.display = "flex";
+      liveModal.style.visibility = "visible"; // Show the modal
+      liveModal.style.display = "flex";
 
       // Make the video player draggable once it's popped out
-      new Draggable(videoPlayerModal); // Initialize Draggable class for video player
+      new Draggable(liveModal); // Initialize Draggable class for the live video player modal
     });
   }
-  
+
   // Handle click on the "LIVE" button
   if (propagandaLink) {
     propagandaLink.addEventListener("click", (event) => {
