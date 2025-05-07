@@ -1,3 +1,5 @@
+import { Draggable } from './draggable.js';
+
 document.addEventListener("DOMContentLoaded", () => {
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
