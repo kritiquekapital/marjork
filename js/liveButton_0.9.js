@@ -73,14 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Handle click on the "LIVE" button (fix the link behavior)
   const propagandaLink = document.querySelector(".propaganda-link");
-    if (propagandaLink) {
-      propagandaLink.addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent default behavior (new tab opening)
-        updateLiveStream(); // Update the live stream URL
-        videoContainer.style.visibility = "visible"; // Show the video container (modal)
-        videoContainer.style.display = "flex"; // Make it a flex container to center it
-      });
+  if (propagandaLink) {
+    propagandaLink.addEventListener("click", (event) => {
+      event.preventDefault(); // Prevent default behavior (new tab opening)
+      updateLiveStream(); // Update the live stream URL
+      videoContainer.style.visibility = "visible"; // Show the video container (modal)
+      videoContainer.style.display = "flex"; // Make it a flex container to center it
     });
+  }
+
 
   // Switch to the previous channel (video)
   prevButton.addEventListener("click", () => {
