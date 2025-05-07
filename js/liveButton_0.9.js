@@ -1,7 +1,6 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Hardcoded list of live links for the video player (same as before)
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
@@ -21,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLinkIndex1 = 0;
 
-  // Function to update the live stream iframe source
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  // Get references to the modal elements in the main HTML
   const videoContainer = document.querySelector('.video-container');
   const liveFrame = videoContainer.querySelector('iframe');
   const prevButton = videoContainer.querySelector('#prevButton');
@@ -38,92 +35,82 @@ document.addEventListener("DOMContentLoaded", () => {
   const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.-overlay');
-  
-  // Initialize the Draggable instance for the video popup (only the white box should be draggable)
   const videoPopup = videoContainer.querySelector('.video-popup');
-  const draggableVideoPopup = new Draggable(videoPopup); // Only the video popup (white box) will be draggable
 
-  // Initially, don't allow the popup to be dragged
-  draggableVideoPopup.isFree = false;
+  if (videoPopup) {
+    const draggableVideoPopup = new Draggable(videoPopup);
+    draggableVideoPopup.isFree = false;
 
-  // Make the video player modal draggable once the popout button is clicked
-  popoutButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    
-    // Prevent video restart (do not change the iframe source)
-    if (!draggableVideoPopup.isFree) {
-      draggableVideoPopup.isFree = true;  // Now the video popup can be dragged
-    }
-    
-    // Hide the background overlay (black tint)
-    if (overlay) {
-      overlay.style.display = "none"; // Hide the black background tint
-    }
-  });
-
-  // Handle close button click to hide the video player
-  closeButton.addEventListener("click", () => {
-    videoContainer.style.display = "none"; // Hide the player when closing
-
-    // Ensure the overlay reappears when closing
-    if (overlay) {
-      overlay.style.display = "block"; // Show the black background tint
-    }
-  });
-
-  // Handle click on the "LIVE" button (fix the link behavior)
-  const propagandaLink = document.querySelector(".propaganda-link");
-  if (propagandaLink) {
-    propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault(); // Prevent default behavior (new tab opening)
-      updateLiveStream(); // Update the live stream URL
-      videoContainer.style.visibility = "visible"; // Show the video container (modal)
-      videoContainer.style.display = "flex"; // Make it a flex container to center it
+    // Center the video popup when it is freed
+    popoutButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (!draggableVideoPopup.isFree) {
+        draggableVideoPopup.isFree = true;
+        videoPopup.style.position = "fixed"; // Fix position to the screen
+        videoPopup.style.top = "50%";  // Center it vertically
+        videoPopup.style.left = "50%";  // Center it horizontally
+        videoPopup.style.transform = "translate(-50%, -50%)"; // Center using transform
+      }
+      if (overlay) {
+        overlay.style.display = "none"; // Hide the black background tint
+      }
     });
-  }
 
+    closeButton.addEventListener("click", () => {
+      videoContainer.style.display = "none";
+      if (overlay) {
+        overlay.style.display = "block"; // Show the black background tint
+      }
+    });
 
-  // Switch to the previous channel (video)
-  prevButton.addEventListener("click", () => {
-    currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-    updateLiveStream(); // Update the live stream URL
-  });
+    const propagandaLink = document.querySelector(".propaganda-link");
+    if (propagandaLink) {
+      propagandaLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        updateLiveStream();
+        videoContainer.style.visibility = "visible";
+        videoContainer.style.display = "flex";
+      });
+    }
 
-  // Switch to the next channel (video)
-  nextButton.addEventListener("click", () => {
-    currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-    updateLiveStream(); // Update the live stream URL
-  });
+    prevButton.addEventListener("click", () => {
+      currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+      updateLiveStream();
+    });
 
-  // Resize the video player
-  const resizeHandle = document.querySelector('.resize-handle');
-  if (resizeHandle) {
-    let isResizing = false;
+    nextButton.addEventListener("click", () => {
+      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+      updateLiveStream();
+    });
 
-    resizeHandle.addEventListener('mousedown', (event) => {
-      isResizing = true;
-      const initialWidth = videoContainer.querySelector('.video-popup').offsetWidth;
-      const initialHeight = videoContainer.querySelector('.video-popup').offsetHeight;
-      const initialMouseX = event.clientX;
-      const initialMouseY = event.clientY;
+    const resizeHandle = document.querySelector('.resize-handle');
+    if (resizeHandle) {
+      let isResizing = false;
+      resizeHandle.addEventListener('mousedown', (event) => {
+        isResizing = true;
+        const initialWidth = videoPopup.offsetWidth;
+        const initialHeight = videoPopup.offsetHeight;
+        const initialMouseX = event.clientX;
+        const initialMouseY = event.clientY;
 
-      function onMouseMove(e) {
-        if (isResizing) {
-          const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = initialHeight + (e.clientY - initialMouseY);
-          videoContainer.querySelector('.video-popup').style.width = `${newWidth}px`;
-          videoContainer.querySelector('.video-popup').style.height = `${newHeight}px`;
+        function onMouseMove(e) {
+          if (isResizing) {
+            const newWidth = initialWidth + (e.clientX - initialMouseX);
+            const newHeight = initialHeight + (e.clientY - initialMouseY);
+            videoPopup.style.width = `${newWidth}px`;
+            videoPopup.style.height = `${newHeight}px`;
+          }
         }
-      }
 
-      function onMouseUp() {
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
+        function onMouseUp() {
+          isResizing = false;
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+        }
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+    }
   }
 });
