@@ -1,9 +1,9 @@
-import { Draggable } from './draggable.js';
+import { Draggable } from './draggable.js';  // Ensure Draggable is imported
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the Propaganda Button
   const liveLinks1 = [
-    "https://geo.dailymotion.com/player.html?video=x9irfr8",          // the settlers
+    "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
     "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080", // overwhelming and collective harmony
@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const propagandaLink = document.querySelector(".propaganda-link");
   const popoutButton = document.getElementById("popoutButton");
 
+  // Draggable for the live player modal
+  let draggableLiveModal;
+
   // Handle click on the "Popout Video" button
   if (popoutButton) {
     popoutButton.addEventListener("click", (event) => {
@@ -61,7 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
       liveModal.style.display = "flex";
 
       // Make the video player draggable once it's popped out
-      new Draggable(liveModal); // Initialize Draggable class for the live video player modal
+      // Initialize Draggable with physics (inertia, bounce, etc.)
+      draggableLiveModal = new Draggable(liveModal);
+
+      // Set "free" behavior (allow movement with inertia)
+      draggableLiveModal.isFree = true;  // Similar to the music player logic
     });
   }
 
