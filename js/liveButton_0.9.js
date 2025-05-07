@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
     videoPopup.style.transform = "translate(-50%, -50%)";
 
     // Adjust the boundaries by 250px for left and right, and 100px for top/bottom
-    const minX = -250; // 250px offset from the left edge of the screen
+    const minX = 500; // 250px offset from the left edge of the screen
     const maxX = window.innerWidth - videoPopup.offsetWidth + 250; // 250px offset from the right edge
-    const minY = 100; // 100px offset from the top edge
+    const minY = 200; // 100px offset from the top edge
     const maxY = window.innerHeight - videoPopup.offsetHeight - 100; // 100px offset from the bottom edge
 
     // Adjust the draggable physics to respect these boundaries
