@@ -1,5 +1,3 @@
-import { Draggable } from './draggable.js';
-
 document.addEventListener("DOMContentLoaded", () => {
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
@@ -47,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
     videoPopup.style.left = "50%";
     videoPopup.style.transform = "translate(-50%, -50%)";
 
-    // Adjust the boundaries by 250px for left and right
+    // Adjust the boundaries by 250px for left and right, and 100px for top/bottom
     const minX = -250; // 250px offset from the left edge of the screen
     const maxX = window.innerWidth - videoPopup.offsetWidth + 250; // 250px offset from the right edge
-    const minY = 100; // Top offset (can be adjusted)
-    const maxY = window.innerHeight - videoPopup.offsetHeight - 100; // Bottom offset
+    const minY = 100; // 100px offset from the top edge
+    const maxY = window.innerHeight - videoPopup.offsetHeight - 100; // 100px offset from the bottom edge
 
     // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
@@ -157,5 +155,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener('mouseup', onMouseUp);
       });
     }
+
+    // Allow dragging the video area too, but still make it clickable
+    videoPopup.addEventListener('mousedown', (event) => {
+      if (event.target !== liveFrame) { 
+        // Only initiate dragging if not on the video itself
+        draggableVideoPopup.startDrag(event);
+      } else {
+        // If clicked on the video, ensure it is clickable (like play/pause)
+        // Handle any video-specific logic you want to add here.
+      }
+    });
   }
 });
