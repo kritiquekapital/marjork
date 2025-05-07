@@ -41,4 +41,19 @@ if (kissButton) {
       kissButton.removeChild(loveMessage);
     }, 1600);
   });
+
+  // Ensure the button follows the correct behavior based on theme changes
+  document.addEventListener("themeChange", () => {
+    const currentTheme = document.body.classList.contains("theme-space") ? "space" : document.body.classList.contains("theme-retro") ? "retro" : "normal";
+    switch (currentTheme) {
+      case "retro":
+        Bounceable.switchMode(Bounceable.modes.RETRO);
+        break;
+      case "space":
+        Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY);
+        break;
+      default:
+        Bounceable.switchMode(Bounceable.modes.NORMAL);
+    }
+  });
 }
