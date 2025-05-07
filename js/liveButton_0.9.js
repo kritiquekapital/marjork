@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Adjust the boundaries
     const minX = 650; // 500px offset from the left edge of the screen (left side in negative)
-    const maxX = window.innerWidth - videoPopup.offsetWidth + 650; // 500px offset from the right edge (positive)
-    const minY = -350; // 200px offset from the top edge (top side in negative)
+    const maxX = window.innerWidth - videoPopup.offsetWidth - 650; // 500px offset from the right edge (positive)
+    const minY = 350; // 200px offset from the top edge (top side in negative)
     const maxY = window.innerHeight - videoPopup.offsetHeight + 350; // 200px offset from the bottom edge (bottom side in negative)
 
     // Adjust the draggable physics to respect these boundaries
