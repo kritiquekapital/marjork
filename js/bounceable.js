@@ -22,7 +22,7 @@ export class Bounceable {
         this.element.style.position = 'absolute';
         this.element.addEventListener('click', this.handleClick.bind(this));
 
-        // Set initial mode to NORMAL
+        // Default mode is NORMAL
         this.currentMode = Bounceable.modes.NORMAL;
     }
 
@@ -99,12 +99,16 @@ export class Bounceable {
             }
 
             // Apply logic based on the active mode
-            if (this.currentMode === Bounceable.modes.RETRO) {
-                this.applyRetroMovement(newLeft, newTop);
-            } else if (this.currentMode === Bounceable.modes.ZERO_GRAVITY) {
-                this.applyZeroGravityMovement(newLeft, newTop);
-            } else {
-                this.applyNormalMovement(newLeft, newTop);
+            switch (this.currentMode) {
+                case Bounceable.modes.RETRO:
+                    this.applyRetroMovement(newLeft, newTop);
+                    break;
+                case Bounceable.modes.ZERO_GRAVITY:
+                    this.applyZeroGravityMovement(newLeft, newTop);
+                    break;
+                case Bounceable.modes.NORMAL:
+                    this.applyNormalMovement(newLeft, newTop);
+                    break;
             }
         };
 
