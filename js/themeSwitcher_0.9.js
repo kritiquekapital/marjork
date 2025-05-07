@@ -120,17 +120,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     themeButton.textContent = currentTheme.displayName;
 
-    // Set movement mode based on active theme
-    switch (currentTheme.name) {
+  // Switch mode when the theme changes
+  document.addEventListener("themeChange", () => {
+    const currentTheme = document.body.classList.contains("theme-space") 
+      ? "space" 
+      : document.body.classList.contains("theme-retro") 
+      ? "retro" 
+      : "normal";
+
+    switch (currentTheme) {
       case "retro":
-        Bounceable.switchMode(Bounceable.modes.RETRO); // Set retro mode
+        Bounceable.switchMode(Bounceable.modes.RETRO); // Apply retro mode to both
         break;
       case "space":
-        Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY); // Set zero gravity mode
+        Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY); // Apply zero gravity mode to both
         break;
       default:
-        Bounceable.switchMode(Bounceable.modes.NORMAL); // Default to normal mode
+        Bounceable.switchMode(Bounceable.modes.NORMAL); // Default to normal mode for both
     }
+  });
 
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
