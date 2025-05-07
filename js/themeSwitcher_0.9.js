@@ -91,63 +91,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
-function applyTheme() {
-  cleanupLogistics();
-  document.querySelectorAll('[data-theme]').forEach(link => link.remove());
+  function applyTheme() {
+    cleanupLogistics();
+    document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
-  const themeLink = document.createElement('link');
-  themeLink.rel = 'stylesheet';
-  themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
-  themeLink.dataset.theme = true;
+    const themeLink = document.createElement('link');
+    themeLink.rel = 'stylesheet';
+    themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
+    themeLink.dataset.theme = true;
 
-  const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
-  document.head.insertBefore(themeLink, responsiveLink);
+    const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
+    document.head.insertBefore(themeLink, responsiveLink);
 
-  const currentTheme = themes[currentThemeIndex];
+    const currentTheme = themes[currentThemeIndex];
 
-  // 🚨 Fix: clean body class list before setting new theme
-  document.body.classList.remove(
-    'theme-classic',
-    'theme-modern',
-    'theme-retro',
-    'theme-nature',
-    'theme-space',
-    'theme-logistics'
-  );
-  document.body.classList.add(`theme-${currentTheme.name}`);
+    // 🚨 Fix: clean body class list before setting new theme
+    document.body.classList.remove(
+      'theme-classic',
+      'theme-modern',
+      'theme-retro',
+      'theme-nature',
+      'theme-space',
+      'theme-logistics'
+    );
+    document.body.classList.add(`theme-${currentTheme.name}`);
 
-  themeButton.textContent = currentTheme.displayName;
+    themeButton.textContent = currentTheme.displayName;
 
-  if (currentTheme.name === "retro") {
-    Bounceable.switchMode(Bounceable.modes.RETRO);  // Set retro mode for retro theme
-  } else if (currentTheme.name === "space") {
-    Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY);  // Set zero gravity for space theme
-  } else {
-    Bounceable.switchMode(Bounceable.modes.NORMAL);  // Default to normal mode for other themes
+    // Set movement mode based on active theme
+    switch (currentTheme.name) {
+      case "retro":
+        Bounceable.switchMode(Bounceable.modes.RETRO); // Set retro mode
+        break;
+      case "space":
+        Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY); // Set zero gravity mode
+        break;
+      default:
+        Bounceable.switchMode(Bounceable.modes.NORMAL); // Default to normal mode
+    }
+
+    if (currentTheme.name === "nature") {
+      natureVideo.style.display = "block";
+      natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
+    } else {
+      natureVideo.style.display = "none";
+      natureAudio.pause();
+    }
+
+    speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
+    volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
+    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+
+    const logisticsPlayer = document.getElementById('logistics-player');
+    if (currentTheme.name === "logistics") {
+      if (logisticsPlayer) logisticsPlayer.style.display = "block";
+      cleanupLogistics = initLogisticsTheme() || (() => {});
+    } else {
+      if (logisticsPlayer) logisticsPlayer.style.display = "none";
+    }
+
+    draggable.setZeroGravityMode(currentTheme.name === "space");
   }
-
-  if (currentTheme.name === "nature") {
-    natureVideo.style.display = "block";
-    natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
-  } else {
-    natureVideo.style.display = "none";
-    natureAudio.pause();
-  }
-
-  speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
-  volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
-  spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
-
-  const logisticsPlayer = document.getElementById('logistics-player');
-  if (currentTheme.name === "logistics") {
-    if (logisticsPlayer) logisticsPlayer.style.display = "block";
-    cleanupLogistics = initLogisticsTheme() || (() => {});
-  } else {
-    if (logisticsPlayer) logisticsPlayer.style.display = "none";
-  }
-
-  draggable.setZeroGravityMode(currentTheme.name === "space");
-}
 
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
