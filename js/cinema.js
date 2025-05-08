@@ -38,8 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.querySelector('.popup-player-container');
   const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
+  const pinButton = document.querySelector('.pin-btn');  // Pin button reference
 
-  let hasBeenDragged = false;  // Track if the player has been dragged for the first time
+  let isPinned = false;  // Track if the video player is pinned or not
+  let hasBeenDragged = false;
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
@@ -164,6 +166,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Pin Button Logic
+    pinButton.addEventListener("click", () => {
+      isPinned = !isPinned;  // Toggle pin state
+
+      if (isPinned) {
+        // Prevent closing when pinned
+        overlay.style.visibility = "hidden";  // Hide overlay if pinned
+      } else {
+        overlay.style.visibility = "visible";  // Show overlay if not pinned
+        overlay.style.opacity = "1";  // Fade in the overlay when unpinned
+      }
     });
 
     // Allow dragging the video area too, but still make it clickable
