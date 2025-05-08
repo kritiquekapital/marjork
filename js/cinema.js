@@ -92,32 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
       this.animationFrame = requestAnimationFrame(animate);
     };
 
-    // Popout button logic to make the video popup draggable
-    popoutButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (!draggableVideoPopup.isFree) {
-        draggableVideoPopup.isFree = true; // Make the player draggable
-        videoPopup.style.position = "fixed";
-        videoPopup.style.top = "50%";
-        videoPopup.style.left = "50%";
-        videoPopup.style.transform = "translate(-50%, -50%)";
-      }
-
-      // Hide overlay when video player is popped out
-      if (overlay) {
-        overlay.style.visibility = "hidden";
-        overlay.style.opacity = "0"; // Fade out the overlay
-      }
-    });
-
-    closeButton.addEventListener("click", () => {
-      videoContainer.style.display = "none";
-      if (overlay) {
-        overlay.style.visibility = "visible";  // Show overlay
-        overlay.style.opacity = "1";  // Fade it back in
-      }
-    });
-
     const propagandaLink = document.querySelector(".propaganda-link");
     if (propagandaLink) {
       propagandaLink.addEventListener("click", (event) => {
