@@ -1,6 +1,7 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Hardcoded list of live links for the video player
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
@@ -28,36 +29,37 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  const videoPopup = document.querySelector('.video-popup');
-  const pinButton = videoPopup.querySelector('.pin-btn');
-  const closeButton = videoPopup.querySelector('.close-button');
+  const videoContainer = document.querySelector('.video-container');
+  const liveFrame = videoContainer.querySelector('iframe');
+  const prevButton = videoContainer.querySelector('#prevButton');
+  const nextButton = videoContainer.querySelector('#nextButton');
+  const popoutButton = videoContainer.querySelector('.pin-button');
+  const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.popup-player-container');
+  const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
-  const liveFrame = videoPopup.querySelector('iframe');
-  const prevButton = videoPopup.querySelector('#prevButton');
-  const nextButton = videoPopup.querySelector('#nextButton');
+  const pinButton = document.querySelector('.pin-btn');  // Pin button reference
 
-  let isPinned = false;
-
-  // Set the initial visibility of the video popup and container
-  videoPopup.style.display = "none"; // Make sure video-popup is hidden by default
+  let isPinned = false;  // Track if the video player is pinned or not
+  let hasBeenDragged = false;
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
-    draggableVideoPopup.isFree = false;
+    draggableVideoPopup.isFree = false; // Set initial state as non-free (non-draggable)
 
-    // Position the video popup in the center
+    // Set initial position for the video popup (centered)
     videoPopup.style.position = "fixed";
     videoPopup.style.top = "50%";
     videoPopup.style.left = "50%";
     videoPopup.style.transform = "translate(-50%, -50%)";
 
-    // Adjust boundaries for dragging
+    // Adjust the boundaries for draggable video player
     const minX = 600;
     const maxX = window.innerWidth - videoPopup.offsetWidth - 35;
     const minY = 335;
     const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
 
+    // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
       const animate = () => {
         if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -73,11 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
         let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
         let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
+        // Apply boundary checks
         if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1;
+          this.velocity.x *= -1; // Bounce horizontally
         }
         if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1;
+          this.velocity.y *= -1; // Bounce vertically
         }
 
         this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
@@ -89,40 +92,93 @@ document.addEventListener("DOMContentLoaded", () => {
       this.animationFrame = requestAnimationFrame(animate);
     };
 
-    pinButton.addEventListener("click", () => {
-      isPinned = !isPinned;
+    const propagandaLink = document.querySelector(".propaganda-link");
+    if (propagandaLink) {
+      propagandaLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        updateLiveStream(); // Update the live stream URL
+        videoContainer.style.visibility = "visible"; // Show video container
+        videoContainer.style.display = "flex"; // Center the container
+      });
+    }
 
-      if (isPinned) {
-        overlay.style.visibility = "hidden"; // Hide overlay when pinned
-      } else {
-        overlay.style.visibility = "visible"; // Show overlay when unpinned
-        overlay.style.opacity = "1"; // Fade back in the overlay
-      }
-    });
-
-    closeButton.addEventListener("click", () => {
-      videoPopup.style.display = "none"; // Hide the video popup
-    });
-
+    // Switch to the previous channel
     prevButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
       updateLiveStream(); // Update the live stream URL
     });
 
+    // Switch to the next channel
     nextButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
       updateLiveStream(); // Update the live stream URL
     });
 
-  // Handle propaganda button click to prevent opening in new tab
-  const propagandaLink = document.querySelector(".propaganda-link");
-  if (propagandaLink) {
-    propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault();  // Prevent the default action (opening a new tab)
-      updateLiveStream();      // Update the live stream URL
-      videoContainer.style.visibility = "visible";  // Show the video container
-      videoContainer.style.display = "flex";        // Center the popup container
-      videoPopup.style.display = "block";           // Ensure the video popup itself becomes visible
+    // Resizing functionality for the video popup (only on top-right corner and keeping 16:9 ratio)
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoPopup.offsetWidth;
+      const initialHeight = videoPopup.offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = newWidth * 9 / 16; // Maintain 16:9 aspect ratio
+          videoPopup.style.width = `${newWidth}px`;
+          videoPopup.style.height = `${newHeight}px`;
+        }
+      }
+
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Pin Button Logic
+    pinButton.addEventListener("click", () => {
+      isPinned = !isPinned;  // Toggle pin state
+
+      if (isPinned) {
+        // Prevent closing when pinned
+        overlay.style.visibility = "hidden";  // Hide overlay if pinned
+      } else {
+        overlay.style.visibility = "visible";  // Show overlay if not pinned
+        overlay.style.opacity = "1";  // Fade in the overlay when unpinned
+      }
+    });
+
+    // Allow dragging the video area too, but still make it clickable
+    videoPopup.addEventListener('mousedown', (event) => {
+      if (event.target !== liveFrame) { 
+        // Only initiate dragging if not on the video itself
+        draggableVideoPopup.startDrag(event);
+      } else {
+        // If clicked on the video, ensure it is clickable (like play/pause)
+        // Handle any video-specific logic you want to add here.
+      }
+
+      // Fade the background when dragging starts
+      if (!hasBeenDragged) {
+        if (overlay) {
+          overlay.style.opacity = "0";  // Fade out the background
+        }
+        hasBeenDragged = true;  // Set flag to prevent it from fading out again
+      }
+    });
+
+    // End dragging and restore overlay visibility when drag ends
+    videoPopup.addEventListener('mouseup', () => {
+      if (overlay) {
+        overlay.style.opacity = "1";  // Fade back in the background
+      }
     });
   }
 });
