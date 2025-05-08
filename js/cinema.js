@@ -1,4 +1,4 @@
-import { Draggable } from './draggable.js';
+import { Draggable } from './draggable.js'; // Import the Draggable class
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player
@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentLinkIndex1 = 0;
 
-  // Function to update the live stream iframe source
   function updateLiveStream() {
     let url = liveLinks1[currentLinkIndex1];
     if (url.includes("watch?v=")) {
@@ -30,69 +29,150 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  // Inject the modal HTML structure into the DOM
-  document.body.insertAdjacentHTML("beforeend", `
-    <div id="liveModal" class="popup-player-container" style="visibility: hidden;">
-      <div class="video-popup">
-        <iframe id="liveFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-        <div class="modal-controls">
-          <button id="prevChannel">Previous</button>
-          <button id="popoutButton">Popout</button>
-          <button id="nextChannel">Next</button>
-        </div>
-      </div>
-    </div>
-  `);
+  const videoContainer = document.querySelector('.video-container');
+  const liveFrame = videoContainer.querySelector('iframe');
+  const prevButton = videoContainer.querySelector('#prevButton');
+  const nextButton = videoContainer.querySelector('#nextButton');
+  const popoutButton = videoContainer.querySelector('#popoutButton');
+  const closeButton = videoContainer.querySelector('.close-button');
+  const overlay = document.querySelector('.popup-player-container');
+  const videoPopup = videoContainer.querySelector('.video-popup');
+  const resizeHandle = document.querySelector('.resize-handle');
 
-  // Get references to the modal and its elements
-  const liveModal = document.getElementById("liveModal");
-  const liveFrame = document.getElementById("liveFrame");
-  const prevButton = document.getElementById("prevChannel");
-  const nextButton = document.getElementById("nextChannel");
-  const propagandaLink = document.querySelector(".propaganda-link");
-  const popoutButton = document.getElementById("popoutButton");
+  if (videoPopup) {
+    const draggableVideoPopup = new Draggable(videoPopup);
+    draggableVideoPopup.isFree = false; // Set initial state as non-free (non-draggable)
 
-  // Handle click on the "Popout Video" button
-  if (popoutButton) {
+    // Set initial position for the video popup (centered)
+    videoPopup.style.position = "fixed";
+    videoPopup.style.top = "50%";
+    videoPopup.style.left = "50%";
+    videoPopup.style.transform = "translate(-50%, -50%)";
+
+    // Adjust the boundaries for draggable video player
+    const minX = 600;
+    const maxX = window.innerWidth - videoPopup.offsetWidth + 100;
+    const minY = 335;
+    const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
+
+    // Adjust the draggable physics to respect these boundaries
+    draggableVideoPopup.applyPhysics = function() {
+      const animate = () => {
+        if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+          cancelAnimationFrame(this.animationFrame);
+          return;
+        }
+
+        if (!this.isZeroGravity) {
+          this.velocity.x *= this.friction;
+          this.velocity.y *= this.friction;
+        }
+
+        let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
+        let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+
+        // Apply boundary checks
+        if (newLeft < minX || newLeft > maxX) {
+          this.velocity.x *= -1; // Bounce horizontally
+        }
+        if (newTop < minY || newTop > maxY) {
+          this.velocity.y *= -1; // Bounce vertically
+        }
+
+        this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
+        this.element.style.top = `${Math.min(maxY, Math.max(minY, newTop))}px`;
+
+        this.animationFrame = requestAnimationFrame(animate);
+      };
+
+      this.animationFrame = requestAnimationFrame(animate);
+    };
+
+    // Popout button logic to make the video popup draggable
     popoutButton.addEventListener("click", (event) => {
       event.preventDefault();
-      updateLiveStream(); // Update the live stream URL
-      liveModal.style.visibility = "visible"; // Show the modal
-      liveModal.style.display = "flex";
+      if (!draggableVideoPopup.isFree) {
+        draggableVideoPopup.isFree = true; // Make the player draggable
+        videoPopup.style.position = "fixed";
+        videoPopup.style.top = "50%";
+        videoPopup.style.left = "50%";
+        videoPopup.style.transform = "translate(-50%, -50%)";
+      }
 
-      // Make the video player draggable once it's popped out
-      new Draggable(liveModal); // Initialize Draggable class for video player modal
+      // Hide overlay when video player is popped out
+      if (overlay) {
+        overlay.style.visibility = "hidden";
+        overlay.style.opacity = "0"; // Fade out the overlay
+      }
     });
-  }
-  
-  // Handle click on the "LIVE" button
-  if (propagandaLink) {
-    propagandaLink.addEventListener("click", (event) => {
-      event.preventDefault();
-      updateLiveStream(); // Update the live stream URL
-      liveModal.style.visibility = "visible"; // Show the modal
-      liveModal.style.display = "flex";
-    });
-  }
 
-  // Close the modal when clicking outside of it
-  window.addEventListener("click", (event) => {
-    if (event.target === liveModal) {
-      liveModal.style.visibility = "hidden"; // Hide the modal
-      liveModal.style.display = "none";
-      liveFrame.src = ""; // Stop the video
+    closeButton.addEventListener("click", () => {
+      videoContainer.style.display = "none";
+      if (overlay) {
+        overlay.style.visibility = "visible";  // Show overlay
+        overlay.style.opacity = "1";  // Fade it back in
+      }
+    });
+
+    const propagandaLink = document.querySelector(".propaganda-link");
+    if (propagandaLink) {
+      propagandaLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        updateLiveStream(); // Update the live stream URL
+        videoContainer.style.visibility = "visible"; // Show video container
+        videoContainer.style.display = "flex"; // Center the container
+      });
     }
-  });
 
-  // Switch to the previous channel
-  prevButton.addEventListener("click", () => {
-    currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-    updateLiveStream(); // Update the live stream URL
-  });
+    // Switch to the previous channel
+    prevButton.addEventListener("click", () => {
+      currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+      updateLiveStream(); // Update the live stream URL
+    });
 
-  // Switch to the next channel
-  nextButton.addEventListener("click", () => {
-    currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-    updateLiveStream(); // Update the live stream URL
-  });
+    // Switch to the next channel
+    nextButton.addEventListener("click", () => {
+      currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
+      updateLiveStream(); // Update the live stream URL
+    });
+
+    // Resizing functionality for the video popup
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoPopup.offsetWidth;
+      const initialHeight = videoPopup.offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = initialHeight + (e.clientY - initialMouseY);
+          videoPopup.style.width = `${newWidth}px`;
+          videoPopup.style.height = `${newHeight}px`;
+        }
+      }
+
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Allow dragging the video area too, but still make it clickable
+    videoPopup.addEventListener('mousedown', (event) => {
+      if (event.target !== liveFrame) { 
+        // Only initiate dragging if not on the video itself
+        draggableVideoPopup.startDrag(event);
+      } else {
+        // If clicked on the video, ensure it is clickable (like play/pause)
+        // Handle any video-specific logic you want to add here.
+      }
+    });
+  }
 });
