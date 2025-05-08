@@ -133,59 +133,5 @@ document.addEventListener("DOMContentLoaded", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
       updateLiveStream(); // Update the live stream URL
     });
-
-    // Resizing functionality for the video popup (only on top-right corner and keeping 16:9 ratio)
-    let isResizing = false;
-    resizeHandle.addEventListener('mousedown', (event) => {
-      isResizing = true;
-      const initialWidth = videoPopup.offsetWidth;
-      const initialHeight = videoPopup.offsetHeight;
-      const initialMouseX = event.clientX;
-      const initialMouseY = event.clientY;
-
-      function onMouseMove(e) {
-        if (isResizing) {
-          const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = newWidth * 9 / 16; // Maintain 16:9 aspect ratio
-          videoPopup.style.width = `${newWidth}px`;
-          videoPopup.style.height = `${newHeight}px`;
-        }
-      }
-
-      function onMouseUp() {
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
-
-    // Allow dragging the video area too, but still make it clickable
-    videoPopup.addEventListener('mousedown', (event) => {
-      if (event.target !== liveFrame) { 
-        // Only initiate dragging if not on the video itself
-        draggableVideoPopup.startDrag(event);
-      } else {
-        // If clicked on the video, ensure it is clickable (like play/pause)
-        // Handle any video-specific logic you want to add here.
-      }
-
-      // Fade the background when dragging starts
-      if (!hasBeenDragged) {
-        if (overlay) {
-          overlay.style.opacity = "0";  // Fade out the background
-        }
-        hasBeenDragged = true;  // Set flag to prevent it from fading out again
-      }
-    });
-
-    // End dragging and restore overlay visibility when drag ends
-    videoPopup.addEventListener('mouseup', () => {
-      if (overlay) {
-        overlay.style.opacity = "1";  // Fade back in the background
-      }
-    });
   }
 });
