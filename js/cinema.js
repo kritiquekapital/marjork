@@ -29,11 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  const videoContainer = document.querySelector('.video-container');
   const liveFrame = videoContainer.querySelector('iframe');
   const prevButton = videoContainer.querySelector('#prevButton');
   const nextButton = videoContainer.querySelector('#nextButton');
-  const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.popup-player-container');
   const videoPopup = videoContainer.querySelector('.video-popup');
