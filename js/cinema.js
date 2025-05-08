@@ -1,4 +1,4 @@
-import { Draggable } from './draggable.js'; // Import the Draggable class
+import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Hardcoded list of live links for the video player
@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const overlay = document.querySelector('.popup-player-container');
   const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
+
+  let hasBeenDragged = false;  // Track if the player has been dragged for the first time
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
@@ -136,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLiveStream(); // Update the live stream URL
     });
 
-    // Resizing functionality for the video popup
+    // Resizing functionality for the video popup (only on top-right corner and keeping 16:9 ratio)
     let isResizing = false;
     resizeHandle.addEventListener('mousedown', (event) => {
       isResizing = true;
@@ -148,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       function onMouseMove(e) {
         if (isResizing) {
           const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = initialHeight + (e.clientY - initialMouseY);
+          const newHeight = newWidth * 9 / 16; // Maintain 16:9 aspect ratio
           videoPopup.style.width = `${newWidth}px`;
           videoPopup.style.height = `${newHeight}px`;
         }
@@ -172,6 +174,21 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // If clicked on the video, ensure it is clickable (like play/pause)
         // Handle any video-specific logic you want to add here.
+      }
+
+      // Fade the background when dragging starts
+      if (!hasBeenDragged) {
+        if (overlay) {
+          overlay.style.opacity = "0";  // Fade out the background
+        }
+        hasBeenDragged = true;  // Set flag to prevent it from fading out again
+      }
+    });
+
+    // End dragging and restore overlay visibility when drag ends
+    videoPopup.addEventListener('mouseup', () => {
+      if (overlay) {
+        overlay.style.opacity = "1";  // Fade back in the background
       }
     });
   }
