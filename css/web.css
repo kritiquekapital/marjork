@@ -1065,7 +1065,7 @@ body.theme-retro .click-wheel {
   display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background: none; 
   visibility: hidden; /* Hidden by default */
 }
 
