@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Set the initial visibility of the video popup and container
   videoPopup.style.display = "none"; // Make sure video-popup is hidden by default
-  videoContainer.style.display = "none"; // Ensure the container is hidden on load
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
@@ -103,8 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeButton.addEventListener("click", () => {
       videoPopup.style.display = "none"; // Hide the video popup
-      overlay.style.visibility = "visible"; // Show the overlay
-      overlay.style.opacity = "1"; // Fade in the overlay
     });
 
     prevButton.addEventListener("click", () => {
@@ -116,43 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
       updateLiveStream(); // Update the live stream URL
     });
-
-    // Resize handle logic
-    let isResizing = false;
-    resizeHandle.addEventListener('mousedown', (event) => {
-      isResizing = true;
-      const initialWidth = videoPopup.offsetWidth;
-      const initialHeight = videoPopup.offsetHeight;
-      const initialMouseX = event.clientX;
-      const initialMouseY = event.clientY;
-
-      function onMouseMove(e) {
-        if (isResizing) {
-          const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = newWidth * 9 / 16; // Maintain 16:9 aspect ratio
-          videoPopup.style.width = `${newWidth}px`;
-          videoPopup.style.height = `${newHeight}px`;
-        }
-      }
-
-      function onMouseUp() {
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
-
-    // Allow dragging the video area but keep video itself clickable
-    videoPopup.addEventListener('mousedown', (event) => {
-      if (event.target !== liveFrame) { 
-        // Only initiate dragging if not on the video itself
-        draggableVideoPopup.startDrag(event);
-      }
-    });
-  }
 
   // Handle propaganda button click to prevent opening in new tab
   const propagandaLink = document.querySelector(".propaganda-link");
