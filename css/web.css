@@ -975,21 +975,54 @@ body.theme-retro .click-wheel {
   visibility: hidden;
 }
 
+/* Pin Button Styling */
+.pin-btn {
+  background-color: #C98F5E;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pin-btn:hover {
+  background-color: #A57846;
+}
+
+/* Ensure proper positioning for the Pin Button */
+.modal-controls {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 1001;
+}
+
+#prevChannel, #nextChannel, .pin-btn {
+  margin: 0 5px; /* Add space between buttons */
+}
+
+/* Video Popup Styling (for draggable functionality) */
 .video-popup {
-  display: none;
-  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   width: 85%;
   max-width: 1200px;
-  height: auto;
+  height: 85%;
   max-height: 675px;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 15px;
   padding: 20px;
-  z-index: 999;
   overflow: hidden;
+  cursor: move;
+  position: relative;
 }
 
 .video-popup iframe {
