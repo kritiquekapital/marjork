@@ -1,7 +1,6 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Hardcoded list of live links for the video player
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
@@ -29,37 +28,33 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  const videoContainer = document.querySelector('.video-container');
-  const liveFrame = videoContainer.querySelector('iframe');
-  const prevButton = videoContainer.querySelector('#prevButton');
-  const nextButton = videoContainer.querySelector('#nextButton');
-  const popoutButton = videoContainer.querySelector('.pin-button');
-  const closeButton = videoContainer.querySelector('.close-button');
+  const videoPopup = document.querySelector('.video-popup');
+  const pinButton = videoPopup.querySelector('.pin-btn');
+  const closeButton = videoPopup.querySelector('.close-button');
   const overlay = document.querySelector('.popup-player-container');
-  const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
-  const pinButton = document.querySelector('.pin-btn');  // Pin button reference
+  const liveFrame = videoPopup.querySelector('iframe');
+  const prevButton = videoPopup.querySelector('#prevButton');
+  const nextButton = videoPopup.querySelector('#nextButton');
 
-  let isPinned = false;  // Track if the video player is pinned or not
-  let hasBeenDragged = false;
+  let isPinned = false;
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
-    draggableVideoPopup.isFree = false; // Set initial state as non-free (non-draggable)
+    draggableVideoPopup.isFree = false;
 
-    // Set initial position for the video popup (centered)
+    // Make sure the video popup is positioned correctly in the center
     videoPopup.style.position = "fixed";
     videoPopup.style.top = "50%";
     videoPopup.style.left = "50%";
     videoPopup.style.transform = "translate(-50%, -50%)";
 
-    // Adjust the boundaries for draggable video player
+    // Adjust boundaries for dragging
     const minX = 600;
     const maxX = window.innerWidth - videoPopup.offsetWidth - 35;
     const minY = 335;
     const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
 
-    // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
       const animate = () => {
         if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -75,12 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
         let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-        // Apply boundary checks
         if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1; // Bounce horizontally
+          this.velocity.x *= -1;
         }
         if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1; // Bounce vertically
+          this.velocity.y *= -1;
         }
 
         this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
@@ -92,26 +86,64 @@ document.addEventListener("DOMContentLoaded", () => {
       this.animationFrame = requestAnimationFrame(animate);
     };
 
-    const propagandaLink = document.querySelector(".propaganda-link");
-    if (propagandaLink) {
-      propagandaLink.addEventListener("click", (event) => {
-        event.preventDefault();
-        updateLiveStream(); // Update the live stream URL
-        videoContainer.style.visibility = "visible"; // Show video container
-        videoContainer.style.display = "flex"; // Center the container
-      });
-    }
+    pinButton.addEventListener("click", () => {
+      isPinned = !isPinned;
 
-    // Switch to the previous channel
-    prevButton.addEventListener("click", () => {
-      currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-      updateLiveStream(); // Update the live stream URL
+      if (isPinned) {
+        overlay.style.visibility = "hidden";
+      } else {
+        overlay.style.visibility = "visible";
+        overlay.style.opacity = "1";
+      }
     });
 
-    // Switch to the next channel
+    closeButton.addEventListener("click", () => {
+      videoPopup.style.display = "none";
+      overlay.style.visibility = "visible";
+      overlay.style.opacity = "1";
+    });
+
+    prevButton.addEventListener("click", () => {
+      currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
+      updateLiveStream();
+    });
+
     nextButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-      updateLiveStream(); // Update the live stream URL
+      updateLiveStream();
+    });
+
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoPopup.offsetWidth;
+      const initialHeight = videoPopup.offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = newWidth * 9 / 16; // Maintain 16:9 ratio
+          videoPopup.style.width = `${newWidth}px`;
+          videoPopup.style.height = `${newHeight}px`;
+        }
+      }
+
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    videoPopup.addEventListener('mousedown', (event) => {
+      if (event.target !== liveFrame) {
+        draggableVideoPopup.startDrag(event);
+      }
     });
   }
 });
