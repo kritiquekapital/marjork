@@ -1,6 +1,7 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Hardcoded list of live links for the video player
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
@@ -32,11 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const liveFrame = videoContainer.querySelector('iframe');
   const prevButton = videoContainer.querySelector('#prevButton');
   const nextButton = videoContainer.querySelector('#nextButton');
-  const pinButton = videoContainer.querySelector('.pin-btn'); // Pin button reference
+  const popoutButton = videoContainer.querySelector('.pin-button');
   const closeButton = videoContainer.querySelector('.close-button');
   const overlay = document.querySelector('.popup-player-container');
   const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
+  const pinButton = document.querySelector('.pin-btn');  // Pin button reference
 
   let isPinned = false;  // Track if the video player is pinned or not
   let hasBeenDragged = false;
@@ -89,28 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       this.animationFrame = requestAnimationFrame(animate);
     };
-
-    // Handle the click on the pin button
-    pinButton.addEventListener("click", () => {
-      isPinned = !isPinned;  // Toggle the pin state
-
-      if (isPinned) {
-        // Prevent closing when pinned
-        overlay.style.visibility = "hidden";  // Hide overlay when pinned
-      } else {
-        overlay.style.visibility = "visible";  // Show overlay when unpinned
-        overlay.style.opacity = "1";  // Fade back in the overlay
-      }
-    });
-
-    // Popout button logic to make the video popup draggable
-    closeButton.addEventListener("click", () => {
-      videoContainer.style.display = "none";
-      if (overlay) {
-        overlay.style.visibility = "visible";  // Show overlay
-        overlay.style.opacity = "1";  // Fade it back in
-      }
-    });
 
     const propagandaLink = document.querySelector(".propaganda-link");
     if (propagandaLink) {
