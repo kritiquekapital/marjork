@@ -34,8 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = videoContainer.querySelector('#nextButton');
   const popoutButton = videoContainer.querySelector('#popoutButton');
   const closeButton = videoContainer.querySelector('.close-button');
-  const overlay = document.querySelector('.-overlay');
+  const overlay = document.querySelector('.popup-player-container');
   const videoPopup = videoContainer.querySelector('.video-popup');
+  const resizeHandle = document.querySelector('.resize-handle');
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
@@ -48,10 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
     videoPopup.style.transform = "translate(-50%, -50%)";
 
     // Adjust the boundaries
-    const minX = 600; // 500px offset from the left edge of the screen (left side in negative)
-    const maxX = window.innerWidth - videoPopup.offsetWidth + 100; // 500px offset from the right edge (positive)
-    const minY = 335; // 200px offset from the top edge (top side in negative)
-    const maxY = window.innerHeight - videoPopup.offsetHeight - 335; // 200px offset from the bottom edge (bottom side in negative)
+    const minX = 600;  // 500px offset from the left edge of the screen (left side in negative)
+    const maxX = window.innerWidth - videoPopup.offsetWidth + 100;  // 500px offset from the right edge (positive)
+    const minY = 335;  // 200px offset from the top edge (top side in negative)
+    const maxY = window.innerHeight - videoPopup.offsetHeight - 335;  // 200px offset from the bottom edge (bottom side in negative)
 
     // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
@@ -97,14 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
         videoPopup.style.transform = "translate(-50%, -50%)";
       }
       if (overlay) {
-        overlay.style.display = "none";
+        overlay.style.visibility = "visible";  // Show the overlay when the popup appears
+        overlay.style.opacity = "1";  // Fade in the background
       }
     });
 
     closeButton.addEventListener("click", () => {
       videoContainer.style.display = "none";
       if (overlay) {
-        overlay.style.display = "block";
+        overlay.style.visibility = "hidden";  // Hide the overlay
+        overlay.style.opacity = "0";  // Fade out the background
       }
     });
 
@@ -128,35 +131,33 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLiveStream();
     });
 
-    const resizeHandle = document.querySelector('.resize-handle');
-    if (resizeHandle) {
-      let isResizing = false;
-      resizeHandle.addEventListener('mousedown', (event) => {
-        isResizing = true;
-        const initialWidth = videoPopup.offsetWidth;
-        const initialHeight = videoPopup.offsetHeight;
-        const initialMouseX = event.clientX;
-        const initialMouseY = event.clientY;
+    // Resizing functionality for the video popup
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoPopup.offsetWidth;
+      const initialHeight = videoPopup.offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
 
-        function onMouseMove(e) {
-          if (isResizing) {
-            const newWidth = initialWidth + (e.clientX - initialMouseX);
-            const newHeight = initialHeight + (e.clientY - initialMouseY);
-            videoPopup.style.width = `${newWidth}px`;
-            videoPopup.style.height = `${newHeight}px`;
-          }
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = initialHeight + (e.clientY - initialMouseY);
+          videoPopup.style.width = `${newWidth}px`;
+          videoPopup.style.height = `${newHeight}px`;
         }
+      }
 
-        function onMouseUp() {
-          isResizing = false;
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        }
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
 
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-      });
-    }
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
 
     // Allow dragging the video area too, but still make it clickable
     videoPopup.addEventListener('mousedown', (event) => {
@@ -166,6 +167,18 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         // If clicked on the video, ensure it is clickable (like play/pause)
         // Handle any video-specific logic you want to add here.
+      }
+
+      // Fade the background when dragging starts
+      if (overlay) {
+        overlay.style.opacity = "0";  // Fade out the background
+      }
+    });
+
+    // End dragging and restore overlay visibility when drag ends
+    videoPopup.addEventListener('mouseup', () => {
+      if (overlay) {
+        overlay.style.opacity = "1";  // Fade back in the background
       }
     });
   }
