@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080"  // bob
   ];
 
+  ];
+
   let currentLinkIndex1 = 0;
 
   function updateLiveStream() {
