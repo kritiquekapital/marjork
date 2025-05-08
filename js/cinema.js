@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Adjust the boundaries for draggable video player
     const minX = 600;
-    const maxX = window.innerWidth - videoPopup.offsetWidth + 100;
+    const maxX = window.innerWidth - videoPopup.offsetWidth + 10;
     const minY = 335;
     const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
 
