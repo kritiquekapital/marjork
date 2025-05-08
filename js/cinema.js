@@ -112,38 +112,5 @@ document.addEventListener("DOMContentLoaded", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
       updateLiveStream();
     });
-
-    let isResizing = false;
-    resizeHandle.addEventListener('mousedown', (event) => {
-      isResizing = true;
-      const initialWidth = videoPopup.offsetWidth;
-      const initialHeight = videoPopup.offsetHeight;
-      const initialMouseX = event.clientX;
-      const initialMouseY = event.clientY;
-
-      function onMouseMove(e) {
-        if (isResizing) {
-          const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = newWidth * 9 / 16; // Maintain 16:9 ratio
-          videoPopup.style.width = `${newWidth}px`;
-          videoPopup.style.height = `${newHeight}px`;
-        }
-      }
-
-      function onMouseUp() {
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
-
-    videoPopup.addEventListener('mousedown', (event) => {
-      if (event.target !== liveFrame) {
-        draggableVideoPopup.startDrag(event);
-      }
-    });
   }
 });
