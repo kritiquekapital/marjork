@@ -39,11 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let isPinned = false;
 
+  // Set the initial visibility of the video popup and container
+  videoPopup.style.display = "none"; // Make sure video-popup is hidden by default
+  videoContainer.style.display = "none"; // Ensure the container is hidden on load
+
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
     draggableVideoPopup.isFree = false;
 
-    // Make sure the video popup is positioned correctly in the center
+    // Position the video popup in the center
     videoPopup.style.position = "fixed";
     videoPopup.style.top = "50%";
     videoPopup.style.left = "50%";
@@ -90,27 +94,75 @@ document.addEventListener("DOMContentLoaded", () => {
       isPinned = !isPinned;
 
       if (isPinned) {
-        overlay.style.visibility = "hidden";
+        overlay.style.visibility = "hidden"; // Hide overlay when pinned
       } else {
-        overlay.style.visibility = "visible";
-        overlay.style.opacity = "1";
+        overlay.style.visibility = "visible"; // Show overlay when unpinned
+        overlay.style.opacity = "1"; // Fade back in the overlay
       }
     });
 
     closeButton.addEventListener("click", () => {
-      videoPopup.style.display = "none";
-      overlay.style.visibility = "visible";
-      overlay.style.opacity = "1";
+      videoPopup.style.display = "none"; // Hide the video popup
+      overlay.style.visibility = "visible"; // Show the overlay
+      overlay.style.opacity = "1"; // Fade in the overlay
     });
 
     prevButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
-      updateLiveStream();
+      updateLiveStream(); // Update the live stream URL
     });
 
     nextButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 + 1) % liveLinks1.length;
-      updateLiveStream();
+      updateLiveStream(); // Update the live stream URL
+    });
+
+    // Resize handle logic
+    let isResizing = false;
+    resizeHandle.addEventListener('mousedown', (event) => {
+      isResizing = true;
+      const initialWidth = videoPopup.offsetWidth;
+      const initialHeight = videoPopup.offsetHeight;
+      const initialMouseX = event.clientX;
+      const initialMouseY = event.clientY;
+
+      function onMouseMove(e) {
+        if (isResizing) {
+          const newWidth = initialWidth + (e.clientX - initialMouseX);
+          const newHeight = newWidth * 9 / 16; // Maintain 16:9 aspect ratio
+          videoPopup.style.width = `${newWidth}px`;
+          videoPopup.style.height = `${newHeight}px`;
+        }
+      }
+
+      function onMouseUp() {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Allow dragging the video area but keep video itself clickable
+    videoPopup.addEventListener('mousedown', (event) => {
+      if (event.target !== liveFrame) { 
+        // Only initiate dragging if not on the video itself
+        draggableVideoPopup.startDrag(event);
+      }
+    });
+  }
+
+  // Handle propaganda button click to prevent opening in new tab
+  const propagandaLink = document.querySelector(".propaganda-link");
+  if (propagandaLink) {
+    propagandaLink.addEventListener("click", (event) => {
+      event.preventDefault();  // Prevent the default action (opening a new tab)
+      updateLiveStream();      // Update the live stream URL
+      videoContainer.style.visibility = "visible";  // Show the video container
+      videoContainer.style.display = "flex";        // Center the popup container
+      videoPopup.style.display = "block";           // Ensure the video popup itself becomes visible
     });
   }
 });
