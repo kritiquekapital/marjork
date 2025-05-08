@@ -28,33 +28,33 @@ document.addEventListener("DOMContentLoaded", () => {
     liveFrame.src = url;
   }
 
-  const videoContainer = document.querySelector('.video-container');
-  const liveFrame = videoContainer.querySelector('iframe');
-  const prevButton = videoContainer.querySelector('#prevButton');
-  const nextButton = videoContainer.querySelector('#nextButton');
-  const popoutButton = videoContainer.querySelector('#popoutButton');
-  const closeButton = videoContainer.querySelector('.close-button');
+  const videoPopup = document.querySelector('.video-popup');
+  const pinButton = videoPopup.querySelector('.pin-btn');
+  const closeButton = videoPopup.querySelector('.close-button');
   const overlay = document.querySelector('.popup-player-container');
-  const videoPopup = videoContainer.querySelector('.video-popup');
   const resizeHandle = document.querySelector('.resize-handle');
+  const liveFrame = videoPopup.querySelector('iframe');
+  const prevButton = videoPopup.querySelector('#prevButton');
+  const nextButton = videoPopup.querySelector('#nextButton');
+
+  let isPinned = false;
 
   if (videoPopup) {
     const draggableVideoPopup = new Draggable(videoPopup);
     draggableVideoPopup.isFree = false;
 
-    // Set initial position for the video popup (centered)
+    // Make sure the video popup is positioned correctly in the center
     videoPopup.style.position = "fixed";
     videoPopup.style.top = "50%";
     videoPopup.style.left = "50%";
     videoPopup.style.transform = "translate(-50%, -50%)";
 
-    // Adjust the boundaries
-    const minX = 600;  // 500px offset from the left edge of the screen (left side in negative)
-    const maxX = window.innerWidth - videoPopup.offsetWidth;  // 500px offset from the right edge (positive)
-    const minY = 335;  // 200px offset from the top edge (top side in negative)
-    const maxY = window.innerHeight - videoPopup.offsetHeight - 335;  // 200px offset from the bottom edge (bottom side in negative)
+    // Adjust boundaries for dragging
+    const minX = 600;
+    const maxX = window.innerWidth - videoPopup.offsetWidth - 35;
+    const minY = 335;
+    const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
 
-    // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
       const animate = () => {
         if (!this.isZeroGravity && Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
@@ -70,12 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
         let newTop = parseFloat(this.element.style.top) + this.velocity.y;
 
-        // Apply boundary checks
         if (newLeft < minX || newLeft > maxX) {
-          this.velocity.x *= -1; // Bounce horizontally
+          this.velocity.x *= -1;
         }
         if (newTop < minY || newTop > maxY) {
-          this.velocity.y *= -1; // Bounce vertically
+          this.velocity.y *= -1;
         }
 
         this.element.style.left = `${Math.min(maxX, Math.max(minX, newLeft))}px`;
@@ -87,39 +86,22 @@ document.addEventListener("DOMContentLoaded", () => {
       this.animationFrame = requestAnimationFrame(animate);
     };
 
-    // Popout button logic to make the video popup draggable
-    popoutButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (!draggableVideoPopup.isFree) {
-        draggableVideoPopup.isFree = true;
-        videoPopup.style.position = "fixed";
-        videoPopup.style.top = "50%";
-        videoPopup.style.left = "50%";
-        videoPopup.style.transform = "translate(-50%, -50%)";
-      }
-      if (overlay) {
-        overlay.style.visibility = "visible";  // Show the overlay when the popup appears
-        overlay.style.opacity = "1";  // Fade in the background
+    pinButton.addEventListener("click", () => {
+      isPinned = !isPinned;
+
+      if (isPinned) {
+        overlay.style.visibility = "hidden";
+      } else {
+        overlay.style.visibility = "visible";
+        overlay.style.opacity = "1";
       }
     });
 
     closeButton.addEventListener("click", () => {
-      videoContainer.style.display = "none";
-      if (overlay) {
-        overlay.style.visibility = "hidden";  // Hide the overlay
-        overlay.style.opacity = "0";  // Fade out the background
-      }
+      videoPopup.style.display = "none";
+      overlay.style.visibility = "visible";
+      overlay.style.opacity = "1";
     });
-
-    const propagandaLink = document.querySelector(".propaganda-link");
-    if (propagandaLink) {
-      propagandaLink.addEventListener("click", (event) => {
-        event.preventDefault();
-        updateLiveStream();
-        videoContainer.style.visibility = "visible";
-        videoContainer.style.display = "flex";
-      });
-    }
 
     prevButton.addEventListener("click", () => {
       currentLinkIndex1 = (currentLinkIndex1 - 1 + liveLinks1.length) % liveLinks1.length;
@@ -131,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateLiveStream();
     });
 
-    // Resizing functionality for the video popup
     let isResizing = false;
     resizeHandle.addEventListener('mousedown', (event) => {
       isResizing = true;
@@ -143,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       function onMouseMove(e) {
         if (isResizing) {
           const newWidth = initialWidth + (e.clientX - initialMouseX);
-          const newHeight = initialHeight + (e.clientY - initialMouseY);
+          const newHeight = newWidth * 9 / 16; // Maintain 16:9 ratio
           videoPopup.style.width = `${newWidth}px`;
           videoPopup.style.height = `${newHeight}px`;
         }
@@ -159,26 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.addEventListener('mouseup', onMouseUp);
     });
 
-    // Allow dragging the video area too, but still make it clickable
     videoPopup.addEventListener('mousedown', (event) => {
-      if (event.target !== liveFrame) { 
-        // Only initiate dragging if not on the video itself
+      if (event.target !== liveFrame) {
         draggableVideoPopup.startDrag(event);
-      } else {
-        // If clicked on the video, ensure it is clickable (like play/pause)
-        // Handle any video-specific logic you want to add here.
-      }
-
-      // Fade the background when dragging starts
-      if (overlay) {
-        overlay.style.opacity = "0";  // Fade out the background
-      }
-    });
-
-    // End dragging and restore overlay visibility when drag ends
-    videoPopup.addEventListener('mouseup', () => {
-      if (overlay) {
-        overlay.style.opacity = "1";  // Fade back in the background
       }
     });
   }
