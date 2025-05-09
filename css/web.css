@@ -961,152 +961,53 @@ body.theme-retro .click-wheel {
   background: #505050;
 }
 
-.popup-player-container {
+#videoPlayer {
+  display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  visibility: hidden;
-}
-
-/* Pin Button Styling */
-.pin-btn {
-  background-color: #C98F5E;
-  color: white;
-  border: none;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.pin-btn:hover {
-  background-color: #A57846;
-}
-
-/* Ensure proper positioning for the Pin Button */
-.modal-controls {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  z-index: 1001;
-}
-
-#prevChannel, #nextChannel, .pin-btn {
-  margin: 0 5px; /* Add space between buttons */
-}
-
-/* Video Popup Styling (for draggable functionality) */
-.video-popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
   top: 50%;
   left: 50%;
-  width: 85%;
-  max-width: 1200px;
-  height: 85%;
-  max-height: 675px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  padding: 20px;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 400px;
+  background-color: #111;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  z-index: 999;
   overflow: hidden;
-  cursor: move;
-  position: relative;
 }
 
-.video-popup iframe {
+#videoPlayer iframe {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   border: none;
-  border-radius: 10px;
+  border-radius: 0 0 10px 10px;
 }
 
-.modal-controls {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+.video-controls {
+  height: 50px;
+  background-color: #222;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-}
-
-#prevChannel, #nextChannel {
-  background-color: #C98F5E;
-  color: white;
-  border: none;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-#prevChannel:hover, #nextChannel:hover {
-  background-color: #A57846;
-}
-
-.video-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;  /* Ensure it's hidden by default */
-  justify-content: center;
   align-items: center;
+  padding: 0 20px;
+  color: white;
+  font-family: sans-serif;
+}
+
+.video-controls button {
   background: none;
-  visibility: hidden; /* Hidden by default */
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-/* Resize handle */
-.resize-handle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 20px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.6);
-  cursor: se-resize; /* "Southeast" resize cursor */
-  border-radius: 0 10px 0 0; /* Rounded corner for resizing */
-  z-index: 100001;
+.pin-btn {
+  opacity: 0.5;
 }
 
-/* Video Popup (Video Player Modal) */
-.video-popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute; /* Ensure it moves freely */
-  top: 50%;
-  left: 50%;
-  width: 85%;
-  max-width: 1200px;
-  height: 85%;
-  max-height: 675px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  padding: 20px;
-  overflow: hidden;
-  cursor: move;
-  position: relative; /* Ensure we can move it */
-}
-
-/* Optional: For making the iframe fill the container */
-.video-popup iframe {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
+.pin-btn.active {
+  opacity: 1;
 }
 
 /* ==================== */
