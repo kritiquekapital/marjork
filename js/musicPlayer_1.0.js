@@ -10,9 +10,29 @@ const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 
-
 // Draggable (entire player)
 new Draggable(musicPlayer, '.ipod-screen');
+
+// Draggable Video Container (iPad style)
+const videoContainer = document.querySelector(".video-container");
+const pinBtn = document.getElementById("pinButton");
+let videoPinned = false;
+
+if (videoContainer) {
+  const videoDraggable = new Draggable(videoContainer);
+  if (pinBtn) {
+    pinBtn.addEventListener("click", () => {
+      videoPinned = !videoPinned;
+      pinBtn.style.opacity = videoPinned ? "1" : "0.5";
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!videoContainer.contains(e.target) && !videoPinned) {
+      videoContainer.style.display = "none";
+    }
+  });
+}
 
 // Video Links
 const liveLinks2 = [
@@ -47,7 +67,7 @@ let isFirstOpen = true;
 let isPlaying = true;
 let isPinned = false;
 let isShuffling = false;
-let currentPlaylist = [...liveLinks2];  // Default order
+let currentPlaylist = [...liveLinks2];
 let currentIndex = 0;
 
 // 🎵 Buttons
@@ -121,24 +141,21 @@ function updateButtonStates() {
   shuffleButton.style.opacity = isShuffling ? "1" : "0.5";
 }
 
-// 🎵 Shuffle Algorithm (Plays All Before Repeating)
+// 🎵 Shuffle Logic
 function shufflePlaylist() {
   currentPlaylist = [...liveLinks2].sort(() => Math.random() - 0.5);
   currentIndex = 0;
 }
 
-// 🎵 Reset to Normal Order
 function resetPlaylist() {
   currentPlaylist = [...liveLinks2];
   currentIndex = 0;
 }
 
-// 🎵 Update Music Source
 function updateMusicSource() {
-  musicFrame.src = currentPlaylist[currentIndex].url;  // Ensure only the URL is assigned
+  musicFrame.src = currentPlaylist[currentIndex].url;
 }
 
-// 🎵 Play/Pause Toggle
 function togglePlayState() {
   isPlaying = !isPlaying;
   musicFrame.contentWindow.postMessage({
@@ -148,32 +165,28 @@ function togglePlayState() {
   }, "*");
 }
 
-// 🎵 Next Track
 function nextTrack() {
   currentIndex = (currentIndex + 1) % currentPlaylist.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 }
 
-// 🎵 Previous Track
 function prevTrack() {
   currentIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
   updateMusicSource();
   if (!isPlaying) togglePlayState();
 }
 
-// 🎵 Button Listeners
 document.querySelector(".next-btn").addEventListener("click", nextTrack);
 prevButton.addEventListener("click", prevTrack);
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
-// 🎵 Menu Button (Right Side, Dropdown)
+// 🎵 Dropdown Menu
 const menuButton = document.createElement("button");
 menuButton.classList.add("ipod-btn", "menu-btn");
 menuButton.innerHTML = "📜";
 controlsContainer.appendChild(menuButton);
 
-// 🎵 Dropdown Menu
 const dropdownMenu = document.createElement("ul");
 dropdownMenu.classList.add("dropdown-menu");
 dropdownMenu.style.display = "none";
@@ -181,7 +194,6 @@ dropdownMenu.style.maxHeight = "50px";
 dropdownMenu.style.overflowY = "auto";
 menuButton.appendChild(dropdownMenu);
 
-// Populate Dropdown
 liveLinks2.forEach((track, index) => {
   const listItem = document.createElement("li");
   listItem.textContent = track.title;
@@ -195,19 +207,11 @@ liveLinks2.forEach((track, index) => {
   dropdownMenu.appendChild(listItem);
 });
 
-// Toggle Dropdown Menu
 menuButton.addEventListener("click", (event) => {
   event.stopPropagation();
   dropdownMenu.style.display = dropdownMenu.style.display === "none" ? "block" : "none";
 });
 
-listItem.addEventListener("click", () => {
-  currentIndex = index;
-  updateMusicSource();
-  dropdownMenu.style.display = "none";
-});
-
-// 🎵 Play Next Video When Current One Ends
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
     nextTrack();
