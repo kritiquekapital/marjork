@@ -249,4 +249,38 @@ if (propagandaLink) {
     e.preventDefault();
     showVideoPlayer();
   });
+
+const resizeBar = document.querySelector(".video-resize-bar");
+
+if (resizeBar) {
+  let isResizing = false;
+  let startY, startHeight;
+
+  resizeBar.addEventListener("mousedown", (e) => {
+    e.stopPropagation(); // Prevent triggering drag
+    isResizing = true;
+    startY = e.clientY;
+    startHeight = videoPlayer.offsetHeight;
+
+    document.addEventListener("mousemove", resizeVideo);
+    document.addEventListener("mouseup", stopResize);
+  });
+
+  function resizeVideo(e) {
+    if (!isResizing) return;
+    const dy = e.clientY - startY;
+    let newHeight = Math.max(180, startHeight + dy);
+    let newWidth = newHeight * (16 / 9);
+
+    videoPlayer.style.width = `${newWidth}px`;
+    videoPlayer.style.height = `${newHeight}px`;
+  }
+
+  function stopResize() {
+    isResizing = false;
+    document.removeEventListener("mousemove", resizeVideo);
+    document.removeEventListener("mouseup", stopResize);
+  }
 }
+
+
