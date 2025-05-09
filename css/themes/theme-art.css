@@ -2,3 +2,25 @@ body.theme-art {
   background:
     url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') center center / cover no-repeat fixed;
 }
+
+.paint-splatter {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(255,0,0,0.7) 10%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: splat-grow 0.5s ease-out forwards;
+}
+
+@keyframes splat-grow {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(var(--rot));
+    opacity: 1;
+  }
+}
