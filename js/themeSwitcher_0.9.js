@@ -141,29 +141,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  if (document.body.classList.contains("theme-art")) {
+   if (document.body.classList.contains("theme-art")) {
     document.addEventListener("click", (e) => {
-      const splat = document.createElement("div");
-      splat.className = "paint-splatter";
+      const splatter = document.createElement("div");
+      splatter.className = "paint-splatter";
+      splatter.style.left = `${e.clientX}px`;
+      splatter.style.top = `${e.clientY}px`;
+      splatter.style.setProperty("--rot", `${Math.floor(Math.random() * 360)}deg`);
 
-      // Random color & angle
-      const colors = ["#ff0040", "#00ccff", "#ffcc00", "#00ff99", "#cc66ff"];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const rotation = Math.floor(Math.random() * 360) + "deg";
+      const colors = ["#ff1f57", "#1fd2ff", "#ffe71f", "#41ff1f", "#bc1fff"];
+      const numBlobs = Math.floor(Math.random() * 5) + 4; // 4–8 blobs
 
-      splat.style.background = `radial-gradient(circle, ${color} 10%, transparent 70%)`;
-      splat.style.left = e.clientX + "px";
-      splat.style.top = e.clientY + "px";
-      splat.style.setProperty("--rot", rotation);
+      for (let i = 0; i < numBlobs; i++) {
+        const blob = document.createElement("div");
+        blob.className = "blob";
 
-      document.body.appendChild(splat);
+        const size = Math.random() * 60 + 20; // 20–80px
+        blob.style.width = `${size}px`;
+        blob.style.height = `${size}px`;
 
-      // Optional: fade out and remove
+        blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        const x = (Math.random() - 0.5) * 100;
+        const y = (Math.random() - 0.5) * 100;
+        blob.style.left = `${x}px`;
+        blob.style.top = `${y}px`;
+
+        splatter.appendChild(blob);
+      }
+
+      document.body.appendChild(splatter);
+
+      // Optional fade-out
       setTimeout(() => {
-        splat.style.transition = "opacity 2s ease-out";
-        splat.style.opacity = "0";
-        setTimeout(() => splat.remove(), 2000);
-      }, 500);
+        splatter.style.transition = "opacity 2s ease-out";
+        splatter.style.opacity = "0";
+        setTimeout(() => splatter.remove(), 2000);
+      }, 600);
     });
   }
 
