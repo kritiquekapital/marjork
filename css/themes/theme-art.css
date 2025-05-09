@@ -5,22 +5,26 @@ body.theme-art {
 
 .paint-splatter {
   position: fixed;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, rgba(255,0,0,0.7) 10%, transparent 70%);
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%) rotate(0deg);
-  animation: splat-grow 0.5s ease-out forwards;
+  transform: translate(-50%, -50%) rotate(var(--rot));
+  animation: splat-grow 0.3s ease-out;
+  opacity: 0.9;
 }
 
 @keyframes splat-grow {
   0% {
-    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
-    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.1) rotate(var(--rot));
+    opacity: 0.3;
   }
   100% {
     transform: translate(-50%, -50%) scale(1) rotate(var(--rot));
     opacity: 1;
   }
+}
+
+.paint-splatter .blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.8;
 }
