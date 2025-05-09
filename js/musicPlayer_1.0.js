@@ -193,15 +193,22 @@ const videoPin = document.getElementById("videoPin");
 const propagandaLink = document.querySelector(".propaganda-link");
 
 const videoLinks = [
-  { title: "Hairpin Circus", url: "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1" },
-  { title: "Crack", url: "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1" },
-  { title: "Harmony", url: "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1" },
-  { title: "JRJR", url: "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1" },
-  { title: "USSR", url: "https://www.youtube.com/embed/w72mLI_FaR0?autoplay=1" },
-  { title: "Drive", url: "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1" },
-  { title: "Fight", url: "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1" },
-  { title: "MNR", url: "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1" }
+  { title: "The Settlers", url: "https://geo.dailymotion.com/player.html?video=x9irfr8" },
+  { title: "Hairpin Circus", url: "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080" },
+  { title: "Crack", url: "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080" },
+  { title: "Overwhelming Harmony", url: "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080" },
+  { title: "JRJRJRJR", url: "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080" },
+  { title: "USSRRRRRR", url: "https://www.youtube.com/embed/w72mLI_FaR0?autoplay=1&vq=hd1080" },
+  { title: "Drive", url: "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1&vq=hd1080" },
+  { title: "Fight", url: "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1&vq=hd1080" },
+  { title: "MNR", url: "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080" },
+  { title: "La Souf", url: "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&vq=hd1080" },
+  { title: "SocWen", url: "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1&vq=hd1080" },
+  { title: "Fata", url: "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1&vq=hd1080" },
+  { title: "Tokyo", url: "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1&vq=hd1080" },
+  { title: "Bob", url: "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080" }
 ];
+
 
 let videoIndex = 0;
 let videoPinned = false;
