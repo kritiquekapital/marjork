@@ -2,13 +2,3 @@ body.theme-art {
   background:
     url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') center center / cover no-repeat fixed;
 }
-
-body.theme-art::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') no-repeat center center fixed;
-  background-size: contain;
-  z-index: -1;
-  filter: blur(8px) brightness(0.5);
-}
