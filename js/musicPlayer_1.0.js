@@ -10,7 +10,7 @@ const vinylLink = document.querySelector(".vinyl-link");
 const musicPlayer = document.getElementById("musicPlayer");
 const musicFrame = document.getElementById("musicFrame");
 
-new Draggable(musicPlayer, '.ipod-screen');
+new Draggable(musicPlayer);
 
 const liveLinks2 = [
   { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
