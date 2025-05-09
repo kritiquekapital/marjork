@@ -1,4 +1,6 @@
 body.theme-art {
-  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background: #000 url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') no-repeat center center fixed;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
