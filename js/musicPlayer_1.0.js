@@ -256,6 +256,7 @@ if (propagandaLink) {
     e.preventDefault();
     showVideoPlayer();
   });
+}
 
 const resizeBar = document.querySelector(".video-resize-bar");
 
