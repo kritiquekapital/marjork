@@ -214,7 +214,20 @@ function updateVideoSource() {
 function showVideoPlayer() {
   updateVideoSource();
   videoPlayer.style.display = "block";
+
+  // Bring to front
+  videoPlayer.style.zIndex = "999";
+  videoPlayer.style.opacity = "1";
 }
+
+// Click outside to hide video player (unless pinned)
+document.addEventListener("click", (e) => {
+  const clickedInside = videoPlayer.contains(e.target) || e.target.closest(".propaganda-link");
+  if (!clickedInside && !videoPinned) {
+    videoPlayer.style.display = "none";
+  }
+});
+
 
 videoNext.addEventListener("click", () => {
   videoIndex = (videoIndex + 1) % videoLinks.length;
