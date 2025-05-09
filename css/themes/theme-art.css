@@ -1,6 +1,15 @@
 body.theme-art {
-  background: #000 url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') no-repeat center center fixed;
+  background: #111 url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') no-repeat center center fixed;
   background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+  image-rendering: auto;
+}
+
+body.theme-art::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('/textures/fine-paper.png') repeat;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
 }
