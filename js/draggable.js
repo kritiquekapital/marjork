@@ -4,6 +4,17 @@ export class Draggable {
       throw new Error("Element is required to initialize Draggable.");
     }
 
+  const dragShield = document.createElement("div");
+  dragShield.style.position = "fixed";
+  dragShield.style.top = "0";
+  dragShield.style.left = "0";
+  dragShield.style.width = "100vw";
+  dragShield.style.height = "100vh";
+  dragShield.style.zIndex = "9999";
+  dragShield.style.cursor = "grabbing";
+  dragShield.style.display = "none";
+  document.body.appendChild(dragShield);
+
     this.element = element;
     this.isDragging = false;
     this.offset = { x: 0, y: 0 };
@@ -46,10 +57,11 @@ export class Draggable {
     document.addEventListener("mouseup", this.stopDrag.bind(this));
   }
 
-  // Start dragging
   startDrag(e) {
     this.isDragging = true;
     this.isReleased = false;
+
+    dragShield.style.display = "block"; // 👈 Add this line
 
     this.offset = {
       x: e.clientX - this.element.offsetLeft,
@@ -73,12 +85,14 @@ export class Draggable {
     this.element.style.top = `${newY}px`;
   }
 
-  // Stop dragging
   stopDrag() {
     if (!this.isDragging) return;
 
     this.isDragging = false;
     this.isReleased = true;
+
+    dragShield.style.display = "none"; // 👈 Add this line
+
     this.applyPhysics();
   }
 
