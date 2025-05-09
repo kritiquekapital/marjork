@@ -141,6 +141,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  if (document.body.classList.contains("theme-art")) {
+    document.addEventListener("click", (e) => {
+      const splat = document.createElement("div");
+      splat.className = "paint-splatter";
+
+      // Random color & angle
+      const colors = ["#ff0040", "#00ccff", "#ffcc00", "#00ff99", "#cc66ff"];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const rotation = Math.floor(Math.random() * 360) + "deg";
+
+      splat.style.background = `radial-gradient(circle, ${color} 10%, transparent 70%)`;
+      splat.style.left = e.clientX + "px";
+      splat.style.top = e.clientY + "px";
+      splat.style.setProperty("--rot", rotation);
+
+      document.body.appendChild(splat);
+
+      // Optional: fade out and remove
+      setTimeout(() => {
+        splat.style.transition = "opacity 2s ease-out";
+        splat.style.opacity = "0";
+        setTimeout(() => splat.remove(), 2000);
+      }, 500);
+    });
+  }
+
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
       natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
