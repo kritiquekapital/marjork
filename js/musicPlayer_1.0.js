@@ -244,12 +244,6 @@ videoPin.addEventListener("click", () => {
   videoPin.style.opacity = videoPinned ? "1" : "0.5";
 });
 
-document.addEventListener("click", (e) => {
-  if (!videoPlayer.contains(e.target) && !videoPinned) {
-    videoPlayer.style.display = "none";
-  }
-});
-
 if (propagandaLink) {
   propagandaLink.addEventListener("click", (e) => {
     e.preventDefault();
