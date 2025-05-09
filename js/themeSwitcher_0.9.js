@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "retro", displayName: "🕹️" },
     { name: "nature", displayName: "🌞" },
     { name: "space", displayName: "🚀" },
+    { name: "art", displayName: "🎨" },
     { name: "logistics", displayName: "📦" }
   ];
 
