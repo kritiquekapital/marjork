@@ -1010,6 +1010,13 @@ body.theme-retro .click-wheel {
   opacity: 1;
 }
 
+.video-resize-bar {
+  height: 12px;
+  cursor: ns-resize;
+  background: #444;
+  width: 100%;
+}
+
 /* ==================== */
 /* Stats.fm Button */
 /* ==================== */
