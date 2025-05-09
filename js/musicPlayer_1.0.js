@@ -1,30 +1,5 @@
 import { Draggable } from './draggable.js';
 
-// Transparent shield for iframe drag protection
-const dragShield = document.createElement("div");
-dragShield.style.position = "fixed";
-dragShield.style.top = "0";
-dragShield.style.left = "0";
-dragShield.style.width = "100vw";
-dragShield.style.height = "100vh";
-dragShield.style.zIndex = "9999";
-dragShield.style.cursor = "grabbing";
-dragShield.style.display = "none";
-document.body.appendChild(dragShield);
-
-// Patch Draggable prototype with iframe shield support
-const originalStartDrag = Draggable.prototype.startDrag;
-Draggable.prototype.startDrag = function(e) {
-  dragShield.style.display = "block";
-  originalStartDrag.call(this, e);
-};
-
-const originalStopDrag = Draggable.prototype.stopDrag;
-Draggable.prototype.stopDrag = function() {
-  dragShield.style.display = "none";
-  originalStopDrag.call(this);
-};
-
 // Create overlay
 const overlay = document.createElement('div');
 overlay.className = 'music-overlay';
@@ -314,5 +289,3 @@ if (resizeBar) {
     document.removeEventListener("mouseup", stopResize);
   }
 }
-
-
