@@ -15,29 +15,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstClick = true;
   let gameOver = false;
 
-  function setupControls() {
-    const select = document.getElementById("difficulty-select");
-    const newGameBtn = document.querySelector(".new-game-button");
-    const fullscreenBtn = document.querySelector(".fullscreen-button");
+  function createDropdown() {
+    const controls = document.querySelector(".minesweeper-controls");
 
-    if (!select || !newGameBtn || !fullscreenBtn) {
-      console.warn("Minesweeper control elements missing");
-      return;
-    }
-
-    select.value = currentDifficulty;
-
+    const select = controls.querySelector("#difficulty-select");
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
     });
 
+    const newGameBtn = controls.querySelector(".new-game-button");
     newGameBtn.addEventListener("click", generateGrid);
 
+    const fullscreenBtn = controls.querySelector(".fullscreen-button");
+    fullscreenBtn.style.display = window.innerWidth < 768 ? "inline-block" : "none";
     fullscreenBtn.addEventListener("click", () => {
-      if (gameContainer.requestFullscreen) {
-        gameContainer.requestFullscreen();
-      }
+      gameContainer.requestFullscreen?.();
     });
   }
 
@@ -119,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tile.revealed) return;
     tile.flagged = !tile.flagged;
     tile.el.textContent = tile.flagged ? "🫥" : "";
+    addPulse(tile.el);
   }
 
   function revealTile(x, y) {
@@ -135,6 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
     }
+
+    addPulse(tile.el);
+  }
+
+  function addPulse(tileEl) {
+    tileEl.classList.add("pulse");
+    setTimeout(() => tileEl.classList.remove("pulse"), 300);
   }
 
   function revealAllAnimated() {
@@ -208,6 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  setupControls();
+  createDropdown();
   generateGrid();
 });
