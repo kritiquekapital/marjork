@@ -142,7 +142,8 @@ body {
   z-index: 2; /* Ensure it stays above the grid container */
 }
 
-.wip:active .secret-button:active {
+.wip:active,
+ .secret-button:active {
   transform: translate(10px, 0) scale(1.1); /* Move 10px right and scale up */
   transition: transform 0.2s ease-in-out; /* Faster animation for click feedback */
 }
