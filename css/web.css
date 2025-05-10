@@ -1360,6 +1360,25 @@ body.theme-retro .click-wheel {
   padding: 6px 10px;
 }
 
+.tile.pulse {
+  animation: tilePulse 0.3s ease;
+}
+
+@keyframes tilePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 transparent;
+  }
+  50% {
+    transform: scale(1.12);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 transparent;
+  }
+}
+
 @media (max-width: 768px) {
   .mobile-only {
     display: inline-block;
