@@ -25,3 +25,37 @@ body.theme-modern .grid-container {
 .theme-modern .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Correct raw GitHub URL */
 }
+
+#minesweeper-game.modern {
+  background: #121212;
+  border: 3px solid #9f7aea;
+  box-shadow: 0 0 20px #7f5fd7;
+}
+
+#minesweeper-game.modern .tile {
+  background: #1e1e1e;
+  border: 2px solid #5a4e91;
+  color: #c3bfff;
+  font-size: 25px;
+}
+
+#minesweeper-game.modern .tile.revealed {
+  background: #2a2a2a;
+  color: #bb86fc;
+  border-color: #6a5acd;
+}
+
+#minesweeper-game.modern .tile.mine {
+  color: #f44336;
+}
+
+#minesweeper-game.modern .tile.flagged {
+  background-color: #330033;
+  color: #ff4081;
+}
+
+#minesweeper-game.modern .close-button,
+#minesweeper-game.modern .difficulty-select {
+  background-color: #7f5fd7;
+  color: white;
+}
