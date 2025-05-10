@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const secretButton = document.querySelector(".secret-button");
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 10 },
+    easy: { cols: 10, rows: 8, mines: 1 },
     medium: { cols: 12, rows: 14, mines: 35 },
     hard: { cols: 14, rows: 20, mines: 90 },
   };
