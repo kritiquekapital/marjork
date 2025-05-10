@@ -1369,8 +1369,8 @@ body.theme-retro .click-wheel {
 
 .difficulty-controls {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: none;
+  align-items: left;
   gap: 10px;
   margin-bottom: 10px;
 }
