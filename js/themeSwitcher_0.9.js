@@ -115,9 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return applyTheme(); // Re-run with corrected themeIndex
       }
     }
-      }
-    }
-
+    
     cleanupLogistics();
     document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
