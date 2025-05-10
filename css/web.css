@@ -1318,6 +1318,18 @@ body.theme-retro .click-wheel {
   user-select: none;
 }
 
+.tile {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  transition: background 0.2s, transform 0.2s;
+  box-sizing: border-box;
+}
+
 .minesweeper-header {
   display: flex;
   justify-content: space-between;
