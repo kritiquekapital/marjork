@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const draggable = new Draggable(draggableElement);
 
   const themes = [
-    { name: "classic", displayName: "😎" },
-    { name: "modern", displayName: "🌚" },
     { name: "retro", displayName: "🕹️" },
-    { name: "nature", displayName: "🌞" },
-    { name: "space", displayName: "🚀" },
+    { name: "modern", displayName: "🌚" },
     { name: "art", displayName: "🎨" },
+    { name: "space", displayName: "🚀" },
+    { name: "nature", displayName: "🌞" },    
+    { name: "classic", displayName: "😎" },
     { name: "logistics", displayName: "📦" }
   ];
 
