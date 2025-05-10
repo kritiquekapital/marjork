@@ -128,7 +128,7 @@ body.theme-retro button:hover {
   background: #111;
   border: 2px solid #0ff;
   font-family: 'Courier New', monospace;
-  font-size: 16px;
+  font-size: 25px;
   color: #0ff;
   transition: background 0.2s;
 }
