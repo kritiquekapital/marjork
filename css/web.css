@@ -1299,6 +1299,19 @@ body.theme-retro .click-wheel {
   transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
 }
 
+.popup-game {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  background: #ffffffee;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
 #minesweeper-grid {
   display: grid;
   gap: 2px;
