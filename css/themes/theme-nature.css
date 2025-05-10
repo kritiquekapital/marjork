@@ -97,3 +97,36 @@ body.theme-nature .grid-container {
   cursor: pointer;
   border: none;
 }
+
+#minesweeper-game.nature {
+  background: #eef6e8;
+  border: 3px solid #4caf50;
+  box-shadow: 0 0 12px #81c784;
+}
+
+#minesweeper-game.nature .tile {
+  background: #dcedc8;
+  border: 2px solid #a5d6a7;
+  color: #33691e;
+  font-size: 25px;
+}
+
+#minesweeper-game.nature .tile.revealed {
+  background: #c5e1a5;
+  border-color: #7cb342;
+}
+
+#minesweeper-game.nature .tile.mine {
+  color: #e91e63;
+}
+
+#minesweeper-game.nature .tile.flagged {
+  background-color: #a1887f;
+  color: #ff5722;
+}
+
+#minesweeper-game.nature .close-button,
+#minesweeper-game.nature .difficulty-select {
+  background-color: #4caf50;
+  color: white;
+}
