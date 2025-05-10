@@ -90,6 +90,47 @@ body {
   }
 }
 
+.substack-button       { grid-row: 1; grid-column: 1; }
+.twitter               { grid-row: 1; grid-column: 2; }
+.duolingo              { grid-row: 1; grid-column: 3; }
+
+.statsfm               { grid-row: 2; grid-column: 1; }
+.letterboxd            { grid-row: 2; grid-column: 2; }
+.dropkickd-button      { grid-row: 2; grid-column: 3; }
+
+.spotify               { grid-row: 3; grid-column: 1; }
+.photo                 { grid-row: 3; grid-column: 2; }
+.news-button           { grid-row: 3; grid-column: 3; }
+
+.propaganda-link       { grid-row: 4; grid-column: 1; }
+.kiss-button           { grid-row: 4; grid-column: 2; }
+.vinyl                 { grid-row: 4; grid-column: 3; }
+
+#themeButton           { grid-row: 5; grid-column: 2; }
+.wip                   { grid-row: 5; grid-column: 1; }
+.secret-button         { grid-row: 5; grid-column: 3; }
+
+@media (max-width: 1024px) and (orientation: landscape) {
+  .substack-button       { grid-row: 1; grid-column: 1; }
+  .twitter               { grid-row: 2; grid-column: 1; }
+  .duolingo              { grid-row: 3; grid-column: 1; }
+  
+  .statsfm               { grid-row: 1; grid-column: 2; }
+  .letterboxd            { grid-row: 2; grid-column: 2; }
+  .dropkickd-button      { grid-row: 3; grid-column: 2; }
+  
+  .spotify               { grid-row: 1; grid-column: 3; }
+  .photo                 { grid-row: 2; grid-column: 3; }
+  .news-button           { grid-row: 3; grid-column: 3; }
+  
+  .propaganda-link       { grid-row: 1; grid-column: 4; }
+  .kiss-button           { grid-row: 2; grid-column: 4; }
+  .vinyl                 { grid-row: 3; grid-column: 4; }
+
+  #themeButton           { grid-row: 1; grid-column: 5; }
+  .wip                   { grid-row: 2; grid-column: 5; }
+  .secret-button         { grid-row: 3; grid-column: 5; }
+}
 /* ==================== */
 /* Theme Button */
 /* ==================== */
