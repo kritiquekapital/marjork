@@ -66,16 +66,21 @@ body {
     user-select: text;
 }
 
-/* Mobile-specific styles: Apply only for phones */
-@media (max-width: 768px) { /* Targets devices with width 768px or smaller */
+@media (max-width: 768px) {
+  html, body {
+    height: 100dvh; /* Use dynamic viewport height */
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
+    align-items: flex-start;
+    padding-top: 5vh;
   }
+}
 
   /* Make sure the grid container is also centered */
   .grid-container {
