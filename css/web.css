@@ -79,6 +79,19 @@ body {
     justify-content: center;
     align-content: start;
   }
+  
+  body {
+    display: block;
+    padding-top: 5vh;
+    padding-left: 3vw; /* Shift grid slightly to the right */
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  .grid-container {
+    margin: 0 auto;
+    transform: translateY(1vh); /* Slight downward visual shift */
+  }
 }
 
 /* ==================== */
