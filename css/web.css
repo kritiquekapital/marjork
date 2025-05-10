@@ -1334,8 +1334,38 @@ body.theme-retro .click-wheel {
   transition: background-color 0.2s ease;
 }
 
+/* Hide fullscreen button by default */
+.fullscreen-button {
+  display: none;
+}
+
+/* Show fullscreen button only on narrow viewports */
 @media (max-width: 768px) {
-  .mobile-only {
+  .fullscreen-button {
     display: inline-block;
   }
+}
+
+/* Fullscreen mode */
+#minesweeper-game.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: #111; /* dark background fill below grid */
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 10px;
+}
+
+#minesweeper-game.fullscreen #minesweeper-grid {
+  width: 100vw;
+  height: auto;
+  max-height: 100vh;
+  overflow: auto;
+  display: grid;
 }
