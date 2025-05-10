@@ -69,27 +69,26 @@ body {
 @media (max-width: 768px) {
   html, body {
     height: 100dvh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     margin: 0;
     padding: 0;
   }
 
   body {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 5vh;
+    display: block; /* Back to default for iOS Safari */
+    padding: 4vh 0 2vh;
   }
 
   .grid-container {
     display: grid;
-    justify-items: center;
-    align-items: center;
-    margin: auto;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(5, 120px);
+    gap: 20px;
     justify-content: center;
-    align-content: center;
-    height: auto;
-    margin-top: 20px;
+    align-content: start;
+    margin: 0 auto;
+    max-width: 100%;
   }
 
   .grid-container > button,
