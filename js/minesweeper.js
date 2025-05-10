@@ -15,45 +15,30 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstClick = true;
   let gameOver = false;
 
-  function createDropdown() {
-    const controls = document.createElement("div");
-    controls.className = "minesweeper-controls";
+  function setupControls() {
+    const select = document.getElementById("difficulty-select");
+    const newGameBtn = document.querySelector(".new-game-button");
+    const fullscreenBtn = document.querySelector(".fullscreen-button");
 
-    const select = document.createElement("select");
-    select.id = "difficulty-select";
-    select.className = "difficulty-select";
-
-    for (let key in difficulties) {
-      const opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = key[0].toUpperCase() + key.slice(1);
-      select.appendChild(opt);
+    if (!select || !newGameBtn || !fullscreenBtn) {
+      console.warn("Minesweeper control elements missing");
+      return;
     }
 
     select.value = currentDifficulty;
+
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
     });
 
-    const newGameBtn = document.createElement("button");
-    newGameBtn.textContent = "New Game";
-    newGameBtn.className = "new-game-button";
     newGameBtn.addEventListener("click", generateGrid);
 
-    const fullscreenBtn = document.createElement("button");
-    fullscreenBtn.textContent = "⛶";
-    fullscreenBtn.className = "fullscreen-button";
-    fullscreenBtn.style.display = window.innerWidth < 768 ? "inline-block" : "none";
     fullscreenBtn.addEventListener("click", () => {
-      gameContainer.requestFullscreen?.();
+      if (gameContainer.requestFullscreen) {
+        gameContainer.requestFullscreen();
+      }
     });
-
-    controls.appendChild(select);
-    controls.appendChild(newGameBtn);
-    controls.appendChild(fullscreenBtn);
-
-    gameContainer.insertBefore(controls, gridElement);
   }
 
   function generateGrid() {
@@ -223,6 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  createDropdown();
+  setupControls();
   generateGrid();
 });
