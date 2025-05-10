@@ -15,10 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstClick = true;
 
   function createDropdown() {
-    const container = document.createElement("div");
-    container.id = "difficulty-controls";
-    container.className = "difficulty-controls";
-
     const select = document.createElement("select");
     select.id = "difficulty-select";
     select.className = "difficulty-select";
@@ -35,31 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
-      openGame(); // recenter
     });
 
-    const newGameButton = document.createElement("button");
-    newGameButton.id = "new-game-button";
-    newGameButton.textContent = "🔁 New Game";
-    newGameButton.addEventListener("click", () => {
-      generateGrid();
-      openGame();
+    const newGameBtn = document.createElement("button");
+    newGameBtn.textContent = "New Game";
+    newGameBtn.className = "new-game-button";
+    newGameBtn.addEventListener("click", generateGrid);
+
+    const fullscreenBtn = document.createElement("button");
+    fullscreenBtn.textContent = "⛶";
+    fullscreenBtn.className = "fullscreen-button";
+    fullscreenBtn.style.display = window.innerWidth < 768 ? "inline-block" : "none";
+    fullscreenBtn.addEventListener("click", () => {
+      gameContainer.requestFullscreen?.();
     });
 
-    const fullscreenButton = document.createElement("button");
-    fullscreenButton.id = "fullscreen-button";
-    fullscreenButton.className = "mobile-only";
-    fullscreenButton.textContent = "⛶ Fullscreen";
-    fullscreenButton.addEventListener("click", () => {
-      if (gameContainer.requestFullscreen) {
-        gameContainer.requestFullscreen();
-      }
-    });
+    const controls = document.createElement("div");
+    controls.className = "minesweeper-controls";
+    controls.appendChild(select);
+    controls.appendChild(newGameBtn);
+    controls.appendChild(fullscreenBtn);
 
-    container.appendChild(select);
-    container.appendChild(newGameButton);
-    container.appendChild(fullscreenButton);
-    gameContainer.insertBefore(container, gridElement);
+    gameContainer.insertBefore(controls, gridElement);
   }
 
   function generateGrid() {
@@ -78,7 +71,13 @@ document.addEventListener("DOMContentLoaded", () => {
         tile.className = "tile";
         tile.dataset.x = x;
         tile.dataset.y = y;
+
         tile.addEventListener("click", () => handleClick(x, y));
+        tile.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          toggleFlag(x, y);
+        });
+
         row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
         gridElement.appendChild(tile);
       }
@@ -93,17 +92,16 @@ document.addEventListener("DOMContentLoaded", () => {
     while (placed < mines) {
       const x = Math.floor(Math.random() * cols);
       const y = Math.floor(Math.random() * rows);
-
       if (board[y][x].mine || (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1)) continue;
-
       board[y][x].mine = true;
       placed++;
     }
 
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        if (board[y][x].mine) continue;
-        board[y][x].count = getNeighbors(x, y).filter(n => n.mine).length;
+        if (!board[y][x].mine) {
+          board[y][x].count = getNeighbors(x, y).filter(n => n.mine).length;
+        }
       }
     }
   }
@@ -120,23 +118,17 @@ document.addEventListener("DOMContentLoaded", () => {
     revealTile(x, y);
 
     if (tile.mine) {
-      animateExplosions();
+      tile.el.classList.add("mine");
+      tile.el.textContent = "💥";
+      revealAllAnimated();
     }
   }
 
-  function animateExplosions() {
-    let delay = 0;
-    for (let row of board) {
-      for (let tile of row) {
-        if (tile.mine && !tile.revealed) {
-          setTimeout(() => {
-            tile.el.classList.add("mine");
-            tile.el.textContent = "💥";
-          }, delay);
-          delay += 100;
-        }
-      }
-    }
+  function toggleFlag(x, y) {
+    const tile = board[y][x];
+    if (tile.revealed) return;
+    tile.flagged = !tile.flagged;
+    tile.el.textContent = tile.flagged ? "🫥" : "";
   }
 
   function revealTile(x, y) {
@@ -145,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tile.revealed = true;
     tile.el.classList.add("revealed");
+
     if (tile.mine) {
       tile.el.textContent = "💣";
     } else if (tile.count > 0) {
@@ -152,6 +145,25 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
     }
+  }
+
+  function revealAllAnimated() {
+    const mines = [];
+    for (let row of board) {
+      for (let tile of row) {
+        if (tile.mine && !tile.revealed) {
+          mines.push(tile);
+        }
+      }
+    }
+
+    mines.forEach((tile, i) => {
+      setTimeout(() => {
+        tile.el.textContent = "💣";
+        tile.el.classList.add("mine");
+        tile.revealed = true;
+      }, i * 150);
+    });
   }
 
   function getNeighbors(x, y) {
@@ -166,12 +178,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return neighbors;
   }
 
+  function preventContextMenu(e) {
+    e.preventDefault();
+  }
+
   function openGame() {
     const { cols, rows } = difficulties[currentDifficulty];
     gameContainer.style.display = "block";
     gameContainer.style.left = `${(window.innerWidth - cols * 32) / 2}px`;
     gameContainer.style.top = `${(window.innerHeight - rows * 32) / 2}px`;
     updateThemeClass();
+    document.addEventListener("contextmenu", preventContextMenu);
   }
 
   function updateThemeClass() {
@@ -186,12 +203,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (secretButton) {
-    secretButton.addEventListener("click", openGame);
+    secretButton.addEventListener("click", () => {
+      openGame();
+    });
   }
 
   if (closeButton) {
     closeButton.addEventListener("click", () => {
       gameContainer.style.display = "none";
+      document.removeEventListener("contextmenu", preventContextMenu);
     });
   }
 
