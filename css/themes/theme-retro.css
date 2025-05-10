@@ -117,3 +117,49 @@ body.theme-retro button:hover {
     filter: blur(0);
   }
 }
+/* Retro Arcade Theme */
+#minesweeper-game.retro {
+  background: #000;
+  border: 3px solid #0ff;
+  box-shadow: 0 0 20px #0ff;
+}
+
+#minesweeper-game.retro .tile {
+  background: #111;
+  border: 2px solid #0ff;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  color: #0ff;
+  transition: background 0.2s;
+}
+
+#minesweeper-game.retro .tile.revealed {
+  background: #222;
+  border-color: #888;
+  color: #0cf;
+}
+
+#minesweeper-game.retro .tile.mine {
+  color: red;
+}
+
+#minesweeper-game.retro .tile.flagged {
+  background-color: #400;
+  color: #f00;
+}
+
+#minesweeper-game.retro .close-button,
+#minesweeper-game.retro .difficulty-select {
+  background-color: #0ff;
+  color: #000;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  border: none;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+#minesweeper-game.retro .difficulty-select:hover {
+  background-color: #0cf;
+}
