@@ -95,6 +95,26 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
+    const screenWidth = window.innerWidth;
+    let allowedThemes;
+
+    if (screenWidth <= 768) {
+      allowedThemes = ["retro", "art"];
+    } else if (screenWidth <= 1024) {
+      allowedThemes = ["retro", "art", "modern", "classic"];
+    } else {
+      allowedThemes = themes.map(t => t.name);
+    }
+
+    const selectedTheme = themes[currentThemeIndex]?.name;
+    if (!allowedThemes.includes(selectedTheme)) {
+      console.warn(`Theme "${selectedTheme}" is not allowed on this device.`);
+      const fallback = themes.findIndex(t => t.name === allowedThemes[0]);
+      if (fallback !== -1) {
+        currentThemeIndex = fallback;
+      }
+    }
+
     cleanupLogistics();
     document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
@@ -231,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Themed click rotation based on screen size
   const screenWidth = window.innerWidth;
   let allowedThemes;
 
@@ -243,7 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
     allowedThemes = themes.map(t => t.name);
   }
 
-  // Clamp to first allowed theme if current is invalid
   const currentThemeName = themes[currentThemeIndex]?.name;
   if (!allowedThemes.includes(currentThemeName)) {
     const fallbackIndex = themes.findIndex(t => t.name === allowedThemes[0]);
