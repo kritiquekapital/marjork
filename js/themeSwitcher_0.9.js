@@ -114,15 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentThemeIndex = fallback;
       }
     }
-
-    const selectedTheme = themes[currentThemeIndex]?.name;
-    if (!allowedThemes.includes(selectedTheme)) {
-      console.warn(`Theme "${selectedTheme}" is not allowed on this device.`);
-      const fallback = themes.findIndex(t => t.name === allowedThemes[0]);
-      if (fallback !== -1) {
-        currentThemeIndex = fallback;
-      }
-    }
     }
 
     cleanupLogistics();
