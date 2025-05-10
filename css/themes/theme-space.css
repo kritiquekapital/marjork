@@ -78,3 +78,36 @@ body.theme-space .grid-container {
   z-index: 0;
   position: relative;
 }
+
+#minesweeper-game.space {
+  background: #0b0c1a;
+  border: 3px solid #03a9f4;
+  box-shadow: 0 0 25px #00e5ff;
+}
+
+#minesweeper-game.space .tile {
+  background: #1a237e;
+  border: 2px solid #00acc1;
+  color: #b2ebf2;
+  font-size: 25px;
+}
+
+#minesweeper-game.space .tile.revealed {
+  background: #263238;
+  color: #80deea;
+}
+
+#minesweeper-game.space .tile.mine {
+  color: #ff1744;
+}
+
+#minesweeper-game.space .tile.flagged {
+  background-color: #004d40;
+  color: #f50057;
+}
+
+#minesweeper-game.space .close-button,
+#minesweeper-game.space .difficulty-select {
+  background-color: #00bcd4;
+  color: white;
+}
