@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstClick = true;
 
   function createDropdown() {
+    const container = document.createElement("div");
+    container.id = "difficulty-controls";
+    container.className = "difficulty-controls";
+
     const select = document.createElement("select");
     select.id = "difficulty-select";
     select.className = "difficulty-select";
@@ -31,9 +35,31 @@ document.addEventListener("DOMContentLoaded", () => {
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
+      openGame(); // recenter
     });
 
-    gameContainer.insertBefore(select, gridElement);
+    const newGameButton = document.createElement("button");
+    newGameButton.id = "new-game-button";
+    newGameButton.textContent = "🔁 New Game";
+    newGameButton.addEventListener("click", () => {
+      generateGrid();
+      openGame();
+    });
+
+    const fullscreenButton = document.createElement("button");
+    fullscreenButton.id = "fullscreen-button";
+    fullscreenButton.className = "mobile-only";
+    fullscreenButton.textContent = "⛶ Fullscreen";
+    fullscreenButton.addEventListener("click", () => {
+      if (gameContainer.requestFullscreen) {
+        gameContainer.requestFullscreen();
+      }
+    });
+
+    container.appendChild(select);
+    container.appendChild(newGameButton);
+    container.appendChild(fullscreenButton);
+    gameContainer.insertBefore(container, gridElement);
   }
 
   function generateGrid() {
@@ -74,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
       placed++;
     }
 
-    // Count neighbors
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         if (board[y][x].mine) continue;
@@ -85,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleClick(x, y) {
     const tile = board[y][x];
-
     if (tile.revealed || tile.flagged) return;
 
     if (firstClick) {
@@ -96,9 +120,22 @@ document.addEventListener("DOMContentLoaded", () => {
     revealTile(x, y);
 
     if (tile.mine) {
-      tile.el.classList.add("mine");
-      alert("💥 Game Over!");
-      revealAll();
+      animateExplosions();
+    }
+  }
+
+  function animateExplosions() {
+    let delay = 0;
+    for (let row of board) {
+      for (let tile of row) {
+        if (tile.mine && !tile.revealed) {
+          setTimeout(() => {
+            tile.el.classList.add("mine");
+            tile.el.textContent = "💥";
+          }, delay);
+          delay += 100;
+        }
+      }
     }
   }
 
@@ -129,21 +166,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return neighbors;
   }
 
-  function revealAll() {
-    for (let row of board) {
-      for (let tile of row) {
-        if (!tile.revealed) revealTile(tile.x, tile.y);
-      }
-    }
-  }
-
-  // Open game UI
   function openGame() {
     const { cols, rows } = difficulties[currentDifficulty];
     gameContainer.style.display = "block";
     gameContainer.style.left = `${(window.innerWidth - cols * 32) / 2}px`;
     gameContainer.style.top = `${(window.innerHeight - rows * 32) / 2}px`;
-
     updateThemeClass();
   }
 
@@ -158,11 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeClass) gameContainer.classList.add(themeClass);
   }
 
-  // Attach button logic
   if (secretButton) {
-    secretButton.addEventListener("click", () => {
-      openGame();
-    });
+    secretButton.addEventListener("click", openGame);
   }
 
   if (closeButton) {
@@ -171,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial render
   createDropdown();
   generateGrid();
 });
