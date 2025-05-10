@@ -6,17 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
-    medium: { cols: 12, rows: 14, mines: 35 },
-    hard: { cols: 14, rows: 20, mines: 90 },
+    medium: { cols: 18, rows: 14, mines: 40 },
+    hard: { cols: 24, rows: 20, mines: 99 },
   };
 
   let currentDifficulty = "easy";
   let board = [];
   let firstClick = true;
   let gameOver = false;
-  let longPressTimer;
 
   function createDropdown() {
+    const controls = document.querySelector(".minesweeper-controls");
+
     const select = document.getElementById("difficulty-select");
     const newGameBtn = document.querySelector(".new-game-button");
     const fullscreenBtn = document.querySelector(".fullscreen-button");
@@ -29,9 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     newGameBtn.addEventListener("click", generateGrid);
 
     fullscreenBtn.addEventListener("click", () => {
-      if (window.innerWidth < 768) {
-        gameContainer.requestFullscreen?.();
-      }
+      if (gameContainer.requestFullscreen) gameContainer.requestFullscreen();
     });
   }
 
@@ -59,14 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
           toggleFlag(x, y);
         });
 
-        // Mobile long-press
-        tile.addEventListener("touchstart", () => {
-          longPressTimer = setTimeout(() => {
+        tile.addEventListener("touchstart", (e) => {
+          tile._touchTimer = setTimeout(() => {
             toggleFlag(x, y);
           }, 500);
         });
+
         tile.addEventListener("touchend", () => {
-          clearTimeout(longPressTimer);
+          clearTimeout(tile._touchTimer);
         });
 
         row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
@@ -114,8 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
       tile.el.textContent = "💥";
       gameOver = true;
       revealAllAnimated();
-    } else {
-      checkWin();
+    } else if (checkWin()) {
+      gameOver = true;
+      playWinAnimation();
     }
   }
 
@@ -134,8 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tile.revealed = true;
     tile.el.classList.add("revealed", "pulse");
 
-    setTimeout(() => tile.el.classList.remove("pulse"), 200);
-
     if (tile.mine) {
       tile.el.textContent = "💣";
     } else if (tile.count > 0) {
@@ -146,28 +144,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkWin() {
-    const total = board.flat().filter(t => !t.mine).length;
-    const revealed = board.flat().filter(t => t.revealed && !t.mine).length;
-    if (revealed === total) {
-      gameOver = true;
-      triggerWinAnimation();
-    }
+    return board.flat().every(tile => tile.mine || tile.revealed);
   }
 
-  function triggerWinAnimation() {
-    const rainbow = ["#ff0000", "#ff7f00", "#ffff00", "#00ff00", "#0000ff", "#4b0082", "#8f00ff"];
+  function playWinAnimation() {
+    const colors = [
+      "linear-gradient(45deg, red, orange)",
+      "linear-gradient(45deg, orange, yellow)",
+      "linear-gradient(45deg, yellow, green)",
+      "linear-gradient(45deg, green, cyan)",
+      "linear-gradient(45deg, cyan, blue)",
+      "linear-gradient(45deg, blue, violet)",
+      "linear-gradient(45deg, violet, pink)"
+    ];
+
+    let step = 0;
     const cols = board[0].length;
 
-    for (let c = 0; c < cols * rainbow.length; c++) {
-      setTimeout(() => {
+    const interval = setInterval(() => {
+      for (let x = 0; x < cols; x++) {
+        const colorIndex = (step + x) % colors.length;
         for (let y = 0; y < board.length; y++) {
-          const tile = board[y][c % cols];
-          if (tile.revealed) {
-            tile.el.style.backgroundColor = rainbow[(c + y) % rainbow.length];
+          const tile = board[y][x];
+          if (tile.revealed && !tile.mine) {
+            tile.el.style.backgroundImage = colors[colorIndex];
+            tile.el.style.color = "#fff";
           }
         }
-      }, c * 50);
-    }
+      }
+      step++;
+      if (step >= colors.length * 2) clearInterval(interval);
+    }, 100);
   }
 
   function revealAllAnimated() {
@@ -201,6 +208,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return neighbors;
   }
 
+  function preventContextMenu(e) {
+    if (e.target.closest(".tile")) {
+      e.preventDefault();
+    }
+  }
+
   function openGame() {
     gameContainer.style.display = "block";
     gameContainer.style.left = "50%";
@@ -208,12 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gameContainer.style.transform = "translate(-50%, -50%)";
     updateThemeClass();
     document.addEventListener("contextmenu", preventContextMenu);
-  }
-
-  function preventContextMenu(e) {
-    if (e.target.closest(".tile")) {
-      e.preventDefault();
-    }
   }
 
   function updateThemeClass() {
@@ -228,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (secretButton) {
-    secretButton.addEventListener("click", () => openGame());
+    secretButton.addEventListener("click", openGame);
   }
 
   if (closeButton) {
