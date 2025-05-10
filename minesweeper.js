@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const gridElement = document.getElementById("minesweeper-grid");
   const closeButton = document.getElementById("close-minesweeper");
   const difficultySelect = document.getElementById("difficulty-select");
-  const newGameBtn = document.getElementById("new-game-button");
-  const fullscreenBtn = document.getElementById("fullscreen-button");
+  const newGameBtn = document.querySelector(".new-game-button");
+  const fullscreenBtn = document.querySelector(".fullscreen-button");
   const secretButton = document.querySelector(".secret-button");
 
   const difficulties = {
@@ -17,28 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let board = [];
   let firstClick = true;
   let gameOver = false;
-
-  difficultySelect.addEventListener("change", () => {
-    currentDifficulty = difficultySelect.value;
-    generateGrid();
-  });
-
-  newGameBtn.addEventListener("click", generateGrid);
-
-  fullscreenBtn.addEventListener("click", () => {
-    gameContainer.classList.toggle("fullscreen");
-  });
-
-  closeButton.addEventListener("click", () => {
-    gameContainer.style.display = "none";
-    document.removeEventListener("contextmenu", preventContextMenu);
-  });
-
-  if (secretButton) {
-    secretButton.addEventListener("click", () => {
-      openGame();
-    });
-  }
 
   function generateGrid() {
     gridElement.innerHTML = "";
@@ -59,9 +37,22 @@ document.addEventListener("DOMContentLoaded", () => {
         tile.dataset.y = y;
 
         tile.addEventListener("click", () => handleClick(x, y));
+
         tile.addEventListener("contextmenu", (e) => {
           e.preventDefault();
           toggleFlag(x, y);
+        });
+
+        // Mobile long-press as flag
+        let longPressTimer = null;
+        tile.addEventListener("touchstart", () => {
+          longPressTimer = setTimeout(() => toggleFlag(x, y), 600);
+        });
+        tile.addEventListener("touchend", () => {
+          clearTimeout(longPressTimer);
+        });
+        tile.addEventListener("touchmove", () => {
+          clearTimeout(longPressTimer);
         });
 
         row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
@@ -189,6 +180,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     gameContainer.classList.remove("retro", "paint");
     if (themeClass) gameContainer.classList.add(themeClass);
+  }
+
+  if (secretButton) {
+    secretButton.addEventListener("click", openGame);
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", () => {
+      gameContainer.style.display = "none";
+      document.removeEventListener("contextmenu", preventContextMenu);
+    });
+  }
+
+  if (difficultySelect) {
+    difficultySelect.addEventListener("change", () => {
+      currentDifficulty = difficultySelect.value;
+      generateGrid();
+    });
+  }
+
+  if (newGameBtn) {
+    newGameBtn.addEventListener("click", generateGrid);
+  }
+
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener("click", () => {
+      gameContainer.requestFullscreen?.();
+    });
   }
 
   generateGrid();
