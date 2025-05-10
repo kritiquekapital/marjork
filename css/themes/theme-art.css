@@ -28,3 +28,49 @@ body.theme-art {
   border-radius: 50%;
   opacity: 0.8;
 }
+/* Colorful Paint Theme */
+#minesweeper-game.paint {
+  background: #fffbe6;
+  border: 3px solid #e64e00;
+  box-shadow: 0 0 30px rgba(255, 99, 71, 0.3);
+}
+
+#minesweeper-game.paint .tile {
+  background: #fff;
+  border: 2px solid #ddd;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: #444;
+  transition: background 0.2s;
+}
+
+#minesweeper-game.paint .tile.revealed {
+  background: #ffe;
+  border-color: #aaa;
+}
+
+#minesweeper-game.paint .tile.mine {
+  color: #f00;
+}
+
+#minesweeper-game.paint .tile.flagged {
+  background-color: #ffda79;
+  color: #e64e00;
+}
+
+#minesweeper-game.paint .close-button,
+#minesweeper-game.paint .difficulty-select {
+  background-color: #ff7f50;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+#minesweeper-game.paint .difficulty-select:hover {
+  background-color: #ff5722;
+}
