@@ -231,37 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Themed click rotation based on screen size
-  const screenWidth = window.innerWidth;
-  let allowedThemes;
-
-  if (screenWidth <= 768) {
-    allowedThemes = ["retro", "art"];
-  } else if (screenWidth <= 1024) {
-    allowedThemes = ["retro", "art", "modern", "classic"];
-  } else {
-    allowedThemes = themes.map(t => t.name);
-  }
-
-  // Clamp to first allowed theme if current is invalid
-  const currentThemeName = themes[currentThemeIndex]?.name;
-  if (!allowedThemes.includes(currentThemeName)) {
-    const fallbackIndex = themes.findIndex(t => t.name === allowedThemes[0]);
-    if (fallbackIndex !== -1) currentThemeIndex = fallbackIndex;
-  }
-
   themeButton.addEventListener("click", () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
     setTimeout(() => {
-      const currentName = themes[currentThemeIndex].name;
-      const currentAllowedIndex = allowedThemes.indexOf(currentName);
-      const nextAllowedIndex = (currentAllowedIndex + 1) % allowedThemes.length;
-      const nextThemeName = allowedThemes[nextAllowedIndex];
-      const newIndex = themes.findIndex(t => t.name === nextThemeName);
-      if (newIndex !== -1) {
-        currentThemeIndex = newIndex;
-        applyTheme();
-      }
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      applyTheme();
       themeButton.style.animation = "";
     }, 500);
   });
