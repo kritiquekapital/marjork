@@ -68,7 +68,7 @@ body {
 
 @media (max-width: 768px) {
   html, body {
-    height: 100dvh; /* Use dynamic viewport height */
+    height: 100dvh;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -80,18 +80,27 @@ body {
     align-items: flex-start;
     padding-top: 5vh;
   }
-}
 
-  /* Make sure the grid container is also centered */
   .grid-container {
     display: grid;
     justify-items: center;
     align-items: center;
+    margin: auto;
+    justify-content: center;
+    align-content: center;
+    height: auto;
+    margin-top: 20px;
   }
 
-  /* Adjust the viewport on phones to zoom out slightly */
-  meta[name="viewport"] {
-    content: "width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no";
+  .grid-container > button,
+  .grid-container > div,
+  .kiss-button,
+  .vinyl {
+    width: 120px;
+    height: 120px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
   }
 }
 
