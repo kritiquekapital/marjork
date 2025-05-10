@@ -94,3 +94,37 @@
   height: 12px;
   border-radius: 6px;
 }
+
+
+#minesweeper-game.logistics {
+  background: #f9f7f4;
+  border: 3px solid #8d6e63;
+  box-shadow: 0 0 15px #a1887f;
+}
+
+#minesweeper-game.logistics .tile {
+  background: #fff8e1;
+  border: 2px solid #a1887f;
+  color: #5d4037;
+  font-size: 25px;
+}
+
+#minesweeper-game.logistics .tile.revealed {
+  background: #d7ccc8;
+  border-color: #8d6e63;
+}
+
+#minesweeper-game.logistics .tile.mine {
+  color: #bf360c;
+}
+
+#minesweeper-game.logistics .tile.flagged {
+  background-color: #d84315;
+  color: #fff;
+}
+
+#minesweeper-game.logistics .close-button,
+#minesweeper-game.logistics .difficulty-select {
+  background-color: #8d6e63;
+  color: white;
+}
