@@ -150,13 +150,6 @@ body.theme-retro button:hover {
 #minesweeper-game.retro .close-button,
 #minesweeper-game.retro .difficulty-select {
   background-color: #0ff;
-  color: #000;
-  font-family: 'Courier New', monospace;
-  font-weight: bold;
-  border: none;
-  padding: 6px 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
 }
 
 #minesweeper-game.retro .difficulty-select:hover {
