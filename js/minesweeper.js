@@ -13,8 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentDifficulty = "easy";
   let board = [];
   let firstClick = true;
+  let gameOver = false;
 
   function createDropdown() {
+    const controls = document.createElement("div");
+    controls.className = "minesweeper-controls";
+
     const select = document.createElement("select");
     select.id = "difficulty-select";
     select.className = "difficulty-select";
@@ -27,7 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     select.value = currentDifficulty;
-
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
@@ -46,8 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       gameContainer.requestFullscreen?.();
     });
 
-    const controls = document.createElement("div");
-    controls.className = "minesweeper-controls";
     controls.appendChild(select);
     controls.appendChild(newGameBtn);
     controls.appendChild(fullscreenBtn);
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gridElement.innerHTML = "";
     board = [];
     firstClick = true;
+    gameOver = false;
 
     const { cols, rows } = difficulties[currentDifficulty];
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -107,6 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handleClick(x, y) {
+    if (gameOver) return;
     const tile = board[y][x];
     if (tile.revealed || tile.flagged) return;
 
@@ -120,11 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tile.mine) {
       tile.el.classList.add("mine");
       tile.el.textContent = "💥";
+      gameOver = true;
       revealAllAnimated();
     }
   }
 
   function toggleFlag(x, y) {
+    if (gameOver) return;
     const tile = board[y][x];
     if (tile.revealed) return;
     tile.flagged = !tile.flagged;
@@ -179,14 +184,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function preventContextMenu(e) {
-    e.preventDefault();
+    if (e.target.closest(".tile")) {
+      e.preventDefault();
+    }
   }
 
   function openGame() {
     const { cols, rows } = difficulties[currentDifficulty];
     gameContainer.style.display = "block";
-    gameContainer.style.left = `${(window.innerWidth - cols * 32) / 2}px`;
-    gameContainer.style.top = `${(window.innerHeight - rows * 32) / 2}px`;
+    gameContainer.style.left = "50%";
+    gameContainer.style.top = "50%";
+    gameContainer.style.transform = "translate(-50%, -50%)";
     updateThemeClass();
     document.addEventListener("contextmenu", preventContextMenu);
   }
