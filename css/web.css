@@ -1318,21 +1318,6 @@ body.theme-retro .click-wheel {
   user-select: none;
 }
 
-.tile {
-  width: 48px;   /* originally ~26px, now ~1.8x */
-  height: 48px;
-  background-color: #f0f0f0;
-  border: 2px solid #aaa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 4rem;
-  color: #222;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
 @media (max-width: 768px) {
   .mobile-only {
     display: inline-block;
