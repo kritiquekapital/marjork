@@ -1,4 +1,4 @@
-import { Bounceable } from './bounceable.js';  // Make sure the path is correct
+import { Bounceable } from './bounceable.js';
 import { Draggable } from './draggable.js';
 import { initLogisticsTheme } from './logistics.js';
 
@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   let cleanupLogistics = () => {};
+  let paintSplatterListenerAdded = false;
 
   const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
@@ -81,12 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
-  // Preload all themes dynamically
   function preloadThemes() {
     themes.forEach(theme => {
       const themeLink = document.createElement("link");
       themeLink.rel = "preload";
-      themeLink.href = `css/themes/theme-${theme.name}.css`;  // Correct path to your theme file
+      themeLink.href = `css/themes/theme-${theme.name}.css`;
       themeLink.as = "style";
       document.head.appendChild(themeLink);
     });
@@ -108,78 +108,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentTheme = themes[currentThemeIndex];
 
-    // 🚨 Fix: clean body class list before setting new theme
     document.body.classList.remove(
       'theme-classic',
       'theme-modern',
       'theme-retro',
       'theme-nature',
       'theme-space',
+      'theme-art',
       'theme-logistics'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
-
     themeButton.textContent = currentTheme.displayName;
 
-  // Switch mode when the theme changes
-  document.addEventListener("themeChange", () => {
-    const currentTheme = document.body.classList.contains("theme-space") 
-      ? "space" 
-      : document.body.classList.contains("theme-retro") 
-      ? "retro" 
-      : "normal";
+    document.dispatchEvent(new Event("themeChange"));
 
-    switch (currentTheme) {
-      case "retro":
-        Bounceable.switchMode(Bounceable.modes.RETRO); // Apply retro mode to both
-        break;
-      case "space":
-        Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY); // Apply zero gravity mode to both
-        break;
-      default:
-        Bounceable.switchMode(Bounceable.modes.NORMAL); // Default to normal mode for both
+    if (currentTheme.name === "art" && !paintSplatterListenerAdded) {
+      document.addEventListener("click", handleArtSplatter);
+      paintSplatterListenerAdded = true;
     }
-  });
-
-   if (document.body.classList.contains("theme-art")) {
-    document.addEventListener("click", (e) => {
-      const splatter = document.createElement("div");
-      splatter.className = "paint-splatter";
-      splatter.style.left = `${e.clientX}px`;
-      splatter.style.top = `${e.clientY}px`;
-      splatter.style.setProperty("--rot", `${Math.floor(Math.random() * 360)}deg`);
-
-      const colors = ["#ff1f57", "#1fd2ff", "#ffe71f", "#41ff1f", "#bc1fff"];
-      const numBlobs = Math.floor(Math.random() * 5) + 4; // 4–8 blobs
-
-      for (let i = 0; i < numBlobs; i++) {
-        const blob = document.createElement("div");
-        blob.className = "blob";
-
-        const size = Math.random() * 60 + 20; // 20–80px
-        blob.style.width = `${size}px`;
-        blob.style.height = `${size}px`;
-
-        blob.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-        const x = (Math.random() - 0.5) * 100;
-        const y = (Math.random() - 0.5) * 100;
-        blob.style.left = `${x}px`;
-        blob.style.top = `${y}px`;
-
-        splatter.appendChild(blob);
-      }
-
-      document.body.appendChild(splatter);
-
-      // Optional fade-out
-      setTimeout(() => {
-        splatter.style.transition = "opacity 2s ease-out";
-        splatter.style.opacity = "0";
-        setTimeout(() => splatter.remove(), 2000);
-      }, 600);
-    });
-  }
 
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
@@ -202,6 +148,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
+  }
+
+  function handleArtSplatter(e) {
+    const splatter = document.createElement("div");
+    splatter.className = "paint-splatter";
+    splatter.style.left = `${e.clientX}px`;
+    splatter.style.top = `${e.clientY}px`;
+    splatter.style.setProperty("--rot", `${Math.floor(Math.random() * 360)}deg`);
+
+    const colors = ["#ff1f57", "#1fd2ff", "#ffe71f", "#41ff1f", "#bc1fff"];
+    const numBlobs = Math.floor(Math.random() * 5) + 4;
+
+    for (let i = 0; i < numBlobs; i++) {
+      const blob = document.createElement("div");
+      blob.className = "blob";
+
+      const size = Math.random() * 60 + 20;
+      blob.style.width = `${size}px`;
+      blob.style.height = `${size}px`;
+      blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+      blob.style.left = `${(Math.random() - 0.5) * 100}px`;
+      blob.style.top = `${(Math.random() - 0.5) * 100}px`;
+
+      splatter.appendChild(blob);
+    }
+
+    document.body.appendChild(splatter);
+
+    setTimeout(() => {
+      splatter.style.transition = "opacity 2s ease-out";
+      splatter.style.opacity = "0";
+      setTimeout(() => splatter.remove(), 2000);
+    }, 600);
   }
 
   let inactivityTimer;
@@ -263,5 +242,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   resetInactivityTimer();
   applyTheme();
-  preloadThemes();  // Preload themes dynamically
+  preloadThemes();
 });
