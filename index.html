@@ -21,6 +21,7 @@
 </head>
 
 <body>
+<!-- Updated Grid Buttons (restored with full content and no inline grid styles) -->
 <div class="grid-container">
   <div id="space-background"></div>
   <div class="grid-backdrop"></div>
@@ -38,7 +39,7 @@
 
   <!-- Second Row -->
   <a href="https://stats.fm/marjork" target="_blank" class="statsfm">
-    <img src="https://stats.fm/api/image?..." alt="StatsFM">
+    <img src="https://stats.fm/api/image?url=https%3A%2F%2Fcdn.stats.fm%2Ffile%2Fstatsfm%2Fimages%2Fusers%2F31m6yxbmqxjd6zq3eg6kk3aefuae%2Fdc140bda1efee5a6acf1d7e33a38d46c.webp&w=256&q=75&fallbackImg=https://cdn.stats.fm/file/statsfm/images/placeholders/users/private.webp" alt="StatsFM">
     <div class="overlay">
       <img src="https://em-content.zobj.net/source/apple/391/goose_1fabf.png" alt="goose">
     </div>
@@ -46,6 +47,14 @@
   <a href="https://letterboxd.com/marjork/" target="_blank" class="letterboxd"></a>
   <a href="https://dropkickd.com/profile/majork" target="_blank" class="dropkickd-button">
     <div class="logo"></div>
+    <div class="top-left-post"></div>
+    <div class="top-right-post"></div>
+    <div class="bottom-left-post"></div>
+    <div class="bottom-right-post"></div>
+    <div class="rope-top"></div>
+    <div class="rope-bottom"></div>
+    <div class="rope-left"></div>
+    <div class="rope-right"></div>
   </a>
 
   <!-- Third Row -->
@@ -57,7 +66,9 @@
   <a href="#" class="photo">
     <div class="lens"></div>
   </a>
-  <a href="#" class="news-button"></a>
+  <a href="#" class="news-button">
+    <span class="news-icon">📰</span>
+  </a>
 
   <!-- Fourth Row -->
   <a href="#" class="propaganda-link" target="_blank">
@@ -65,11 +76,18 @@
       <span class="symbol">LIVE</span>
     </div>
   </a>
-  <button class="kiss-button" onclick="showLoveMessage(event)"></button>
+  <button class="kiss-button" onclick="showLoveMessage(event)">
+    <div class="rays">
+      <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+      <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+    </div>
+  </button>
   <div class="vinyl">
     <a href="javascript:void(0);" class="vinyl-link">
       <div class="wood-box"></div>
-      <div class="record"></div>
+      <div class="record">
+        <div class="center-hole"></div>
+      </div>
       <div class="arm">
         <div class="stylus-base"></div>
       </div>
