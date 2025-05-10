@@ -112,10 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const fallback = themes.findIndex(t => t.name === allowedThemes[0]);
       if (fallback !== -1) {
         currentThemeIndex = fallback;
-        return applyTheme(); // Re-run with corrected themeIndex
       }
     }
-    
+    }
+
     cleanupLogistics();
     document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
