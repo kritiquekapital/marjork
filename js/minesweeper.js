@@ -160,20 +160,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let step = 0;
     const cols = board[0].length;
+    const rows = board.length;
+    const totalSteps = cols * 3;
 
     const interval = setInterval(() => {
       for (let x = 0; x < cols; x++) {
-        const colorIndex = (step + x) % colors.length;
-        for (let y = 0; y < board.length; y++) {
+        for (let y = 0; y < rows; y++) {
           const tile = board[y][x];
           if (tile.revealed && !tile.mine) {
+            const colorIndex = (step + x + y) % colors.length;
             tile.el.style.backgroundImage = colors[colorIndex];
             tile.el.style.color = "#fff";
           }
         }
       }
       step++;
-      if (step >= colors.length * 2) clearInterval(interval);
+       if (step >= totalSteps) clearInterval(interval);
     }, 100);
   }
 
