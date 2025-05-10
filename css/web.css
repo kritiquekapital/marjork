@@ -21,9 +21,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
-  z-index: 2; /* Higher than the grid container */
-  position: relative; /* Ensure proper stacking context */
+  margin-bottom: 0;
+  z-index: 2;
+  position: relative;
   overflow: visible !important;
 }
 
@@ -83,12 +83,6 @@ body {
     justify-items: center;
     align-items: center;
   }
-
-  /* Adjust the viewport on phones to zoom out slightly */
-  meta[name="viewport"] {
-    content: "width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no";
-  }
-}
 
 /* ==================== */
 /* Theme Button */
