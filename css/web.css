@@ -122,7 +122,8 @@ body {
 /* Button Styles */
 /* ==================== */
 
-.wip .secret-button {
+.wip, 
+.secret-button {
   background: none;
   border: none;
   padding: 0;
