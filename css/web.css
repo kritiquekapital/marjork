@@ -1366,3 +1366,37 @@ body.theme-retro .click-wheel {
   border: none;
   cursor: pointer;
 }
+
+.difficulty-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#new-game-button,
+#fullscreen-button {
+  padding: 6px 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+}
+
+#new-game-button:hover,
+#fullscreen-button:hover {
+  background-color: #666;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: inline-block;
+  }
+}
