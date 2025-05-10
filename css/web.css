@@ -1318,6 +1318,36 @@ body.theme-retro .click-wheel {
   user-select: none;
 }
 
+.minesweeper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.minesweeper-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.minesweeper-controls select,
+.minesweeper-controls button {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+}
+
+.close-button {
+  font-size: 18px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
 @media (max-width: 768px) {
   .mobile-only {
     display: inline-block;
