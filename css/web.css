@@ -1369,3 +1369,31 @@ body.theme-retro .click-wheel {
   overflow: auto;
   display: grid;
 }
+
+/* Responsive Grid Adjustment: Landscape Phones/Tablets */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .grid-container {
+    grid-template-columns: repeat(5, 120px);
+    grid-template-rows: repeat(3, 120px);
+    justify-content: center;
+    align-content: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .grid-container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+  }
+}
