@@ -88,9 +88,12 @@ body {
     overflow-x: hidden;
   }
 
-  .grid-container {
-    margin: 0 auto;
-    transform: translateY(1vh); /* Slight downward visual shift */
+  .grid-container > * {
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
   }
 }
 
