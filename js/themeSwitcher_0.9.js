@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "modern", displayName: "🌚" },
     { name: "art", displayName: "🎨" },
     { name: "space", displayName: "🚀" },
-    { name: "nature", displayName: "🌞" },
+    { name: "nature", displayName: "🌞" },    
     { name: "classic", displayName: "😎" },
     { name: "logistics", displayName: "📦" }
   ];
@@ -95,25 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
-    const screenWidth = window.innerWidth;
-    let allowedThemes;
-
-    if (screenWidth <= 768) {
-      allowedThemes = ["retro", "art"];
-    } else if (screenWidth <= 1024) {
-      allowedThemes = ["retro", "art", "modern", "classic"];
-    } else {
-      allowedThemes = themes.map(t => t.name);
-    }
-
-    const selectedTheme = themes[currentThemeIndex]?.name;
-    if (!allowedThemes.includes(selectedTheme)) {
-      const fallbackIndex = themes.findIndex(t => t.name === allowedThemes[0]);
-      if (fallbackIndex !== -1) {
-        currentThemeIndex = fallbackIndex;
-      }
-    }
-
     cleanupLogistics();
     document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
@@ -182,12 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < numBlobs; i++) {
       const blob = document.createElement("div");
       blob.className = "blob";
+
       const size = Math.random() * 60 + 20;
       blob.style.width = `${size}px`;
       blob.style.height = `${size}px`;
       blob.style.background = colors[Math.floor(Math.random() * colors.length)];
       blob.style.left = `${(Math.random() - 0.5) * 100}px`;
       blob.style.top = `${(Math.random() - 0.5) * 100}px`;
+
       splatter.appendChild(blob);
     }
 
@@ -248,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // restrict allowed themes by screen size
+  // Themed click rotation based on screen size
   const screenWidth = window.innerWidth;
   let allowedThemes;
 
@@ -260,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     allowedThemes = themes.map(t => t.name);
   }
 
+  // Clamp to first allowed theme if current is invalid
   const currentThemeName = themes[currentThemeIndex]?.name;
   if (!allowedThemes.includes(currentThemeName)) {
     const fallbackIndex = themes.findIndex(t => t.name === allowedThemes[0]);
