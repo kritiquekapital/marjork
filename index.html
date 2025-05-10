@@ -107,13 +107,21 @@
     </div>
   </div>
 
-<div class="popup-game" id="minesweeper-game" style="display: none;">
-  <button class="close-button" id="close-minesweeper">×</button>
-  <div class="minesweeper-controls">
-    <button class="fullscreen-button" style="display: inline-block;">⛶</button>
+  <div class="popup-game" id="minesweeper-game" style="display: none;">
+    <div class="minesweeper-header">
+      <div class="minesweeper-controls">
+        <select class="difficulty-select" id="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button class="new-game-button">New Game</button>
+        <button class="fullscreen-button mobile-only">⛶</button>
+      </div>
+      <button class="close-button" id="close-minesweeper">×</button>
+    </div>
+    <div id="minesweeper-grid"></div>
   </div>
-  <div id="minesweeper-grid"></div>
-</div>
 
   <!-- External JavaScript Files -->
   <script type="module" src="js/bounceable.js" defer></script>
