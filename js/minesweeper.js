@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const secretButton = document.querySelector(".secret-button");
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 1 },
+    easy: { cols: 10, rows: 8, mines: 10 },
     medium: { cols: 12, rows: 14, mines: 35 },
     hard: { cols: 14, rows: 20, mines: 90 },
   };
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let step = 0;
     const cols = board[0].length;
     const rows = board.length;
-    const totalSteps = cols * 3;
+    const totalSteps = cols * 6;
 
     const interval = setInterval(() => {
       for (let x = 0; x < cols; x++) {
