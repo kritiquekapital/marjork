@@ -1386,7 +1386,8 @@ body.theme-retro .click-wheel {
 
 .difficulty-select,
 .new-game-button,
-.fullscreen-button {
+.fullscreen-button
+.close-button {
   padding: 6px 12px;
   font-weight: bold;
 }
