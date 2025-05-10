@@ -106,9 +106,14 @@
     </div>
   </div>
 
-  <div id="minesweeper-game" class="popup-game" style="display: none;">
-    <button id="close-minesweeper" class="close-button">&times;</button>
-    <div id="minesweeper-grid"></div>
+  <div id="minesweeper-game" class="popup-game" style="display: none;">  
+    <div id="difficulty-controls" class="difficulty-controls">
+      <select id="difficulty-select"></select>
+      <button id="new-game-button">🔁 New Game</button>
+      <button id="fullscreen-button" class="mobile-only">⛶ Fullscreen</button>
+    </div>
+     <button id="close-minesweeper" class="close-button">&times;</button>
+     <div id="minesweeper-grid"></div>
   </div>
 
   <!-- External JavaScript Files -->
