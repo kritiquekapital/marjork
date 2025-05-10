@@ -1333,68 +1333,6 @@ body.theme-retro .click-wheel {
   transition: background-color 0.2s ease;
 }
 
-.tile:hover {
-  background-color: #e0e0e0;
-}
-
-.tile.revealed {
-  background-color: #ddd;
-  border-color: #ccc;
-  cursor: default;
-}
-
-.tile.mine {
-  color: red;
-}
-
-.popup-game {
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #000;
-  border: 3px solid #0ff;
-  padding: 15px;
-  z-index: 1000;
-}
-
-.close-button {
-  background: transparent;
-  color: #fff;
-  font-size: 18px;
-  float: right;
-  border: none;
-  cursor: pointer;
-}
-
-.difficulty-controls {
-  display: flex;
-  justify-content: none;
-  align-items: left;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-#new-game-button,
-#fullscreen-button {
-  padding: 6px 12px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #444;
-  color: #fff;
-  cursor: pointer;
-}
-
-#new-game-button:hover,
-#fullscreen-button:hover {
-  background-color: #666;
-}
-
-.mobile-only {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .mobile-only {
     display: inline-block;
