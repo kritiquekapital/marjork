@@ -1,136 +1,177 @@
 document.addEventListener("DOMContentLoaded", () => {
   const gameContainer = document.getElementById("minesweeper-game");
-  const grid = document.getElementById("minesweeper-grid");
-  const closeBtn = document.getElementById("close-minesweeper");
-  const triggerBtn = document.querySelector(".secret-button");
+  const gridElement = document.getElementById("minesweeper-grid");
+  const closeButton = document.getElementById("close-minesweeper");
+  const secretButton = document.querySelector(".secret-button");
 
-  const rows = 8;
-  const cols = 10;
-  const mineCount = 10;
-  let firstClick = true;
+  const difficulties = {
+    easy: { cols: 10, rows: 8, mines: 10 },
+    medium: { cols: 18, rows: 14, mines: 40 },
+    hard: { cols: 24, rows: 20, mines: 99 },
+  };
+
+  let currentDifficulty = "easy";
   let board = [];
-  let revealedCount = 0;
-  let gameOver = false;
+  let firstClick = true;
 
-  function createBoard() {
+  function createDropdown() {
+    const select = document.createElement("select");
+    select.id = "difficulty-select";
+    select.className = "difficulty-select";
+
+    for (let key in difficulties) {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = key[0].toUpperCase() + key.slice(1);
+      select.appendChild(opt);
+    }
+
+    select.value = currentDifficulty;
+
+    select.addEventListener("change", () => {
+      currentDifficulty = select.value;
+      generateGrid();
+    });
+
+    gameContainer.insertBefore(select, gridElement);
+  }
+
+  function generateGrid() {
+    gridElement.innerHTML = "";
     board = [];
-    revealedCount = 0;
-    gameOver = false;
     firstClick = true;
-    grid.innerHTML = "";
-    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
-    for (let r = 0; r < rows; r++) {
+    const { cols, rows } = difficulties[currentDifficulty];
+    gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+    for (let y = 0; y < rows; y++) {
       const row = [];
-      for (let c = 0; c < cols; c++) {
+      for (let x = 0; x < cols; x++) {
         const tile = document.createElement("div");
         tile.className = "tile";
-        tile.dataset.row = r;
-        tile.dataset.col = c;
-        tile.addEventListener("click", handleClick);
-        tile.addEventListener("contextmenu", handleRightClick);
-        grid.appendChild(tile);
-        row.push({ el: tile, isMine: false, revealed: false, flagged: false, adjacent: 0 });
+        tile.dataset.x = x;
+        tile.dataset.y = y;
+        tile.addEventListener("click", () => handleClick(x, y));
+        row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
+        gridElement.appendChild(tile);
       }
       board.push(row);
     }
   }
 
-  function placeMines(safeR, safeC) {
+  function placeMines(safeX, safeY) {
+    const { cols, rows, mines } = difficulties[currentDifficulty];
     let placed = 0;
-    while (placed < mineCount) {
-      const r = Math.floor(Math.random() * rows);
-      const c = Math.floor(Math.random() * cols);
-      const dist = Math.abs(r - safeR) + Math.abs(c - safeC);
-      if (!board[r][c].isMine && dist > 1) {
-        board[r][c].isMine = true;
-        placed++;
-      }
+
+    while (placed < mines) {
+      const x = Math.floor(Math.random() * cols);
+      const y = Math.floor(Math.random() * rows);
+
+      if (board[y][x].mine || (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1)) continue;
+
+      board[y][x].mine = true;
+      placed++;
     }
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (board[r][c].isMine) continue;
-        let count = 0;
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            const nr = r + dr, nc = c + dc;
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc].isMine) count++;
-          }
-        }
-        board[r][c].adjacent = count;
+    // Count neighbors
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (board[y][x].mine) continue;
+        board[y][x].count = getNeighbors(x, y).filter(n => n.mine).length;
       }
     }
   }
 
-  function handleClick(e) {
-    if (gameOver) return;
-    const r = parseInt(this.dataset.row);
-    const c = parseInt(this.dataset.col);
+  function handleClick(x, y) {
+    const tile = board[y][x];
+
+    if (tile.revealed || tile.flagged) return;
+
     if (firstClick) {
-      placeMines(r, c);
+      placeMines(x, y);
       firstClick = false;
     }
-    reveal(r, c);
-    checkWin();
+
+    revealTile(x, y);
+
+    if (tile.mine) {
+      tile.el.classList.add("mine");
+      alert("💥 Game Over!");
+      revealAll();
+    }
   }
 
-  function handleRightClick(e) {
-    e.preventDefault();
-    if (gameOver) return;
-    const r = parseInt(this.dataset.row);
-    const c = parseInt(this.dataset.col);
-    const cell = board[r][c];
-    if (cell.revealed) return;
-    cell.flagged = !cell.flagged;
-    cell.el.textContent = cell.flagged ? "🚩" : "";
-  }
+  function revealTile(x, y) {
+    const tile = board[y]?.[x];
+    if (!tile || tile.revealed || tile.flagged) return;
 
-  function reveal(r, c) {
-    const cell = board[r][c];
-    if (cell.revealed || cell.flagged) return;
-    cell.revealed = true;
-    cell.el.classList.add("revealed");
-    if (cell.isMine) {
-      cell.el.textContent = "💣";
-      cell.el.classList.add("mine");
-      endGame(false);
+    tile.revealed = true;
+    tile.el.classList.add("revealed");
+    if (tile.mine) {
+      tile.el.textContent = "💣";
+    } else if (tile.count > 0) {
+      tile.el.textContent = tile.count;
     } else {
-      revealedCount++;
-      if (cell.adjacent > 0) {
-        cell.el.textContent = cell.adjacent;
-      } else {
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            const nr = r + dr, nc = c + dc;
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) reveal(nr, nc);
-          }
-        }
+      getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
+    }
+  }
+
+  function getNeighbors(x, y) {
+    const neighbors = [];
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        const nx = x + dx, ny = y + dy;
+        if (board[ny]?.[nx]) neighbors.push(board[ny][nx]);
+      }
+    }
+    return neighbors;
+  }
+
+  function revealAll() {
+    for (let row of board) {
+      for (let tile of row) {
+        if (!tile.revealed) revealTile(tile.x, tile.y);
       }
     }
   }
 
-  function checkWin() {
-    if (revealedCount === rows * cols - mineCount) endGame(true);
-  }
-
-  function endGame(won) {
-    gameOver = true;
-    board.flat().forEach(cell => {
-      if (cell.isMine && !cell.revealed) {
-        cell.el.textContent = "💣";
-        cell.el.classList.add("mine");
-      }
-    });
-    setTimeout(() => alert(won ? "🎉 You win!" : "💥 Game over"), 200);
-  }
-
-  triggerBtn.addEventListener("click", () => {
+  // Open game UI
+  function openGame() {
+    const { cols, rows } = difficulties[currentDifficulty];
     gameContainer.style.display = "block";
-    createBoard();
-  });
+    gameContainer.style.left = `${(window.innerWidth - cols * 32) / 2}px`;
+    gameContainer.style.top = `${(window.innerHeight - rows * 32) / 2}px`;
 
-  closeBtn.addEventListener("click", () => {
-    gameContainer.style.display = "none";
-  });
+    updateThemeClass();
+  }
+
+  function updateThemeClass() {
+    const themeClass = document.body.classList.contains("theme-retro")
+      ? "retro"
+      : document.body.classList.contains("theme-art")
+      ? "paint"
+      : null;
+
+    gameContainer.classList.remove("retro", "paint");
+    if (themeClass) gameContainer.classList.add(themeClass);
+  }
+
+  // Attach button logic
+  if (secretButton) {
+    secretButton.addEventListener("click", () => {
+      openGame();
+    });
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener("click", () => {
+      gameContainer.style.display = "none";
+    });
+  }
+
+  // Initial render
+  createDropdown();
+  generateGrid();
 });
