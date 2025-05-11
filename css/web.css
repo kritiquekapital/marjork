@@ -1403,6 +1403,9 @@ body.theme-retro .click-wheel {
   .mobile-only {
     display: inline-block;
   }
+  .fullscreen-button {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {
