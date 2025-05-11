@@ -118,7 +118,6 @@ body.theme-retro button:hover {
   }
 }
 
-/* Retro Arcade Theme */
 #minesweeper-game.retro {
   background: #000;
   border: 3px solid #0ff;
@@ -129,15 +128,52 @@ body.theme-retro button:hover {
   align-items: center;
 }
 
-/* Grid itself */
+/* Controls Layout */
+#minesweeper-game.retro .minesweeper-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#minesweeper-game.retro .minesweeper-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* All Buttons and Selects */
+#minesweeper-game.retro .close-button,
+#minesweeper-game.retro .difficulty-select,
+#minesweeper-game.retro .new-game-button,
+#minesweeper-game.retro .fullscreen-button {
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
+  color: #000;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 10px #ff00ff;
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#minesweeper-game.retro .close-button {
+  font-weight: 900;
+  margin-left: auto;
+}
+
+/* Grid */
 #minesweeper-game.retro #minesweeper-grid {
   display: grid;
   gap: 2px;
   margin-bottom: 10px;
-  width: auto;
 }
 
-/* Tiles */
+/* Tile */
 #minesweeper-game.retro .tile {
   background: #111;
   border: 2px solid #0ff;
@@ -151,60 +187,41 @@ body.theme-retro button:hover {
   user-select: none;
 }
 
-/* Revealed tiles */
+/* Revealed */
 #minesweeper-game.retro .tile.revealed {
   background: #222;
   border-color: #888;
   color: #0cf;
 }
 
-/* Mine hit */
 #minesweeper-game.retro .tile.mine {
   color: red;
 }
 
-/* Flagged */
 #minesweeper-game.retro .tile.flagged {
   background-color: #400;
   color: #f00;
 }
 
-/* Controls */
-#minesweeper-game.retro .close-button,
-#minesweeper-game.retro .difficulty-select,
-#minesweeper-game.retro .new-game-button,
-#minesweeper-game.retro .fullscreen-button {
-  background-color: #0ff;
-  color: #000;
+/* Info & Stats */
+#minesweeper-game.retro .minesweeper-info,
+#minesweeper-game.retro .minesweeper-stats {
+  background-color: rgba(0, 0, 0, 0.5);
   border: 2px solid #fff;
-  padding: 6px 10px;
-  text-transform: uppercase;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 6px;
+  padding: 8px;
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
   font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  color: #0ff;
 }
 
-#minesweeper-game.retro .difficulty-select:hover,
-#minesweeper-game.retro .new-game-button:hover,
-#minesweeper-game.retro .fullscreen-button:hover {
-  background-color: #0cf;
-}
-
-/* Info Bar: Timer + Best */
 #minesweeper-game.retro .minesweeper-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid #fff;
-  border-radius: 6px;
-  color: #0ff;
-  padding: 8px;
-  margin-top: 6px;
-  font-family: 'Press Start 2P', monospace;
-  text-transform: uppercase;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 #minesweeper-game.retro .minesweeper-timer {
@@ -219,57 +236,15 @@ body.theme-retro button:hover {
   opacity: 0.5;
 }
 
-/* Stats Section */
-#minesweeper-game.retro .minesweeper-stats {
-  font-family: 'Press Start 2P', monospace;
-  text-transform: uppercase;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid #fff;
-  color: #0ff;
-  padding: 8px;
-  margin-top: 6px;
-  border-radius: 6px;
-  text-align: left;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 #minesweeper-game.retro .minesweeper-stats .wins,
 #minesweeper-game.retro .minesweeper-stats .booms {
   display: block;
   margin: 4px 0;
 }
-/* Retro rainbow glow animation */
-@keyframes retroRainbow {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
 
-/* Apply rainbow effect + spacing fix to all control buttons and dropdowns */
-#minesweeper-game.retro .close-button,
-#minesweeper-game.retro .difficulty-select,
-#minesweeper-game.retro .new-game-button,
-#minesweeper-game.retro .fullscreen-button {
-  animation: retroRainbow 3s linear infinite;
-  margin-right: 6px;
-  font-size: 12px;
-  line-height: 1.2;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-#minesweeper-game.retro .close-button {
-  font-weight: 900;
-}
-
-/* Optional: inline top row layout container */
-#minesweeper-game.retro .minesweeper-controls {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-  margin-bottom: 8px;
-  gap: 6px;
-  box-sizing: border-box;
+/* Rainbow Animation */
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
