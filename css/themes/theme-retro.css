@@ -239,3 +239,37 @@ body.theme-retro button:hover {
   display: block;
   margin: 4px 0;
 }
+/* Retro rainbow glow animation */
+@keyframes retroRainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* Apply rainbow effect + spacing fix to all control buttons and dropdowns */
+#minesweeper-game.retro .close-button,
+#minesweeper-game.retro .difficulty-select,
+#minesweeper-game.retro .new-game-button,
+#minesweeper-game.retro .fullscreen-button {
+  animation: retroRainbow 3s linear infinite;
+  margin-right: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#minesweeper-game.retro .close-button {
+  font-weight: 900;
+}
+
+/* Optional: inline top row layout container */
+#minesweeper-game.retro .minesweeper-controls {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 8px;
+  gap: 6px;
+  box-sizing: border-box;
+}
