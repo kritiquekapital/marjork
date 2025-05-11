@@ -15,9 +15,28 @@ document.addEventListener("DOMContentLoaded", () => {
   let firstClick = true;
   let gameOver = false;
 
-  function createDropdown() {
-    const controls = document.querySelector(".minesweeper-controls");
+  let startTime = null;
+  let totalTime = parseInt(localStorage.getItem("minesweeperTotalTime")) || 0;
+  let totalWins = parseInt(localStorage.getItem("minesweeperTotalWins")) || 0;
+  let timerInterval = null;
 
+  const statsDisplay = document.createElement("div");
+  statsDisplay.className = "minesweeper-stats";
+  statsDisplay.style.marginTop = "10px";
+  statsDisplay.style.textAlign = "center";
+  statsDisplay.style.fontSize = "14px";
+  statsDisplay.style.color = "#fff";
+  gameContainer.appendChild(statsDisplay);
+
+  const timerDisplay = document.createElement("div");
+  timerDisplay.className = "minesweeper-timer";
+  timerDisplay.style.textAlign = "center";
+  timerDisplay.style.fontSize = "14px";
+  timerDisplay.style.color = "#fff";
+  timerDisplay.style.marginTop = "6px";
+  gameContainer.appendChild(timerDisplay);
+
+  function createDropdown() {
     const select = document.getElementById("difficulty-select");
     const newGameBtn = document.querySelector(".new-game-button");
     const fullscreenBtn = document.querySelector(".fullscreen-button");
@@ -34,11 +53,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function updateStats() {
+    statsDisplay.textContent = `🏆 Wins: ${totalWins} ⏱️ Total Time: ${totalTime}s`;
+  }
+
+  function updateTimerDisplay() {
+    if (!startTime) {
+      timerDisplay.textContent = "⏳ Timer: 0s";
+      return;
+    }
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    timerDisplay.textContent = `⏳ Timer: ${elapsed}s`;
+  }
+
+  function startTimer() {
+    startTime = Date.now();
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimerDisplay, 1000);
+  }
+
+  function stopTimer(won = false) {
+    if (startTime) {
+      const sessionTime = Math.floor((Date.now() - startTime) / 1000);
+      totalTime += sessionTime;
+      localStorage.setItem("minesweeperTotalTime", totalTime);
+      startTime = null;
+    }
+
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+
+    if (won) {
+      totalWins++;
+      localStorage.setItem("minesweeperTotalWins", totalWins);
+    }
+
+    updateStats();
+  }
+
   function generateGrid() {
     gridElement.innerHTML = "";
     board = [];
     firstClick = true;
     gameOver = false;
+    stopTimer(); // clears any active timer
 
     const { cols, rows } = difficulties[currentDifficulty];
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -59,9 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         tile.addEventListener("touchstart", (e) => {
-          tile._touchTimer = setTimeout(() => {
-            toggleFlag(x, y);
-          }, 500);
+          tile._touchTimer = setTimeout(() => toggleFlag(x, y), 500);
         });
 
         tile.addEventListener("touchend", () => {
@@ -73,6 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       board.push(row);
     }
+
+    updateStats();
+    updateTimerDisplay();
   }
 
   function placeMines(safeX, safeY) {
@@ -104,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (firstClick) {
       placeMines(x, y);
       firstClick = false;
+      startTimer();
     }
 
     revealTile(x, y);
@@ -112,9 +172,11 @@ document.addEventListener("DOMContentLoaded", () => {
       tile.el.classList.add("mine");
       tile.el.textContent = "💥";
       gameOver = true;
+      stopTimer(false);
       revealAllAnimated();
     } else if (checkWin()) {
       gameOver = true;
+      stopTimer(true);
       playWinAnimation();
     }
   }
@@ -175,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       step++;
-       if (step >= totalSteps) clearInterval(interval);
+      if (step >= totalSteps) clearInterval(interval);
     }, 100);
   }
 
