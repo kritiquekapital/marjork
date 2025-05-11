@@ -1363,22 +1363,15 @@ body.theme-retro .click-wheel {
   width: 100%;
 }
 
-.close-button {
-  font-size: 18px;
-  background: none;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  padding: 6px 10px;
-}
-
 .minesweeper-controls {
   display: flex;
   justify-content: space-between;
-  gap: 8px;
-  padding-bottom: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .difficulty-select,
@@ -1387,14 +1380,15 @@ body.theme-retro .click-wheel {
 .close-button {
   padding: 6px 12px;
   font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
 }
 
-/* Hide fullscreen button by default */
+/* Hide fullscreen button on desktop */
 .fullscreen-button {
   display: none !important;
 }
 
-/* MOBILE FULLSCREEN MODE */
 @media (max-width: 768px) {
   .fullscreen-button {
     display: inline-block !important;
@@ -1407,36 +1401,38 @@ body.theme-retro .click-wheel {
     width: 100vw;
     height: 100vh;
     margin: 0;
-    padding: 0;
+    padding: 8px;
     background-color: #000;
     z-index: 9999;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    box-sizing: border-box;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-controls {
-    padding: 8px;
-    margin: 0;
-    background: #111;
-    z-index: 2;
+    margin-bottom: 8px;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    background-color: #111;
+    padding: 6px;
+    border-radius: 6px;
   }
 
   #minesweeper-game.mobile-fullscreen #minesweeper-grid {
     flex: 1;
     width: 100%;
     height: 100%;
-    gap: 1px;
     display: grid;
+    gap: 1px;
     box-sizing: border-box;
-    place-items: center;
+    grid-auto-rows: 1fr;
   }
 
   #minesweeper-game.mobile-fullscreen .tile {
     width: 100%;
-    height: 100%;
     aspect-ratio: 1 / 1;
-    font-size: calc(100vw / 14); /* dynamically scale based on grid size */
+    font-size: 4vw;
   }
 
   .minesweeper-info,
@@ -1446,6 +1442,8 @@ body.theme-retro .click-wheel {
     box-sizing: border-box;
     font-size: 12px;
     background: #111;
+    border-radius: 6px;
+    margin-top: 6px;
   }
 
   .minesweeper-info {
