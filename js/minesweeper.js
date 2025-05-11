@@ -60,7 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateStats() {
-    statsDisplay.textContent = `🏆 ${currentDifficulty} Wins: ${winCounts[currentDifficulty]} 💥 Total Booms: ${totalBooms}`;
+    statsDisplay.innerHTML = `
+      <div class="wins">🏆 ${label} Wins: ${winCounts[currentDifficulty]}</div>
+      <div class="booms">💥 Total Booms: ${totalBooms}</div>
+    `;
   }
 
   function updateTimerDisplay() {
