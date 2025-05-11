@@ -176,6 +176,20 @@ body.theme-retro button:hover {
   margin: 4px 0;
 }
 
+#minesweeper-game.retro .minesweeper-timer-block {
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff;
+  color: #0ff;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #minesweeper-game.retro .minesweeper-timer {
   font-family: 'Press Start 2P', monospace;
   text-transform: uppercase;
