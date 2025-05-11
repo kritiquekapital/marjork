@@ -1407,86 +1407,100 @@ body.theme-retro .click-wheel {
 
 @media (max-width: 768px) {
   #minesweeper-game.mobile-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 8px;
-    background-color: #000;
-    z-index: 9999;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
     box-sizing: border-box;
     overflow: hidden;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-header {
-    flex-shrink: 0;
-    margin-bottom: 8px;
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background-color: #111;
+    border-bottom: 2px solid #0ff;
+    z-index: 10;
   }
 
-  #minesweeper-game.mobile-fullscreen .minesweeper-info,
-  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
-    flex-shrink: 0;
-    width: 100%;
-    padding: 6px 12px;
+  #minesweeper-game.mobile-fullscreen .minesweeper-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+  }
+
+  #minesweeper-game.mobile-fullscreen .difficulty-select,
+  #minesweeper-game.mobile-fullscreen .new-game-button,
+  #minesweeper-game.mobile-fullscreen .fullscreen-button,
+  #minesweeper-game.mobile-fullscreen .close-button {
+    background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+    background-size: 400% 400%;
+    animation: rainbow 5s ease infinite;
+    color: #000;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 10px #ff00ff;
+    font-family: 'Press Start 2P', monospace;
+    text-transform: uppercase;
     font-size: 12px;
-    box-sizing: border-box;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  #minesweeper-game.mobile-fullscreen .close-button {
+    font-weight: 900;
+    margin-left: auto;
   }
 
   #minesweeper-game.mobile-fullscreen #minesweeper-grid {
-    flex-grow: 1;
+    flex: 1 1 auto;
     display: grid;
     width: 100%;
-    height: auto;
-    gap: 2px;
+    height: 100%;
     box-sizing: border-box;
-    grid-auto-rows: 1fr;
-    justify-content: center;
-    align-content: center;
+    gap: 2px;
+    padding: 6px;
   }
 
   #minesweeper-game.mobile-fullscreen .tile {
     width: 100%;
-    height: auto;
     aspect-ratio: 1 / 1;
     font-size: 4vw;
   }
 
-  .fullscreen-button {
-    display: inline-block !important;
-  }
-
-  .difficulty-select,
-  .new-game-button,
-  .fullscreen-button,
-  .close-button {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-}
-
-  #minesweeper-game.mobile-fullscreen #minesweeper-grid {
-    flex: 1;
-    display: grid;
-    width: 100%;
-    height: auto;
-    aspect-ratio: auto; /* lets it fill vertically */
-    max-height: 100%;
-  }
-
   #minesweeper-game.mobile-fullscreen .minesweeper-info,
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
+    flex: 0 0 auto;
     width: 100%;
     padding: 6px 12px;
     box-sizing: border-box;
+    background-color: #111;
+    font-size: 12px;
+    border: 2px solid #fff;
+    color: #0ff;
+    font-family: 'Press Start 2P', monospace;
+    border-radius: 6px;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info {
     order: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
@@ -1494,7 +1508,22 @@ body.theme-retro .click-wheel {
     margin-bottom: 8px;
   }
 
-  #minesweeper-game.mobile-fullscreen .tile {
-    font-size: 4vw;
+  #minesweeper-game.mobile-fullscreen .minesweeper-timer {
+    flex: 1;
+    text-align: left;
   }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-best-time {
+    flex: 1;
+    text-align: right;
+    color: #888;
+    opacity: 0.5;
+  }
+}
+
+/* Rainbow animation */
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
