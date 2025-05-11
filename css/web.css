@@ -1317,12 +1317,18 @@ body.theme-retro .click-wheel {
   padding: 16px;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 
 #minesweeper-grid {
   display: grid;
   gap: 2px;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .tile {
@@ -1335,6 +1341,16 @@ body.theme-retro .click-wheel {
   font-size: 20px;
   transition: background 0.2s, transform 0.2s;
   box-sizing: border-box;
+}
+
+.tile.pulse {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 
 .minesweeper-header {
@@ -1353,36 +1369,6 @@ body.theme-retro .click-wheel {
   padding: 6px 10px;
 }
 
-.tile.pulse {
-  animation: tilePulse 0.3s ease;
-}
-
-@keyframes tilePulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 transparent;
-  }
-  50% {
-    transform: scale(1.12);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 transparent;
-  }
-}
-
-/* Subtle pulse for any tile click */
-.tile.pulse {
-  animation: pulse 0.3s ease;
-}
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-/* Align controls neatly */
 .minesweeper-controls {
   display: flex;
   justify-content: space-between;
@@ -1393,22 +1379,21 @@ body.theme-retro .click-wheel {
 
 .difficulty-select,
 .new-game-button,
-.fullscreen-button
+.fullscreen-button,
 .close-button {
   padding: 6px 12px;
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .mobile-only {
-    display: inline-block;
-  }
-  .fullscreen-button {
-    display: none !important;
-  }
+.fullscreen-button {
+  display: none; /* default hidden, only shown on mobile */
 }
 
 @media (max-width: 768px) {
+  .fullscreen-button {
+    display: inline-block !important;
+  }
+
   #minesweeper-game.mobile-fullscreen {
     position: fixed;
     top: 0;
@@ -1420,36 +1405,39 @@ body.theme-retro .click-wheel {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: #000; /* adjust for your theme if needed */
+    background-color: #000;
     z-index: 9999;
   }
 
-  #minesweeper-game.mobile-fullscreen #minesweeper-grid {
+  #minesweeper-grid {
     flex: 1;
+    width: 100%;
     display: grid;
-    width: 100%;
-    height: auto;
-    aspect-ratio: auto; /* lets it fill vertically */
-    max-height: 100%;
-  }
-
-  #minesweeper-game.mobile-fullscreen .minesweeper-info,
-  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
-    width: 100%;
-    padding: 6px 12px;
+    gap: 1px;
+    margin: auto;
     box-sizing: border-box;
   }
 
-  #minesweeper-game.mobile-fullscreen .minesweeper-info {
+  .tile {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    font-size: 4vw;
+  }
+
+  .minesweeper-info,
+  .minesweeper-stats {
+    width: 100%;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    font-size: 12px;
+  }
+
+  .minesweeper-info {
     order: 2;
   }
 
-  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
+  .minesweeper-stats {
     order: 3;
     margin-bottom: 8px;
-  }
-
-  #minesweeper-game.mobile-fullscreen .tile {
-    font-size: 4vw;
   }
 }
