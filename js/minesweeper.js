@@ -16,9 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
 
   let startTime = null;
-  let totalTime = parseInt(localStorage.getItem("minesweeperTotalTime")) || 0;
-  let totalWins = parseInt(localStorage.getItem("minesweeperTotalWins")) || 0;
   let timerInterval = null;
+
+  let winCounts = {
+    easy: parseInt(localStorage.getItem("easyWins")) || 0,
+    medium: parseInt(localStorage.getItem("mediumWins")) || 0,
+    hard: parseInt(localStorage.getItem("hardWins")) || 0,
+  };
+
+  let totalBooms = parseInt(localStorage.getItem("minesweeperTotalBooms")) || 0;
 
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
@@ -54,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateStats() {
-    statsDisplay.textContent = `🏆 Wins: ${totalWins} ⏱️ Total Time: ${totalTime}s`;
+    statsDisplay.textContent = `🏆 ${currentDifficulty} Wins: ${winCounts[currentDifficulty]} 💥 Total Booms: ${totalBooms}`;
   }
 
   function updateTimerDisplay() {
@@ -73,19 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function stopTimer(won = false) {
-    if (startTime) {
-      const sessionTime = Math.floor((Date.now() - startTime) / 1000);
-      totalTime += sessionTime;
-      localStorage.setItem("minesweeperTotalTime", totalTime);
-      startTime = null;
-    }
-
     clearInterval(timerInterval);
     updateTimerDisplay();
+    startTime = null;
 
     if (won) {
-      totalWins++;
-      localStorage.setItem("minesweeperTotalWins", totalWins);
+      winCounts[currentDifficulty]++;
+      localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
     }
 
     updateStats();
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     board = [];
     firstClick = true;
     gameOver = false;
-    stopTimer(); // clears any active timer
+    stopTimer(); // reset any timer if active
 
     const { cols, rows } = difficulties[currentDifficulty];
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -172,6 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
       tile.el.classList.add("mine");
       tile.el.textContent = "💥";
       gameOver = true;
+      totalBooms++;
+      localStorage.setItem("minesweeperTotalBooms", totalBooms);
       stopTimer(false);
       revealAllAnimated();
     } else if (checkWin()) {
