@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (window.innerWidth <= 768) {
         gameContainer.classList.add("mobile-fullscreen");
+        generateGrid();
       }
     });
   }
@@ -174,6 +175,19 @@ document.addEventListener("DOMContentLoaded", () => {
         gridElement.appendChild(tile);
       }
       board.push(row);
+    }
+
+    if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
+      const headerHeight = document.querySelector('.minesweeper-header')?.offsetHeight || 0;
+      const infoHeight = document.querySelector('.minesweeper-info')?.offsetHeight || 0;
+      const statsHeight = document.querySelector('.minesweeper-stats')?.offsetHeight || 0;
+      const totalMargin = 32;
+      const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - totalMargin;
+      const tileSize = Math.floor(availableHeight / difficulties[currentDifficulty].rows);
+      gridElement.querySelectorAll(".tile").forEach(tile => {
+        tile.style.height = tileSize + "px";
+        tile.style.width = tileSize + "px";
+      });
     }
 
     updateStats();
