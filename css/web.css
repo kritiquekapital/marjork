@@ -1323,6 +1323,7 @@ body.theme-retro .click-wheel {
   box-sizing: border-box;
   max-width: 100vw;
   max-height: 100vh;
+  overflow: hidden;
 }
 
 #minesweeper-grid {
@@ -1344,58 +1345,6 @@ body.theme-retro .click-wheel {
   box-sizing: border-box;
 }
 
-.minesweeper-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 12px;
-  box-sizing: border-box;
-}
-
-.minesweeper-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-grow: 1;
-  flex-wrap: wrap;
-}
-
-.close-button {
-  font-size: 18px;
-  font-weight: bold;
-  background: linear-gradient(45deg, #f06, #0cf, #ff0);
-  background-size: 400% 400%;
-  animation: rainbow 5s ease infinite;
-  border: 2px solid #00ccff;
-  padding: 6px 12px;
-  color: #000;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.difficulty-select,
-.new-game-button,
-.fullscreen-button {
-  padding: 6px 12px;
-  font-weight: bold;
-  background: linear-gradient(45deg, #f06, #0cf, #ff0);
-  background-size: 400% 400%;
-  animation: rainbow 5s ease infinite;
-  border: 2px solid #00ccff;
-  color: #000;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-@keyframes rainbow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 .tile.pulse {
   animation: pulse 0.3s ease;
 }
@@ -1403,6 +1352,49 @@ body.theme-retro .click-wheel {
   0% { transform: scale(1); }
   50% { transform: scale(1.08); }
   100% { transform: scale(1); }
+}
+
+.minesweeper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+.minesweeper-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.difficulty-select,
+.new-game-button,
+.fullscreen-button,
+.close-button {
+  padding: 6px 10px;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px;
+  background: linear-gradient(45deg, #f06, #0cf, #ff0);
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
+  color: #000;
+  border: 2px solid #00ccff;
+  cursor: pointer;
+}
+
+.close-button {
+  margin-left: auto;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @media (max-width: 768px) {
@@ -1423,20 +1415,20 @@ body.theme-retro .click-wheel {
     justify-content: flex-start;
     background-color: #000;
     z-index: 9999;
-    overflow: hidden;
+    box-sizing: border-box;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-header {
     flex: 0 0 auto;
+    width: 100%;
+    padding: 8px;
+    background-color: #111;
+    border-bottom: 2px solid #0ff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 8px;
-    background-color: #111;
-    border-bottom: 2px solid #0ff;
-    z-index: 10;
-    width: 100%;
     box-sizing: border-box;
+    z-index: 10;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-controls {
@@ -1444,25 +1436,16 @@ body.theme-retro .click-wheel {
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-wrap: nowrap;
     overflow-x: auto;
+    flex-wrap: nowrap;
   }
 
   #minesweeper-game.mobile-fullscreen .difficulty-select,
   #minesweeper-game.mobile-fullscreen .new-game-button,
   #minesweeper-game.mobile-fullscreen .fullscreen-button,
   #minesweeper-game.mobile-fullscreen .close-button {
-    background: linear-gradient(45deg, #f06, #0cf, #ff0);
-    background-size: 400% 400%;
-    animation: rainbow 5s ease infinite;
-    color: #000;
-    border: 2px solid #00ccff;
-    font-family: 'Press Start 2P', monospace;
-    text-transform: uppercase;
     font-size: 10px;
-    padding: 6px 8px;
-    border-radius: 4px;
-    cursor: pointer;
+    padding: 4px 8px;
     flex-shrink: 0;
   }
 
@@ -1470,10 +1453,10 @@ body.theme-retro .click-wheel {
     flex: 1 1 auto;
     display: grid;
     width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 6px;
+    height: auto;
     gap: 2px;
+    padding: 6px;
+    box-sizing: border-box;
     grid-auto-rows: 1fr;
   }
 
@@ -1485,23 +1468,22 @@ body.theme-retro .click-wheel {
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info,
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
-    flex: 0 0 auto;
     width: 100%;
     padding: 6px 12px;
-    box-sizing: border-box;
-    background-color: #111;
     font-size: 12px;
+    background-color: #111;
     border: 2px solid #fff;
+    border-radius: 6px;
     color: #0ff;
     font-family: 'Press Start 2P', monospace;
-    border-radius: 6px;
+    box-sizing: border-box;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info {
-    order: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    order: 2;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
