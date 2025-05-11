@@ -29,35 +29,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const infoContainer = document.createElement("div");
   infoContainer.className = "minesweeper-info";
-  infoContainer.style.fontFamily = "'Press Start 2P', monospace";
-  infoContainer.style.textTransform = "uppercase";
-  infoContainer.style.backgroundColor = "rgba(0,0,0,0.5)";
-  infoContainer.style.border = "2px solid #fff";
-  infoContainer.style.color = "#0ff";
-  infoContainer.style.padding = "8px";
-  infoContainer.style.marginBottom = "6px";
-  infoContainer.style.borderRadius = "6px";
-  infoContainer.style.display = "flex";
-  infoContainer.style.justifyContent = "space-between";
-  infoContainer.style.alignItems = "center";
 
   const timerDisplay = document.createElement("div");
   timerDisplay.className = "minesweeper-timer";
-  timerDisplay.style.flex = "1";
+  timerDisplay.textContent = "⏳ 00:00.000";
 
   const bestTimeDisplay = document.createElement("div");
   bestTimeDisplay.className = "minesweeper-best-time";
-  bestTimeDisplay.style.flex = "1";
-  bestTimeDisplay.style.textAlign = "right";
-  bestTimeDisplay.style.opacity = "0.5";
+  bestTimeDisplay.textContent = "🕒 Best: --:--.---";
 
   infoContainer.appendChild(timerDisplay);
   infoContainer.appendChild(bestTimeDisplay);
-  gameContainer.insertBefore(infoContainer, gridElement);
-
+  gameContainer.appendChild(gridElement); // Make sure grid stays topmost
+  gameContainer.appendChild(infoContainer); // Insert below grid
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
-  gameContainer.insertBefore(statsDisplay, gridElement);
+  gameContainer.appendChild(statsDisplay);
 
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
