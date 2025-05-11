@@ -170,23 +170,31 @@ body.theme-retro button:hover {
 }
 
 /* Stats + Timer Blocks */
-#minesweeper-game.retro .minesweeper-stats,
-#minesweeper-game.retro .minesweeper-timer {
-  font-family: 'Press Start 2P', monospace;
-  text-transform: uppercase;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 2px solid #fff;
-  color: #0ff;
-  padding: 8px;
-  margin-top: 10px;
-  border-radius: 6px;
-  display: block;
-  text-align: center;
-}
-
 #minesweeper-game.retro .minesweeper-stats .wins,
 #minesweeper-game.retro .minesweeper-stats .booms {
   display: block;
   margin: 4px 0;
 }
 
+#minesweeper-game.retro .minesweeper-timer {
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  color: #0ff;
+  text-align: left;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+#minesweeper-game.retro .minesweeper-stats {
+  font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff;
+  color: #0ff;
+  padding: 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  display: block;
+  text-align: left;
+}
