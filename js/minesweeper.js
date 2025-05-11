@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let totalBooms = parseInt(localStorage.getItem("minesweeperTotalBooms")) || 0;
+  let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
 
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
@@ -33,6 +34,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const timerDisplay = document.createElement("div");
   timerDisplay.className = "minesweeper-timer";
   gameContainer.appendChild(timerDisplay);
+
+  const bestTimeDisplay = document.createElement("div");
+  bestTimeDisplay.className = "minesweeper-best-time";
+  gameContainer.appendChild(bestTimeDisplay);
+
+  function formatElapsed(ms) {
+    const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
+    const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
+    const millis = String(ms % 1000).padStart(3, "0");
+    return `${minutes}:${seconds}.${millis}`;
+  }
 
   function createDropdown() {
     const select = document.getElementById("difficulty-select");
@@ -64,13 +76,13 @@ document.addEventListener("DOMContentLoaded", () => {
       timerDisplay.textContent = "⏳ 00:00.000";
       return;
     }
-
     const elapsed = Date.now() - startTime;
-    const minutes = String(Math.floor(elapsed / 60000)).padStart(2, "0");
-    const seconds = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, "0");
-    const millis = String(elapsed % 1000).padStart(3, "0");
+    timerDisplay.textContent = `⏳ ${formatElapsed(elapsed)}`;
+  }
 
-    timerDisplay.textContent = `⏳ ${minutes}:${seconds}.${millis}`;
+  function updateBestTime() {
+    const best = bestTimes[currentDifficulty];
+    bestTimeDisplay.textContent = best ? `🕒 Best: ${formatElapsed(best)}` : `🕒 Best: --:--.---`;
   }
 
   function startTimer() {
@@ -81,15 +93,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function stopTimer(won = false) {
     clearInterval(timerInterval);
+    const elapsed = Date.now() - startTime;
     updateTimerDisplay();
     startTime = null;
 
     if (won) {
       winCounts[currentDifficulty]++;
       localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
+
+      if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
+        bestTimes[currentDifficulty] = elapsed;
+        localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
+      }
     }
 
     updateStats();
+    updateBestTime();
   }
 
   function generateGrid() {
@@ -133,6 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateStats();
     updateTimerDisplay();
+    updateBestTime();
   }
 
   function placeMines(safeX, safeY) {
