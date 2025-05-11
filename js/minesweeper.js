@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function startTimer() {
     startTime = Date.now();
     clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimerDisplay, 1000);
+    timerInterval = setInterval(updateTimerDisplay, 100);
   }
 
   function stopTimer(won = false) {
