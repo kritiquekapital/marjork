@@ -1355,47 +1355,41 @@ body.theme-retro .click-wheel {
   100% { transform: scale(1); }
 }
 
-.minesweeper-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  width: 100%;
-}
-
 .minesweeper-controls {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  flex-wrap: nowrap;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 10px;
   width: 100%;
+  flex-wrap: wrap;
   box-sizing: border-box;
+  padding: 0 6px;
 }
 
 .difficulty-select,
 .new-game-button,
 .fullscreen-button,
 .close-button {
-  padding: 6px 12px;
+  padding: 6px 10px;
   font-weight: bold;
   font-size: 12px;
-  flex-shrink: 0;
-  background-color: #0ff;
-  border: 2px solid #fff;
+  text-transform: uppercase;
   border-radius: 4px;
   cursor: pointer;
-  font-family: 'Press Start 2P', monospace;
-  color: #000;
-  text-transform: uppercase;
+  flex-shrink: 0;
+  appearance: none;
+  border: none;
 }
 
-.difficulty-select:hover,
-.new-game-button:hover,
-.fullscreen-button:hover,
-.close-button:hover {
-  background-color: #0cf;
+.difficulty-select {
+  background: inherit;
+  border: 2px solid #ccc; /* optional: remove if themed elsewhere */
+}
+
+.close-button {
+  font-size: 14px;
+  align-self: center;
 }
 
 /* Hide fullscreen button on desktop */
@@ -1425,28 +1419,30 @@ body.theme-retro .click-wheel {
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-controls {
-    margin-bottom: 8px;
-    flex-wrap: nowrap;
-    justify-content: space-between;
+    position: sticky;
+    top: 0;
     background-color: #111;
     padding: 6px;
     border-radius: 6px;
+    margin-bottom: 6px;
+    z-index: 10;
   }
 
   #minesweeper-game.mobile-fullscreen #minesweeper-grid {
+    flex: 1;
     display: grid;
     width: 100%;
-    height: auto;
+    height: 100%;
     gap: 1px;
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    box-sizing: border-box;
     grid-auto-rows: 1fr;
-    flex-grow: 1;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   }
 
   #minesweeper-game.mobile-fullscreen .tile {
     width: 100%;
     aspect-ratio: 1 / 1;
-    font-size: 3.5vw;
+    font-size: 4vw;
   }
 
   .minesweeper-info,
