@@ -28,18 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
-  statsDisplay.style.marginTop = "10px";
-  statsDisplay.style.textAlign = "center";
-  statsDisplay.style.fontSize = "14px";
-  statsDisplay.style.color = "#fff";
   gameContainer.appendChild(statsDisplay);
 
   const timerDisplay = document.createElement("div");
   timerDisplay.className = "minesweeper-timer";
-  timerDisplay.style.textAlign = "center";
-  timerDisplay.style.fontSize = "14px";
-  timerDisplay.style.color = "#fff";
-  timerDisplay.style.marginTop = "6px";
   gameContainer.appendChild(timerDisplay);
 
   function createDropdown() {
@@ -60,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateStats() {
+    const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
     statsDisplay.innerHTML = `
       <div class="wins">🏆 ${label} Wins: ${winCounts[currentDifficulty]}</div>
       <div class="booms">💥 Total Booms: ${totalBooms}</div>
@@ -99,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     board = [];
     firstClick = true;
     gameOver = false;
-    stopTimer(); // reset any timer if active
+    stopTimer();
 
     const { cols, rows } = difficulties[currentDifficulty];
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
