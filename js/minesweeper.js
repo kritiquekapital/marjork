@@ -61,16 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateTimerDisplay() {
     if (!startTime) {
-      timerDisplay.textContent = "⏳ 00:00.0";
+      timerDisplay.textContent = "⏳ 00:00.000";
       return;
     }
 
     const elapsed = Date.now() - startTime;
     const minutes = String(Math.floor(elapsed / 60000)).padStart(2, "0");
     const seconds = String(Math.floor((elapsed % 60000) / 1000)).padStart(2, "0");
-    const tenths = Math.floor((elapsed % 1000) / 100); // only tenths of a second
+    const millis = String(elapsed % 1000).padStart(3, "0");
 
-    timerDisplay.textContent = `⏳ ${minutes}:${seconds}.${tenths}`;
+    timerDisplay.textContent = `⏳ ${minutes}:${seconds}.${millis}`;
   }
 
   function startTimer() {
