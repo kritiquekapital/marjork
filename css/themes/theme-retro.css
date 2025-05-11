@@ -117,11 +117,13 @@ body.theme-retro button:hover {
     filter: blur(0);
   }
 }
+
 /* Retro Arcade Theme */
 #minesweeper-game.retro {
   background: #000;
   border: 3px solid #0ff;
   box-shadow: 0 0 20px #0ff;
+  font-family: 'Press Start 2P', monospace;
 }
 
 #minesweeper-game.retro .tile {
@@ -148,17 +150,40 @@ body.theme-retro button:hover {
 }
 
 #minesweeper-game.retro .close-button,
-#minesweeper-game.retro .difficulty-select {
+#minesweeper-game.retro .difficulty-select,
+#minesweeper-game.retro .new-game-button,
+#minesweeper-game.retro .fullscreen-button {
   background-color: #0ff;
+  color: #000;
+  border: 2px solid #fff;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Press Start 2P', monospace;
 }
 
-#minesweeper-game.retro .difficulty-select:hover {
+#minesweeper-game.retro .difficulty-select:hover,
+#minesweeper-game.retro .new-game-button:hover,
+#minesweeper-game.retro .fullscreen-button:hover {
   background-color: #0cf;
 }
 
-#minesweeper-game.retro,
-#minesweeper-game.retro .tile,
-#minesweeper-game.retro .close-button,
-#minesweeper-game.retro .difficulty-select {
+/* Stats + Timer Blocks */
+#minesweeper-game.retro .minesweeper-stats,
+#minesweeper-game.retro .minesweeper-timer {
   font-family: 'Press Start 2P', monospace;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff;
+  color: #0ff;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+#minesweeper-game.retro .minesweeper-stats {
+  margin-bottom: 5px;
+  display: block;
 }
