@@ -132,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
-    // Set data-difficulty for responsive CSS
     gameContainer.setAttribute("data-difficulty", currentDifficulty);
 
     for (let y = 0; y < rows; y++) {
@@ -161,6 +160,31 @@ document.addEventListener("DOMContentLoaded", () => {
         gridElement.appendChild(tile);
       }
       board.push(row);
+    }
+
+    if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
+      requestAnimationFrame(() => {
+        const header = document.querySelector('.minesweeper-header');
+        const info = document.querySelector('.minesweeper-info');
+        const stats = document.querySelector('.minesweeper-stats');
+
+        const headerHeight = header?.offsetHeight || 0;
+        const infoHeight = info?.offsetHeight || 0;
+        const statsHeight = stats?.offsetHeight || 0;
+        const verticalPadding = 32;
+
+        const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - verticalPadding;
+        const availableWidth = window.innerWidth - 24;
+
+        const tileSizeH = Math.floor(availableHeight / rows);
+        const tileSizeW = Math.floor(availableWidth / cols);
+        const tileSize = Math.min(tileSizeH, tileSizeW);
+
+        gridElement.querySelectorAll(".tile").forEach(tile => {
+          tile.style.height = `${tileSize}px`;
+          tile.style.width = `${tileSize}px`;
+        });
+      });
     }
 
     updateStats();
