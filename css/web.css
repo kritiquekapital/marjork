@@ -1598,6 +1598,17 @@ body.theme-retro .click-wheel {
     font-size: min(4vw, 16px);
   }
 
+  .minesweeper-username {
+    font-family: monospace;
+    margin-left: 12px;
+    padding: 4px 6px;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    background-color: #111;
+    color: #0ff;
+  }
+
   #minesweeper-game.mobile-fullscreen .minesweeper-info,
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
     padding: 4px 10px;
