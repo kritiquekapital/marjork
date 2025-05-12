@@ -4,6 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
 
+  // Username setup
+  let username = localStorage.getItem("minesweeperUsername") || "";
+  const usernameInput = document.createElement("input");
+  usernameInput.type = "text";
+  usernameInput.maxLength = 6;
+  usernameInput.placeholder = "Name";
+  usernameInput.value = username;
+  usernameInput.classList.add("minesweeper-username");
+  usernameInput.addEventListener("input", () => {
+    username = usernameInput.value;
+    localStorage.setItem("minesweeperUsername", username);
+  });
+  const gridWrapper = document.querySelector(".grid-container");
+  if (gridWrapper) gridWrapper.appendChild(usernameInput);
+
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
     medium: { cols: 12, rows: 14, mines: 35 },
