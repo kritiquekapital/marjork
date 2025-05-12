@@ -1665,51 +1665,83 @@ body.theme-retro .click-wheel {
   }
 }
 
-/* Main leaderboard overlay panel */
-#leaderboard {
+/* Leaderboard panel container */
+.leaderboard-panel {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  background: rgba(30, 30, 30, 0.95);
-  color: #fff;
+  max-width: 480px;
+  max-height: 640px;
+  background-color: rgba(25, 25, 25, 0.95);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+  color: white;
   display: flex;
   flex-direction: column;
-  z-index: 99;
-  padding: 1rem;
-  overflow-y: auto;
-  font-family: monospace;
+  z-index: 999;
+  overflow: auto;
 }
 
-/* Leaderboard title/header bar */
-#leaderboard h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.2rem;
-  text-align: center;
-  border-bottom: 2px solid #fff;
-  padding-bottom: 0.5rem;
-}
-
-/* Grid table for leaderboard */
-.leaderboard-table {
-  display: grid;
-  grid-template-columns: 1fr 1fr repeat(4, 0.7fr);
-  gap: 0.5rem;
-  text-align: center;
-}
-
-/* Header row (sticky at top) */
+/* Leaderboard header row with sort buttons */
 .leaderboard-header {
+  display: flex;
+  justify-content: space-around;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sort-btn {
+  background-color: #222;
+  border: 2px solid #00ffff;
+  padding: 6px 12px;
+  color: #00ffff;
   font-weight: bold;
-  position: sticky;
-  top: 0;
-  background: rgba(50, 50, 50, 0.95);
-  z-index: 1;
-  padding: 0.5rem 0;
+  border-radius: 6px;
   cursor: pointer;
-  user-select: none;
-  border-bottom: 1px solid #aaa;
+  font-family: monospace;
+  transition: background 0.3s;
+}
+.sort-btn:hover {
+  background-color: #00ffff;
+  color: black;
+}
+
+/* Leaderboard list */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+.leaderboard-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #555;
+}
+
+/* Back button (reuse .close-button if available) */
+.leaderboard-panel .back-button {
+  align-self: center;
+  margin-top: 1rem;
+  padding: 6px 12px;
+  background: #222;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 6px;
+  font-family: monospace;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.leaderboard-panel .back-button:hover {
+  background: #00ffff;
+  color: black;
 }
 
 /* Rainbow animation */
