@@ -168,13 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleArtSplatter(e) {
     if (!document.body.classList.contains("theme-art")) return;
 
-    const grid = document.querySelector(".grid-container");
-    if (!grid) return;
-    const gridBottom = grid.getBoundingClientRect().bottom;
-    if (e.clientY < gridBottom) return;
-
     const splatter = document.createElement("div");
     splatter.className = "paint-splatter";
+    splatter.style.position = "absolute";
     splatter.style.left = `${e.clientX}px`;
     splatter.style.top = `${e.clientY}px`;
     splatter.style.setProperty("--rot", `${Math.floor(Math.random() * 360)}deg`);
@@ -195,11 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       splatter.appendChild(blob);
     }
-
-    splatter.style.position = "absolute";
-    splatter.style.pointerEvents = "none";
-    splatter.style.zIndex = 5;
-    splatter.style.overflow = "hidden";
 
     document.body.appendChild(splatter);
 
