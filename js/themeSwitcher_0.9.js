@@ -21,18 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const isPhone = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 1024;
 
-  let savedIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
-  let themes;
+  const savedThemeIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
+  const savedThemeName = allThemes[savedThemeIndex]?.name;
 
+  let themes;
   if (isPhone) {
-    themes = allThemes.filter(t => ["retro", "art"].includes(t.name));
+    themes = allThemes.filter(t => ["retro", "art"].includes(t.name) || t.name === savedThemeName);
   } else if (isTablet) {
     themes = allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
   } else {
     themes = allThemes;
   }
 
-  let currentThemeIndex = savedIndex < themes.length ? savedIndex : 0;
+  let currentThemeIndex = themes.findIndex(t => t.name === savedThemeName);
+  if (currentThemeIndex === -1) currentThemeIndex = 0;
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
@@ -122,22 +124,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTheme = themes[currentThemeIndex];
 
     document.body.classList.remove(
-      'theme-classic',
-      'theme-modern',
-      'theme-retro',
-      'theme-nature',
-      'theme-space',
-      'theme-art',
-      'theme-logistics'
+      'theme-classic', 'theme-modern', 'theme-retro', 'theme-nature', 'theme-space', 'theme-art', 'theme-logistics'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
     themeButton.textContent = currentTheme.displayName;
 
     document.dispatchEvent(new Event("themeChange"));
 
-    if (currentTheme.name === "art" && !paintSplatterListenerAdded) {
-      document.addEventListener("click", handleArtSplatter);
-      paintSplatterListenerAdded = true;
+    if (currentTheme.name === "art") {
+      if (!paintSplatterListenerAdded) {
+        document.addEventListener("click", handleArtSplatter);
+        paintSplatterListenerAdded = true;
+      }
+    } else {
+      document.removeEventListener("click", handleArtSplatter);
+      paintSplatterListenerAdded = false;
     }
 
     if (currentTheme.name === "nature") {
@@ -165,6 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleArtSplatter(e) {
+    if (!document.body.classList.contains("theme-art")) return;
+
+    const grid = document.querySelector(".grid-container");
+    if (!grid) return;
+    const gridBottom = grid.getBoundingClientRect().bottom;
+    if (e.clientY < gridBottom) return;
+
     const splatter = document.createElement("div");
     splatter.className = "paint-splatter";
     splatter.style.left = `${e.clientX}px`;
@@ -187,6 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       splatter.appendChild(blob);
     }
+
+    splatter.style.position = "absolute";
+    splatter.style.pointerEvents = "none";
+    splatter.style.zIndex = 5;
+    splatter.style.overflow = "hidden";
 
     document.body.appendChild(splatter);
 
