@@ -37,7 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function submitScore(time, difficulty) {
-    if (!username || username.length === 0) return;
+    if (!username || username.length === 0 || !time || !difficulty) {
+      console.error("Missing fields in submitScore:", { username, time, difficulty });
+      return;
+    }
+
     try {
       const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
         method: "POST",
@@ -46,7 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const result = await res.json();
-      if (!result.success) console.error("Score submit error:", result.error);
+      if (!result.success) {
+        console.error("Score submit error:", result.error);
+      } else {
+        console.log("Score submitted successfully");
+      }
     } catch (e) {
       console.error("Submit failed:", e);
     }
@@ -56,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentSort}`);
       const data = await res.json();
+
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
       leaderboardPanel.innerHTML = `
@@ -68,7 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="sort-btn" data-sort="booms">Booms</button>
         </div>
         <ol class="leaderboard-list">
-          ${data.map(entry => `<li><span>${entry.username}</span><span>${formatElapsed(entry.time)}</span></li>`).join("")}
+          ${data.map(entry => `
+            <li><span>${entry.username}</span><span>${entry.time ? formatElapsed(entry.time) : "--:--.---"}</span></li>`).join("")}
         </ol>
       `;
 
@@ -82,11 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Leaderboard fetch failed:", e);
     }
   }
+});
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 1 },
-    medium: { cols: 12, rows: 14, mines: 35 },
-    hard: { cols: 14, rows: 18, mines: 90 },
+    easy: { cols: 10, rows: 8, mines: 10 },
+    medium: { cols: 12, rows: 14, mines: 32 },
+    hard: { cols: 14, rows: 18, mines: 75 },
   };
 
   let currentDifficulty = "easy";
