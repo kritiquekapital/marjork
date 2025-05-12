@@ -1354,31 +1354,12 @@ body.theme-retro .click-wheel {
 }
 
 .tile.pulse {
-  animation: tilePulse 0.3s ease;
-}
-
-@keyframes tilePulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 transparent;
-  }
-  50% {
-    transform: scale(1.12);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 transparent;
-  }
-}
-
-/* Subtle pulse for any tile click */
-.tile.pulse {
   animation: pulse 0.3s ease;
 }
+
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+  50% { transform: scale(1.08); box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
   100% { transform: scale(1); }
 }
 
@@ -1393,7 +1374,7 @@ body.theme-retro .click-wheel {
 
 .difficulty-select,
 .new-game-button,
-.fullscreen-button
+.fullscreen-button,
 .close-button {
   padding: 6px 12px;
   font-weight: bold;
@@ -1403,9 +1384,7 @@ body.theme-retro .click-wheel {
   .mobile-only {
     display: inline-block;
   }
-}
 
-@media (max-width: 768px) {
   #minesweeper-game.mobile-fullscreen {
     position: fixed;
     top: 0;
@@ -1465,28 +1444,29 @@ body.theme-retro .click-wheel {
     gap: 2px;
     padding: 6px;
     width: 100%;
-    height: 100%;
     box-sizing: border-box;
     align-items: center;
     justify-items: center;
   }
 
-  /* Dynamically set tile size based on screen height and board size */
+  /* Responsive tile size */
   #minesweeper-game.mobile-fullscreen[data-difficulty="easy"] .tile {
-    height: calc((100vh - 160px) / 8);
+    height: calc((100vh - 180px) / 8);
     width: calc((100vw - 24px) / 10);
   }
+
   #minesweeper-game.mobile-fullscreen[data-difficulty="medium"] .tile {
-    height: calc((100vh - 160px) / 14);
+    height: calc((100vh - 180px) / 14);
     width: calc((100vw - 24px) / 12);
   }
+
   #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .tile {
-    height: calc((100vh - 160px) / 20);
+    height: calc((100vh - 180px) / 20);
     width: calc((100vw - 24px) / 14);
   }
 
   .tile {
-    font-size: 3.5vw;
+    font-size: min(4vw, 16px);
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info,
