@@ -50,38 +50,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+const API_BASE = "https://minesweeper-zeta-eight.vercel.app"; // Your deployed Vercel backend
+
+async function submitScore(time, difficulty) {
+  if (!username || username.length === 0) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, time, difficulty })
+    });
+
+    const result = await res.json();
+    if (!result.success) console.error("Score submit error:", result.error);
+  } catch (e) {
+    console.error("Submit failed:", e);
+  }
+}
+
   async function fetchLeaderboard() {
     try {
-      const res = await fetch(`https://minesweeper-zeta-eight.vercel.app/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
+      const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentSort}`);
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
       leaderboardPanel.innerHTML = `
-        <div class="leaderboard-table-container">
-          <table class="leaderboard-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Easy</th>
-                <th>Medium</th>
-                <th>Hard</th>
-                <th>Best (${currentDifficulty})</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${data.map(row => `
-                <tr>
-                  <td>${row.username}</td>
-                  <td>${row.easy_wins}</td>
-                  <td>${row.medium_wins}</td>
-                  <td>${row.hard_wins}</td>
-                  <td>${row.best_time !== null ? formatElapsed(row.best_time) : "--:--.---"}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>
+        <div class="leaderboard-header">
+          <button class="sort-btn" data-sort="username">Name</button>
+          <button class="sort-btn" data-sort="time">Time</button>
+          <button class="sort-btn" data-sort="hard">Hard</button>
+          <button class="sort-btn" data-sort="medium">Medium</button>
+          <button class="sort-btn" data-sort="easy">Easy</button>
+          <button class="sort-btn" data-sort="booms">Booms</button>
         </div>
+        <ol class="leaderboard-list">
+          ${data.map(entry => `<li><span>${entry.username}</span><span>${formatElapsed(entry.time)}</span></li>`).join("")}
+        </ol>
       `;
+
+      leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.dataset.sort;
+          fetchLeaderboard();
+        });
+      });
     } catch (e) {
       console.error("Leaderboard fetch failed:", e);
     }
