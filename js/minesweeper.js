@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameContainer.appendChild(leaderboardPanel);
 
   let currentSort = "time";
+  const API_BASE = "https://minesweeper-zeta-eight.vercel.app";
 
   leaderboardBtn?.addEventListener("click", () => {
     leaderboardOpen = !leaderboardOpen;
@@ -38,35 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
   async function submitScore(time, difficulty) {
     if (!username || username.length === 0) return;
     try {
-      const res = await ("https://minesweeper-zeta-eight.vercel.app/api/minesweeper/submit", {
+      const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, time, difficulty })
       });
+
       const result = await res.json();
       if (!result.success) console.error("Score submit error:", result.error);
     } catch (e) {
       console.error("Submit failed:", e);
     }
   }
-
-const API_BASE = "https://minesweeper-zeta-eight.vercel.app"; // Your deployed Vercel backend
-
-async function submitScore(time, difficulty) {
-  if (!username || username.length === 0) return;
-  try {
-    const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, time, difficulty })
-    });
-
-    const result = await res.json();
-    if (!result.success) console.error("Score submit error:", result.error);
-  } catch (e) {
-    console.error("Submit failed:", e);
-  }
-}
 
   async function fetchLeaderboard() {
     try {
