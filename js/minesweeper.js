@@ -30,14 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     leaderboardOpen = !leaderboardOpen;
     leaderboardPanel.style.display = leaderboardOpen ? "block" : "none";
     if (leaderboardOpen) fetchLeaderboard();
+    else generateGrid();
   });
-
-  const winsDisplay = statsDisplay.querySelector(".wins");
-  if (winsDisplay) {
-    winsDisplay.style.display = "inline-block";
-    winsDisplay.style.marginRight = "1rem";
-    winsDisplay.parentNode.insertBefore(usernameInput, winsDisplay.nextSibling);
-  }
 
   async function submitScore(time, difficulty) {
     if (!username || username.length === 0) return;
@@ -110,6 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
   statsDisplay.className = "minesweeper-stats";
   gameContainer.appendChild(statsDisplay);
 
+  const winsDisplay = document.createElement("div");
+  winsDisplay.className = "wins";
+  statsDisplay.appendChild(winsDisplay);
+  statsDisplay.appendChild(usernameInput);
+
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
     const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
@@ -131,10 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateStats() {
     const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
-    statsDisplay.innerHTML = `
-      <div class="wins">🏆 ${label} Wins: ${winCounts[currentDifficulty]}</div>
-      <div class="booms">💥 Total Booms: ${totalBooms}</div>
-    `;
+    winsDisplay.innerHTML = `🏆 ${label} Wins: ${winCounts[currentDifficulty]}`;
+    statsDisplay.innerHTML += `<div class="booms">💥 Total Booms: ${totalBooms}</div>`;
   }
 
   function updateTimerDisplay() {
