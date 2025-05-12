@@ -1363,7 +1363,6 @@ body.theme-retro .click-wheel {
   100% { transform: scale(1); }
 }
 
-/* Align controls neatly */
 .minesweeper-controls {
   display: flex;
   justify-content: space-between;
@@ -1393,23 +1392,21 @@ body.theme-retro .click-wheel {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     background-color: #000;
     padding: 0;
     margin: 0;
-    z-index: 9999;
     overflow: hidden;
+    z-index: 9999;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-header {
     flex: 0 0 auto;
-    padding: 6px 8px;
+    padding: 4px 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #111;
     border-bottom: 2px solid #0ff;
-    z-index: 10;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-controls {
@@ -1449,20 +1446,20 @@ body.theme-retro .click-wheel {
     justify-items: center;
   }
 
-  /* Responsive tile size */
+  /* Responsive tile sizing (max available height/width) */
   #minesweeper-game.mobile-fullscreen[data-difficulty="easy"] .tile {
     height: calc((100vh - 180px) / 8);
-    width: calc((100vw - 24px) / 10);
+    width: calc((100vw - 20px) / 10);
   }
 
   #minesweeper-game.mobile-fullscreen[data-difficulty="medium"] .tile {
     height: calc((100vh - 180px) / 14);
-    width: calc((100vw - 24px) / 12);
+    width: calc((100vw - 20px) / 12);
   }
 
   #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .tile {
     height: calc((100vh - 180px) / 20);
-    width: calc((100vw - 24px) / 14);
+    width: calc((100vw - 20px) / 14);
   }
 
   .tile {
@@ -1471,15 +1468,16 @@ body.theme-retro .click-wheel {
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info,
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
-    padding: 6px 12px;
+    padding: 4px 10px;
     background-color: #111;
-    font-size: 12px;
+    font-size: 11px;
     color: #0ff;
     font-family: 'Press Start 2P', monospace;
     border: 2px solid #fff;
     border-radius: 6px;
     width: 100%;
     box-sizing: border-box;
+    flex: 0 0 auto;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-info {
@@ -1489,7 +1487,17 @@ body.theme-retro .click-wheel {
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-stats {
-    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-stats .wins,
+  #minesweeper-game.mobile-fullscreen .minesweeper-stats .booms {
+    flex: 1;
+    text-align: center;
+    margin: 0;
   }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-timer {
