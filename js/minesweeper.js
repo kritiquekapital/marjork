@@ -32,8 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (leaderboardOpen) fetchLeaderboard();
   });
 
-  const gridWrapper = document.querySelector(".grid-container");
-  if (gridWrapper) gridWrapper.appendChild(usernameInput);
+  const winsDisplay = statsDisplay.querySelector(".wins");
+  if (winsDisplay) {
+    winsDisplay.style.display = "inline-block";
+    winsDisplay.style.marginRight = "1rem";
+    winsDisplay.parentNode.insertBefore(usernameInput, winsDisplay.nextSibling);
+  }
 
   async function submitScore(time, difficulty) {
     if (!username || username.length === 0) return;
