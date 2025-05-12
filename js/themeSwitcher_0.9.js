@@ -18,17 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "logistics", displayName: "📦" }
   ];
 
-  let themes = [];
-  if (window.innerWidth <= 480) {
+  const isPhone = window.innerWidth <= 480;
+  const isTablet = window.innerWidth > 480 && window.innerWidth <= 1024;
+
+  let savedIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
+  let themes;
+
+  if (isPhone) {
     themes = allThemes.filter(t => ["retro", "art"].includes(t.name));
-  } else if (window.innerWidth <= 1024) {
+  } else if (isTablet) {
     themes = allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
   } else {
     themes = allThemes;
   }
 
-  let currentThemeIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
-  if (currentThemeIndex >= themes.length) currentThemeIndex = 0;
+  let currentThemeIndex = savedIndex < themes.length ? savedIndex : 0;
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
@@ -157,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
-    localStorage.setItem("currentThemeIndex", currentThemeIndex);
+    localStorage.setItem("currentThemeIndex", allThemes.findIndex(t => t.name === currentTheme.name));
   }
 
   function handleArtSplatter(e) {
@@ -245,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
     setTimeout(() => {
       currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-      localStorage.setItem("currentThemeIndex", currentThemeIndex);
+      localStorage.setItem("currentThemeIndex", allThemes.findIndex(t => t.name === themes[currentThemeIndex].name));
       applyTheme();
       themeButton.style.animation = "";
     }, 500);
