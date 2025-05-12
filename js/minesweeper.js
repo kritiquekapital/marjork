@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
 
+  // Username setup
   let username = localStorage.getItem("minesweeperUsername") || "";
   const usernameInput = document.createElement("input");
   usernameInput.type = "text";
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("minesweeperUsername", username);
   });
 
+  // Leaderboard setup
   const leaderboardBtn = document.querySelector(".fullscreen-button");
   if (leaderboardBtn) leaderboardBtn.textContent = "🏆";
 
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   leaderboardBtn?.addEventListener("click", () => {
     leaderboardOpen = !leaderboardOpen;
     leaderboardPanel.style.display = leaderboardOpen ? "block" : "none";
+    gameContainer.style.display = leaderboardOpen ? "none" : "block";
     if (leaderboardOpen) fetchLeaderboard();
     else generateGrid();
   });
@@ -119,19 +122,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function createDropdown() {
     const select = document.getElementById("difficulty-select");
     const newGameBtn = document.querySelector(".new-game-button");
-
-    select.addEventListener("change", () => {
+    select?.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
     });
-
-    newGameBtn.addEventListener("click", generateGrid);
+    newGameBtn?.addEventListener("click", generateGrid);
   }
 
   function updateStats() {
     const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
     winsDisplay.innerHTML = `🏆 ${label} Wins: ${winCounts[currentDifficulty]}`;
-    statsDisplay.innerHTML += `<div class="booms">💥 Total Booms: ${totalBooms}</div>`;
+    const booms = document.querySelector(".booms");
+    if (booms) booms.remove();
+    const boomDisplay = document.createElement("div");
+    boomDisplay.className = "booms";
+    boomDisplay.textContent = `💥 Total Booms: ${totalBooms}`;
+    statsDisplay.appendChild(boomDisplay);
   }
 
   function updateTimerDisplay() {
@@ -163,12 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (won) {
       winCounts[currentDifficulty]++;
       localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
-
       if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
         bestTimes[currentDifficulty] = elapsed;
         localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
       }
-
       submitScore(elapsed, currentDifficulty);
     }
 
@@ -196,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tile.className = "tile";
         tile.dataset.x = x;
         tile.dataset.y = y;
-
         tile.addEventListener("click", () => handleClick(x, y));
         tile.addEventListener("contextmenu", (e) => {
           e.preventDefault();
@@ -205,10 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tile.addEventListener("touchstart", (e) => {
           tile._touchTimer = setTimeout(() => toggleFlag(x, y), 500);
         });
-        tile.addEventListener("touchend", () => {
-          clearTimeout(tile._touchTimer);
-        });
-
+        tile.addEventListener("touchend", () => clearTimeout(tile._touchTimer));
         row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
         gridElement.appendChild(tile);
       }
@@ -244,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameOver) return;
     const tile = board[y][x];
     if (tile.revealed || tile.flagged) return;
-
     if (firstClick) {
       placeMines(x, y);
       firstClick = false;
@@ -279,30 +278,52 @@ document.addEventListener("DOMContentLoaded", () => {
   function revealTile(x, y) {
     const tile = board[y]?.[x];
     if (!tile || tile.revealed || tile.flagged) return;
-
     tile.revealed = true;
     tile.el.classList.add("revealed", "pulse");
-
-    if (tile.mine) {
-      tile.el.textContent = "💣";
-    } else if (tile.count > 0) {
-      tile.el.textContent = tile.count;
-    } else {
-      getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
-    }
+    if (tile.mine) tile.el.textContent = "💣";
+    else if (tile.count > 0) tile.el.textContent = tile.count;
+    else getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
   }
 
   function checkWin() {
     return board.flat().every(tile => tile.mine || tile.revealed);
   }
 
+  function playWinAnimation() {
+    const colors = [
+      "linear-gradient(45deg, red, orange)",
+      "linear-gradient(45deg, orange, yellow)",
+      "linear-gradient(45deg, yellow, green)",
+      "linear-gradient(45deg, green, cyan)",
+      "linear-gradient(45deg, cyan, blue)",
+      "linear-gradient(45deg, blue, violet)",
+      "linear-gradient(45deg, violet, pink)"
+    ];
+    let step = 0;
+    const cols = board[0].length;
+    const rows = board.length;
+    const totalSteps = cols * 6;
+    const interval = setInterval(() => {
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          const tile = board[y][x];
+          if (tile.revealed && !tile.mine) {
+            const colorIndex = (step + x + y) % colors.length;
+            tile.el.style.backgroundImage = colors[colorIndex];
+            tile.el.style.color = "#fff";
+          }
+        }
+      }
+      step++;
+      if (step >= totalSteps) clearInterval(interval);
+    }, 100);
+  }
+
   function revealAllAnimated() {
     const mines = [];
     for (let row of board) {
       for (let tile of row) {
-        if (tile.mine && !tile.revealed) {
-          mines.push(tile);
-        }
+        if (tile.mine && !tile.revealed) mines.push(tile);
       }
     }
     mines.forEach((tile, i) => {
