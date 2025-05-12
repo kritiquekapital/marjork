@@ -73,6 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const newGameBtn = document.querySelector(".new-game-button");
     const fullscreenBtn = document.querySelector(".fullscreen-button");
 
+    if (window.innerWidth > 768) {
+      fullscreenBtn.style.display = "none";
+    }
+
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
       generateGrid();
@@ -81,12 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
     newGameBtn.addEventListener("click", generateGrid);
 
     fullscreenBtn.addEventListener("click", () => {
-      if (gameContainer.requestFullscreen) gameContainer.requestFullscreen();
-
-      if (window.innerWidth <= 768) {
-        gameContainer.classList.add("mobile-fullscreen");
-        generateGrid();
-      }
+      gameContainer.classList.add("mobile-fullscreen");
+      generateGrid();
     });
   }
 
@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
       board.push(row);
     }
 
+    // Dynamically resize tiles if mobile fullscreen
     if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
       const headerHeight = document.querySelector('.minesweeper-header')?.offsetHeight || 0;
       const infoHeight = document.querySelector('.minesweeper-info')?.offsetHeight || 0;
