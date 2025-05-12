@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     themes = allThemes;
   }
 
+  let currentThemeIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
+  if (currentThemeIndex >= themes.length) currentThemeIndex = 0;
+
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
 
@@ -86,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
 
-  let currentThemeIndex = 0;
   const themeButton = document.getElementById("themeButton");
 
   function preloadThemes() {
@@ -155,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
+    localStorage.setItem("currentThemeIndex", currentThemeIndex);
   }
 
   function handleArtSplatter(e) {
@@ -242,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     themeButton.style.animation = "spin 0.5s ease-in-out";
     setTimeout(() => {
       currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      localStorage.setItem("currentThemeIndex", currentThemeIndex);
       applyTheme();
       themeButton.style.animation = "";
     }, 500);
