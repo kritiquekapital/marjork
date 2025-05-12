@@ -29,33 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const infoContainer = document.createElement("div");
   infoContainer.className = "minesweeper-info";
-  infoContainer.style.fontFamily = "'Press Start 2P', monospace";
-  infoContainer.style.textTransform = "uppercase";
-  infoContainer.style.backgroundColor = "rgba(0,0,0,0.5)";
-  infoContainer.style.border = "2px solid #fff";
-  infoContainer.style.color = "#0ff";
-  infoContainer.style.padding = "8px";
-  infoContainer.style.marginBottom = "6px";
-  infoContainer.style.borderRadius = "6px";
-  infoContainer.style.display = "flex";
-  infoContainer.style.justifyContent = "space-between";
-  infoContainer.style.alignItems = "center";
 
   const timerDisplay = document.createElement("div");
   timerDisplay.className = "minesweeper-timer";
-  timerDisplay.style.flex = "1";
   timerDisplay.textContent = "⏳ 00:00.000";
 
   const bestTimeDisplay = document.createElement("div");
   bestTimeDisplay.className = "minesweeper-best-time";
-  bestTimeDisplay.style.flex = "1";
-  bestTimeDisplay.style.textAlign = "right";
-  bestTimeDisplay.style.opacity = "0.5";
   bestTimeDisplay.textContent = "🕒 Best: --:--.---";
 
   infoContainer.appendChild(timerDisplay);
   infoContainer.appendChild(bestTimeDisplay);
-  gameContainer.insertBefore(infoContainer, gridElement);
+  gameContainer.appendChild(infoContainer);
 
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
@@ -73,9 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const newGameBtn = document.querySelector(".new-game-button");
     const fullscreenBtn = document.querySelector(".fullscreen-button");
 
-    if (window.innerWidth > 768) {
-      fullscreenBtn.style.display = "none";
-    }
+    if (window.innerWidth > 768) fullscreenBtn.style.display = "none";
 
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
@@ -85,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     newGameBtn.addEventListener("click", generateGrid);
 
     fullscreenBtn.addEventListener("click", () => {
-      gameContainer.classList.add("mobile-fullscreen");
+      gameContainer.classList.toggle("mobile-fullscreen");
       generateGrid();
     });
   }
@@ -177,18 +160,22 @@ document.addEventListener("DOMContentLoaded", () => {
       board.push(row);
     }
 
-    // Dynamically resize tiles if mobile fullscreen
     if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
-      const headerHeight = document.querySelector('.minesweeper-header')?.offsetHeight || 0;
-      const infoHeight = document.querySelector('.minesweeper-info')?.offsetHeight || 0;
-      const statsHeight = document.querySelector('.minesweeper-stats')?.offsetHeight || 0;
-      const totalMargin = 32;
-      const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - totalMargin;
-      const tileSize = Math.floor(availableHeight / difficulties[currentDifficulty].rows);
-      gridElement.querySelectorAll(".tile").forEach(tile => {
-        tile.style.height = tileSize + "px";
-        tile.style.width = tileSize + "px";
-      });
+      setTimeout(() => {
+        const headerHeight = document.querySelector('.minesweeper-header')?.offsetHeight || 0;
+        const infoHeight = document.querySelector('.minesweeper-info')?.offsetHeight || 0;
+        const statsHeight = document.querySelector('.minesweeper-stats')?.offsetHeight || 0;
+        const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - 32;
+        const availableWidth = window.innerWidth;
+        const tileSizeH = Math.floor(availableHeight / rows);
+        const tileSizeW = Math.floor(availableWidth / cols);
+        const tileSize = Math.min(tileSizeH, tileSizeW);
+
+        gridElement.querySelectorAll(".tile").forEach(tile => {
+          tile.style.height = `${tileSize}px`;
+          tile.style.width = `${tileSize}px`;
+        });
+      }, 0);
     }
 
     updateStats();
