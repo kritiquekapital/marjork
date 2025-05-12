@@ -1665,6 +1665,44 @@ body.theme-retro .click-wheel {
   }
 }
 
+#leaderboard {
+  width: 100%;
+  padding: 1rem;
+  background: #111;
+  color: #0ff;
+  font-family: 'Press Start 2P', monospace;
+  border: 2px solid #0ff;
+  border-radius: 8px;
+}
+
+.leaderboard-filters {
+  margin: 1rem 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.leaderboard-filters button {
+  padding: 4px 8px;
+  border: 2px solid #0ff;
+  background: #000;
+  color: #0ff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+
+.leaderboard-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border-top: 1px solid #0ff;
+  padding-top: 10px;
+}
+
+.leaderboard-list ol {
+  padding-left: 1.5rem;
+}
+
 /* Rainbow animation */
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
