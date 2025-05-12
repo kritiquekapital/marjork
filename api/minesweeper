@@ -1,0 +1,2 @@
+mkdir -p api/minesweeper
+touch api/minesweeper/submit.js
