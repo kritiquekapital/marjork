@@ -1,9 +1,68 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const gameContainer = document.getElementById("minesweeper-game");
   const gridElement = document.getElementById("minesweeper-grid");
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
+
+  let username = localStorage.getItem("minesweeperUsername") || "";
+  const usernameInput = document.createElement("input");
+  usernameInput.type = "text";
+  usernameInput.maxLength = 6;
+  usernameInput.placeholder = "Name";
+  usernameInput.value = username;
+  usernameInput.classList.add("minesweeper-username");
+  usernameInput.addEventListener("input", () => {
+    username = usernameInput.value;
+    localStorage.setItem("minesweeperUsername", username);
+  });
+
+  const leaderboardBtn = document.querySelector(".fullscreen-button");
+  if (leaderboardBtn) leaderboardBtn.textContent = "🏆";
+
+  let leaderboardOpen = false;
+  const leaderboardPanel = document.createElement("div");
+  leaderboardPanel.id = "leaderboard";
+  leaderboardPanel.className = "leaderboard";
+  leaderboardPanel.style.display = "none";
+  document.body.appendChild(leaderboardPanel);
+
+  leaderboardBtn?.addEventListener("click", () => {
+    leaderboardOpen = !leaderboardOpen;
+    leaderboardPanel.style.display = leaderboardOpen ? "block" : "none";
+    if (leaderboardOpen) fetchLeaderboard();
+  });
+
+  const gridWrapper = document.querySelector(".grid-container");
+  if (gridWrapper) gridWrapper.appendChild(usernameInput);
+
+  async function submitScore(time, difficulty) {
+    if (!username || username.length === 0) return;
+    try {
+      const res = await fetch("/api/minesweeper/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, time, difficulty })
+      });
+      const result = await res.json();
+      if (!result.success) console.error("Score submit error:", result.error);
+    } catch (e) {
+      console.error("Submit failed:", e);
+    }
+  }
+
+  async function fetchLeaderboard() {
+    try {
+      const res = await fetch(`/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
+
+      leaderboardPanel.innerHTML = `<h3>Leaderboard (${currentDifficulty})</h3><ol>` +
+        data.map(entry => `<li>${entry.username}: ${formatElapsed(entry.time)}</li>`).join("") +
+        `</ol>`;
+    } catch (e) {
+      console.error("Leaderboard fetch failed:", e);
+    }
+  }
 
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
@@ -57,9 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function createDropdown() {
     const select = document.getElementById("difficulty-select");
     const newGameBtn = document.querySelector(".new-game-button");
-    const fullscreenBtn = document.querySelector(".fullscreen-button");
-
-    if (window.innerWidth > 768) fullscreenBtn.style.display = "none";
 
     select.addEventListener("change", () => {
       currentDifficulty = select.value;
@@ -67,11 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     newGameBtn.addEventListener("click", generateGrid);
-
-    fullscreenBtn.addEventListener("click", () => {
-      gameContainer.classList.toggle("mobile-fullscreen");
-      generateGrid();
-    });
   }
 
   function updateStats() {
@@ -116,6 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         bestTimes[currentDifficulty] = elapsed;
         localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
       }
+
+      submitScore(elapsed, currentDifficulty);
     }
 
     updateStats();
@@ -148,11 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           toggleFlag(x, y);
         });
-
         tile.addEventListener("touchstart", (e) => {
           tile._touchTimer = setTimeout(() => toggleFlag(x, y), 500);
         });
-
         tile.addEventListener("touchend", () => {
           clearTimeout(tile._touchTimer);
         });
@@ -163,31 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
       board.push(row);
     }
 
-    if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
-      requestAnimationFrame(() => {
-        const header = document.querySelector('.minesweeper-header');
-        const info = document.querySelector('.minesweeper-info');
-        const stats = document.querySelector('.minesweeper-stats');
-
-        const headerHeight = header?.offsetHeight || 0;
-        const infoHeight = info?.offsetHeight || 0;
-        const statsHeight = stats?.offsetHeight || 0;
-        const verticalPadding = 32;
-
-        const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - verticalPadding;
-        const availableWidth = window.innerWidth - 24;
-
-        const tileSizeH = Math.floor(availableHeight / rows);
-        const tileSizeW = Math.floor(availableWidth / cols);
-        const tileSize = Math.min(tileSizeH, tileSizeW);
-
-        gridElement.querySelectorAll(".tile").forEach(tile => {
-          tile.style.height = `${tileSize}px`;
-          tile.style.width = `${tileSize}px`;
-        });
-      });
-    }
-
     updateStats();
     updateTimerDisplay();
     updateBestTime();
@@ -196,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function placeMines(safeX, safeY) {
     const { cols, rows, mines } = difficulties[currentDifficulty];
     let placed = 0;
-
     while (placed < mines) {
       const x = Math.floor(Math.random() * cols);
       const y = Math.floor(Math.random() * rows);
@@ -270,38 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return board.flat().every(tile => tile.mine || tile.revealed);
   }
 
-  function playWinAnimation() {
-    const colors = [
-      "linear-gradient(45deg, red, orange)",
-      "linear-gradient(45deg, orange, yellow)",
-      "linear-gradient(45deg, yellow, green)",
-      "linear-gradient(45deg, green, cyan)",
-      "linear-gradient(45deg, cyan, blue)",
-      "linear-gradient(45deg, blue, violet)",
-      "linear-gradient(45deg, violet, pink)"
-    ];
-
-    let step = 0;
-    const cols = board[0].length;
-    const rows = board.length;
-    const totalSteps = cols * 6;
-
-    const interval = setInterval(() => {
-      for (let x = 0; x < cols; x++) {
-        for (let y = 0; y < rows; y++) {
-          const tile = board[y][x];
-          if (tile.revealed && !tile.mine) {
-            const colorIndex = (step + x + y) % colors.length;
-            tile.el.style.backgroundImage = colors[colorIndex];
-            tile.el.style.color = "#fff";
-          }
-        }
-      }
-      step++;
-      if (step >= totalSteps) clearInterval(interval);
-    }, 100);
-  }
-
   function revealAllAnimated() {
     const mines = [];
     for (let row of board) {
@@ -311,7 +304,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
-
     mines.forEach((tile, i) => {
       setTimeout(() => {
         tile.el.textContent = "💣";
@@ -334,9 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function preventContextMenu(e) {
-    if (e.target.closest(".tile")) {
-      e.preventDefault();
-    }
+    if (e.target.closest(".tile")) e.preventDefault();
   }
 
   function openGame() {
@@ -354,21 +344,15 @@ document.addEventListener("DOMContentLoaded", () => {
       : document.body.classList.contains("theme-art")
       ? "paint"
       : null;
-
     gameContainer.classList.remove("retro", "paint");
     if (themeClass) gameContainer.classList.add(themeClass);
   }
 
-  if (secretButton) {
-    secretButton.addEventListener("click", openGame);
-  }
-
-  if (closeButton) {
-    closeButton.addEventListener("click", () => {
-      gameContainer.style.display = "none";
-      document.removeEventListener("contextmenu", preventContextMenu);
-    });
-  }
+  if (secretButton) secretButton.addEventListener("click", openGame);
+  if (closeButton) closeButton.addEventListener("click", () => {
+    gameContainer.style.display = "none";
+    document.removeEventListener("contextmenu", preventContextMenu);
+  });
 
   createDropdown();
   generateGrid();
