@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
 
-  // Username setup
   let username = localStorage.getItem("minesweeperUsername") || "";
   const usernameInput = document.createElement("input");
   usernameInput.type = "text";
@@ -17,23 +16,23 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("minesweeperUsername", username);
   });
 
-  // Leaderboard setup
   const leaderboardBtn = document.querySelector(".fullscreen-button");
   if (leaderboardBtn) leaderboardBtn.textContent = "🏆";
 
   let leaderboardOpen = false;
   const leaderboardPanel = document.createElement("div");
   leaderboardPanel.id = "leaderboard";
-  leaderboardPanel.className = "leaderboard";
+  leaderboardPanel.className = "leaderboard-panel";
   leaderboardPanel.style.display = "none";
-  document.body.appendChild(leaderboardPanel);
+  gameContainer.appendChild(leaderboardPanel);
+
+  let currentSort = "time";
 
   leaderboardBtn?.addEventListener("click", () => {
     leaderboardOpen = !leaderboardOpen;
     leaderboardPanel.style.display = leaderboardOpen ? "block" : "none";
-    gameContainer.style.display = leaderboardOpen ? "none" : "block";
+    gridElement.style.display = leaderboardOpen ? "none" : "grid";
     if (leaderboardOpen) fetchLeaderboard();
-    else generateGrid();
   });
 
   async function submitScore(time, difficulty) {
@@ -53,13 +52,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchLeaderboard() {
     try {
-      const res = await fetch(`/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
+      const res = await fetch(`/api/minesweeper/leaderboard?sort=${currentSort}`);
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
-      leaderboardPanel.innerHTML = `<h3>Leaderboard (${currentDifficulty})</h3><ol>` +
-        data.map(entry => `<li>${entry.username}: ${formatElapsed(entry.time)}</li>`).join("") +
-        `</ol>`;
+      leaderboardPanel.innerHTML = `
+        <div class="leaderboard-header">
+          <button class="sort-btn" data-sort="username">Name</button>
+          <button class="sort-btn" data-sort="time">Time</button>
+          <button class="sort-btn" data-sort="hard">Hard</button>
+          <button class="sort-btn" data-sort="medium">Medium</button>
+          <button class="sort-btn" data-sort="easy">Easy</button>
+          <button class="sort-btn" data-sort="booms">Booms</button>
+        </div>
+        <ol class="leaderboard-list">
+          ${data.map(entry => `<li><span>${entry.username}</span><span>${formatElapsed(entry.time)}</span></li>`).join("")}
+        </ol>
+      `;
+
+      leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.dataset.sort;
+          fetchLeaderboard();
+        });
+      });
     } catch (e) {
       console.error("Leaderboard fetch failed:", e);
     }
