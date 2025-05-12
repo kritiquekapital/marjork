@@ -8,15 +8,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const draggable = new Draggable(draggableElement);
 
-  const themes = [
+  const allThemes = [
     { name: "retro", displayName: "🕹️" },
     { name: "modern", displayName: "🌚" },
     { name: "art", displayName: "🎨" },
     { name: "space", displayName: "🚀" },
-    { name: "nature", displayName: "🌞" },    
+    { name: "nature", displayName: "🌞" },
     { name: "classic", displayName: "😎" },
     { name: "logistics", displayName: "📦" }
   ];
+
+  let themes = [];
+  if (window.innerWidth <= 480) {
+    themes = allThemes.filter(t => ["retro", "art"].includes(t.name));
+  } else if (window.innerWidth <= 1024) {
+    themes = allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
+  } else {
+    themes = allThemes;
+  }
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
@@ -56,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
   volumeSlider.step = "0.01";
   volumeSlider.value = natureAudio.volume;
   volumeSlider.classList.add("nature-volume-slider");
-
   volumeSlider.addEventListener("input", () => {
     natureAudio.volume = volumeSlider.value;
   });
@@ -68,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
   speedSlider.step = "0.05";
   speedSlider.value = "1.0";
   speedSlider.classList.add("nature-speed-slider");
-
   speedSlider.addEventListener("input", () => {
     natureVideo.playbackRate = speedSlider.value;
   });
