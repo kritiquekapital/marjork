@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function submitScore(time, difficulty) {
     if (!username || username.length === 0) return;
     try {
-      const res = await ("/api/minesweeper/submit", {
+      const res = await ("https://minesweeper-zeta-eight.vercel.app/api/minesweeper/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, time, difficulty })
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchLeaderboard() {
     try {
-      const res = await fetch(`/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
+      const res = await fetch(`https://minesweeper-zeta-eight.vercel.app/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
