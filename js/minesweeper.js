@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
     medium: { cols: 12, rows: 14, mines: 35 },
-    hard: { cols: 14, rows: 20, mines: 90 },
+    hard: { cols: 14, rows: 18, mines: 90 },
   };
 
   let currentDifficulty = "easy";
@@ -132,6 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
+    // Set data-difficulty for responsive CSS
+    gameContainer.setAttribute("data-difficulty", currentDifficulty);
+
     for (let y = 0; y < rows; y++) {
       const row = [];
       for (let x = 0; x < cols; x++) {
@@ -158,24 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gridElement.appendChild(tile);
       }
       board.push(row);
-    }
-
-    if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
-      setTimeout(() => {
-        const headerHeight = document.querySelector('.minesweeper-header')?.offsetHeight || 0;
-        const infoHeight = document.querySelector('.minesweeper-info')?.offsetHeight || 0;
-        const statsHeight = document.querySelector('.minesweeper-stats')?.offsetHeight || 0;
-        const availableHeight = window.innerHeight - headerHeight - infoHeight - statsHeight - 32;
-        const availableWidth = window.innerWidth;
-        const tileSizeH = Math.floor(availableHeight / rows);
-        const tileSizeW = Math.floor(availableWidth / cols);
-        const tileSize = Math.min(tileSizeH, tileSizeW);
-
-        gridElement.querySelectorAll(".tile").forEach(tile => {
-          tile.style.height = `${tileSize}px`;
-          tile.style.width = `${tileSize}px`;
-        });
-      }, 0);
     }
 
     updateStats();
