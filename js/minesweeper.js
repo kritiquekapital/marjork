@@ -6,52 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Username setup
   let username = localStorage.getItem("minesweeperUsername") || "";
-  const usernameInput = document.createElement("input");
-  usernameInput.type = "text";
-  usernameInput.maxLength = 6;
-  usernameInput.placeholder = "Name";
-  usernameInput.value = username;
-  usernameInput.classList.add("minesweeper-username");
-  usernameInput.addEventListener("input", () => {
-    username = usernameInput.value;
-    localStorage.setItem("minesweeperUsername", username);
-  });
-  const gridWrapper = document.querySelector(".grid-container");
-  if (gridWrapper) gridWrapper.appendChild(usernameInput);
-
-  async function submitScore(time, difficulty) {
-    if (!username || username.length === 0) return;
-    try {
-      const res = await fetch("/api/minesweeper/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, time, difficulty })
-      });
-      const result = await res.json();
-      if (!result.success) console.error("Score submit error:", result.error);
-    } catch (e) {
-      console.error("Submit failed:", e);
-    }
-  }
-
-  async function fetchLeaderboard() {
-    try {
-      const res = await fetch("/api/minesweeper/leaderboard?difficulty=" + currentDifficulty);
-      const data = await res.json();
-      if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
-
-      const board = document.getElementById("leaderboard") || document.createElement("div");
-      board.id = "leaderboard";
-      board.className = "leaderboard";
-      board.innerHTML = `<h3>Leaderboard (${currentDifficulty})</h3><ol>` +
-        data.map(entry => `<li>${entry.username}: ${formatElapsed(entry.time)}</li>`).join("") +
-        `</ol>`;
-
-      if (!document.body.contains(board)) document.body.appendChild(board);
-    } catch (e) {
-      console.error("Leaderboard fetch failed:", e);
-    }
-  }
+  let currentDifficulty = "easy";
+  let board = [];
+  let firstClick = true;
+  let gameOver = false;
+  let startTime = null;
+  let timerInterval = null;
 
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
@@ -59,15 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hard: { cols: 14, rows: 18, mines: 90 },
   };
 
-  let currentDifficulty = "easy";
-  let board = [];
-  let firstClick = true;
-  let gameOver = false;
-
-  let startTime = null;
-  let timerInterval = null;
-
-  let winCounts = {
+  const winCounts = {
     easy: parseInt(localStorage.getItem("easyWins")) || 0,
     medium: parseInt(localStorage.getItem("mediumWins")) || 0,
     hard: parseInt(localStorage.getItem("hardWins")) || 0,
@@ -95,55 +47,60 @@ document.addEventListener("DOMContentLoaded", () => {
   statsDisplay.className = "minesweeper-stats";
   gameContainer.appendChild(statsDisplay);
 
+  const leaderboardContainer = document.createElement("div");
+  leaderboardContainer.id = "leaderboard";
+  leaderboardContainer.className = "leaderboard hidden";
+  gameContainer.appendChild(leaderboardContainer);
+
   function formatElapsed(ms) {
-    const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
-    const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
-    const millis = String(ms % 1000).padStart(3, "0");
-    return `${minutes}:${seconds}.${millis}`;
+    const m = String(Math.floor(ms / 60000)).padStart(2, "0");
+    const s = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
+    const msStr = String(ms % 1000).padStart(3, "0");
+    return `${m}:${s}.${msStr}`;
   }
 
-  function updateThemeClass() {
-    const themeClass = document.body.classList.contains("theme-retro")
-      ? "retro"
-      : document.body.classList.contains("theme-art")
-      ? "paint"
-      : null;
-
-    gameContainer.classList.remove("retro", "paint");
-    if (themeClass) gameContainer.classList.add(themeClass);
+  async function submitScore(time, difficulty) {
+    if (!username || username.length === 0) return;
+    try {
+      const res = await fetch("/api/minesweeper/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, time, difficulty })
+      });
+      const result = await res.json();
+      if (!result.success) console.error("Score submit error:", result.error);
+    } catch (e) {
+      console.error("Submit failed:", e);
+    }
   }
 
-  function createDropdown() {
-    const select = document.getElementById("difficulty-select");
-    const newGameBtn = document.querySelector(".new-game-button");
-    const fullscreenBtn = document.querySelector(".fullscreen-button");
+  async function fetchLeaderboard() {
+    try {
+      const res = await fetch(`/api/minesweeper/leaderboard?difficulty=${currentDifficulty}`);
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error("Invalid leaderboard");
 
-    if (window.innerWidth > 768) fullscreenBtn.style.display = "none";
-
-    select.addEventListener("change", () => {
-      currentDifficulty = select.value;
-      generateGrid();
-      fetchLeaderboard();
-    });
-
-    newGameBtn.addEventListener("click", () => {
-      generateGrid();
-      fetchLeaderboard();
-    });
-
-    fullscreenBtn.addEventListener("click", () => {
-      gameContainer.classList.toggle("mobile-fullscreen");
-      generateGrid();
-      fetchLeaderboard();
-    });
+      leaderboardContainer.innerHTML = `
+        <h3>Leaderboard (${currentDifficulty})</h3>
+        <ol>${data.map(e => `<li>${e.username}: ${formatElapsed(e.time)}</li>`).join("")}</ol>
+      `;
+    } catch (e) {
+      leaderboardContainer.innerHTML = `<p>Failed to load leaderboard.</p>`;
+    }
   }
 
   function updateStats() {
-    const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
+    const label = currentDifficulty[0].toUpperCase() + currentDifficulty.slice(1);
     statsDisplay.innerHTML = `
       <div class="wins">🏆 ${label} Wins: ${winCounts[currentDifficulty]}</div>
       <div class="booms">💥 Total Booms: ${totalBooms}</div>
+      <input class="minesweeper-username" type="text" maxlength="6" placeholder="Name" value="${username}">
     `;
+    const nameField = statsDisplay.querySelector(".minesweeper-username");
+    nameField.addEventListener("input", () => {
+      username = nameField.value;
+      localStorage.setItem("minesweeperUsername", username);
+    });
   }
 
   function updateTimerDisplay() {
@@ -151,8 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       timerDisplay.textContent = "⏳ 00:00.000";
       return;
     }
-    const elapsed = Date.now() - startTime;
-    timerDisplay.textContent = `⏳ ${formatElapsed(elapsed)}`;
+    timerDisplay.textContent = `⏳ ${formatElapsed(Date.now() - startTime)}`;
   }
 
   function updateBestTime() {
@@ -190,6 +146,171 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBestTime();
   }
 
+  function generateGrid() {
+    gridElement.innerHTML = "";
+    board = [];
+    firstClick = true;
+    gameOver = false;
+    stopTimer();
+    leaderboardContainer.classList.add("hidden");
+
+    const { cols, rows } = difficulties[currentDifficulty];
+    gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+
+    gameContainer.setAttribute("data-difficulty", currentDifficulty);
+
+    for (let y = 0; y < rows; y++) {
+      const row = [];
+      for (let x = 0; x < cols; x++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.dataset.x = x;
+        tile.dataset.y = y;
+
+        tile.addEventListener("click", () => handleClick(x, y));
+        tile.addEventListener("contextmenu", e => {
+          e.preventDefault();
+          toggleFlag(x, y);
+        });
+
+        tile.addEventListener("touchstart", e => {
+          tile._touchTimer = setTimeout(() => toggleFlag(x, y), 500);
+        });
+        tile.addEventListener("touchend", () => clearTimeout(tile._touchTimer));
+
+        row.push({ x, y, el: tile, mine: false, revealed: false, flagged: false, count: 0 });
+        gridElement.appendChild(tile);
+      }
+      board.push(row);
+    }
+
+    if (window.innerWidth <= 768 && gameContainer.classList.contains("mobile-fullscreen")) {
+      requestAnimationFrame(() => {
+        const header = document.querySelector('.minesweeper-header');
+        const info = document.querySelector('.minesweeper-info');
+        const stats = document.querySelector('.minesweeper-stats');
+
+        const hH = header?.offsetHeight || 0;
+        const iH = info?.offsetHeight || 0;
+        const sH = stats?.offsetHeight || 0;
+
+        const availableH = window.innerHeight - hH - iH - sH - 32;
+        const availableW = window.innerWidth - 24;
+
+        const tileSize = Math.min(
+          Math.floor(availableH / rows),
+          Math.floor(availableW / cols)
+        );
+
+        gridElement.querySelectorAll(".tile").forEach(tile => {
+          tile.style.height = `${tileSize}px`;
+          tile.style.width = `${tileSize}px`;
+        });
+      });
+    }
+
+    updateStats();
+    updateTimerDisplay();
+    updateBestTime();
+  }
+
+  function placeMines(safeX, safeY) {
+    const { cols, rows, mines } = difficulties[currentDifficulty];
+    let placed = 0;
+
+    while (placed < mines) {
+      const x = Math.floor(Math.random() * cols);
+      const y = Math.floor(Math.random() * rows);
+      if (board[y][x].mine || (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1)) continue;
+      board[y][x].mine = true;
+      placed++;
+    }
+
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (!board[y][x].mine) {
+          board[y][x].count = getNeighbors(x, y).filter(n => n.mine).length;
+        }
+      }
+    }
+  }
+
+  function handleClick(x, y) {
+    if (gameOver) return;
+    const tile = board[y][x];
+    if (tile.revealed || tile.flagged) return;
+
+    if (firstClick) {
+      placeMines(x, y);
+      firstClick = false;
+      startTimer();
+    }
+
+    revealTile(x, y);
+
+    if (tile.mine) {
+      tile.el.classList.add("mine");
+      tile.el.textContent = "💥";
+      gameOver = true;
+      totalBooms++;
+      localStorage.setItem("minesweeperTotalBooms", totalBooms);
+      stopTimer(false);
+      revealAllAnimated();
+    } else if (checkWin()) {
+      gameOver = true;
+      stopTimer(true);
+    }
+  }
+
+  function toggleFlag(x, y) {
+    if (gameOver) return;
+    const tile = board[y][x];
+    if (tile.revealed) return;
+    tile.flagged = !tile.flagged;
+    tile.el.textContent = tile.flagged ? "🫥" : "";
+  }
+
+  function revealTile(x, y) {
+    const tile = board[y]?.[x];
+    if (!tile || tile.revealed || tile.flagged) return;
+
+    tile.revealed = true;
+    tile.el.classList.add("revealed", "pulse");
+
+    if (tile.mine) tile.el.textContent = "💣";
+    else if (tile.count > 0) tile.el.textContent = tile.count;
+    else getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
+  }
+
+  function checkWin() {
+    return board.flat().every(tile => tile.mine || tile.revealed);
+  }
+
+  function revealAllAnimated() {
+    const mines = board.flat().filter(tile => tile.mine && !tile.revealed);
+    mines.forEach((tile, i) => {
+      setTimeout(() => {
+        tile.el.textContent = "💣";
+        tile.el.classList.add("mine");
+        tile.revealed = true;
+      }, i * 150);
+    });
+  }
+
+  function getNeighbors(x, y) {
+    const neighbors = [];
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx || dy) {
+          const nx = x + dx, ny = y + dy;
+          if (board[ny]?.[nx]) neighbors.push(board[ny][nx]);
+        }
+      }
+    }
+    return neighbors;
+  }
+
   function playWinAnimation() {
     const colors = [
       "linear-gradient(45deg, red, orange)",
@@ -200,7 +321,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "linear-gradient(45deg, blue, violet)",
       "linear-gradient(45deg, violet, pink)"
     ];
-
     let step = 0;
     const cols = board[0].length;
     const rows = board.length;
@@ -217,26 +337,35 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-      step++;
-      if (step >= totalSteps) clearInterval(interval);
+      if (++step >= totalSteps) clearInterval(interval);
     }, 100);
   }
 
   function preventContextMenu(e) {
-    if (e.target.closest(".tile")) {
-      e.preventDefault();
-    }
+    if (e.target.closest(".tile")) e.preventDefault();
+  }
+
+  function openGame() {
+    gameContainer.style.display = "block";
+    gameContainer.style.left = "50%";
+    gameContainer.style.top = "50%";
+    gameContainer.style.transform = "translate(-50%, -50%)";
+    updateThemeClass();
+    document.addEventListener("contextmenu", preventContextMenu);
+  }
+
+  function updateThemeClass() {
+    const themeClass = document.body.classList.contains("theme-retro")
+      ? "retro"
+      : document.body.classList.contains("theme-art")
+      ? "paint"
+      : null;
+    gameContainer.classList.remove("retro", "paint");
+    if (themeClass) gameContainer.classList.add(themeClass);
   }
 
   if (secretButton) {
-    secretButton.addEventListener("click", () => {
-      gameContainer.style.display = "block";
-      gameContainer.style.left = "50%";
-      gameContainer.style.top = "50%";
-      gameContainer.style.transform = "translate(-50%, -50%)";
-      updateThemeClass();
-      document.addEventListener("contextmenu", preventContextMenu);
-    });
+    secretButton.addEventListener("click", openGame);
   }
 
   if (closeButton) {
@@ -246,7 +375,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document.querySelector(".fullscreen-button")?.addEventListener("click", () => {
+    const isLeaderboard = leaderboardContainer.classList.toggle("hidden") === false;
+    gameContainer.classList.toggle("mobile-fullscreen", isLeaderboard);
+    if (isLeaderboard) fetchLeaderboard();
+    else generateGrid();
+  });
+
   createDropdown();
   generateGrid();
-  fetchLeaderboard();
-})
+});
