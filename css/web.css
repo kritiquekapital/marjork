@@ -1665,42 +1665,51 @@ body.theme-retro .click-wheel {
   }
 }
 
+/* Main leaderboard overlay panel */
 #leaderboard {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 1rem;
-  background: #111;
-  color: #0ff;
-  font-family: 'Press Start 2P', monospace;
-  border: 2px solid #0ff;
-  border-radius: 8px;
-}
-
-.leaderboard-filters {
-  margin: 1rem 0;
+  height: 100%;
+  background: rgba(30, 30, 30, 0.95);
+  color: #fff;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.leaderboard-filters button {
-  padding: 4px 8px;
-  border: 2px solid #0ff;
-  background: #000;
-  color: #0ff;
-  cursor: pointer;
-  font-size: 0.8rem;
+  flex-direction: column;
+  z-index: 99;
+  padding: 1rem;
+  overflow-y: auto;
   font-family: monospace;
 }
 
-.leaderboard-list {
-  max-height: 300px;
-  overflow-y: auto;
-  border-top: 1px solid #0ff;
-  padding-top: 10px;
+/* Leaderboard title/header bar */
+#leaderboard h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  text-align: center;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 0.5rem;
 }
 
-.leaderboard-list ol {
-  padding-left: 1.5rem;
+/* Grid table for leaderboard */
+.leaderboard-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr repeat(4, 0.7fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+/* Header row (sticky at top) */
+.leaderboard-header {
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  background: rgba(50, 50, 50, 0.95);
+  z-index: 1;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #aaa;
 }
 
 /* Rainbow animation */
