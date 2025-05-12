@@ -242,6 +242,22 @@ body.theme-retro button:hover {
   margin: 4px 0;
 }
 
+/* Retro theme leader */
+body.theme-retro #leaderboard {
+  background: #111;
+  color: #0ff;
+}
+
+body.theme-retro .leaderboard-header {
+  background: #222;
+  color: #ff0;
+  border-bottom: 1px solid #0ff;
+}
+
+body.theme-retro .leaderboard-row:nth-child(even) {
+  background: rgba(0, 255, 255, 0.1);
+}
+
 /* Rainbow Animation */
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
