@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const gameContainer = document.getElementById("minesweeper-game");
   const gridElement = document.getElementById("minesweeper-grid");
@@ -37,11 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function submitScore(time, difficulty) {
-    if (!username || !time || !difficulty) {
-      console.warn("Missing fields:", { username, time, difficulty });
-      return;
-    }
-
+    if (!username || username.length === 0) return;
     try {
       const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
         method: "POST",
@@ -50,11 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       const result = await res.json();
-      if (!result.success) {
-        console.error("Score submit error:", result.error);
-      } else {
-        console.log("Score submitted successfully");
-      }
+      if (!result.success) console.error("Score submit error:", result.error);
     } catch (e) {
       console.error("Submit failed:", e);
     }
@@ -76,8 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="sort-btn" data-sort="booms">Booms</button>
         </div>
         <ol class="leaderboard-list">
-          ${data.map(entry => `
-            <li><span>${entry.username}</span><span>${entry.time ? formatElapsed(entry.time) : "--:--.---"}</span></li>`).join("")}
+          ${data.map(entry => `<li><span>${entry.username}</span><span>${formatElapsed(entry.time)}</span></li>`).join("")}
         </ol>
       `;
 
@@ -93,9 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 10 },
-    medium: { cols: 12, rows: 14, mines: 32 },
-    hard: { cols: 14, rows: 18, mines: 75 },
+    easy: { cols: 10, rows: 8, mines: 1 },
+    medium: { cols: 12, rows: 14, mines: 35 },
+    hard: { cols: 14, rows: 18, mines: 90 },
   };
 
   let currentDifficulty = "easy";
@@ -146,6 +138,16 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${minutes}:${seconds}.${millis}`;
   }
 
+  function createDropdown() {
+    const select = document.getElementById("difficulty-select");
+    const newGameBtn = document.querySelector(".new-game-button");
+    select?.addEventListener("change", () => {
+      currentDifficulty = select.value;
+      generateGrid();
+    });
+    newGameBtn?.addEventListener("click", generateGrid);
+  }
+
   function updateStats() {
     const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
     winsDisplay.innerHTML = `🏆 ${label} Wins: ${winCounts[currentDifficulty]}`;
@@ -186,12 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (won) {
       winCounts[currentDifficulty]++;
       localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
-
       if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
         bestTimes[currentDifficulty] = elapsed;
         localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
       }
-
       submitScore(elapsed, currentDifficulty);
     }
 
@@ -263,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gameOver) return;
     const tile = board[y][x];
     if (tile.revealed || tile.flagged) return;
-
     if (firstClick) {
       placeMines(x, y);
       firstClick = false;
@@ -292,16 +291,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const tile = board[y][x];
     if (tile.revealed) return;
     tile.flagged = !tile.flagged;
-    tile.el.textContent = tile.flagged ? "🚩" : "";
+    tile.el.textContent = tile.flagged ? "🫥" : "";
   }
 
   function revealTile(x, y) {
     const tile = board[y]?.[x];
     if (!tile || tile.revealed || tile.flagged) return;
-
     tile.revealed = true;
     tile.el.classList.add("revealed", "pulse");
-
     if (tile.mine) tile.el.textContent = "💣";
     else if (tile.count > 0) tile.el.textContent = tile.count;
     else getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
