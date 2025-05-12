@@ -1513,6 +1513,147 @@ body.theme-retro .click-wheel {
   }
 }
 
+@media (max-width: 768px) {
+  #minesweeper-game.mobile-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #000;
+    padding-top: env(safe-area-inset-top, 8px);
+    box-sizing: border-box;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-header {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    border-bottom: 2px solid #0ff;
+    z-index: 10;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-controls {
+    display: flex;
+    gap: 6px;
+    flex-grow: 1;
+    overflow-x: auto;
+    align-items: center;
+  }
+
+  #minesweeper-game.mobile-fullscreen .difficulty-select,
+  #minesweeper-game.mobile-fullscreen .new-game-button,
+  #minesweeper-game.mobile-fullscreen .fullscreen-button,
+  #minesweeper-game.mobile-fullscreen .close-button {
+    font-size: 10px;
+    padding: 4px 6px;
+    background: linear-gradient(45deg, #f06, #0cf, #ff0);
+    background-size: 400% 400%;
+    animation: rainbow 5s ease infinite;
+    color: #000;
+    border: 2px solid #00ccff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #minesweeper-game.mobile-fullscreen #minesweeper-grid {
+    flex-grow: 1;
+    display: grid;
+    gap: 2px;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  /* TILE SIZE BASED ON SCREEN DIMENSIONS — SAFE NO OVERFLOW */
+  #minesweeper-game.mobile-fullscreen[data-difficulty="easy"] .tile {
+    width: calc((100vw - 24px) / 10);
+    height: calc((100vh - 200px) / 8);
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="medium"] .tile {
+    width: calc((100vw - 24px) / 12);
+    height: calc((100vh - 200px) / 14);
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .tile {
+    width: calc((100vw - 24px) / 14);
+    height: calc((100vh - 200px) / 20);
+  }
+
+  .tile {
+    font-size: min(4vw, 16px);
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-info,
+  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
+    padding: 4px 10px;
+    background-color: #111;
+    font-size: 11px;
+    color: #0ff;
+    font-family: 'Press Start 2P', monospace;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Hard fullscreen = inline stats */
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats .wins,
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats .booms {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Stack stats on easy/medium */
+  #minesweeper-game.mobile-fullscreen:not([data-difficulty="hard"]) .minesweeper-stats .wins,
+  #minesweeper-game.mobile-fullscreen:not([data-difficulty="hard"]) .minesweeper-stats .booms {
+    display: block;
+    text-align: left;
+    margin: 4px 0;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-timer {
+    flex: 1;
+    text-align: left;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-best-time {
+    flex: 1;
+    text-align: right;
+    color: #888;
+    opacity: 0.5;
+  }
+}
+
 /* Rainbow animation */
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
