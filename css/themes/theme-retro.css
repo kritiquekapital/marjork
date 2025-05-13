@@ -242,6 +242,7 @@ body.theme-retro button:hover {
   margin: 4px 0;
 }
 
+/* Expanded fullscreen leaderboard for retro */
 body.theme-retro #leaderboard {
   position: fixed;
   top: 50%;
@@ -269,7 +270,7 @@ body.theme-retro .leaderboard-header {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   position: relative;
   z-index: 2;
 }
@@ -286,7 +287,7 @@ body.theme-retro .leaderboard-sorts {
 body.theme-retro .leaderboard-header::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: -8px;
   left: 0;
   width: 100%;
   height: 4px;
@@ -308,13 +309,18 @@ body.theme-retro .back-button {
   border: 2px solid #00ffff;
   cursor: pointer;
   background-color: #111;
+  color: #0ff;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+}
+
+body.theme-retro .mode-btn.active,
+body.theme-retro .sort-btn.active {
   color: transparent;
   background-image: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
 }
 
 body.theme-retro .mode-btn:hover,
@@ -343,6 +349,7 @@ body.theme-retro .leaderboard-list li {
   border-bottom: 1px solid #0ff;
   line-height: 1.6;
   background-color: rgba(0, 255, 255, 0.03);
+  font-family: 'Press Start 2P', monospace;
 }
 
 body.theme-retro .leaderboard-list li:nth-child(even) {
@@ -353,6 +360,7 @@ body.theme-retro .leaderboard-list li span {
   flex: 1;
   min-width: 60px;
   overflow-wrap: anywhere;
+  font-family: 'Press Start 2P', monospace;
 }
 
 body.theme-retro .leaderboard-list li span.score-value {
@@ -360,6 +368,7 @@ body.theme-retro .leaderboard-list li span.score-value {
   font-weight: bold;
   color: #0ff;
   text-align: right;
+  font-family: 'Press Start 2P', monospace;
 }
 
 @keyframes rainbow {
