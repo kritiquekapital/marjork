@@ -98,12 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   leaderboardPanel.innerHTML = `
     <div class="leaderboard-header">
-      <button class="sort-btn" data-sort="username">Name</button>
-      <button class="sort-btn" data-sort="time">Time</button>
       <button class="sort-btn" data-sort="hard">Hard</button>
       <button class="sort-btn" data-sort="medium">Medium</button>
       <button class="sort-btn" data-sort="easy">Easy</button>
       <button class="sort-btn" data-sort="booms">Booms</button>
+      <button class="back-button">Back</button>
     </div>
     <ol class="leaderboard-list">
       ${data.length > 0 ? data.map(entry => `
