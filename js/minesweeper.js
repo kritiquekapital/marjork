@@ -171,15 +171,14 @@ document.addEventListener("DOMContentLoaded", () => {
     startTime = null;
 
     if (won) {
-      if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
-        bestTimes[currentDifficulty] = elapsed;
-        localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
-      }
-      submitScore(elapsed, currentDifficulty);
+      submitScore({ username, time: elapsed, difficulty: currentDifficulty, booms: 0 });
+    } else {
+      submitScore({ username, time: null, difficulty: currentDifficulty, booms: 1 });
     }
 
-    updateBestTime();
+    updateBestTime(); // optional: local display
   }
+
 
   function generateGrid() {
     gridElement.innerHTML = "";
