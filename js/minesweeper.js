@@ -321,50 +321,119 @@ document.addEventListener("DOMContentLoaded", () => {
     return neighbors;
   }
 
-  function checkWin() {
-    return board.flat().every(tile => tile.mine || tile.revealed);
+function checkWin() {
+  return board.flat().every(tile => tile.revealed || tile.mine);
+}
+
+function stopTimer(won = false) {
+  clearInterval(timerInterval);
+  const elapsed = Date.now() - startTime;
+  updateTimerDisplay();
+  startTime = null;
+
+  if (won) {
+    winCounts[currentDifficulty]++;
+    localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
+    if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
+      bestTimes[currentDifficulty] = elapsed;
+      localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
+    }
+    submitScore(elapsed, currentDifficulty);
   }
 
-  function revealAllAnimated() {
-    const mines = board.flat().filter(tile => tile.mine && !tile.revealed);
-    mines.forEach((tile, i) => {
-      setTimeout(() => {
-        tile.el.textContent = "💣";
-        tile.el.classList.add("mine");
-        tile.revealed = true;
-      }, i * 150);
+  updateStats();
+  updateBestTime();
+}
+
+async function submitScore(time, difficulty) {
+  if (!username || typeof time !== "number" || !difficulty) {
+    console.error("Missing fields in submitScore:", { username, time, difficulty });
+    return;
+  }
+
+  const payload = {
+    username,
+    time,
+    difficulty,
+    wins_easy: winCounts.easy,
+    wins_medium: winCounts.medium,
+    wins_hard: winCounts.hard,
+    booms: totalBooms,
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
+    const result = await res.json();
+    if (!result.success) {
+      console.error("Score submit error:", result.error);
+    } else {
+      console.log("Score submitted");
+    }
+  } catch (e) {
+    console.error("Submit failed:", e);
+  }
+}
+
+function handleClick(x, y) {
+  if (gameOver) return;
+  const tile = board[y][x];
+  if (tile.revealed || tile.flagged) return;
+  if (firstClick) {
+    placeMines(x, y);
+    firstClick = false;
+    startTimer();
   }
 
-  function playWinAnimation() {
-    const colors = [
-      "linear-gradient(45deg, red, orange)",
-      "linear-gradient(45deg, orange, yellow)",
-      "linear-gradient(45deg, yellow, green)",
-      "linear-gradient(45deg, green, cyan)",
-      "linear-gradient(45deg, cyan, blue)",
-      "linear-gradient(45deg, blue, violet)",
-      "linear-gradient(45deg, violet, pink)"
-    ];
-    let step = 0;
-    const cols = board[0].length;
-    const rows = board.length;
-    const totalSteps = cols * 6;
-    const interval = setInterval(() => {
-      for (let x = 0; x < cols; x++) {
-        for (let y = 0; y < rows; y++) {
-          const tile = board[y][x];
-          if (tile.revealed && !tile.mine) {
-            const colorIndex = (step + x + y) % colors.length;
-            tile.el.style.backgroundImage = colors[colorIndex];
-            tile.el.style.color = "#fff";
-          }
+  revealTile(x, y);
+
+  if (tile.mine) {
+    tile.el.classList.add("mine");
+    tile.el.textContent = "💥";
+    gameOver = true;
+    totalBooms++;
+    localStorage.setItem("minesweeperTotalBooms", totalBooms);
+    stopTimer(false);
+    revealAllAnimated();
+  } else if (checkWin()) {
+    gameOver = true;
+    stopTimer(true);
+    playWinAnimation();
+  }
+}
+
+function playWinAnimation() {
+  const colors = [
+    "linear-gradient(45deg, red, orange)",
+    "linear-gradient(45deg, orange, yellow)",
+    "linear-gradient(45deg, yellow, green)",
+    "linear-gradient(45deg, green, cyan)",
+    "linear-gradient(45deg, cyan, blue)",
+    "linear-gradient(45deg, blue, violet)",
+    "linear-gradient(45deg, violet, pink)"
+  ];
+  let step = 0;
+  const cols = board[0].length;
+  const rows = board.length;
+  const totalSteps = cols * 6;
+  const interval = setInterval(() => {
+    for (let x = 0; x < cols; x++) {
+      for (let y = 0; y < rows; y++) {
+        const tile = board[y][x];
+        if (tile.revealed && !tile.mine) {
+          const colorIndex = (step + x + y) % colors.length;
+          tile.el.style.backgroundImage = colors[colorIndex];
+          tile.el.style.color = "#fff";
         }
       }
-      step++;
-      if (step >= totalSteps) clearInterval(interval);
-    }, 100);
-  }
+    }
+    step++;
+    if (step >= totalSteps) clearInterval(interval);
+  }, 100);
+}
 
   function preventContextMenu(e) {
     if (e.target.closest(".tile")) e.preventDefault();
