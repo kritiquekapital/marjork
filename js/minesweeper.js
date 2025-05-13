@@ -72,8 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <div class="leaderboard-sorts">
             <button class="sort-btn" data-sort="time">Time</button>
-            <button class="sort-btn" data-sort="wins">Win</button>
-            <button class="sort-btn" data-sort="booms">Booms</button>
+            <button class="sort-btn" data-sort="wins">🏆 Wins</button>
+            <button class="sort-btn" data-sort="booms">💥 Booms</button>
           </div>
         </div>
         <ol class="leaderboard-list">
@@ -82,14 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentStat === "time") {
               value = entry.bestTimes?.[currentDifficulty] ? formatElapsed(entry.bestTimes[currentDifficulty]) : "--:--.---";
             } else if (currentStat === "wins") {
-              value = entry[currentDifficulty] ?? 0;
+              value = `${entry[currentDifficulty] ?? 0} 🏆`;
             } else {
-              value = entry.totalBooms ?? 0;
+              value = `${entry.totalBooms ?? 0} 💥`;
             }
-            return `<li><span>${entry.username}</span><span>${value}</span></li>`;
+            return `<li><span>${entry.username}</span><span class="score-value">${value}</span></li>`;
           }).join("") : "<li>No entries yet</li>"}
         </ol>
-        <button class="back-button">Back</button>
+        <div style="display: flex; justify-content: center; margin-top: 1rem;">
+          <button class="sort-btn back-button">Back</button>
+        </div>
       `;
 
       leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
