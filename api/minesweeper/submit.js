@@ -14,11 +14,15 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ success: false, error: "Method Not Allowed" });
 
   try {
-    const { username, time, difficulty } = req.body;
+    const { username, time, difficulty, booms } = req.body;
 
-    if (!username || !difficulty) {
+    if (!username || !difficulty || typeof booms !== "number") {
       return res.status(400).json({ success: false, error: "Missing fields" });
     }
+
+    const isWin = typeof time === "number" && time > 0;
+    const timeKey = `${difficulty}_time`;
+    const winKey = `wins_${difficulty}`;
 
     const { data: existing, error: fetchError } = await supabase
       .from("minesweeper_scores")
@@ -31,33 +35,15 @@ export default async function handler(req, res) {
       return res.status(500).json({ success: false, error: fetchError.message });
     }
 
-    let updates = {
-      username,
-      difficulty,
-      wins_easy: 0,
-      wins_medium: 0,
-      wins_hard: 0,
-      booms: 0,
-      time: null
-    };
-
-    const isWin = typeof time === "number" && time > 0;
-    const isLoss = !isWin;
-
     if (existing) {
-      // Increment booms only by 1 on loss
-      updates.booms = existing.booms + (isLoss ? 1 : 0);
+      const updates = {
+        booms: (existing.booms || 0) + booms,
+        [winKey]: (existing[winKey] || 0) + (isWin ? 1 : 0),
+        [timeKey]: existing[timeKey]
+      };
 
-      // Increment win count only by 1 for the specific difficulty
-      updates.wins_easy = existing.wins_easy + (difficulty === "easy" && isWin ? 1 : 0);
-      updates.wins_medium = existing.wins_medium + (difficulty === "medium" && isWin ? 1 : 0);
-      updates.wins_hard = existing.wins_hard + (difficulty === "hard" && isWin ? 1 : 0);
-
-      // Keep best time (lowest)
-      if (isWin && (existing.time === null || time < existing.time)) {
-        updates.time = time;
-      } else {
-        updates.time = existing.time;
+      if (isWin && (existing[timeKey] == null || time < existing[timeKey])) {
+        updates[timeKey] = time;
       }
 
       const { error: updateError } = await supabase
@@ -70,14 +56,22 @@ export default async function handler(req, res) {
         return res.status(500).json({ success: false, error: updateError.message });
       }
     } else {
-      // First-time entry
-      updates.booms = isLoss ? 1 : 0;
-      updates[`wins_${difficulty}`] = isWin ? 1 : 0;
-      updates.time = isWin ? time : null;
+      const insertPayload = {
+        username,
+        wins_easy: 0,
+        wins_medium: 0,
+        wins_hard: 0,
+        easy_time: null,
+        medium_time: null,
+        hard_time: null,
+        booms: booms,
+        [winKey]: isWin ? 1 : 0,
+        [timeKey]: isWin ? time : null
+      };
 
       const { error: insertError } = await supabase
         .from("minesweeper_scores")
-        .insert([updates]);
+        .insert([insertPayload]);
 
       if (insertError) {
         console.error("Insert error:", insertError.message);
