@@ -361,17 +361,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
   }
 
-  async function submitScore(time, difficulty) {
-    if (!username || typeof time !== "number" || !difficulty) {
-      console.error("Missing fields in submitScore:", { username, time, difficulty });
-      return;
-    }
+  async function submitScore({ username, time, difficulty, booms }) {
+    if (!username || !difficulty || typeof booms !== "number") {
+    console.error("Missing fields in submitScore:", { username, time, difficulty, booms });
+    return;
+  }
 
     try {
       const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, time, difficulty })
+        body: JSON.stringify({ username, time, difficulty, booms })
       });
       const result = await res.json();
       if (!result.success) {
