@@ -96,37 +96,42 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
-  leaderboardPanel.innerHTML = `
-    <div class="leaderboard-header">
-      <button class="sort-btn" data-sort="username">Name</button>
-      <button class="sort-btn" data-sort="time">Time</button>
-      <button class="sort-btn" data-sort="hard">Hard</button>
-      <button class="sort-btn" data-sort="medium">Medium</button>
-      <button class="sort-btn" data-sort="easy">Easy</button>
-      <button class="sort-btn" data-sort="booms">Booms</button>
-    </div>
-    <ol class="leaderboard-list">
-      ${data.length > 0 ? data.map(entry => `
-        <li>
-          <span>${entry.username}</span>
-          <span>${entry.time ? formatElapsed(entry.time) : "--:--.---"}</span>
-        </li>`).join("") : "<li>No entries yet</li>"}
-    </ol>
-    <button class="back-button">Back</button>
-  `;
+      leaderboardPanel.innerHTML = `
+        <div class="leaderboard-header">
+          <button class="sort-btn" data-sort="username">Name</button>
+          <button class="sort-btn" data-sort="time">Time</button>
+          <button class="sort-btn" data-sort="hard">Hard</button>
+          <button class="sort-btn" data-sort="medium">Medium</button>
+          <button class="sort-btn" data-sort="easy">Easy</button>
+          <button class="sort-btn" data-sort="booms">Booms</button>
+        </div>
+        <ol class="leaderboard-list">
+          ${data.length > 0 ? data.map(entry => `
+            <li>
+              <span>${entry.username}</span>
+              <span>${entry.time ? formatElapsed(entry.time) : "--:--.---"}</span>
+            </li>`).join("") : "<li>No entries yet</li>"}
+        </ol>
+        <button class="back-button">Back</button>
+      `;
 
-  leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      currentSort = btn.dataset.sort;
-      fetchLeaderboard();
-    });
-  });
+      leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentSort = btn.dataset.sort;
+          fetchLeaderboard();
+        });
+      });
 
-  leaderboardPanel.querySelector(".back-button").addEventListener("click", () => {
-    leaderboardOpen = false;
-    leaderboardPanel.style.display = "none";
-    gridElement.style.display = "grid";
-  });
+      leaderboardPanel.querySelector(".back-button").addEventListener("click", () => {
+        leaderboardOpen = false;
+        leaderboardPanel.style.display = "none";
+        gridElement.style.display = "grid";
+      });
+
+    } catch (e) {
+      console.error("Leaderboard fetch failed:", e);
+    }
+  }
 
   const infoContainer = document.createElement("div");
   infoContainer.className = "minesweeper-info";
