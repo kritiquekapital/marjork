@@ -10,12 +10,21 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const { username, time, difficulty } = req.body;
+  const {
+    username,
+    time,
+    difficulty,
+    booms = 0,
+    wins_easy = 0,
+    wins_medium = 0,
+    wins_hard = 0
+  } = req.body;
+
   if (!username || !time || !difficulty) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
-  // Try to fetch existing entry
+  // Fetch existing entry by username
   const { data: existing, error: fetchError } = await supabase
     .from('minesweeper_scores')
     .select('*')
@@ -23,7 +32,6 @@ export default async function handler(req, res) {
     .single();
 
   if (fetchError && fetchError.code !== 'PGRST116') {
-    // Ignore "no rows" error, only fail if it's something else
     return res.status(500).json({ error: fetchError.message });
   }
 
@@ -31,23 +39,31 @@ export default async function handler(req, res) {
     username,
     time,
     difficulty,
-    booms: existing?.booms ? existing.booms : 0,
-    wins_easy: existing?.wins_easy || 0,
-    wins_medium: existing?.wins_medium || 0,
-    wins_hard: existing?.wins_hard || 0
+    booms,
+    wins_easy,
+    wins_medium,
+    wins_hard
   };
 
-  // Set latest time for this difficulty (optional: only if it's faster?)
-  if (existing && existing.time && time >= existing.time && existing.difficulty === difficulty) {
-    updates.time = existing.time; // Keep old best if new time is slower
+  // If user exists, update cumulatively
+  if (existing) {
+    updates.booms = existing.booms + booms;
+    updates.wins_easy = existing.wins_easy + wins_easy;
+    updates.wins_medium = existing.wins_medium + wins_medium;
+    updates.wins_hard = existing.wins_hard + wins_hard;
+
+    // Preserve best (lowest) time
+    if (
+      existing.difficulty === difficulty &&
+      typeof existing.time === 'number' &&
+      existing.time > 0 &&
+      time >= existing.time
+    ) {
+      updates.time = existing.time;
+    }
   }
 
-  // Increment win count by difficulty
-  if (difficulty === 'easy') updates.wins_easy++;
-  else if (difficulty === 'medium') updates.wins_medium++;
-  else if (difficulty === 'hard') updates.wins_hard++;
-
-  // Upsert (insert or update)
+  // Perform upsert (insert or update by username)
   const { error: upsertError } = await supabase
     .from('minesweeper_scores')
     .upsert(updates, { onConflict: ['username'] });
