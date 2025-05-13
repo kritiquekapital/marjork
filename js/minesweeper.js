@@ -21,6 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
 
   let username = localStorage.getItem("minesweeperUsername") || "";
+  let winCounts = {
+    easy: parseInt(localStorage.getItem("easyWins")) || 0,
+    medium: parseInt(localStorage.getItem("mediumWins")) || 0,
+    hard: parseInt(localStorage.getItem("hardWins")) || 0,
+  };
+  let totalBooms = parseInt(localStorage.getItem("minesweeperTotalBooms")) || 0;
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
 
   const usernameInput = document.createElement("input");
@@ -141,6 +147,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateStats() {
     const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
+    winsDisplay.innerHTML = `🏆 ${label} Wins: ${winCounts[currentDifficulty]}`;
+    const booms = document.querySelector(".booms");
+    if (booms) booms.remove();
+    const boomDisplay = document.createElement("div");
+    boomDisplay.className = "booms";
+    boomDisplay.textContent = `💥 Total Booms: ${totalBooms}`;
+    statsDisplay.appendChild(boomDisplay);
   }
 
   function updateTimerDisplay() {
@@ -267,6 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
       tile.el.classList.add("mine");
       tile.el.textContent = "💥";
       gameOver = true;
+      totalBooms++;
+      localStorage.setItem("minesweeperTotalBooms", totalBooms);
       stopTimer(false);
       revealAllAnimated();
     } else if (checkWin()) {
@@ -318,8 +333,10 @@ function stopTimer(won = false) {
 
   if (won) {
     winCounts[currentDifficulty]++;
+    localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
     if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
       bestTimes[currentDifficulty] = elapsed;
+      localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
     }
     submitScore(elapsed, currentDifficulty);
   }
