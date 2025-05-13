@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "https://minesweeper-zeta-eight.vercel.app";
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 10 },
+    easy: { cols: 10, rows: 8, mines: 1 },
     medium: { cols: 12, rows: 14, mines: 32 },
     hard: { cols: 14, rows: 18, mines: 75 },
   };
