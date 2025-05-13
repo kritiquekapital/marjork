@@ -6,71 +6,91 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  const payload = {
-    username,
-    time,
-    difficulty,
-    wins_easy: currentDifficulty === "easy" ? 1 : 0,
-    wins_medium: currentDifficulty === "medium" ? 1 : 0,
-    wins_hard: currentDifficulty === "hard" ? 1 : 0,
-    booms: totalBooms
-  };
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "POST") return res.status(405).json({ success: false, error: "Method Not Allowed" });
 
-  if (!username || !time || !difficulty) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+  try {
+    const { username, time, difficulty } = req.body;
 
-  // Fetch existing entry by username
-  const { data: existing, error: fetchError } = await supabase
-    .from('minesweeper_scores')
-    .select('*')
-    .eq('username', username)
-    .single();
-
-  if (fetchError && fetchError.code !== 'PGRST116') {
-    return res.status(500).json({ error: fetchError.message });
-  }
-
-  let updates = {
-    username,
-    time,
-    difficulty,
-    booms,
-    wins_easy,
-    wins_medium,
-    wins_hard
-  };
-
-  // If user exists, update cumulatively
-  if (existing) {
-    updates.booms = existing.booms + booms;
-    updates.wins_easy = existing.wins_easy + wins_easy;
-    updates.wins_medium = existing.wins_medium + wins_medium;
-    updates.wins_hard = existing.wins_hard + wins_hard;
-
-    // Preserve best (lowest) time
-    if (
-      existing.difficulty === difficulty &&
-      typeof existing.time === 'number' &&
-      existing.time > 0 &&
-      time >= existing.time
-    ) {
-      updates.time = existing.time;
+    if (!username || !difficulty) {
+      return res.status(400).json({ success: false, error: "Missing fields" });
     }
+
+    // Fetch existing row
+    const { data: existing, error: fetchError } = await supabase
+      .from("minesweeper_scores")
+      .select("*")
+      .eq("username", username)
+      .single();
+
+    if (fetchError && fetchError.code !== "PGRST116") {
+      console.error("Fetch error:", fetchError.message);
+      return res.status(500).json({ success: false, error: fetchError.message });
+    }
+
+    let updates = {
+      username,
+      difficulty,
+      time: typeof time === "number" && time > 0 ? time : null,
+      wins_easy: 0,
+      wins_medium: 0,
+      wins_hard: 0,
+      booms: 0
+    };
+
+    // Apply only if it's a winning time
+    if (typeof time === "number" && time > 0) {
+      updates[`wins_${difficulty}`] = 1;
+    }
+
+    // Always add 1 boom if it's a loss
+    if (!time || time === 0) {
+      updates.booms = 1;
+    }
+
+    if (existing) {
+      // Merge totals
+      updates.booms += existing.booms || 0;
+      updates.wins_easy += existing.wins_easy || 0;
+      updates.wins_medium += existing.wins_medium || 0;
+      updates.wins_hard += existing.wins_hard || 0;
+
+      // Keep best time (lowest)
+      const prevBest = existing.time;
+      if (typeof time === "number" && time > 0 && (prevBest === null || time < prevBest)) {
+        updates.time = time;
+      } else {
+        updates.time = prevBest;
+      }
+
+      const { error: updateError } = await supabase
+        .from("minesweeper_scores")
+        .update(updates)
+        .eq("username", username);
+
+      if (updateError) {
+        console.error("Update error:", updateError.message);
+        return res.status(500).json({ success: false, error: updateError.message });
+      }
+
+    } else {
+      const { error: insertError } = await supabase
+        .from("minesweeper_scores")
+        .insert([updates]);
+
+      if (insertError) {
+        console.error("Insert error:", insertError.message);
+        return res.status(500).json({ success: false, error: insertError.message });
+      }
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Handler crash:", err);
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
-
-  // Perform upsert (insert or update by username)
-  const { error: upsertError } = await supabase
-    .from('minesweeper_scores')
-    .upsert(updates, { onConflict: ['username'] });
-
-  if (upsertError) {
-    return res.status(500).json({ error: upsertError.message });
-  }
-
-  res.status(200).json({ success: true });
 }
