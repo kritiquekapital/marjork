@@ -84,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ? data.map(entry => {
                 let value;
                 if (currentStat === "time") {
-                  const timeKey = `${currentDifficulty}_time`;
-                  value = entry[timeKey] != null
-                    ? formatElapsed(entry[timeKey])
-                    : "--:--.---";
+                  const timeValue = entry.bestTimes?.[currentDifficulty];
+                  value = timeValue != null
+                  ? formatElapsed(timeValue)
+                  : "--:--.---";
                 } else if (currentStat === "wins") {
                   const winKey = `wins_${currentDifficulty}`;
                   value = `${entry[winKey] ?? 0} 🏆`;
