@@ -53,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchLeaderboard() {
     try {
-      const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentStat}`);
+      const diffQuery = currentStat === "time" ? `&difficulty=${currentDifficulty}` : "";
+      const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentStat}${diffQuery}`);
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
