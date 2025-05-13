@@ -242,7 +242,6 @@ body.theme-retro button:hover {
   margin: 4px 0;
 }
 
-/* Expanded fullscreen leaderboard for retro */
 body.theme-retro #leaderboard {
   position: fixed;
   top: 50%;
@@ -265,19 +264,25 @@ body.theme-retro #leaderboard {
   overflow-y: auto;
 }
 
-/* Header: one line, evenly spaced */
 body.theme-retro .leaderboard-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: nowrap;
-  gap: 8px;
-  padding-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 16px;
   position: relative;
   z-index: 2;
 }
 
-/* Rainbow glow underline */
+body.theme-retro .leaderboard-modes,
+body.theme-retro .leaderboard-sorts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 100%;
+}
+
 body.theme-retro .leaderboard-header::after {
   content: "";
   position: absolute;
@@ -292,31 +297,40 @@ body.theme-retro .leaderboard-header::after {
   box-shadow: 0 0 12px #0ff;
 }
 
-/* Sort buttons */
-body.theme-retro .sort-btn {
-  flex: 1;
-  background: #111;
-  color: #0ff;
-  border: 2px solid #ff00ff;
-  padding: 6px;
-  font-size: 10px;
+body.theme-retro .mode-btn,
+body.theme-retro .sort-btn,
+body.theme-retro .back-button {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  padding: 6px 10px;
   text-transform: uppercase;
+  border-radius: 6px;
+  border: 2px solid #00ffff;
   cursor: pointer;
-  transition: background 0.3s;
-  box-shadow: 0 0 8px #ff00ff;
+  background-color: #111;
+  color: transparent;
+  background-image: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
 }
 
-body.theme-retro .sort-btn:hover {
-  background: #ff0;
+body.theme-retro .mode-btn:hover,
+body.theme-retro .sort-btn:hover,
+body.theme-retro .back-button:hover {
+  background-color: #00ffff;
   color: #000;
+  -webkit-text-fill-color: #000;
 }
 
 body.theme-retro .leaderboard-list {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
   list-style: none;
   padding: 0;
   margin: 1rem 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 18px;
   color: #0ff;
 }
 
@@ -327,7 +341,12 @@ body.theme-retro .leaderboard-list li {
   gap: 24px;
   padding: 12px 20px;
   border-bottom: 1px solid #0ff;
-  line-height: 1.5;
+  line-height: 1.6;
+  background-color: rgba(0, 255, 255, 0.03);
+}
+
+body.theme-retro .leaderboard-list li:nth-child(even) {
+  background-color: rgba(0, 255, 255, 0.07);
 }
 
 body.theme-retro .leaderboard-list li span {
@@ -336,49 +355,13 @@ body.theme-retro .leaderboard-list li span {
   overflow-wrap: anywhere;
 }
 
-body.theme-retro .leaderboard-list li:nth-child(even) {
-  background-color: rgba(0, 255, 255, 0.07);
-}
-
-body.theme-retro .leaderboard-list li span:first-child {
-  min-width: 80px;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-/* Close/back button if you include one */
-body.theme-retro .leaderboard-panel .back-button {
-  align-self: center;
-  margin-top: 1rem;
-  padding: 6px 12px;
-  background: #111;
-  color: #ff0;
-  border: 2px solid #ff0;
-  font-family: 'Press Start 2P', monospace;
-  text-transform: uppercase;
-  box-shadow: 0 0 6px #ff0;
-}
-
-body.theme-retro .leaderboard-panel,
-body.theme-retro .leaderboard-list,
-body.theme-retro .leaderboard-list li,
-body.theme-retro .sort-btn,
-body.theme-retro .mode-btn {
-  font-family: 'Press Start 2P', monospace !important;
-  font-size: 14px;
-  color: #0ff;
-  text-transform: uppercase;
-}
-
-body.theme-retro .sort-btn.active,
-body.theme-retro .mode-btn.active {
-  background-color: #0ff;
-  color: black;
+body.theme-retro .leaderboard-list li span.score-value {
+  font-size: 20px;
   font-weight: bold;
+  color: #0ff;
+  text-align: right;
 }
 
-
-/* Rainbow Animation */
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
