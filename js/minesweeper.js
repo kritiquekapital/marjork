@@ -153,9 +153,28 @@ document.addEventListener("DOMContentLoaded", () => {
     timerDisplay.textContent = `⏳ ${formatElapsed(elapsed)}`;
   }
 
-  function updateBestTime() {
-    const best = bestTimes[currentDifficulty];
-    bestTimeDisplay.textContent = best ? `🕒 Best: ${formatElapsed(best)}` : `🕒 Best: --:--.---`;
+  async function updateBestTime() {
+    if (!username || !currentDifficulty) {
+      bestTimeDisplay.textContent = `🕒 Best: --:--.---`;
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/minesweeper/fetch_best?username=${username}`);
+      const data = await res.json();
+      if (!data.success || !data.record) {
+        bestTimeDisplay.textContent = `🕒 Best: --:--.---`;
+        return;
+      }
+
+      const bestTime = data.record[`${currentDifficulty}_time`];
+      bestTimeDisplay.textContent = bestTime != null
+        ? `🕒 Best: ${formatElapsed(bestTime)}`
+        : `🕒 Best: --:--.---`;
+    } catch (err) {
+      console.error("Failed to fetch best time:", err);
+      bestTimeDisplay.textContent = `🕒 Best: --:--.---`;
+    }
   }
 
   function startTimer() {
