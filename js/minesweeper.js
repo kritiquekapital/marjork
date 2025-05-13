@@ -96,24 +96,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
-      leaderboardPanel.innerHTML = `
-        <div class="leaderboard-header">
-          <button class="sort-btn" data-sort="username">Name</button>
-          <button class="sort-btn" data-sort="time">Time</button>
-          <button class="sort-btn" data-sort="hard">Hard</button>
-          <button class="sort-btn" data-sort="medium">Medium</button>
-          <button class="sort-btn" data-sort="easy">Easy</button>
-          <button class="sort-btn" data-sort="booms">Booms</button>
-        </div>
-        <ol class="leaderboard-list">
-          ${data.length > 0 ? data.map(entry => `
-            <li>
-              <span>${entry.username}</span>
-              <span>${entry.time ? formatElapsed(entry.time) : "--:--.---"}</span>
-            </li>`).join("") : "<li>No entries yet</li>"}
-        </ol>
-        <button class="back-button">Back</button>
-      `;
+  leaderboardPanel.innerHTML = `
+    <div class="leaderboard-header">
+      <button class="sort-btn" data-sort="username">Name</button>
+      <button class="sort-btn" data-sort="time">Time</button>
+      <button class="sort-btn" data-sort="hard">Hard</button>
+      <button class="sort-btn" data-sort="medium">Medium</button>
+      <button class="sort-btn" data-sort="easy">Easy</button>
+      <button class="sort-btn" data-sort="booms">Booms</button>
+    </div>
+    <ol class="leaderboard-list">
+      ${data.length > 0 ? data.map(entry => `
+        <li>
+          <span>${entry.username}</span>
+          <span>${entry[ currentSort ] ?? 0} wins</span>
+          <span>${entry.bestTimes?.[ currentSort ] ? formatElapsed(entry.bestTimes[currentSort]) : "--:--.---"}</span>
+        </li>`).join("") : "<li>No entries yet</li>"}
+    </ol>
+    <button class="back-button">Back</button>
+  `;
 
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
         btn.addEventListener("click", () => {
