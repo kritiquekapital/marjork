@@ -359,6 +359,25 @@ body.theme-retro .leaderboard-panel .back-button {
   box-shadow: 0 0 6px #ff0;
 }
 
+body.theme-retro .leaderboard-panel,
+body.theme-retro .leaderboard-list,
+body.theme-retro .leaderboard-list li,
+body.theme-retro .sort-btn,
+body.theme-retro .mode-btn {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 14px;
+  color: #0ff;
+  text-transform: uppercase;
+}
+
+body.theme-retro .sort-btn.active,
+body.theme-retro .mode-btn.active {
+  background-color: #0ff;
+  color: black;
+  font-weight: bold;
+}
+
+
 /* Rainbow Animation */
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
