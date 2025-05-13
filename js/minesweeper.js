@@ -83,17 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
           ${data.length > 0
             ? data.map(entry => {
                 let value;
-                if (currentStat === "time") {
-                  const timeValue = entry.bestTimes?.[currentDifficulty];
-                  value = timeValue != null
-                  ? formatElapsed(timeValue)
-                  : "--:--.---";
-                } else if (currentStat === "wins") {
-                  const winKey = `wins_${currentDifficulty}`;
-                  value = `${entry[winKey] ?? 0} 🏆`;
-                } else {
-                  value = `${entry.booms ?? 0} 💥`;
-                }
+                  if (currentStat === "time") {
+                    const timeValue = entry.bestTimes?.[currentDifficulty];
+                    value = timeValue != null
+                      ? formatElapsed(timeValue)
+                       : "--:--.---";
+                  } else if (currentStat === "wins") {
+                    value = `${entry[currentDifficulty] ?? 0} 🏆`;
+                  } else {
+                    value = `${entry.totalBooms ?? 0} 💥`;
+                  }
                 return `<li><span>${entry.username}</span><span class="score-value">${value}</span></li>`;
               }).join("")
             : "<li>No entries yet</li>"}
