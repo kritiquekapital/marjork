@@ -214,12 +214,14 @@ body.theme-retro button:hover {
 #minesweeper-game.retro .minesweeper-timer {
   text-align: left;
   flex: 1;
+  white-space: nowrap;
 }
 #minesweeper-game.retro .minesweeper-best-time {
   text-align: right;
   flex: 1;
   color: #888;
   opacity: 0.5;
+  white-space: nowrap;
 }
 
 /* === LEADERBOARD === */
@@ -243,7 +245,6 @@ body.theme-retro #leaderboard {
   box-shadow: 0 0 20px #0ff;
   overflow-y: auto;
 }
-
 body.theme-retro .leaderboard-header {
   display: flex;
   flex-direction: column;
@@ -291,7 +292,6 @@ body.theme-retro .back-button {
   text-align: center;
   white-space: nowrap;
 }
-
 body.theme-retro .mode-btn.active,
 body.theme-retro .sort-btn.active {
   color: transparent;
@@ -301,42 +301,12 @@ body.theme-retro .sort-btn.active {
   -webkit-text-fill-color: transparent;
   font-weight: bold;
 }
-
 body.theme-retro .mode-btn:hover:not(.active),
 body.theme-retro .sort-btn:hover:not(.active),
 body.theme-retro .back-button:hover {
   background-color: #00ffff;
   color: #000;
   -webkit-text-fill-color: #000;
-}
-
-/* Entries */
-body.theme-retro .leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 18px;
-  color: #0ff;
-}
-body.theme-retro .leaderboard-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  padding: 12px 20px;
-  border-bottom: 1px solid #0ff;
-}
-body.theme-retro .leaderboard-list li span {
-  flex: 1;
-  font-family: 'Press Start 2P', monospace;
-  color: #0ff;
-}
-body.theme-retro .leaderboard-list li span.score-value {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: right;
-  color: #0ff;
 }
 
 /* Rainbow Animation */
