@@ -305,6 +305,7 @@ body.theme-retro .sort-btn {
   transition: background 0.3s;
   box-shadow: 0 0 8px #ff00ff;
 }
+
 body.theme-retro .sort-btn:hover {
   background: #ff0;
   color: #000;
@@ -312,7 +313,7 @@ body.theme-retro .sort-btn:hover {
 
 body.theme-retro .leaderboard-list {
   font-family: 'Press Start 2P', monospace;
-  font-size: 12px;
+  font-size: 14px;
   list-style: none;
   padding: 0;
   margin: 1rem 0;
@@ -323,13 +324,20 @@ body.theme-retro .leaderboard-list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 10px;
+  gap: 24px;
+  padding: 12px 20px;
   border-bottom: 1px solid #0ff;
+  line-height: 1.5;
+}
+
+body.theme-retro .leaderboard-list li span {
+  flex: 1;
+  min-width: 60px;
+  overflow-wrap: anywhere;
 }
 
 body.theme-retro .leaderboard-list li:nth-child(even) {
-  background-color: rgba(0, 255, 255, 0.05);
+  background-color: rgba(0, 255, 255, 0.07);
 }
 
 body.theme-retro .leaderboard-list li span:first-child {
