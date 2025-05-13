@@ -3,12 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const gridElement = document.getElementById("minesweeper-grid");
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
+
   const API_BASE = "https://minesweeper-zeta-eight.vercel.app";
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 10 },
-    medium: { cols: 12, rows: 14, mines: 33 },
-    hard: { cols: 14, rows: 18, mines: 69 },
+    easy: { cols: 10, rows: 8, mines: 1 },
+    medium: { cols: 12, rows: 14, mines: 32 },
+    hard: { cols: 14, rows: 18, mines: 75 },
   };
 
   let currentDifficulty = "easy";
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
   let startTime = null;
   let timerInterval = null;
+
   let username = localStorage.getItem("minesweeperUsername") || "";
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
 
@@ -87,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.diff === currentDifficulty);
         btn.addEventListener("click", () => {
           currentDifficulty = btn.dataset.diff;
           fetchLeaderboard();
@@ -95,13 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
-        if (!btn.classList.contains("back-button")) {
-          btn.classList.toggle("active", btn.dataset.sort === currentStat);
-          btn.addEventListener("click", () => {
-            currentStat = btn.dataset.sort;
-            fetchLeaderboard();
-          });
-        }
+        btn.addEventListener("click", () => {
+          currentStat = btn.dataset.sort;
+          fetchLeaderboard();
+        });
       });
 
       leaderboardPanel.querySelector(".back-button").addEventListener("click", () => {
@@ -125,6 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
   infoContainer.appendChild(timerDisplay);
   infoContainer.appendChild(bestTimeDisplay);
   gameContainer.appendChild(infoContainer);
+
+  const statsDisplay = document.createElement("div");
+  statsDisplay.className = "minesweeper-stats";
+  statsDisplay.appendChild(usernameInput);
+  gameContainer.appendChild(statsDisplay);
 
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
@@ -180,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const { cols, rows } = difficulties[currentDifficulty];
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-    gameContainer.setAttribute("data-difficulty", currentDifficulty);
 
     for (let y = 0; y < rows; y++) {
       const row = [];
@@ -378,6 +380,9 @@ document.addEventListener("DOMContentLoaded", () => {
     gameContainer.style.display = "none";
     document.removeEventListener("contextmenu", preventContextMenu);
   });
+
+  const newGameBtn = document.querySelector(".new-game-button");
+  newGameBtn?.addEventListener("click", generateGrid);
 
   generateGrid();
 });
