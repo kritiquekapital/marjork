@@ -127,7 +127,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
   statsDisplay.appendChild(usernameInput);
+
+  // INSERT DIFFICULTY DROPDOWN
+  const difficultySelect = document.createElement("select");
+  difficultySelect.className = "difficulty-select";
+  difficultySelect.innerHTML = `
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  `;
+  difficultySelect.value = currentDifficulty;
+  difficultySelect.addEventListener("change", () => {
+    currentDifficulty = difficultySelect.value;
+    generateGrid();
+  });
+  statsDisplay.appendChild(difficultySelect);
   gameContainer.appendChild(statsDisplay);
+
+  const newGameBtn = document.querySelector(".new-game-button");
+  newGameBtn?.addEventListener("click", generateGrid);
 
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
@@ -156,21 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
     timerInterval = setInterval(updateTimerDisplay, 100);
   }
 
-  function stopTimer(won = false) {
+  function stopTimer() {
     clearInterval(timerInterval);
-    const elapsed = Date.now() - startTime;
     updateTimerDisplay();
     startTime = null;
-
-    if (won) {
-      if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
-        bestTimes[currentDifficulty] = elapsed;
-        localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
-      }
-      submitScore(elapsed, currentDifficulty);
-    }
-
-    updateBestTime();
   }
 
   function generateGrid() {
@@ -246,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tile = board[y][x];
     if (tile.revealed) return;
     tile.flagged = !tile.flagged;
-    tile.el.textContent = tile.flagged ? "🫥" : "";
+    tile.el.textContent = tile.flagged ? "🚩" : "";
   }
 
   function revealTile(x, y) {
@@ -329,29 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 100);
   }
 
-  async function submitScore(time, difficulty) {
-    if (!username || typeof time !== "number" || !difficulty) {
-      console.error("Missing fields in submitScore:", { username, time, difficulty });
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, time, difficulty })
-      });
-      const result = await res.json();
-      if (!result.success) {
-        console.error("Score submit error:", result.error);
-      } else {
-        console.log("Score submitted");
-      }
-    } catch (e) {
-      console.error("Submit failed:", e);
-    }
-  }
-
   function preventContextMenu(e) {
     if (e.target.closest(".tile")) e.preventDefault();
   }
@@ -380,9 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
     gameContainer.style.display = "none";
     document.removeEventListener("contextmenu", preventContextMenu);
   });
-
-  const newGameBtn = document.querySelector(".new-game-button");
-  newGameBtn?.addEventListener("click", generateGrid);
 
   generateGrid();
 });
