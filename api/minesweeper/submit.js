@@ -10,15 +10,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const {
+  const payload = {
     username,
     time,
     difficulty,
-    booms = 0,
-    wins_easy = 0,
-    wins_medium = 0,
-    wins_hard = 0
-  } = req.body;
+    wins_easy: currentDifficulty === "easy" ? 1 : 0,
+    wins_medium: currentDifficulty === "medium" ? 1 : 0,
+    wins_hard: currentDifficulty === "hard" ? 1 : 0,
+    booms: totalBooms
+  };
 
   if (!username || !time || !difficulty) {
     return res.status(400).json({ error: 'Missing required fields' });
