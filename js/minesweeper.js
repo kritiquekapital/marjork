@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const difficulties = {
     easy: { cols: 10, rows: 8, mines: 10 },
-    medium: { cols: 12, rows: 14, mines: 33 },
+    medium: { cols: 12, rows: 14, mines: 1 },
     hard: { cols: 14, rows: 18, mines: 69 },
   };
 
