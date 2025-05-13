@@ -6,27 +6,60 @@ const supabase = createClient(
 );
 
 export default async function handler(req, res) {
-  const { sort = "time" } = req.query;
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  let query = supabase
-    .from("minesweeper_scores")
-    .select("username, time, difficulty, wins_easy, wins_medium, wins_hard, booms");
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "GET") return res.status(405).json({ success: false, error: "Method Not Allowed" });
 
-  if (sort === "time") {
-    query = query.eq("difficulty", req.query.difficulty || "easy").order("time", { ascending: true });
-  } else if (["easy", "medium", "hard"].includes(sort)) {
-    query = query.order(`wins_${sort}`, { ascending: false });
-  } else if (sort === "booms") {
-    query = query.order("booms", { ascending: false });
-  } else {
-    query = query.order("username", { ascending: true });
+  const { sort = "time", difficulty = "easy" } = req.query;
+  const validDifficulties = ["easy", "medium", "hard"];
+  const sortDifficulty = validDifficulties.includes(difficulty) ? difficulty : "easy";
+
+  try {
+    const { data, error } = await supabase
+      .from("minesweeper_scores")
+      .select(`
+        username,
+        booms,
+        wins_easy,
+        wins_medium,
+        wins_hard,
+        easy_time,
+        medium_time,
+        hard_time
+      `);
+
+    if (error) return res.status(500).json({ error: error.message });
+
+    const leaderboard = data.map(entry => ({
+      username: entry.username,
+      totalBooms: entry.booms || 0,
+      easy: entry.wins_easy || 0,
+      medium: entry.wins_medium || 0,
+      hard: entry.wins_hard || 0,
+      bestTimes: {
+        easy: entry.easy_time ?? null,
+        medium: entry.medium_time ?? null,
+        hard: entry.hard_time ?? null
+      }
+    }));
+
+    leaderboard.sort((a, b) => {
+      if (sort === "booms") return b.totalBooms - a.totalBooms;
+      if (["easy", "medium", "hard"].includes(sort)) return b[sort] - a[sort];
+      if (sort === "time") {
+        const aTime = a.bestTimes[sortDifficulty] ?? Infinity;
+        const bTime = b.bestTimes[sortDifficulty] ?? Infinity;
+        return aTime - bTime;
+      }
+      return a.username.localeCompare(b.username);
+    });
+
+    return res.status(200).json(leaderboard.slice(0, 10));
+  } catch (err) {
+    console.error("Leaderboard error:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-
-  query = query.limit(10);
-
-  const { data, error } = await query;
-
-  if (error) return res.status(500).json({ error: error.message });
-
-  res.status(200).json(data);
 }
