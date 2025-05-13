@@ -310,25 +310,32 @@ body.theme-retro .sort-btn:hover {
   color: #000;
 }
 
-/* Score list formatting */
 body.theme-retro .leaderboard-list {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 16px;
-  padding: 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
   list-style: none;
-  font-size: 10px;
+  padding: 0;
+  margin: 1rem 0;
+  color: #0ff;
 }
 
 body.theme-retro .leaderboard-list li {
   display: flex;
   justify-content: space-between;
-  padding: 6px 12px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
   border-bottom: 1px solid #0ff;
-  color: #0ff;
 }
+
 body.theme-retro .leaderboard-list li:nth-child(even) {
-  background: rgba(0, 255, 255, 0.05);
+  background-color: rgba(0, 255, 255, 0.05);
+}
+
+body.theme-retro .leaderboard-list li span:first-child {
+  min-width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* Close/back button if you include one */
