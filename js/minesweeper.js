@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="mode-btn" data-diff="hard">Hard</button>
           </div>
           <div class="leaderboard-sorts">
-            <button class="sort-btn" data-sort="time">Time</button>
+            <button class="sort-btn" data-sort="time">⌛ Time</button>
             <button class="sort-btn" data-sort="wins">🏆 Wins</button>
             <button class="sort-btn" data-sort="booms">💥 Booms</button>
           </div>
