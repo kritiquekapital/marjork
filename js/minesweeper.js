@@ -3,13 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const gridElement = document.getElementById("minesweeper-grid");
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
-
   const API_BASE = "https://minesweeper-zeta-eight.vercel.app";
 
   const difficulties = {
-    easy: { cols: 10, rows: 8, mines: 1 },
-    medium: { cols: 12, rows: 14, mines: 32 },
-    hard: { cols: 14, rows: 18, mines: 75 },
+    easy: { cols: 10, rows: 8, mines: 10 },
+    medium: { cols: 12, rows: 14, mines: 33 },
+    hard: { cols: 14, rows: 18, mines: 69 },
   };
 
   let currentDifficulty = "easy";
@@ -19,14 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
   let startTime = null;
   let timerInterval = null;
-
   let username = localStorage.getItem("minesweeperUsername") || "";
-  let winCounts = {
-    easy: parseInt(localStorage.getItem("easyWins")) || 0,
-    medium: parseInt(localStorage.getItem("mediumWins")) || 0,
-    hard: parseInt(localStorage.getItem("hardWins")) || 0,
-  };
-  let totalBooms = parseInt(localStorage.getItem("minesweeperTotalBooms")) || 0;
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
 
   const usernameInput = document.createElement("input");
@@ -71,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <button class="mode-btn" data-diff="hard">Hard</button>
           </div>
           <div class="leaderboard-sorts">
-            <button class="sort-btn" data-sort="time">Time</button>
+            <button class="sort-btn" data-sort="time">⌛ Time</button>
             <button class="sort-btn" data-sort="wins">🏆 Wins</button>
             <button class="sort-btn" data-sort="booms">💥 Booms</button>
           </div>
@@ -95,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.diff === currentDifficulty);
         btn.addEventListener("click", () => {
           currentDifficulty = btn.dataset.diff;
           fetchLeaderboard();
@@ -102,10 +95,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          currentStat = btn.dataset.sort;
-          fetchLeaderboard();
-        });
+        if (!btn.classList.contains("back-button")) {
+          btn.classList.toggle("active", btn.dataset.sort === currentStat);
+          btn.addEventListener("click", () => {
+            currentStat = btn.dataset.sort;
+            fetchLeaderboard();
+          });
+        }
       });
 
       leaderboardPanel.querySelector(".back-button").addEventListener("click", () => {
@@ -130,30 +126,11 @@ document.addEventListener("DOMContentLoaded", () => {
   infoContainer.appendChild(bestTimeDisplay);
   gameContainer.appendChild(infoContainer);
 
-  const statsDisplay = document.createElement("div");
-  statsDisplay.className = "minesweeper-stats";
-  gameContainer.appendChild(statsDisplay);
-  const winsDisplay = document.createElement("div");
-  winsDisplay.className = "wins";
-  statsDisplay.appendChild(winsDisplay);
-  statsDisplay.appendChild(usernameInput);
-
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
     const seconds = String(Math.floor((ms % 60000) / 1000)).padStart(2, "0");
     const millis = String(ms % 1000).padStart(3, "0");
     return `${minutes}:${seconds}.${millis}`;
-  }
-
-  function updateStats() {
-    const label = currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1);
-    winsDisplay.innerHTML = `🏆 ${label} Wins: ${winCounts[currentDifficulty]}`;
-    const booms = document.querySelector(".booms");
-    if (booms) booms.remove();
-    const boomDisplay = document.createElement("div");
-    boomDisplay.className = "booms";
-    boomDisplay.textContent = `💥 Total Booms: ${totalBooms}`;
-    statsDisplay.appendChild(boomDisplay);
   }
 
   function updateTimerDisplay() {
@@ -183,8 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startTime = null;
 
     if (won) {
-      winCounts[currentDifficulty]++;
-      localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
       if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
         bestTimes[currentDifficulty] = elapsed;
         localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
@@ -192,18 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       submitScore(elapsed, currentDifficulty);
     }
 
-    updateStats();
     updateBestTime();
-  }
-
-  function createDropdown() {
-    const select = document.getElementById("difficulty-select");
-    const newGameBtn = document.querySelector(".new-game-button");
-    select?.addEventListener("change", () => {
-      currentDifficulty = select.value;
-      generateGrid();
-    });
-    newGameBtn?.addEventListener("click", generateGrid);
   }
 
   function generateGrid() {
@@ -240,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
       board.push(row);
     }
 
-    updateStats();
     updateTimerDisplay();
     updateBestTime();
   }
@@ -264,31 +227,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function handleClick(x, y) {
-    if (gameOver) return;
-    const tile = board[y][x];
-    if (tile.revealed || tile.flagged) return;
-    if (firstClick) {
-      placeMines(x, y);
-      firstClick = false;
-      startTimer();
+  function getNeighbors(x, y) {
+    const neighbors = [];
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        const nx = x + dx, ny = y + dy;
+        if (board[ny]?.[nx]) neighbors.push(board[ny][nx]);
+      }
     }
-
-    revealTile(x, y);
-
-    if (tile.mine) {
-      tile.el.classList.add("mine");
-      tile.el.textContent = "💥";
-      gameOver = true;
-      totalBooms++;
-      localStorage.setItem("minesweeperTotalBooms", totalBooms);
-      stopTimer(false);
-      revealAllAnimated();
-    } else if (checkWin()) {
-      gameOver = true;
-      stopTimer(true);
-      playWinAnimation();
-    }
+    return neighbors;
   }
 
   function toggleFlag(x, y) {
@@ -309,131 +257,98 @@ document.addEventListener("DOMContentLoaded", () => {
     else getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
   }
 
-  function getNeighbors(x, y) {
-    const neighbors = [];
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
-        if (dx === 0 && dy === 0) continue;
-        const nx = x + dx, ny = y + dy;
-        if (board[ny]?.[nx]) neighbors.push(board[ny][nx]);
-      }
+  function checkWin() {
+    return board.flat().every(tile => tile.revealed || tile.mine);
+  }
+
+  function handleClick(x, y) {
+    if (gameOver) return;
+    const tile = board[y][x];
+    if (tile.revealed || tile.flagged) return;
+    if (firstClick) {
+      placeMines(x, y);
+      firstClick = false;
+      startTimer();
     }
-    return neighbors;
-  }
 
-function checkWin() {
-  return board.flat().every(tile => tile.revealed || tile.mine);
-}
+    revealTile(x, y);
 
-function stopTimer(won = false) {
-  clearInterval(timerInterval);
-  const elapsed = Date.now() - startTime;
-  updateTimerDisplay();
-  startTime = null;
-
-  if (won) {
-    winCounts[currentDifficulty]++;
-    localStorage.setItem(`${currentDifficulty}Wins`, winCounts[currentDifficulty]);
-    if (!bestTimes[currentDifficulty] || elapsed < bestTimes[currentDifficulty]) {
-      bestTimes[currentDifficulty] = elapsed;
-      localStorage.setItem("minesweeperBestTimes", JSON.stringify(bestTimes));
+    if (tile.mine) {
+      tile.el.classList.add("mine");
+      tile.el.textContent = "💥";
+      gameOver = true;
+      stopTimer(false);
+      revealAllAnimated();
+    } else if (checkWin()) {
+      gameOver = true;
+      stopTimer(true);
+      playWinAnimation();
     }
-    submitScore(elapsed, currentDifficulty);
   }
 
-  updateStats();
-  updateBestTime();
-}
-
-async function submitScore(time, difficulty) {
-  if (!username || typeof time !== "number" || !difficulty) {
-    console.error("Missing fields in submitScore:", { username, time, difficulty });
-    return;
-  }
-
-  const payload = {
-    username,
-    time,
-    difficulty,
-    wins_easy: winCounts.easy,
-    wins_medium: winCounts.medium,
-    wins_hard: winCounts.hard,
-    booms: totalBooms,
-  };
-
-  try {
-    const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+  function revealAllAnimated() {
+    const mines = board.flat().filter(tile => tile.mine && !tile.revealed);
+    mines.forEach((tile, i) => {
+      setTimeout(() => {
+        tile.el.textContent = "💣";
+        tile.el.classList.add("mine");
+        tile.revealed = true;
+      }, i * 150);
     });
-    const result = await res.json();
-    if (!result.success) {
-      console.error("Score submit error:", result.error);
-    } else {
-      console.log("Score submitted");
-    }
-  } catch (e) {
-    console.error("Submit failed:", e);
-  }
-}
-
-function handleClick(x, y) {
-  if (gameOver) return;
-  const tile = board[y][x];
-  if (tile.revealed || tile.flagged) return;
-  if (firstClick) {
-    placeMines(x, y);
-    firstClick = false;
-    startTimer();
   }
 
-  revealTile(x, y);
-
-  if (tile.mine) {
-    tile.el.classList.add("mine");
-    tile.el.textContent = "💥";
-    gameOver = true;
-    totalBooms++;
-    localStorage.setItem("minesweeperTotalBooms", totalBooms);
-    stopTimer(false);
-    revealAllAnimated();
-  } else if (checkWin()) {
-    gameOver = true;
-    stopTimer(true);
-    playWinAnimation();
-  }
-}
-
-function playWinAnimation() {
-  const colors = [
-    "linear-gradient(45deg, red, orange)",
-    "linear-gradient(45deg, orange, yellow)",
-    "linear-gradient(45deg, yellow, green)",
-    "linear-gradient(45deg, green, cyan)",
-    "linear-gradient(45deg, cyan, blue)",
-    "linear-gradient(45deg, blue, violet)",
-    "linear-gradient(45deg, violet, pink)"
-  ];
-  let step = 0;
-  const cols = board[0].length;
-  const rows = board.length;
-  const totalSteps = cols * 6;
-  const interval = setInterval(() => {
-    for (let x = 0; x < cols; x++) {
-      for (let y = 0; y < rows; y++) {
-        const tile = board[y][x];
-        if (tile.revealed && !tile.mine) {
-          const colorIndex = (step + x + y) % colors.length;
-          tile.el.style.backgroundImage = colors[colorIndex];
-          tile.el.style.color = "#fff";
+  function playWinAnimation() {
+    const colors = [
+      "linear-gradient(45deg, red, orange)",
+      "linear-gradient(45deg, orange, yellow)",
+      "linear-gradient(45deg, yellow, green)",
+      "linear-gradient(45deg, green, cyan)",
+      "linear-gradient(45deg, cyan, blue)",
+      "linear-gradient(45deg, blue, violet)",
+      "linear-gradient(45deg, violet, pink)"
+    ];
+    let step = 0;
+    const cols = board[0].length;
+    const rows = board.length;
+    const totalSteps = cols * 6;
+    const interval = setInterval(() => {
+      for (let x = 0; x < cols; x++) {
+        for (let y = 0; y < rows; y++) {
+          const tile = board[y][x];
+          if (tile.revealed && !tile.mine) {
+            const colorIndex = (step + x + y) % colors.length;
+            tile.el.style.backgroundImage = colors[colorIndex];
+            tile.el.style.color = "#fff";
+          }
         }
       }
+      step++;
+      if (step >= totalSteps) clearInterval(interval);
+    }, 100);
+  }
+
+  async function submitScore(time, difficulty) {
+    if (!username || typeof time !== "number" || !difficulty) {
+      console.error("Missing fields in submitScore:", { username, time, difficulty });
+      return;
     }
-    step++;
-    if (step >= totalSteps) clearInterval(interval);
-  }, 100);
-}
+
+    try {
+      const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, time, difficulty })
+      });
+      const result = await res.json();
+      if (!result.success) {
+        console.error("Score submit error:", result.error);
+      } else {
+        console.log("Score submitted");
+      }
+    } catch (e) {
+      console.error("Submit failed:", e);
+    }
+  }
 
   function preventContextMenu(e) {
     if (e.target.closest(".tile")) e.preventDefault();
@@ -464,6 +379,5 @@ function playWinAnimation() {
     document.removeEventListener("contextmenu", preventContextMenu);
   });
 
-  createDropdown();
   generateGrid();
 });
