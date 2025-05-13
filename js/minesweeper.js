@@ -79,17 +79,23 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <ol class="leaderboard-list">
-          ${data.length > 0 ? data.map(entry => {
-            let value;
-            if (currentStat === "time") {
-              value = entry.bestTimes?.[currentDifficulty] ? formatElapsed(entry.bestTimes[currentDifficulty]) : "--:--.---";
-            } else if (currentStat === "wins") {
-              value = `${entry[currentDifficulty] ?? 0} 🏆`;
-            } else {
-              value = `${entry.totalBooms ?? 0} 💥`;
-            }
-            return `<li><span>${entry.username}</span><span class="score-value">${value}</span></li>`;
-          }).join("") : "<li>No entries yet</li>"}
+          ${data.length > 0
+            ? data.map(entry => {
+                let value;
+                if (currentStat === "time") {
+                  const timeKey = `${currentDifficulty}_time`;
+                  value = entry[timeKey] != null
+                    ? formatElapsed(entry[timeKey])
+                    : "--:--.---";
+                } else if (currentStat === "wins") {
+                  const winKey = `wins_${currentDifficulty}`;
+                  value = `${entry[winKey] ?? 0} 🏆`;
+                } else {
+                  value = `${entry.booms ?? 0} 💥`;
+                }
+                return `<li><span>${entry.username}</span><span class="score-value">${value}</span></li>`;
+              }).join("")
+            : "<li>No entries yet</li>"}
         </ol>
         <div style="display: flex; justify-content: center; margin-top: 1rem;">
           <button class="sort-btn back-button">Back</button>
