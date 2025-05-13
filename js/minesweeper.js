@@ -57,6 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
+      if (currentStat === "wins" || currentStat === "booms") {
+    data.sort((a, b) => {
+      const aVal = currentStat === "wins" ? (a[currentDifficulty] ?? 0) : (a.totalBooms ?? 0);
+      const bVal = currentStat === "wins" ? (b[currentDifficulty] ?? 0) : (b.totalBooms ?? 0);
+      return bVal - aVal; // descending
+    });
+  }
+
       leaderboardPanel.innerHTML = `
         <div class="leaderboard-header">
           <div class="leaderboard-modes">
