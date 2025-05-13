@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let currentDifficulty = "easy";
+  let currentStat = "time";
   let board = [];
   let firstClick = true;
   let gameOver = false;
@@ -43,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (leaderboardBtn) leaderboardBtn.textContent = "🏆";
 
   let leaderboardOpen = false;
-  let currentSort = "time";
   const leaderboardPanel = document.createElement("div");
   leaderboardPanel.id = "leaderboard";
   leaderboardPanel.className = "leaderboard-panel";
@@ -57,67 +57,51 @@ document.addEventListener("DOMContentLoaded", () => {
     if (leaderboardOpen) fetchLeaderboard();
   });
 
-  async function submitScore(time, difficulty) {
-    if (!username || !time || !difficulty) {
-      console.error("Missing fields in submitScore:", { username, time, difficulty });
-      return;
-    }
-
-    const payload = {
-      username,
-      time,
-      difficulty,
-      wins_easy: winCounts.easy,
-      wins_medium: winCounts.medium,
-      wins_hard: winCounts.hard,
-      booms: totalBooms,
-    };
-
-    try {
-      const res = await fetch(`${API_BASE}/api/minesweeper/submit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const result = await res.json();
-      if (!result.success) {
-        console.error("Score submit error:", result.error);
-      } else {
-        console.log("Score submitted");
-      }
-    } catch (e) {
-      console.error("Submit failed:", e);
-    }
-  }
-
   async function fetchLeaderboard() {
     try {
-      const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentSort}`);
+      const res = await fetch(`${API_BASE}/api/minesweeper/leaderboard?sort=${currentStat}`);
       const data = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
-  leaderboardPanel.innerHTML = `
-    <div class="leaderboard-header">
-      <button class="sort-btn" data-sort="hard">Hard</button>
-      <button class="sort-btn" data-sort="medium">Medium</button>
-      <button class="sort-btn" data-sort="easy">Easy</button>
-      <button class="sort-btn" data-sort="booms">Booms</button>
-      <button class="back-button">Back</button>
-    </div>
-    <ol class="leaderboard-list">
-      ${data.length > 0 ? data.map(entry => `
-        <li>
-          <span>${entry.username}</span>
-          <span>${entry[ currentSort ] ?? 0} wins</span>
-          <span>${entry.bestTimes?.[ currentSort ] ? formatElapsed(entry.bestTimes[currentSort]) : "--:--.---"}</span>
-        </li>`).join("") : "<li>No entries yet</li>"}
-    </ol>
-    <button class="back-button">Back</button>
-  `;
+      leaderboardPanel.innerHTML = `
+        <div class="leaderboard-header">
+          <div class="leaderboard-modes">
+            <button class="mode-btn" data-diff="easy">Easy</button>
+            <button class="mode-btn" data-diff="medium">Medium</button>
+            <button class="mode-btn" data-diff="hard">Hard</button>
+          </div>
+          <div class="leaderboard-sorts">
+            <button class="sort-btn" data-sort="time">Time</button>
+            <button class="sort-btn" data-sort="wins">Win</button>
+            <button class="sort-btn" data-sort="booms">Booms</button>
+          </div>
+        </div>
+        <ol class="leaderboard-list">
+          ${data.length > 0 ? data.map(entry => {
+            let value;
+            if (currentStat === "time") {
+              value = entry.bestTimes?.[currentDifficulty] ? formatElapsed(entry.bestTimes[currentDifficulty]) : "--:--.---";
+            } else if (currentStat === "wins") {
+              value = entry[currentDifficulty] ?? 0;
+            } else {
+              value = entry.totalBooms ?? 0;
+            }
+            return `<li><span>${entry.username}</span><span>${value}</span></li>`;
+          }).join("") : "<li>No entries yet</li>"}
+        </ol>
+        <button class="back-button">Back</button>
+      `;
+
+      leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentDifficulty = btn.dataset.diff;
+          fetchLeaderboard();
+        });
+      });
 
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          currentSort = btn.dataset.sort;
+          currentStat = btn.dataset.sort;
           fetchLeaderboard();
         });
       });
@@ -127,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         leaderboardPanel.style.display = "none";
         gridElement.style.display = "grid";
       });
-
     } catch (e) {
       console.error("Leaderboard fetch failed:", e);
     }
