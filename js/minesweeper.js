@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameInput = document.createElement("input");
   usernameInput.type = "text";
   usernameInput.maxLength = 6;
-  usernameInput.placeholder = "Name";
+  usernameInput.placeholder = "username";
   usernameInput.value = username;
   usernameInput.classList.add("minesweeper-username");
   usernameInput.addEventListener("input", () => {
@@ -146,7 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
   statsDisplay.appendChild(usernameInput);
-  gameContainer.appendChild(statsDisplay);
 
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
