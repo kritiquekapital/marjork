@@ -132,6 +132,8 @@ body {
     place-items: center;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 50%;
+    padding-bottom: 50%
   }
 
   /* Horizontal remapping */
