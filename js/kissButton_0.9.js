@@ -1,5 +1,7 @@
 import { Bounceable } from './bounceable.js';
 
+document.dispatchEvent(new Event("themeChange"));
+
 const kissButton = document.querySelector(".kiss-button");
 const messages = [
   "i love you!",
