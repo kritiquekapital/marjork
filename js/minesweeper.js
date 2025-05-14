@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameInput = document.createElement("input");
   usernameInput.type = "text";
   usernameInput.maxLength = 6;
-  usernameInput.placeholder = "username";
+  usernameInput.placeholder = "Name";
   usernameInput.value = username;
   usernameInput.classList.add("minesweeper-username");
   usernameInput.addEventListener("input", () => {
@@ -146,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsDisplay = document.createElement("div");
   statsDisplay.className = "minesweeper-stats";
   statsDisplay.appendChild(usernameInput);
+  gameContainer.appendChild(statsDisplay);
 
   function formatElapsed(ms) {
     const minutes = String(Math.floor(ms / 60000)).padStart(2, "0");
@@ -294,16 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (tile.count > 0) tile.el.textContent = tile.count;
     else getNeighbors(x, y).forEach(n => revealTile(n.x, n.y));
   }
-  
-    function isMobileDevice() {
-    return /Mobi|Android/i.test(navigator.userAgent);
-  }
-
-  function vibrateMobile(ms = 10) {
-    if (isMobileDevice() && 'vibrate' in navigator) {
-      navigator.vibrate(ms);
-    }
-  }
 
   function checkWin() {
     return board.flat().every(tile => tile.revealed || tile.mine);
@@ -333,32 +324,17 @@ document.addEventListener("DOMContentLoaded", () => {
       playWinAnimation();
     }
   }
-  
-  function checkDetonateReady() {
-  if (flagCount !== totalMines) {
-    detonateButton.style.display = "none";
-    return;
+
+  function revealAllAnimated() {
+    const mines = board.flat().filter(tile => tile.mine && !tile.revealed);
+    mines.forEach((tile, i) => {
+      setTimeout(() => {
+        tile.el.textContent = "💣";
+        tile.el.classList.add("mine");
+        tile.revealed = true;
+      }, i * 150);
+    });
   }
-
-    const allFlagsCorrect = board.every(row =>
-      row.every(cell =>
-        (!cell.flagged) || (cell.flagged && cell.isMine)
-      )
-    );
-
-    detonateButton.style.display = allFlagsCorrect ? "inline-block" : "none";
-  }
-
-    function revealAllAnimated() {
-      const mines = board.flat().filter(tile => tile.mine && !tile.revealed);
-      mines.forEach((tile, i) => {
-        setTimeout(() => {
-          tile.el.textContent = "💣";
-          tile.el.classList.add("mine");
-          tile.revealed = true;
-        }, i * 150);
-      });
-    }
 
   function playWinAnimation() {
     const colors = [
