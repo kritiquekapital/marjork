@@ -44,9 +44,9 @@ body {
 .duolingo            { grid-area: 1 / 3; }
 
 /* Second Row */
-.statsfm             { grid-area: 2 / 1; }
+.dropkickd-button    { grid-area: 2 / 1; }
 .letterboxd          { grid-area: 2 / 2; }
-.dropkickd-button    { grid-area: 2 / 3; }
+.statsfm             { grid-area: 2 / 3; }
 
 /* Third Row */
 .news-button         { grid-area: 3 / 1; }
@@ -1496,23 +1496,6 @@ body.theme-retro .click-wheel {
     opacity: 0.5;
   }
 }
-
-@media (max-width: 768px) {
-  #minesweeper-game.mobile-fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background-color: #000;
-    padding-top: env(safe-area-inset-top, 8px);
-    box-sizing: border-box;
-    z-index: 9999;
-    overflow: hidden;
-  }
 
   #minesweeper-game.mobile-fullscreen .minesweeper-header {
     flex: 0 0 auto;
