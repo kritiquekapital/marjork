@@ -71,8 +71,11 @@ export class Bounceable {
     const animate = (time) => {
       this.animationFrame = requestAnimationFrame(animate);
 
-      if (time - lastFrameTime < 1000 / 15) return; // Adjust the framerate
-      lastFrameTime = time;
+      // Skip frame only for retro mode
+      if (this.currentMode === Bounceable.modes.RETRO) {
+        if (time - lastFrameTime < 1000 / 15) return;
+        lastFrameTime = time;
+      }
 
       let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
       let newTop = parseFloat(this.element.style.top) + this.velocity.y;
@@ -80,7 +83,7 @@ export class Bounceable {
       const maxX = window.innerWidth - this.element.offsetWidth;
       const maxY = window.innerHeight - this.element.offsetHeight;
 
-      // Handle boundaries for normal and retro modes
+      // Bounce boundaries
       if (newLeft < 0) {
         newLeft = 0;
         this.velocity.x *= -0.9;
@@ -98,7 +101,6 @@ export class Bounceable {
         this.velocity.y *= -0.9;
       }
 
-      // Apply logic based on the active mode
       switch (this.currentMode) {
         case Bounceable.modes.RETRO:
           this.applyRetroMovement(newLeft, newTop);
@@ -182,8 +184,12 @@ export class Bounceable {
     setTimeout(() => dot.remove(), 500);
   }
 
-  // To switch between modes (normal, retro, zero-gravity)
   static switchMode(newMode) {
-    this.currentMode = newMode;
+    this.instances.forEach(instance => {
+      instance.currentMode = newMode;
+
+      if (newMode === Bounceable.modes.ZERO_GRAVITY && instance.isFree) {
+        instance.applyMovement();
+      }
+    });
   }
-}
