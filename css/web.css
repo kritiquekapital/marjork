@@ -96,7 +96,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: start;
-    padding-top: 5vh;
     min-height: 100dvh;
     overflow-x: hidden;
   }
@@ -118,7 +117,7 @@ body {
   }
 }
 
-@media screen and (max-width: 1024px) and (orientation: landscape) {
+@media screen and (orientation: landscape)
   .grid-container {
     grid-template-columns: repeat(5, 120px);
     grid-template-rows: repeat(3, 120px);
