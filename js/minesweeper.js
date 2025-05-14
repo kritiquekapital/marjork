@@ -102,18 +102,23 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
+      // Handle mode buttons (easy, medium, hard)
       leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        const isBooms = currentStat === "booms";
+        btn.classList.toggle("active", isBooms || btn.dataset.diff === currentDifficulty);
+        btn.onclick = () => {
           currentDifficulty = btn.dataset.diff;
           fetchLeaderboard();
-        });
+        };
       });
 
+      // Handle sort buttons (time, wins, booms)
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        btn.classList.toggle("active", btn.dataset.sort === currentStat);
+        btn.onclick = () => {
           currentStat = btn.dataset.sort;
           fetchLeaderboard();
-        });
+        };
       });
 
       leaderboardPanel.querySelector(".back-button").addEventListener("click", () => {
