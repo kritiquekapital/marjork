@@ -122,6 +122,34 @@ body {
   }
 }
 
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+  .grid-container {
+    grid-template-columns: repeat(5, 120px);
+    grid-template-rows: repeat(3, 120px);
+  }
+
+  /* Horizontal remapping */
+  .substack-button     { grid-area: 1 / 1; }
+  .twitter             { grid-area: 2 / 1; }
+  .duolingo            { grid-area: 3 / 1; }
+
+  .statsfm             { grid-area: 1 / 2; }
+  .letterboxd          { grid-area: 2 / 2; }
+  .dropkickd-button    { grid-area: 3 / 2; }
+
+  .spotify             { grid-area: 1 / 3; }
+  .photo               { grid-area: 2 / 3; }
+  .news-button         { grid-area: 3 / 3; }
+
+  .propaganda-link     { grid-area: 1 / 4; }
+  .kiss-button         { grid-area: 2 / 4; }
+  .vinyl               { grid-area: 3 / 4; }
+
+  .wip                 { grid-area: 1 / 5; }
+  .theme-button        { grid-area: 2 / 5; }
+  .secret-button       { grid-area: 3 / 5; }
+}
+
 /* ==================== */
 /* Theme Button */
 /* ==================== */
