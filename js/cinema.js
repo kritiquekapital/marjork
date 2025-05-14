@@ -1,11 +1,6 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-document.addEventListener("themeChange", () => {
-  const isSpace = document.body.classList.contains("theme-space");
-  draggableVideoPopup.setZeroGravityMode(isSpace);
-});
-document.dispatchEvent(new Event("themeChange"));
 
   // Hardcoded list of live links for the video player
   const liveLinks1 = [
@@ -50,8 +45,14 @@ document.dispatchEvent(new Event("themeChange"));
   let hasBeenDragged = false;
 
   if (videoPopup) {
-    const draggableVideoPopup = new Draggable(videoPopup);
+    const VideoPopup = new Draggable(videoPopup);
     draggableVideoPopup.isFree = false; // Set initial state as non-free (non-draggable)
+
+    document.addEventListener("themeChange", () => {
+      const isSpace = document.body.classList.contains("theme-space");
+      draggableVideoPopup.setZeroGravityMode(isSpace);
+    });
+    document.dispatchEvent(new Event("themeChange"));
 
     // Set initial position for the video popup (centered)
     videoPopup.style.position = "fixed";
