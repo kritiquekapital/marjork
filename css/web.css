@@ -631,7 +631,7 @@ body {
   background-position: center;
   border: none;
   cursor: pointer;
-  position: absolute; /* Default relative positioning within the grid */
+  position: relative; /* Default relative positioning within the grid */
   width: 120px;
   height: 120px;
   display: inline-block;
