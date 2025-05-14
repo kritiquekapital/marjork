@@ -1,6 +1,12 @@
 import { Draggable } from './draggable.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("themeChange", () => {
+  const isSpace = document.body.classList.contains("theme-space");
+  draggableVideoPopup.setZeroGravityMode(isSpace);
+});
+document.dispatchEvent(new Event("themeChange"));
+
   // Hardcoded list of live links for the video player
   const liveLinks1 = [
     "https://geo.dailymotion.com/player.html?video=x9irfr8",
@@ -58,6 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxX = window.innerWidth - videoPopup.offsetWidth - 35;
     const minY = 335;
     const maxY = window.innerHeight - videoPopup.offsetHeight - 335;
+
+    draggableVideoPopup.setZeroGravityMode = function(isZeroG) {
+      this.isZeroGravity = isZeroG;
+
+      if (isZeroG) {
+        this.applyPhysics(); // Start movement loop if not already started
+      } else {
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+      }
+    };
 
     // Adjust the draggable physics to respect these boundaries
     draggableVideoPopup.applyPhysics = function() {
