@@ -133,7 +133,6 @@ body {
     padding-left: 10px;
     padding-right: 10px;
   }
-}
 
   /* Horizontal remapping */
   .substack-button     { grid-area: 1 / 1; }
