@@ -108,7 +108,7 @@ body {
     max-width: calc(3 * 120px + 2 * 20px); /* 3 cols + 2 gaps */
   }
 
-  .grid-container > * {
+  .grid-container > *:not(#themeButton) {
     width: 100%;
     height: 100%;
     display: flex !important;
@@ -117,7 +117,7 @@ body {
   }
 }
 
-@media screen and (orientation: landscape)
+@media screen and (orientation: landscape) {
   .grid-container {
     grid-template-columns: repeat(5, 120px);
     grid-template-rows: repeat(3, 120px);
@@ -147,7 +147,7 @@ body {
   .vinyl               { grid-area: 3 / 4; }
 
   .wip                 { grid-area: 1 / 5; }
-  #themeButton        { grid-area: 2 / 5; }
+  #themeButton         { grid-area: 2 / 5; }
   .secret-button       { grid-area: 3 / 5; }
 }
 
