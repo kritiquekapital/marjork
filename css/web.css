@@ -126,7 +126,14 @@ body {
   .grid-container {
     grid-template-columns: repeat(5, 120px);
     grid-template-rows: repeat(3, 120px);
+    margin: 0 auto;
+    justify-content: center;
+    align-content: center;
+    place-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
   }
+}
 
   /* Horizontal remapping */
   .substack-button     { grid-area: 1 / 1; }
@@ -146,7 +153,7 @@ body {
   .vinyl               { grid-area: 3 / 4; }
 
   .wip                 { grid-area: 1 / 5; }
-  .theme-button        { grid-area: 2 / 5; }
+  #themeButton        { grid-area: 2 / 5; }
   .secret-button       { grid-area: 3 / 5; }
 }
 
