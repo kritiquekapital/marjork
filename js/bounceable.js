@@ -33,8 +33,8 @@ export class Bounceable {
       this.element.classList.add('free');
       const rect = this.element.getBoundingClientRect();
       this.element.style.position = 'fixed';
-      this.element.style.left = `${rect.left + window.scrollX}px`;
-      this.element.style.top = `${rect.top + window.scrollY}px`;
+      this.element.style.left = `${rect.left}px`;
+      this.element.style.top = `${rect.top}px`;
 
       // Set z-index to 99999 when free
       this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
@@ -156,7 +156,8 @@ export class Bounceable {
         width: '100vw',
         height: '100vh',
         pointerEvents: 'none',
-        zIndex: '9998' // One layer below the kiss button
+        zIndex: '9999' // One layer below the kiss button
+        transform: translateZ(0);
       });
       document.body.appendChild(Bounceable.trailLayer);
     }
