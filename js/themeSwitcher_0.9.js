@@ -98,12 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeButton = document.getElementById("themeButton");
 
   function preloadThemes() {
+    const activeHref = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
     themes.forEach(theme => {
-      const themeLink = document.createElement("link");
-      themeLink.rel = "preload";
-      themeLink.href = `css/themes/theme-${theme.name}.css`;
-      themeLink.as = "style";
-      document.head.appendChild(themeLink);
+      const href = `css/themes/theme-${theme.name}.css`;
+      if (href !== activeHref) {
+        const themeLink = document.createElement("link");
+        themeLink.rel = "preload";
+        themeLink.href = href;
+        themeLink.as = "style";
+        document.head.appendChild(themeLink);
+      }
     });
   }
 
