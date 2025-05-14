@@ -149,6 +149,8 @@ export class Bounceable {
     if (!Bounceable.trailLayer) {
       Bounceable.trailLayer = document.createElement('div');
       Bounceable.trailLayer.className = 'bounce-trail';
+      Bounceable.trailLayer.style.willChange = 'transform';
+      Bounceable.trailLayer.style.transform = 'translateZ(0)';
       Object.assign(Bounceable.trailLayer.style, {
         position: 'fixed',
         left: '0',
@@ -157,7 +159,6 @@ export class Bounceable {
         height: '100vh',
         pointerEvents: 'none',
         zIndex: '9999' // One layer below the kiss button
-        transform: translateZ(0);
       });
       document.body.appendChild(Bounceable.trailLayer);
     }
