@@ -751,7 +751,7 @@ body {
 }
 
 .vinyl {
-  position: absolute;
+  position: relative;
   width: 120px;
   height: 120px;
   display: flex;
