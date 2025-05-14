@@ -60,7 +60,7 @@ body {
 
 /* Fifth Row */
 .wip                 { grid-area: 5 / 1; }
-.theme-button        { grid-area: 5 / 2; }
+#themeButton        { grid-area: 5 / 2; }
 .secret-button       { grid-area: 5 / 3; }
 
 /* Backdrop Element */
