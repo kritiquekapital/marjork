@@ -81,6 +81,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(to right, #2b3a3e, #3f5b5d);
   }
 
   .container {
@@ -92,6 +93,7 @@
   }
 
   .grid-container {
+    display: grid;
     grid-template-columns: repeat(5, 100px);
     grid-template-rows: repeat(3, 100px);
     gap: 15px;
@@ -101,7 +103,6 @@
     position: relative;
     margin: 0 auto;
     transform: none !important;
-    display: grid;
     justify-content: center;
     align-content: center;
   }
@@ -118,6 +119,26 @@
     z-index: -1;
   }
 
+  /* Grid Reordering for Landscape 5x3 */
+  .substack-button     { grid-area: 1 / 1; }
+  .twitter             { grid-area: 1 / 2; }
+  .duolingo            { grid-area: 1 / 3; }
+  .dropkickd-button    { grid-area: 1 / 4; }
+  .letterboxd          { grid-area: 1 / 5; }
+
+  .statsfm             { grid-area: 2 / 1; }
+  .news-button         { grid-area: 2 / 2; }
+  .kiss-button         { grid-area: 2 / 3; }
+  .spotify             { grid-area: 2 / 4; }
+  .propaganda-link     { grid-area: 2 / 5; }
+
+  .photo               { grid-area: 3 / 1; }
+  .vinyl               { grid-area: 3 / 2; }
+  .wip                 { grid-area: 3 / 3; }
+  #themeButton         { grid-area: 3 / 4; }
+  .secret-button       { grid-area: 3 / 5; }
+
+  /* Buttons Resize */
   #themeButton,
   .wip,
   .spotify,
@@ -128,7 +149,12 @@
   .surprise,
   .propaganda,
   .kiss-button,
-  .vinyl {
+  .vinyl,
+  .substack-button,
+  .dropkickd-button,
+  .statsfm,
+  .twitter,
+  .secret-button {
     width: 100px !important;
     height: 100px !important;
   }
