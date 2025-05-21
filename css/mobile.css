@@ -1,62 +1,42 @@
-/* PORTRAIT: Phones & small devices */
 @media (max-width: 768px) {
   html, body {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: linear-gradient(to right, #2b3a3e, #3f5b5d);
+    overflow: hidden;
   }
 
   .container {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: auto;
+    width: auto;
   }
 
   .grid-container {
+    display: grid;
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(5, 100px);
     gap: 15px;
     padding: 20px;
-    margin: 0 auto;
-    display: grid;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
     justify-content: center;
     align-content: center;
-    transform: none !important;
-  }
-
-  .grid-backdrop {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    backdrop-filter: blur(10px);
-    background: rgba(43, 58, 62, 0.8);
-    border-radius: 20px;
-    z-index: -1;
-  }
-  
-  .grid-container {
-    width: calc(5 * 100px + 4 * 15px + 2 * 20px);
-    height: calc(3 * 100px + 2 * 15px + 2 * 20px);
   }
 
   .grid-backdrop {
     position: absolute;
-    inset: 0; /* shortcut for top: 0; right: 0; bottom: 0; left: 0; */
-    backdrop-filter: blur(10px);
+    inset: 0;
     background: rgba(43, 58, 62, 0.8);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     z-index: -1;
   }
@@ -75,39 +55,32 @@
   .secret-button,
   .propaganda,
   .kiss-button,
-  .vinyl {
-    width: 100px !important;
-    height: 100px !important;
-  }
-
+  .vinyl,
   .kiss-button.free {
     width: 100px !important;
     height: 100px !important;
   }
 }
 
-/* LANDSCAPE: Phones and tablets up to iPad 11" */
 @media (max-width: 2400px) and (orientation: landscape) {
   html, body {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
     background: linear-gradient(to right, #2b3a3e, #3f5b5d);
+    overflow: hidden;
   }
 
   .container {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: auto;
+    width: auto;
   }
 
   .grid-container {
@@ -116,52 +89,33 @@
     grid-template-rows: repeat(3, 100px);
     gap: 15px;
     padding: 20px;
-    margin: 0 auto;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
     justify-content: center;
     align-content: center;
-    transform: none !important;
-  }
-
-  .grid-backdrop {
-    width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    backdrop-filter: blur(10px);
-    background: rgba(43, 58, 62, 0.8);
-    border-radius: 20px;
-    z-index: -1;
-  }
-
-  .grid-container {
-    width: calc(5 * 100px + 4 * 15px + 2 * 20px);
-    height: calc(3 * 100px + 2 * 15px + 2 * 20px);
   }
 
   .grid-backdrop {
     position: absolute;
-    inset: 0; /* shortcut for top: 0; right: 0; bottom: 0; left: 0; */
-    backdrop-filter: blur(10px);
+    inset: 0;
     background: rgba(43, 58, 62, 0.8);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     z-index: -1;
   }
 
-  /* Grid Reordering */
+  /* Grid positions (optional, include if needed) */
   .substack-button     { grid-area: 1 / 2; }
   .twitter             { grid-area: 1 / 3; }
   .duolingo            { grid-area: 1 / 4; }
   .dropkickd-button    { grid-area: 1 / 5; }
   .letterboxd          { grid-area: 2 / 2; }
-
   .statsfm             { grid-area: 2 / 5; }
   .news-button         { grid-area: 2 / 1; }
   .kiss-button         { grid-area: 2 / 3; }
   .spotify             { grid-area: 2 / 4; }
   .propaganda-link     { grid-area: 1 / 1; }
-
   .photo               { grid-area: 3 / 1; }
   .vinyl               { grid-area: 3 / 5; }
   .wip                 { grid-area: 3 / 2; }
@@ -182,11 +136,7 @@
   .secret-button,
   .propaganda,
   .kiss-button,
-  .vinyl {
-    width: 100px !important;
-    height: 100px !important;
-  }
-
+  .vinyl,
   .kiss-button.free {
     width: 100px !important;
     height: 100px !important;
