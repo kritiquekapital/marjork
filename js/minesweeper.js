@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let startTime = null;
   let timerInterval = null;
   let hintTimeout;
+  let currentHintTile = null;
+
 
   let username = localStorage.getItem("minesweeperUsername") || "";
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
@@ -132,21 +134,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function scheduleHintAfterMove() {
     clearTimeout(hintTimeout);
-    board.flat().forEach(t => t.el.classList.remove("glow-hint"));
 
-    let waitTime = 2500;
+    if (currentHintTile) return; // Don't schedule if already hinting
+
+    let waitTime = 4000;
     if (currentDifficulty === "medium") waitTime = 5000;
     else if (currentDifficulty === "hard") waitTime = 8000;
 
     hintTimeout = setTimeout(() => {
-      if (gameOver || firstClick) return;
+      if (gameOver || firstClick || currentHintTile) return;
       highlightSafeTile();
     }, waitTime);
   }
 
   function highlightSafeTile() {
+    if (currentHintTile) return; // Already highlighting
+
     const revealedSafeTiles = board.flat().filter(tile => tile.revealed && !tile.mine);
     const guessable = new Set();
+
     revealedSafeTiles.forEach(tile => {
       getNeighbors(tile.x, tile.y).forEach(neighbor => {
         if (!neighbor.revealed && !neighbor.flagged && !neighbor.mine) {
@@ -154,6 +160,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+
+    if (guessable.size === 0) return;
+
+    const guessableArray = Array.from(guessable);
+    const tile = guessableArray[Math.floor(Math.random() * guessableArray.length)];
+
+    tile.el.classList.add("glow-hint");
+    currentHintTile = tile;
+  }
 
     if (guessable.size === 0) return;
 
@@ -325,6 +340,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       board.push(row);
     }
+ 
+    if (currentHintTile === board[y][x]) {
+      currentHintTile.el.classList.remove("glow-hint");
+      currentHintTile = null;
+    }
 
     updateTimerDisplay();
     updateBestTime();
@@ -401,6 +421,11 @@ document.addEventListener("DOMContentLoaded", () => {
       placeMines(x, y);
       firstClick = false;
       startTimer();
+    }
+
+    if (currentHintTile === board[y][x]) {
+      currentHintTile.el.classList.remove("glow-hint");
+      currentHintTile = null;
     }
 
     revealTile(x, y);
