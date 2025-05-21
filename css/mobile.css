@@ -116,23 +116,23 @@
   }
 
   /* Grid Reordering */
-  .substack-button     { grid-area: 1 / 1; }
-  .twitter             { grid-area: 1 / 2; }
-  .duolingo            { grid-area: 1 / 3; }
-  .dropkickd-button    { grid-area: 1 / 4; }
-  .letterboxd          { grid-area: 1 / 5; }
+  .substack-button     { grid-area: 1 / 2; }
+  .twitter             { grid-area: 1 / 3; }
+  .duolingo            { grid-area: 1 / 4; }
+  .dropkickd-button    { grid-area: 1 / 1; }
+  .letterboxd          { grid-area: 2 / 2; }
 
-  .statsfm             { grid-area: 2 / 1; }
-  .news-button         { grid-area: 2 / 2; }
+  .statsfm             { grid-area: 2 / 5; }
+  .news-button         { grid-area: 2 / 1; }
   .kiss-button         { grid-area: 2 / 3; }
   .spotify             { grid-area: 2 / 4; }
-  .propaganda-link     { grid-area: 2 / 5; }
+  .propaganda-link     { grid-area: 2 / 1; }
 
   .photo               { grid-area: 3 / 1; }
-  .vinyl               { grid-area: 3 / 2; }
-  .wip                 { grid-area: 3 / 3; }
-  #themeButton         { grid-area: 3 / 4; }
-  .secret-button       { grid-area: 3 / 5; }
+  .vinyl               { grid-area: 3 / 5; }
+  .wip                 { grid-area: 3 / 2; }
+  #themeButton         { grid-area: 3 / 3; }
+  .secret-button       { grid-area: 3 / 4; }
 
   .statsfm,
   #themeButton,
