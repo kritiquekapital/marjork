@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hintLoop = setInterval(() => {
       if (gameOver || firstClick) return;
       highlightSafeTile();
-    }, 2200);
+    }, 2500);
   }
 
   function highlightSafeTile() {
