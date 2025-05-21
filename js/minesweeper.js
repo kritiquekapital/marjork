@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
   let startTime = null;
   let timerInterval = null;
+  let hintTimeout;
 
   let username = localStorage.getItem("minesweeperUsername") || "";
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
@@ -59,12 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!Array.isArray(data)) throw new Error("Invalid leaderboard response");
 
       if (currentStat === "wins" || currentStat === "booms") {
-    data.sort((a, b) => {
-      const aVal = currentStat === "wins" ? (a[currentDifficulty] ?? 0) : (a.totalBooms ?? 0);
-      const bVal = currentStat === "wins" ? (b[currentDifficulty] ?? 0) : (b.totalBooms ?? 0);
-      return bVal - aVal; // descending
-    });
-  }
+        data.sort((a, b) => {
+          const aVal = currentStat === "wins" ? (a[currentDifficulty] ?? 0) : (a.totalBooms ?? 0);
+          const bVal = currentStat === "wins" ? (b[currentDifficulty] ?? 0) : (b.totalBooms ?? 0);
+          return bVal - aVal;
+        });
+      }
 
       leaderboardPanel.innerHTML = `
         <div class="leaderboard-header">
@@ -102,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      // Handle mode buttons (easy, medium, hard)
       leaderboardPanel.querySelectorAll(".mode-btn").forEach(btn => {
         const isBooms = currentStat === "booms";
         btn.classList.toggle("active", isBooms || btn.dataset.diff === currentDifficulty);
@@ -112,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
-      // Handle sort buttons (time, wins, booms)
       leaderboardPanel.querySelectorAll(".sort-btn").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.sort === currentStat);
         btn.onclick = () => {
@@ -129,6 +128,30 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) {
       console.error("Leaderboard fetch failed:", e);
     }
+  }
+
+  document.addEventListener("mousemove", resetHintTimer);
+  document.addEventListener("keydown", resetHintTimer);
+  document.addEventListener("touchstart", resetHintTimer);
+  document.addEventListener("click", resetHintTimer);
+  gridElement.addEventListener("click", resetHintTimer);
+
+  function resetHintTimer() {
+    clearTimeout(hintTimeout);
+    hintTimeout = setTimeout(() => {
+      if (gameOver || firstClick) return;
+      highlightSafeTile();
+    }, 5000);
+  }
+
+  function highlightSafeTile() {
+    const candidates = board.flat().filter(tile =>
+      !tile.revealed && !tile.flagged && !tile.mine
+    );
+    if (candidates.length === 0) return;
+    const tile = candidates[Math.floor(Math.random() * candidates.length)];
+    tile.el.classList.add("glow-hint");
+    setTimeout(() => tile.el.classList.remove("glow-hint"), 2000);
   }
 
   const infoContainer = document.createElement("div");
