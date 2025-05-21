@@ -135,19 +135,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function scheduleHintAfterMove() {
     clearTimeout(hintTimeout);
 
-    if (currentHintTile) return; // Don't re-schedule if a hint is still active
-
     let waitTime = 4000;
     if (currentDifficulty === "medium") waitTime = 5000;
     else if (currentDifficulty === "hard") waitTime = 8000;
 
     hintTimeout = setTimeout(() => {
-      if (gameOver || firstClick || currentHintTile) return;
+      if (gameOver || firstClick) return;
       highlightSafeTile();
     }, waitTime);
   }
 
   function highlightSafeTile() {
+    // Only highlight a new one if there’s no active hint or it was clicked
+    if (currentHintTile && !currentHintTile.revealed) return;
+
     const revealedSafeTiles = board.flat().filter(tile => tile.revealed && !tile.mine);
     const guessable = new Set();
 
@@ -164,10 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const guessableArray = Array.from(guessable);
     const tile = guessableArray[Math.floor(Math.random() * guessableArray.length)];
 
+    // Clear previous if any
+    if (currentHintTile) currentHintTile.el.classList.remove("glow-hint");
+
     tile.el.classList.add("glow-hint");
     currentHintTile = tile;
   }
-
+  
   const infoContainer = document.createElement("div");
   infoContainer.className = "minesweeper-info";
   const timerDisplay = document.createElement("div");
