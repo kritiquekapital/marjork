@@ -119,13 +119,21 @@ body.theme-retro button:hover {
 }
 
 .glow-hint {
-  animation: hintGlow 1s ease-in-out infinite;
-  box-shadow: 0 0 10px 2px #00ffcc;
+  animation: hintGlow 1.2s ease-in-out infinite;
+  box-shadow: 0 0 4px 2px #00ffe1aa, 0 0 8px 2px #00ffe155;
+  outline: 1px dashed #00ffe1aa;
+  z-index: 1;
 }
 
 @keyframes hintGlow {
-  0%, 100% { box-shadow: 0 0 10px 2px #00ffcc; }
-  50% { box-shadow: 0 0 20px 4px #00ffcc; }
+  0%, 100% {
+    box-shadow: 0 0 4px 2px #00ffe1aa, 0 0 8px 2px #00ffe155;
+    outline-color: #00ffe1aa;
+  }
+  50% {
+    box-shadow: 0 0 10px 3px #00ffe1ff, 0 0 12px 4px #00ffe188;
+    outline-color: #00ffe1ff;
+  }
 }
 
 #minesweeper-game.retro {
