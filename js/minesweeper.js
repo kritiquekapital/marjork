@@ -143,11 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     hintTimeout = setTimeout(() => {
       if (gameOver || firstClick || currentHintTile) return;
-      highlightSafeTile();
+      Tile();
     }, waitTime);
   }
 
-  function highlightSafeTile() {
+  function Tile() {
     if (currentHintTile) return; // Already highlighting
 
     const revealedSafeTiles = board.flat().filter(tile => tile.revealed && !tile.mine);
@@ -183,22 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2200);
   }
 
-  document.addEventListener("mousemove", resetHintTimer);
-  document.addEventListener("keydown", resetHintTimer);
-  document.addEventListener("touchstart", resetHintTimer);
-  document.addEventListener("click", resetHintTimer);
-  gridElement.addEventListener("click", resetHintTimer);
-
   let hintLoop;
-
-  function resetHintTimer() {
-    clearInterval(hintLoop);
-    board.flat().forEach(t => t.el.classList.remove("glow-hint")); // clean hint
-    hintLoop = setInterval(() => {
-      if (gameOver || firstClick) return;
-      highlightSafeTile();
-    }, 2500);
-  }
 
   function highlightSafeTile() {
     // Find revealed safe tiles
@@ -339,11 +324,6 @@ document.addEventListener("DOMContentLoaded", () => {
         gridElement.appendChild(tile);
       }
       board.push(row);
-    }
- 
-    if (currentHintTile === board[y][x]) {
-      currentHintTile.el.classList.remove("glow-hint");
-      currentHintTile = null;
     }
 
     updateTimerDisplay();
