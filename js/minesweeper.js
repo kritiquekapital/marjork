@@ -273,13 +273,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function placeMines(safeX, safeY) {
     const { cols, rows, mines } = difficulties[currentDifficulty];
     let placed = 0;
+
+    // Define safe radius based on difficulty
+    const safeRadius = currentDifficulty === "hard" ? 3 : currentDifficulty === "medium" ? 2 : 1;
+
     while (placed < mines) {
       const x = Math.floor(Math.random() * cols);
       const y = Math.floor(Math.random() * rows);
-      if (board[y][x].mine || (Math.abs(x - safeX) <= 1 && Math.abs(y - safeY) <= 1)) continue;
+      const distX = Math.abs(x - safeX);
+      const distY = Math.abs(y - safeY);
+      if (board[y][x].mine || (distX <= safeRadius && distY <= safeRadius)) continue;
       board[y][x].mine = true;
       placed++;
     }
+
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         if (!board[y][x].mine) {
@@ -288,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
+
 
   function getNeighbors(x, y) {
     const neighbors = [];
