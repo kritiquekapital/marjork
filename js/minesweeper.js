@@ -140,23 +140,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetHintTimer() {
     clearInterval(hintLoop);
+    board.flat().forEach(t => t.el.classList.remove("glow-hint")); // clean hint
     hintLoop = setInterval(() => {
       if (gameOver || firstClick) return;
       highlightSafeTile();
-    }, 2500);
+    }, 2200);
   }
 
   function highlightSafeTile() {
-    const candidates = board.flat().filter(tile =>
-      !tile.revealed && !tile.flagged && !tile.mine
-    );
-    if (candidates.length === 0) return;
-    const tile = candidates[Math.floor(Math.random() * candidates.length)];
-    tile.el.classList.add("glow-hint");
+    // Find revealed safe tiles
+    const revealedSafeTiles = board.flat().filter(tile => tile.revealed && !tile.mine);
 
+    // Create a Set of guessable neighbors
+    const guessable = new Set();
+    revealedSafeTiles.forEach(tile => {
+      getNeighbors(tile.x, tile.y).forEach(neighbor => {
+        if (!neighbor.revealed && !neighbor.flagged && !neighbor.mine) {
+          guessable.add(neighbor);
+        }
+      });
+    });
+
+    if (guessable.size === 0) return;
+
+    // Choose one random tile to highlight
+    const guessableArray = Array.from(guessable);
+    const tile = guessableArray[Math.floor(Math.random() * guessableArray.length)];
+
+    // Remove any previous hint before applying
+    board.flat().forEach(t => t.el.classList.remove("glow-hint"));
+
+    tile.el.classList.add("glow-hint");
     setTimeout(() => {
       tile.el.classList.remove("glow-hint");
-    }, 2200); // slightly shorter than interval so it fades before next pulse
+    }, 8000);
   }
 
   const infoContainer = document.createElement("div");
