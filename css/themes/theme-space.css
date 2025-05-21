@@ -80,23 +80,25 @@ body.theme-space .grid-container {
   position: relative;
 }
 
+/* ==================== */
+/* Space Theme */
+/* ==================== */
 body.theme-space {
   background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/space.png') no-repeat center center fixed;
   background-size: cover;
-  color: #00ffff; /* optional */
+  color: #00ffff;
   font-family: 'Orbitron', sans-serif;
+  position: relative;
 }
 
+/* Grid backdrop tint */
 body.theme-space .grid-backdrop {
-  background: rgba(0, 0, 0, 0.65); /* dark overlay for readability */
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(5px);
+  z-index: -1;
 }
 
-@keyframes starfield {
-  from { background-position: 0 0; }
-  to { background-position: 10000px 5000px; }
-}
-
+/* ==== Space Minesweeper ==== */
 #minesweeper-game.space {
   background: rgba(15, 15, 35, 0.85);
   border: 2px solid #0ff;
@@ -114,6 +116,7 @@ body.theme-space .grid-backdrop {
   align-items: center;
 }
 
+/* Tile styles */
 #minesweeper-game.space .tile {
   display: flex;
   justify-content: center;
@@ -155,6 +158,7 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 10px #00ffee99;
 }
 
+/* Controls */
 #minesweeper-game.space .minesweeper-controls button,
 #minesweeper-game.space .difficulty-select,
 #minesweeper-game.space .fullscreen-button,
@@ -175,6 +179,7 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 12px #00ffff99;
 }
 
+/* Info & Stats */
 #minesweeper-game.space .minesweeper-info,
 #minesweeper-game.space .minesweeper-stats {
   background-color: rgba(0, 12, 24, 0.6);
@@ -183,9 +188,9 @@ body.theme-space .grid-backdrop {
   color: #9befff;
   padding: 8px;
   font-size: 12px;
-  font-family: 'Orbitron', sans-serif;
 }
 
+/* Leaderboard */
 #leaderboard.space {
   background: rgba(0, 0, 20, 0.9);
   border: 2px solid #0ff;
@@ -197,6 +202,7 @@ body.theme-space .grid-backdrop {
   overflow-y: auto;
 }
 
+/* Glow hint */
 .glow-hint {
   animation: spaceGlow 1.2s ease-in-out infinite;
   box-shadow: 0 0 6px 2px #00ffe1aa, 0 0 12px 3px #00ffe155;
