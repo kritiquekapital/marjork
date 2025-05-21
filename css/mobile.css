@@ -143,6 +143,6 @@
   .photo               { grid-area: 3 / 1; }
   .vinyl               { grid-area: 3 / 5; }
   .wip                 { grid-area: 3 / 2; }
-  .theme-button         { grid-area: 3 / 3; }
+  #themeButton         { grid-area: 3 / 3; }
   .secret-button       { grid-area: 3 / 4; }
 }
