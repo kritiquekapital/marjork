@@ -48,9 +48,8 @@
   }
   
   .grid-container {
-    width: fit-content;
-    height: fit-content;
-    position: relative;
+    width: calc(5 * 100px + 4 * 15px + 2 * 20px);
+    height: calc(3 * 100px + 2 * 15px + 2 * 20px);
   }
 
   .grid-backdrop {
@@ -137,9 +136,8 @@
   }
 
   .grid-container {
-    width: fit-content;
-    height: fit-content;
-    position: relative;
+    width: calc(5 * 100px + 4 * 15px + 2 * 20px);
+    height: calc(3 * 100px + 2 * 15px + 2 * 20px);
   }
 
   .grid-backdrop {
