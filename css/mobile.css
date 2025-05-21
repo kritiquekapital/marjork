@@ -1,34 +1,48 @@
 @media (max-width: 768px) {
-  body {
-    flex-direction: column;
-    justify-content: flex-start;
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    overflow-x: hidden;
-    min-height: 100vh;
+    background: linear-gradient(to right, #2b3a3e, #3f5b5d);
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .grid-container {
-    grid-template-columns: repeat(3, 90px);
-    grid-template-rows: repeat(5, 90px);
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(5, 100px);
     gap: 15px;
-    padding: 15px;
-    margin-top: 40px;
+    padding: 20px;
     width: auto;
     height: auto;
+    position: relative;
+    margin: 0 auto;
+    transform: none !important;
+    display: grid;
     justify-content: center;
     align-content: center;
-    transform: none !important;
   }
 
   .grid-backdrop {
     width: 100%;
     height: 100%;
-    border-radius: 20px;
     position: absolute;
     top: 0;
     left: 0;
     backdrop-filter: blur(10px);
     background: rgba(43, 58, 62, 0.8);
+    border-radius: 20px;
     z-index: -1;
   }
 
@@ -36,19 +50,22 @@
   .wip,
   .spotify,
   .duolingo,
+  .twitter,
+  .dropkickd,
+  .statsfm,
   .letterboxd,
   .photo,
   .news-button,
-  .surprise,
+  .hidden-button,
   .propaganda,
   .kiss-button,
   .vinyl {
-    width: 90px;
-    height: 90px;
+    width: 100px !important;
+    height: 100px !important;
   }
 
   .kiss-button.free {
-    width: 90px !important;
-    height: 90px !important;
+    width: 100px !important;
+    height: 100px !important;
   }
 }
