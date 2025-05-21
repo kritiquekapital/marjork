@@ -46,6 +46,21 @@
     border-radius: 20px;
     z-index: -1;
   }
+  
+  .grid-container {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+  }
+
+  .grid-backdrop {
+    position: absolute;
+    inset: 0; /* shortcut for top: 0; right: 0; bottom: 0; left: 0; */
+    backdrop-filter: blur(10px);
+    background: rgba(43, 58, 62, 0.8);
+    border-radius: 20px;
+    z-index: -1;
+  }
 
   .statsfm,
   #themeButton,
@@ -115,6 +130,21 @@
     position: absolute;
     top: 0;
     left: 0;
+    backdrop-filter: blur(10px);
+    background: rgba(43, 58, 62, 0.8);
+    border-radius: 20px;
+    z-index: -1;
+  }
+
+  .grid-container {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+  }
+
+  .grid-backdrop {
+    position: absolute;
+    inset: 0; /* shortcut for top: 0; right: 0; bottom: 0; left: 0; */
     backdrop-filter: blur(10px);
     background: rgba(43, 58, 62, 0.8);
     border-radius: 20px;
