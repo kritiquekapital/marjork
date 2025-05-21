@@ -74,38 +74,20 @@ body.theme-space .grid-backdrop {
     linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
-body.theme-retro .grid-container,
 body.theme-space .grid-container {
   z-index: 0;
   position: relative;
 }
 
-/* ==================== */
-/* Space Theme */
-/* ==================== */
-body.theme-space {
-  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/space.png') no-repeat center center fixed;
-  background-size: cover;
-  color: #00ffff;
-  font-family: 'Orbitron', sans-serif;
-  position: relative;
-}
-
-/* Grid backdrop tint */
-body.theme-space .grid-backdrop {
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(5px);
-  z-index: -1;
-}
-
 /* ==== Space Minesweeper ==== */
 #minesweeper-game.space {
-  background: rgba(15, 15, 35, 0.85);
+  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/space.png') center center / cover no-repeat;
   border: 2px solid #0ff;
   box-shadow: 0 0 20px #00f2ff88;
   border-radius: 12px;
   padding: 12px;
   font-family: 'Orbitron', sans-serif;
+  color: #00ffff;
 }
 
 #minesweeper-game.space #minesweeper-grid {
