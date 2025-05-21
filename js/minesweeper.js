@@ -136,12 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", resetHintTimer);
   gridElement.addEventListener("click", resetHintTimer);
 
+  let hintLoop;
+
   function resetHintTimer() {
-    clearTimeout(hintTimeout);
-    hintTimeout = setTimeout(() => {
+    clearInterval(hintLoop);
+    hintLoop = setInterval(() => {
       if (gameOver || firstClick) return;
       highlightSafeTile();
-    }, 5000);
+    }, 2500);
   }
 
   function highlightSafeTile() {
@@ -151,7 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (candidates.length === 0) return;
     const tile = candidates[Math.floor(Math.random() * candidates.length)];
     tile.el.classList.add("glow-hint");
-    setTimeout(() => tile.el.classList.remove("glow-hint"), 2000);
+
+    setTimeout(() => {
+      tile.el.classList.remove("glow-hint");
+    }, 2200); // slightly shorter than interval so it fades before next pulse
   }
 
   const infoContainer = document.createElement("div");
