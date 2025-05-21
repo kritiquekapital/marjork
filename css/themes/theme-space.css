@@ -79,35 +79,147 @@ body.theme-space .grid-container {
   position: relative;
 }
 
+/* ==================== */
+/* Space Theme - Enhanced */
+/* ==================== */
+
+body.theme-space {
+  background-color: #000814; /* Deep space */
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  overflow: hidden;
+}
+
+body.theme-space .grid-backdrop {
+  background: radial-gradient(circle at center, #000814 0%, #000000 100%);
+  backdrop-filter: blur(6px);
+}
+
+/* Animated Stars Background Layer */
+body.theme-space::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Buttons */
+body.theme-space button {
+  background: linear-gradient(145deg, #1e2a78, #0b3d91);
+  color: #ffd700;
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 10px #ffd700aa;
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+}
+
+body.theme-space button:hover {
+  background: #0b3d91;
+  box-shadow: 0 0 12px #fffa;
+}
+
+/* Kiss Trail Dot */
+.bounce-dot {
+  background-color: #ffd700;
+  opacity: 0.4;
+}
+
+/* Glow hint */
+.glow-hint {
+  animation: spaceHintGlow 1.4s ease-in-out infinite;
+  box-shadow: 0 0 5px 2px #ffd700aa, 0 0 10px 3px #0b3d91aa;
+  outline: 1px dashed #ffd70088;
+}
+
+@keyframes spaceHintGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px 2px #ffd700aa, 0 0 10px 3px #0b3d91aa;
+  }
+  50% {
+    box-shadow: 0 0 12px 3px #ffd700ff, 0 0 14px 4px #0b3d91ff;
+  }
+}
+
+/* Container */
 #minesweeper-game.space {
-  background: #0b0c1a;
-  border: 3px solid #03a9f4;
-  box-shadow: 0 0 25px #00e5ff;
+  background: rgba(0, 0, 0, 0.75);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px #00f2ff;
+  font-family: "Orbitron", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+}
+
+/* Controls */
+#minesweeper-game.space .minesweeper-controls button {
+  background: linear-gradient(145deg, #1e2a78, #0b3d91);
+  color: #ffd700;
+  border: 1px solid #ffffff;
+  box-shadow: 0 0 10px #ffd700aa;
+  font-size: 14px;
+  padding: 6px 12px;
+}
+
+/* Grid */
+#minesweeper-game.space #minesweeper-grid {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 12px;
 }
 
 #minesweeper-game.space .tile {
-  background: #1a237e;
-  border: 2px solid #00acc1;
-  color: #b2ebf2;
-  font-size: 25px;
+  background: #0b0f1a;
+  border: 2px solid #1e2a78;
+  font-size: 24px;
+  color: #ffd700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1;
+  transition: background 0.2s ease;
 }
 
 #minesweeper-game.space .tile.revealed {
-  background: #263238;
-  color: #80deea;
+  background: #111b30;
+  color: #00f2ff;
+  border-color: #334;
 }
 
 #minesweeper-game.space .tile.mine {
-  color: #ff1744;
+  color: red;
 }
 
 #minesweeper-game.space .tile.flagged {
-  background-color: #004d40;
-  color: #f50057;
+  background-color: #331100;
+  color: #ff4500;
 }
 
-#minesweeper-game.space .close-button,
-#minesweeper-game.space .difficulty-select {
-  background-color: #00bcd4;
-  color: white;
+/* Stats Panel */
+#minesweeper-game.space .minesweeper-info,
+#minesweeper-game.space .minesweeper-stats {
+  background-color: rgba(10, 10, 30, 0.6);
+  border: 1px solid #fff;
+  padding: 10px;
+  margin-top: 6px;
+  color: #ffd700;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Leaderboard */
+body.theme-space #leaderboard {
+  background: #000814;
+  color: #ffd700;
+  font-family: "Orbitron", sans-serif;
+  border: 2px solid #0b3d91;
+  box-shadow: 0 0 20px #00f2ff;
+}
+
+body.theme-space .leaderboard-header::after {
+  background: linear-gradient(90deg, #ffd700, #00f2ff, #ffcc00);
 }
