@@ -118,6 +118,16 @@ body.theme-retro button:hover {
   }
 }
 
+.glow-hint {
+  animation: hintGlow 1s ease-in-out infinite;
+  box-shadow: 0 0 10px 2px #00ffcc;
+}
+
+@keyframes hintGlow {
+  0%, 100% { box-shadow: 0 0 10px 2px #00ffcc; }
+  50% { box-shadow: 0 0 20px 4px #00ffcc; }
+}
+
 #minesweeper-game.retro {
   background: #000;
   border: 3px solid #0ff;
