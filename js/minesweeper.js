@@ -20,8 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let startTime = null;
   let timerInterval = null;
   let hintTimeout;
-  let currentHintTile = null;
-
 
   let username = localStorage.getItem("minesweeperUsername") || "";
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
