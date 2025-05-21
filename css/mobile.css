@@ -1,3 +1,4 @@
+/* PORTRAIT: Phones & small devices */
 @media (max-width: 768px) {
   html, body {
     width: 100%;
@@ -24,14 +25,11 @@
     grid-template-rows: repeat(5, 100px);
     gap: 15px;
     padding: 20px;
-    width: auto;
-    height: auto;
-    position: relative;
     margin: 0 auto;
-    transform: none !important;
     display: grid;
     justify-content: center;
     align-content: center;
+    transform: none !important;
   }
 
   .grid-backdrop {
@@ -46,6 +44,7 @@
     z-index: -1;
   }
 
+  .statsfm,
   #themeButton,
   .wip,
   .spotify,
@@ -53,10 +52,6 @@
   .twitter,
   .dropkickd-button,
   .substack-button,
-  .statsfm {
-    width: 100px !important;
-    height: 100px !important;
-  }
   .letterboxd,
   .photo,
   .news-button,
@@ -74,6 +69,7 @@
   }
 }
 
+/* LANDSCAPE: Phones and tablets up to iPad 11" */
 @media (max-width: 2400px) and (orientation: landscape) {
   html, body {
     width: 100%;
@@ -101,13 +97,10 @@
     grid-template-rows: repeat(3, 100px);
     gap: 15px;
     padding: 20px;
-    width: auto;
-    height: auto;
-    position: relative;
     margin: 0 auto;
-    transform: none !important;
     justify-content: center;
     align-content: center;
+    transform: none !important;
   }
 
   .grid-backdrop {
@@ -122,7 +115,7 @@
     z-index: -1;
   }
 
-  /* Grid Reordering for Landscape 5x3 */
+  /* Grid Reordering */
   .substack-button     { grid-area: 1 / 1; }
   .twitter             { grid-area: 1 / 2; }
   .duolingo            { grid-area: 1 / 3; }
@@ -141,26 +134,21 @@
   #themeButton         { grid-area: 3 / 4; }
   .secret-button       { grid-area: 3 / 5; }
 
-  /* Buttons Resize */
+  .statsfm,
   #themeButton,
   .wip,
   .spotify,
   .duolingo,
+  .twitter,
+  .dropkickd-button,
+  .substack-button,
   .letterboxd,
   .photo,
   .news-button,
-  .surprise,
+  .secret-button,
   .propaganda,
   .kiss-button,
-  .vinyl,
-  .substack-button,
-  .dropkickd-button,
-  .statsfm {
-    width: 100px !important;
-    height: 100px !important;
-  }
-  .twitter,
-  .secret-button {
+  .vinyl {
     width: 100px !important;
     height: 100px !important;
   }
