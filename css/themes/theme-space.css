@@ -47,6 +47,7 @@ body.theme-space .grid-backdrop {
 .theme-space .substack-button img {
   content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
 }
+
 /* Space Theme Inactivity Tint */
 .space-tint {
   position: fixed;
@@ -80,21 +81,15 @@ body.theme-space .grid-container {
 }
 
 body.theme-space {
-  background: radial-gradient(ellipse at bottom, #050d1f 0%, #000000 100%);
-  color: #9befff;
+  background: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/space.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #00ffff; /* optional */
   font-family: 'Orbitron', sans-serif;
-  overflow: hidden;
 }
 
-body.theme-space::before {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/starscape.png') repeat;
-  opacity: 0.05;
-  animation: starfield 60s linear infinite;
-  z-index: -1;
+body.theme-space .grid-backdrop {
+  background: rgba(0, 0, 0, 0.65); /* dark overlay for readability */
+  backdrop-filter: blur(3px);
 }
 
 @keyframes starfield {
