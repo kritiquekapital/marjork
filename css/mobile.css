@@ -155,7 +155,10 @@
   .vinyl,
   .substack-button,
   .dropkickd-button,
-  .statsfm,
+  .statsfm {
+    width: 100px !important;
+    height: 100px !important;
+  }
   .twitter,
   .secret-button {
     width: 100px !important;
