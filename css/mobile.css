@@ -53,7 +53,10 @@
   .twitter,
   .dropkickd-button,
   .substack-button,
-  .statsfm,
+  .statsfm {
+    width: 100px !important;
+    height: 100px !important;
+  }
   .letterboxd,
   .photo,
   .news-button,
