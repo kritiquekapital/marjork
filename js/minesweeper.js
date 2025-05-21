@@ -262,6 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
     gridElement.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     gridElement.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 
+    currentHintTile = null;
+    clearTimeout(hintTimeout);
+
     for (let y = 0; y < rows; y++) {
       const row = [];
       for (let x = 0; x < cols; x++) {
