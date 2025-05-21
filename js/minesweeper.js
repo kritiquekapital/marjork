@@ -130,6 +130,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function scheduleHintAfterMove() {
+    clearTimeout(hintTimeout);
+    board.flat().forEach(t => t.el.classList.remove("glow-hint"));
+
+    let waitTime = 2500;
+    if (currentDifficulty === "medium") waitTime = 5000;
+    else if (currentDifficulty === "hard") waitTime = 8000;
+
+    hintTimeout = setTimeout(() => {
+      if (gameOver || firstClick) return;
+      highlightSafeTile();
+    }, waitTime);
+  }
+
+  function highlightSafeTile() {
+    const revealedSafeTiles = board.flat().filter(tile => tile.revealed && !tile.mine);
+    const guessable = new Set();
+    revealedSafeTiles.forEach(tile => {
+      getNeighbors(tile.x, tile.y).forEach(neighbor => {
+        if (!neighbor.revealed && !neighbor.flagged && !neighbor.mine) {
+          guessable.add(neighbor);
+        }
+      });
+    });
+
+    if (guessable.size === 0) return;
+
+    const guessableArray = Array.from(guessable);
+    const tile = guessableArray[Math.floor(Math.random() * guessableArray.length)];
+
+    board.flat().forEach(t => t.el.classList.remove("glow-hint"));
+
+    tile.el.classList.add("glow-hint");
+    setTimeout(() => {
+      tile.el.classList.remove("glow-hint");
+    }, 2200);
+  }
+
   document.addEventListener("mousemove", resetHintTimer);
   document.addEventListener("keydown", resetHintTimer);
   document.addEventListener("touchstart", resetHintTimer);
@@ -337,6 +375,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tile.revealed) return;
     tile.flagged = !tile.flagged;
     tile.el.textContent = tile.flagged ? "🫥" : "";
+
+    scheduleHintAfterMove(); // ✅ added here
   }
 
   function revealTile(x, y) {
@@ -376,6 +416,8 @@ document.addEventListener("DOMContentLoaded", () => {
       stopTimer(true);
       playWinAnimation();
     }
+
+    scheduleHintAfterMove(); // ✅ added here
   }
 
   function revealAllAnimated() {
