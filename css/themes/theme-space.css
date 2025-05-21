@@ -81,7 +81,7 @@ body.theme-space .grid-container {
 }
 
 body.theme-space {
-  background: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/space.png') no-repeat center center fixed;
+  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/space.png') no-repeat center center fixed;
   background-size: cover;
   color: #00ffff; /* optional */
   font-family: 'Orbitron', sans-serif;
@@ -106,13 +106,28 @@ body.theme-space .grid-backdrop {
   font-family: 'Orbitron', sans-serif;
 }
 
+#minesweeper-game.space #minesweeper-grid {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
 #minesweeper-game.space .tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1;
+  width: 100%;
+  height: auto;
+  font-size: 18px;
+  font-weight: bold;
+  user-select: none;
   background: linear-gradient(145deg, #0a0a1a, #0d0d26);
   border: 2px solid #00ffe1;
   color: #00ffee;
   box-shadow: inset 0 0 8px #00ffee66;
-  font-size: 18px;
-  font-weight: bold;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -177,6 +192,9 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 20px #0ff;
   color: #00ffee;
   font-family: 'Orbitron', sans-serif;
+  padding: 1rem;
+  border-radius: 12px;
+  overflow-y: auto;
 }
 
 .glow-hint {
