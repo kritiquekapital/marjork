@@ -79,147 +79,122 @@ body.theme-space .grid-container {
   position: relative;
 }
 
-/* ==================== */
-/* Space Theme - Enhanced */
-/* ==================== */
-
 body.theme-space {
-  background-color: #000814; /* Deep space */
-  color: #ffffff;
-  font-family: "Orbitron", sans-serif;
+  background: radial-gradient(ellipse at bottom, #050d1f 0%, #000000 100%);
+  color: #9befff;
+  font-family: 'Orbitron', sans-serif;
   overflow: hidden;
 }
 
-body.theme-space .grid-backdrop {
-  background: radial-gradient(circle at center, #000814 0%, #000000 100%);
-  backdrop-filter: blur(6px);
-}
-
-/* Animated Stars Background Layer */
 body.theme-space::before {
   content: "";
   position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: url('https://www.transparenttextures.com/patterns/stardust.png');
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
+  width: 100vw; height: 100vh;
+  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/starscape.png') repeat;
+  opacity: 0.05;
+  animation: starfield 60s linear infinite;
+  z-index: -1;
 }
 
-/* Buttons */
-body.theme-space button {
-  background: linear-gradient(145deg, #1e2a78, #0b3d91);
-  color: #ffd700;
-  border: 2px solid #ffd700;
-  box-shadow: 0 0 10px #ffd700aa;
-  font-family: "Orbitron", sans-serif;
-  text-transform: uppercase;
+@keyframes starfield {
+  from { background-position: 0 0; }
+  to { background-position: 10000px 5000px; }
 }
 
-body.theme-space button:hover {
-  background: #0b3d91;
-  box-shadow: 0 0 12px #fffa;
-}
-
-/* Kiss Trail Dot */
-.bounce-dot {
-  background-color: #ffd700;
-  opacity: 0.4;
-}
-
-/* Glow hint */
-.glow-hint {
-  animation: spaceHintGlow 1.4s ease-in-out infinite;
-  box-shadow: 0 0 5px 2px #ffd700aa, 0 0 10px 3px #0b3d91aa;
-  outline: 1px dashed #ffd70088;
-}
-
-@keyframes spaceHintGlow {
-  0%, 100% {
-    box-shadow: 0 0 5px 2px #ffd700aa, 0 0 10px 3px #0b3d91aa;
-  }
-  50% {
-    box-shadow: 0 0 12px 3px #ffd700ff, 0 0 14px 4px #0b3d91ff;
-  }
-}
-
-/* Container */
 #minesweeper-game.space {
-  background: rgba(0, 0, 0, 0.75);
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 20px #00f2ff;
-  font-family: "Orbitron", sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #ffffff;
-}
-
-/* Controls */
-#minesweeper-game.space .minesweeper-controls button {
-  background: linear-gradient(145deg, #1e2a78, #0b3d91);
-  color: #ffd700;
-  border: 1px solid #ffffff;
-  box-shadow: 0 0 10px #ffd700aa;
-  font-size: 14px;
-  padding: 6px 12px;
-}
-
-/* Grid */
-#minesweeper-game.space #minesweeper-grid {
-  display: grid;
-  gap: 2px;
-  margin-bottom: 12px;
+  background: rgba(15, 15, 35, 0.85);
+  border: 2px solid #0ff;
+  box-shadow: 0 0 20px #00f2ff88;
+  border-radius: 12px;
+  padding: 12px;
+  font-family: 'Orbitron', sans-serif;
 }
 
 #minesweeper-game.space .tile {
-  background: #0b0f1a;
-  border: 2px solid #1e2a78;
-  font-size: 24px;
-  color: #ffd700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1;
-  transition: background 0.2s ease;
+  background: linear-gradient(145deg, #0a0a1a, #0d0d26);
+  border: 2px solid #00ffe1;
+  color: #00ffee;
+  box-shadow: inset 0 0 8px #00ffee66;
+  font-size: 18px;
+  font-weight: bold;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 #minesweeper-game.space .tile.revealed {
-  background: #111b30;
-  color: #00f2ff;
-  border-color: #334;
+  background: #111830;
+  border-color: #00bcd4;
+  color: #aaffff;
+  box-shadow: none;
 }
 
 #minesweeper-game.space .tile.mine {
-  color: red;
+  background-color: #4b0000;
+  color: #ff0033;
+  border-color: #ff0033;
 }
 
 #minesweeper-game.space .tile.flagged {
-  background-color: #331100;
-  color: #ff4500;
+  background-color: #1c1c3b;
+  color: #ffaa00;
+  border-color: #ffaa00;
 }
 
-/* Stats Panel */
+#minesweeper-game.space .tile:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 10px #00ffee99;
+}
+
+#minesweeper-game.space .minesweeper-controls button,
+#minesweeper-game.space .difficulty-select,
+#minesweeper-game.space .fullscreen-button,
+#minesweeper-game.space .new-game-button,
+#minesweeper-game.space .close-button {
+  background: linear-gradient(135deg, #000428, #004e92);
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: 'Orbitron', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#minesweeper-game.space .minesweeper-controls button:hover {
+  background: #00ffff22;
+  box-shadow: 0 0 12px #00ffff99;
+}
+
 #minesweeper-game.space .minesweeper-info,
 #minesweeper-game.space .minesweeper-stats {
-  background-color: rgba(10, 10, 30, 0.6);
-  border: 1px solid #fff;
-  padding: 10px;
-  margin-top: 6px;
-  color: #ffd700;
-  font-family: "Orbitron", sans-serif;
+  background-color: rgba(0, 12, 24, 0.6);
+  border: 1px solid #00ffff88;
+  border-radius: 6px;
+  color: #9befff;
+  padding: 8px;
+  font-size: 12px;
+  font-family: 'Orbitron', sans-serif;
 }
 
-/* Leaderboard */
-body.theme-space #leaderboard {
-  background: #000814;
-  color: #ffd700;
-  font-family: "Orbitron", sans-serif;
-  border: 2px solid #0b3d91;
-  box-shadow: 0 0 20px #00f2ff;
+#leaderboard.space {
+  background: rgba(0, 0, 20, 0.9);
+  border: 2px solid #0ff;
+  box-shadow: 0 0 20px #0ff;
+  color: #00ffee;
+  font-family: 'Orbitron', sans-serif;
 }
 
-body.theme-space .leaderboard-header::after {
-  background: linear-gradient(90deg, #ffd700, #00f2ff, #ffcc00);
+.glow-hint {
+  animation: spaceGlow 1.2s ease-in-out infinite;
+  box-shadow: 0 0 6px 2px #00ffe1aa, 0 0 12px 3px #00ffe155;
+  outline: 1px dashed #00ffe1aa;
+}
+
+@keyframes spaceGlow {
+  0%, 100% {
+    box-shadow: 0 0 6px 2px #00ffe1aa, 0 0 12px 3px #00ffe155;
+  }
+  50% {
+    box-shadow: 0 0 12px 4px #00ffe1ff, 0 0 20px 6px #00ffe188;
+  }
 }
