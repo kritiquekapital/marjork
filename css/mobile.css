@@ -1,4 +1,5 @@
-@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
+/* ✅ PORTRAIT: Touch devices only, max 768px wide (phones upright) */
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) and (max-width: 768px) {
   html, body {
     margin: 0;
     padding: 0;
@@ -62,7 +63,8 @@
   }
 }
 
-@media (hover: none) and (pointer: coarse) and (max-width: 768px) {
+/* ✅ LANDSCAPE: Touch devices only (phones/tablets sideways) */
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
   html, body {
     margin: 0;
     padding: 0;
@@ -85,8 +87,8 @@
 
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(5, 100px);
+    grid-template-columns: repeat(5, 100px);
+    grid-template-rows: repeat(3, 100px);
     gap: 15px;
     padding: 20px;
     position: relative;
@@ -124,4 +126,23 @@
     width: 100px !important;
     height: 100px !important;
   }
+
+  /* Optional Grid Layout Override */
+  .substack-button     { grid-area: 1 / 2; }
+  .twitter             { grid-area: 1 / 3; }
+  .duolingo            { grid-area: 1 / 4; }
+  .dropkickd-button    { grid-area: 1 / 5; }
+  .letterboxd          { grid-area: 2 / 2; }
+
+  .statsfm             { grid-area: 2 / 5; }
+  .news-button         { grid-area: 2 / 1; }
+  .kiss-button         { grid-area: 2 / 3; }
+  .spotify             { grid-area: 2 / 4; }
+  .propaganda-link     { grid-area: 1 / 1; }
+
+  .photo               { grid-area: 3 / 1; }
+  .vinyl               { grid-area: 3 / 5; }
+  .wip                 { grid-area: 3 / 2; }
+  .theme-button         { grid-area: 3 / 3; }
+  .secret-button       { grid-area: 3 / 4; }
 }
