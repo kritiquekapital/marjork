@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
   let startTime = null;
   let timerInterval = null;
-  let hintTimeout;
 
   let username = localStorage.getItem("minesweeperUsername") || "";
   let bestTimes = JSON.parse(localStorage.getItem("minesweeperBestTimes") || '{}');
