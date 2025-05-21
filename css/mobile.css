@@ -1,0 +1,54 @@
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(5, 90px);
+    gap: 15px;
+    padding: 15px;
+    margin-top: 40px;
+    width: auto;
+    height: auto;
+    justify-content: center;
+    align-content: center;
+    transform: none !important;
+  }
+
+  .grid-backdrop {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(10px);
+    background: rgba(43, 58, 62, 0.8);
+    z-index: -1;
+  }
+
+  #themeButton,
+  .wip,
+  .spotify,
+  .duolingo,
+  .letterboxd,
+  .photo,
+  .news-button,
+  .surprise,
+  .propaganda,
+  .kiss-button,
+  .vinyl {
+    width: 90px;
+    height: 90px;
+  }
+
+  .kiss-button.free {
+    width: 90px !important;
+    height: 90px !important;
+  }
+}
