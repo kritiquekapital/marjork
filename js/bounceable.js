@@ -26,7 +26,7 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Center hole position on the button's initial position
+    // Position the hole based on the kiss button's initial position
     this.holePosition = {
       left: this.initialPosition.left + this.element.offsetWidth / 2 - 40, // Adjust for hole size
       top: this.initialPosition.top + this.element.offsetHeight / 2 - 40, // Adjust for hole size
@@ -44,7 +44,7 @@ export class Bounceable {
     hole.style.left = `${this.holePosition.left}px`;
     hole.style.top = `${this.holePosition.top}px`;
 
-    document.body.appendChild(hole);
+    document.body.appendChild(hole); // Append hole to the document
   }
 
   handleClick(e) {
