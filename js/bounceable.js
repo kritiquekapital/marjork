@@ -25,36 +25,6 @@ export class Bounceable {
 
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
-
-    // Calculate the hole's initial position based on the kiss button's position
-    this.holePosition = {
-      left: this.initialPosition.left,
-      top: this.initialPosition.top
-    };
-
-    // Create a visual hole at the initial position
-    this.createHole();
-  }
-
-  // Create the hole as a visual element (only once)
-  createHole() {
-    if (!document.querySelector('.hole')) { // Prevent multiple holes from being created
-      const hole = document.createElement('div');
-      hole.className = 'hole';
-
-      // Position hole exactly where the kiss button starts
-      hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
-      hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
-      hole.style.width = '120px';  // Match the size of the kiss button
-      hole.style.height = '120px'; // Match the size of the kiss button
-
-      hole.style.backgroundColor = '#333'; // Dark hole color
-      hole.style.borderRadius = '50%'; // Make it circular
-      hole.style.zIndex = '1'; // Ensure it stays below the button
-
-      // Append hole to body
-      document.body.appendChild(hole);
-    }
   }
 
   handleClick(e) {
@@ -145,11 +115,9 @@ export class Bounceable {
           break;
       }
 
-      // Check if the button is in the "hole" (reset position) with easier entry
-      if (this.isFree && this.isNearHole(newLeft, newTop)) {
-        this.applyRoundingEffect(newLeft, newTop);
-      } else if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.lockIntoHole(); // Lock button into the hole
+      // Check if the button is in the "hole" (reset position)
+      if (this.isFree && this.isInHole(newLeft, newTop)) {
+        this.resetPosition();
       }
     };
 
@@ -181,53 +149,13 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
-  // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position) - exact point in the center
+    // Define the "hole" (a target position)
+    const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
     const distance = Math.sqrt(
-      Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
+      Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
     );
-    return distance < 60; // Easier hole detection with larger radius (60px radius)
-  }
-
-  // Check if near the hole but not inside it
-  isNearHole(newLeft, newTop) {
-    const distance = Math.sqrt(
-      Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
-    );
-    return distance < 100; // Wider range for curving effect
-  }
-
-  // Apply a slight rounding effect when near the hole
-  applyRoundingEffect(newLeft, newTop) {
-    // Slight curving effect when near the hole
-    const holePosition = this.holePosition;
-    const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
-    const curveStrength = 0.1; // Slight curve to mimic natural physics
-    const distanceToHole = Math.sqrt(Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2));
-
-    // Modify velocity to curve based on angle
-    this.velocity.x += Math.cos(angle + curveStrength) * 2;
-    this.velocity.y += Math.sin(angle + curveStrength) * 2;
-
-    // Slow down as it rounds the hole and ensure it doesn't reverse direction
-    if (distanceToHole < 120) {
-      this.velocity.x *= 0.9; // Apply a slow down effect
-      this.velocity.y *= 0.9;
-    }
-
-    this.element.style.left = `${newLeft + this.velocity.x}px`;
-    this.element.style.top = `${newTop + this.velocity.y}px`;
-  }
-
-  // Lock the button into the hole
-  lockIntoHole() {
-    this.velocity = { x: 0, y: 0 }; // Stop any movement
-    this.element.style.left = `${this.holePosition.left - 60}px`;  // Exact position of the hole
-    this.element.style.top = `${this.holePosition.top - 60}px`;    // Exact position of the hole
-    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
-    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
-    this.strokeCount = 0; // Reset stroke count
+    return distance < 50; // Within 50px of the "hole"
   }
 
   resetPosition() {
@@ -243,11 +171,14 @@ export class Bounceable {
   }
 
   static createTrailDot(sourceEl, left, top) {
+    // Only create trail in retro theme
     if (!document.body.classList.contains('theme-retro')) return;
 
     if (!Bounceable.trailLayer) {
       Bounceable.trailLayer = document.createElement('div');
       Bounceable.trailLayer.className = 'bounce-trail';
+      Bounceable.trailLayer.style.willChange = 'transform';
+      Bounceable.trailLayer.style.transform = 'translateZ(0)';
       Object.assign(Bounceable.trailLayer.style, {
         position: 'fixed',
         left: '0',
@@ -255,7 +186,7 @@ export class Bounceable {
         width: '100vw',
         height: '100vh',
         pointerEvents: 'none',
-        zIndex: '-1' // Ensure trail stays behind button
+        zIndex: '9999' // One layer below the kiss button
       });
       document.body.appendChild(Bounceable.trailLayer);
     }
@@ -267,17 +198,17 @@ export class Bounceable {
       width: `${sourceEl.offsetWidth}px`,
       height: '6px',
       position: 'fixed',
-      background: 'linear-gradient(45deg, #FF1493, #00FFFF, #32CD32)', // Multi-color gradient for trail
-      opacity: '0.7',
+      background: 'linear-gradient(45deg, #FF1493, #00FFFF)', // Gradient effect
+      opacity: '0.6',
       borderRadius: '1px',
       left: `${left}px`,
       top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-      zIndex: '-1', // Ensure trail dot stays behind button
+      zIndex: '9998', // Ensure the dot is below the kiss button
       pointerEvents: 'none'
     });
 
     // Ensure the bounceable button (like kiss) stays visually on top
-    sourceEl.style.zIndex = '10';
+    sourceEl.style.zIndex = '99999';
 
     Bounceable.trailLayer.appendChild(dot);
     setTimeout(() => dot.remove(), 500);
