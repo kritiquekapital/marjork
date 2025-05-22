@@ -35,23 +35,11 @@ export class Bounceable {
 
   // Create the hole as a visual element (only once)
   createHole() {
-    if (!document.querySelector('.hole')) { // Prevent multiple holes from being created
-      const hole = document.createElement('div');
-      hole.className = 'hole';
+    const hole = document.querySelector('.hole');
 
-      // Position hole exactly where the kiss button starts (and keep it fixed)
-      hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
-      hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
-      hole.style.width = '120px';  // Match the size of the kiss button
-      hole.style.height = '120px'; // Match the size of the kiss button
-
-      hole.style.backgroundColor = '#333'; // Dark hole color
-      hole.style.borderRadius = '50%'; // Make it circular
-      hole.style.zIndex = '1'; // Ensure it stays below the button
-
-      // Append hole to body
-      document.body.appendChild(hole);
-    }
+    // Position the hole exactly where the kiss button starts (and keep it fixed)
+    hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
+    hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
   }
 
   handleClick(e) {
@@ -178,7 +166,7 @@ export class Bounceable {
 
   // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position) and check if the button is within it
+    // Define the "hole" (a target position)
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
