@@ -16,6 +16,7 @@ export class Bounceable {
     this.isFree = false;
     this.animationFrame = null;
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
+    this.strokeCount = 0; // Track the number of strokes
     Bounceable.instances.push(this);
 
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
@@ -56,6 +57,7 @@ export class Bounceable {
     this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
     this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
     this.applyMovement();
+    this.strokeCount++; // Increment stroke count
   }
 
   applyMovement() {
@@ -112,6 +114,11 @@ export class Bounceable {
           this.applyNormalMovement(newLeft, newTop);
           break;
       }
+
+      // Check if the button is in the "hole" (reset position)
+      if (this.isFree && this.isInHole(newLeft, newTop)) {
+        this.resetPosition();
+      }
     };
 
     this.animationFrame = requestAnimationFrame(animate);
@@ -142,6 +149,27 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
+  isInHole(newLeft, newTop) {
+    // Define the "hole" (a target position)
+    const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
+    const distance = Math.sqrt(
+      Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
+    );
+    return distance < 50; // Within 50px of the "hole"
+  }
+
+  resetPosition() {
+    // Reset to the starting position
+    this.isFree = false;
+    this.velocity = { x: 0, y: 0 };
+    this.element.classList.remove('free');
+    this.element.style.left = `${this.initialPosition.left}px`;
+    this.element.style.top = `${this.initialPosition.top}px`;
+    this.element.style.zIndex = ''; // Reset z-index
+    console.log(`Button returned to hole after ${this.strokeCount} strokes!`);
+    this.strokeCount = 0; // Reset stroke count
+  }
+
   static createTrailDot(sourceEl, left, top) {
     // Only create trail in retro theme
     if (!document.body.classList.contains('theme-retro')) return;
@@ -170,7 +198,7 @@ export class Bounceable {
       width: `${sourceEl.offsetWidth}px`,
       height: '6px',
       position: 'fixed',
-      backgroundColor: 'teal',
+      background: 'linear-gradient(45deg, #FF1493, #00FFFF)', // Gradient effect
       opacity: '0.6',
       borderRadius: '1px',
       left: `${left}px`,
