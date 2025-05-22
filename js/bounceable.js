@@ -25,6 +25,36 @@ export class Bounceable {
 
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
+
+    // Calculate the hole's initial position based on the kiss button's position
+    this.holePosition = {
+      left: this.initialPosition.left,
+      top: this.initialPosition.top
+    };
+
+    // Create a visual hole at the initial position
+    this.createHole();
+  }
+
+  // Create the hole as a visual element (only once)
+  createHole() {
+    if (!document.querySelector('.hole')) { // Prevent multiple holes from being created
+      const hole = document.createElement('div');
+      hole.className = 'hole';
+
+      // Position hole exactly where the kiss button starts
+      hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
+      hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
+      hole.style.width = '120px';  // Match the size of the kiss button
+      hole.style.height = '120px'; // Match the size of the kiss button
+
+      hole.style.backgroundColor = '#333'; // Dark hole color
+      hole.style.borderRadius = '50%'; // Make it circular
+      hole.style.zIndex = '1'; // Ensure it stays below the button
+
+      // Append hole to body
+      document.body.appendChild(hole);
+    }
   }
 
   handleClick(e) {
@@ -117,7 +147,7 @@ export class Bounceable {
 
       // Check if the button is in the "hole" (reset position)
       if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.resetPosition();
+        this.lockIntoHole(newLeft, newTop);
       }
     };
 
@@ -149,13 +179,24 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
+  // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
     // Define the "hole" (a target position)
-    const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
+    const holePosition = { left: this.holePosition.left, top: this.holePosition.top };
     const distance = Math.sqrt(
       Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
     );
-    return distance < 50; // Within 50px of the "hole"
+    return distance < 60; // Within 60px of the "hole"
+  }
+
+  // Lock the button into the hole
+  lockIntoHole(newLeft, newTop) {
+    this.velocity = { x: 0, y: 0 }; // Stop any movement
+    this.element.style.left = `${this.holePosition.left - 60}px`;  // Exact position of the hole
+    this.element.style.top = `${this.holePosition.top - 60}px`;    // Exact position of the hole
+    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
+    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
+    this.strokeCount = 0; // Reset stroke count
   }
 
   resetPosition() {
