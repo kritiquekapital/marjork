@@ -115,8 +115,10 @@ export class Bounceable {
           break;
       }
 
-      // Check if the button is in the "hole" (reset position)
-      if (this.isFree && this.isInHole(newLeft, newTop)) {
+      // Check if the button is in the "hole" (reset position) with rounding effect
+      if (this.isFree && this.isNearHole(newLeft, newTop)) {
+        this.applyRoundingEffect(newLeft, newTop);
+      } else if (this.isFree && this.isInHole(newLeft, newTop)) {
         this.resetPosition();
       }
     };
@@ -150,12 +152,42 @@ export class Bounceable {
   }
 
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position)
+    // Define the "hole" (a target position) - exact point in the center
     const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
     const distance = Math.sqrt(
       Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
     );
-    return distance < 50; // Within 50px of the "hole"
+    return distance < 30; // Narrower hole detection area
+  }
+
+  isNearHole(newLeft, newTop) {
+    // Check if near the hole but not inside it
+    const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
+    const distance = Math.sqrt(
+      Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
+    );
+    return distance < 100; // Wider range for curving effect
+  }
+
+  applyRoundingEffect(newLeft, newTop) {
+    // If the button is near the hole but not quite in it, apply rounding/curving
+    const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
+    const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
+    const curveStrength = 0.1; // Adjust this to control how sharply the button curves
+    const distanceToHole = Math.sqrt(Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2));
+
+    // Modify velocity to curve away from hole
+    this.velocity.x += Math.cos(angle + curveStrength) * 5;
+    this.velocity.y += Math.sin(angle + curveStrength) * 5;
+
+    // Keep the button from ever reaching the hole if it is curving
+    if (distanceToHole < 100) {
+      this.velocity.x *= 0.8; // Slow down as it rounds the hole
+      this.velocity.y *= 0.8;
+    }
+
+    this.element.style.left = `${newLeft + this.velocity.x}px`;
+    this.element.style.top = `${newTop + this.velocity.y}px`;
   }
 
   resetPosition() {
