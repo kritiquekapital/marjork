@@ -26,32 +26,35 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-  // Calculate the hole's initial position based on the kiss button's position
-  this.holePosition = {
-    left: this.initialPosition.left + this.element.offsetWidth / 2 - 60, // Corrected for center alignment
-    top: this.initialPosition.top + this.element.offsetHeight / 2 - 60 // Corrected for center alignment
-  };
+    // Calculate the hole's initial position based on the kiss button's position
+    this.holePosition = {
+      left: this.initialPosition.left,
+      top: this.initialPosition.top
+    };
 
     // Create a visual hole at the initial position
     this.createHole();
   }
 
+  // Create the hole as a visual element (only once)
   createHole() {
-    const hole = document.createElement('div');
-    hole.className = 'hole';
+    if (!document.querySelector('.hole')) { // Prevent multiple holes from being created
+      const hole = document.createElement('div');
+      hole.className = 'hole';
 
-    // Position hole exactly where the kiss button starts
-    hole.style.left = `${this.initialPosition.left}px`;  // Match kiss button's left position
-    hole.style.top = `${this.initialPosition.top}px`;    // Match kiss button's top position
-    hole.style.width = '120px';  // Match the size of the kiss button
-    hole.style.height = '120px'; // Match the size of the kiss button
+      // Position hole exactly where the kiss button starts
+      hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
+      hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
+      hole.style.width = '120px';  // Match the size of the kiss button
+      hole.style.height = '120px'; // Match the size of the kiss button
 
-    hole.style.backgroundColor = '#333'; // Dark hole color
-    hole.style.borderRadius = '50%'; // Make it circular
-    hole.style.zIndex = '1'; // Ensure it stays below the button
+      hole.style.backgroundColor = '#333'; // Dark hole color
+      hole.style.borderRadius = '50%'; // Make it circular
+      hole.style.zIndex = '1'; // Ensure it stays below the button
 
-    // Append hole to body
-    document.body.appendChild(hole);
+      // Append hole to body
+      document.body.appendChild(hole);
+    }
   }
 
   handleClick(e) {
