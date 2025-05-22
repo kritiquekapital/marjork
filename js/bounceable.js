@@ -37,19 +37,19 @@ export class Bounceable {
   }
 
   // Create the hole as a visual element
-  createHole() {
-    const hole = document.createElement('div');
-    hole.className = 'hole';
-    hole.style.position = 'absolute';
-    hole.style.left = `${this.holePosition.left - 25}px`; // Centered hole
-    hole.style.top = `${this.holePosition.top - 25}px`; // Centered hole
-    hole.style.width = '50px';
-    hole.style.height = '50px';
-    hole.style.backgroundColor = '#333'; // Dark hole color
-    hole.style.borderRadius = '50%';
-    hole.style.zIndex = '1'; // Ensure it's above the background but below the button
-    document.body.appendChild(hole);
-  }
+// Create the hole as a visual element
+createHole() {
+  const hole = document.createElement('div');
+  hole.className = 'hole';
+  
+  // Position hole exactly where the kiss button starts
+  hole.style.left = `${this.initialPosition.left}px`;  // Match kiss button's left position
+  hole.style.top = `${this.initialPosition.top}px`;    // Match kiss button's top position
+  hole.style.width = '120px';  // Match the size of the kiss button
+  hole.style.height = '120px'; // Match the size of the kiss button
+
+  document.body.appendChild(hole);
+}
 
   handleClick(e) {
     if (!this.isFree) {
