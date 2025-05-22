@@ -591,7 +591,6 @@ body {
   height: 120px;
   border-radius: 50%;
   background-color: #333; /* Dark hole color */
-  transform: translate(-50%, -50%);  /* Ensure it's centered */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow to emphasize the hole */
   z-index: 1; /* Make sure it stays beneath the button */
 }
