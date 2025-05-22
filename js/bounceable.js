@@ -26,11 +26,8 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Calculate the hole's initial position based on the kiss button's position
-    this.holePosition = {
-      left: this.initialPosition.left,
-      top: this.initialPosition.top
-    };
+    // Define the hole's fixed initial position based on the kiss button's position
+    this.holePosition = { left: this.initialPosition.left, top: this.initialPosition.top };
 
     // Create a visual hole at the initial position
     this.createHole();
@@ -42,7 +39,7 @@ export class Bounceable {
       const hole = document.createElement('div');
       hole.className = 'hole';
 
-      // Position hole exactly where the kiss button starts
+      // Position hole exactly where the kiss button starts (and keep it fixed)
       hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
       hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
       hole.style.width = '120px';  // Match the size of the kiss button
@@ -147,7 +144,7 @@ export class Bounceable {
 
       // Check if the button is in the "hole" (reset position)
       if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.lockIntoHole(newLeft, newTop);
+        this.lockIntoHole(newLeft, newTop); // Lock the button into the hole
       }
     };
 
@@ -181,10 +178,9 @@ export class Bounceable {
 
   // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position)
-    const holePosition = { left: this.holePosition.left, top: this.holePosition.top };
+    // Define the "hole" (a target position) and check if the button is within it
     const distance = Math.sqrt(
-      Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
+      Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
     return distance < 60; // Within 60px of the "hole"
   }
