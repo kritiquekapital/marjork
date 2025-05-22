@@ -587,14 +587,14 @@ body {
 }
 
 .hole {
-  position: fixed;
-  left: 50%; /* Center horizontally */
-  top: 50%; /* Center vertically */
-  width: 120px; /* Match the size of the kiss button */
+  position: absolute;
+  left: 50%; /* Center horizontally based on the button */
+  top: 50%;  /* Center vertically based on the button */
+  width: 120px;  /* Match the size of the kiss button */
   height: 120px; /* Match the size of the kiss button */
   background-color: #333; /* Dark hole color */
-  border-radius: 50%; /* Make it circular */
-  transform: translate(-50%, -50%); /* Center it exactly at the center of the screen */
+  border-radius: 50%;  /* Circular hole */
+  transform: translate(-50%, -50%);  /* Adjust to ensure it's centered */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow to emphasize the hole */
   z-index: 1; /* Ensure it's beneath the kiss button */
 }
