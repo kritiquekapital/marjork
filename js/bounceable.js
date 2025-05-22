@@ -139,7 +139,7 @@ export class Bounceable {
           break;
       }
 
-      // Check if the button is in the "hole" (reset position) with rounding effect
+      // Check if the button is in the "hole" (reset position) with easier entry
       if (this.isFree && this.isNearHole(newLeft, newTop)) {
         this.applyRoundingEffect(newLeft, newTop);
       } else if (this.isFree && this.isInHole(newLeft, newTop)) {
@@ -180,7 +180,7 @@ export class Bounceable {
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 20; // Hole is more forgiving
+    return distance < 30; // Easier hole detection
   }
 
   isNearHole(newLeft, newTop) {
@@ -192,16 +192,17 @@ export class Bounceable {
   }
 
   applyRoundingEffect(newLeft, newTop) {
-    // If the button is near the hole but not quite in it, apply rounding/curving
-    const angle = Math.atan2(newTop - this.holePosition.top, newLeft - this.holePosition.left);
-    const curveStrength = 0.2; // Adjust this to control how sharply the button curves
-    const distanceToHole = Math.sqrt(Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2));
+    // Simplified curving effect when near the hole
+    const holePosition = this.holePosition;
+    const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
+    const curveStrength = 0.1; // Slight curve to mimic natural physics
+    const distanceToHole = Math.sqrt(Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2));
 
-    // Modify velocity to curve away from hole based on angle
-    this.velocity.x += Math.cos(angle + curveStrength) * 3;
-    this.velocity.y += Math.sin(angle + curveStrength) * 3;
+    // Modify velocity to curve based on angle
+    this.velocity.x += Math.cos(angle + curveStrength) * 2;
+    this.velocity.y += Math.sin(angle + curveStrength) * 2;
 
-    // Slow down as it rounds the hole and ensure it doesn't reverse direction
+    // Slow down as it rounds the hole
     if (distanceToHole < 80) {
       this.velocity.x *= 0.9; // Apply a slow down effect
       this.velocity.y *= 0.9;
