@@ -170,22 +170,26 @@ export class Bounceable {
   }
 
   applyRoundingEffect(newLeft, newTop) {
-    // If the button is near the hole but not quite in it, apply rounding/curving
     const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
     const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
     const curveStrength = 0.2; // Adjust this to control how sharply the button curves
     const distanceToHole = Math.sqrt(Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2));
 
-    // Modify velocity to curve away from hole based on angle
+    // Add slight curve based on the angle and distance to the hole
     this.velocity.x += Math.cos(angle + curveStrength) * 3;
     this.velocity.y += Math.sin(angle + curveStrength) * 3;
 
-    // Slow down as it rounds the hole
+    // Slow down as it rounds the hole and ensure it doesn't reverse direction
     if (distanceToHole < 80) {
       this.velocity.x *= 0.9; // Apply a slow down effect
       this.velocity.y *= 0.9;
     }
 
+    // Ensure the button moves smoothly and doesn't reverse direction
+    if (Math.abs(this.velocity.x) < 0.1 && Math.abs(this.velocity.y) < 0.1) {
+      this.velocity = { x: 0, y: 0 }; // Stop movement once it slows down enough
+    }
+  
     this.element.style.left = `${newLeft + this.velocity.x}px`;
     this.element.style.top = `${newTop + this.velocity.y}px`;
   }
