@@ -587,15 +587,15 @@ body {
 
 .hole {
   position: fixed;
-  width: 120px;
-  height: 120px;
+  width: 80px; /* Smaller hole for better alignment */
+  height: 80px; /* Same size as above */
   border-radius: 50%;
   display: inline-block;
   align-items: center;
   justify-content: center;
   background-color: #333; /* Dark hole color */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow to emphasize the hole */
-  z-index: 1; /* Make sure it stays beneath the button */
+  z-index: 1; /* Make sure it's beneath the kiss button */
 }
 
 .kiss-button.free {
