@@ -166,18 +166,27 @@ export class Bounceable {
 
   // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position) and check if the button is within it
+    // Define the "hole" position based on the fixed hole (center of hole)
+    const holeLeft = this.holePosition.left;
+    const holeTop = this.holePosition.top;
+
+    // Adjust distance check to ensure it recognizes the button from all sides
     const distance = Math.sqrt(
-      Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
+      Math.pow(newLeft - holeLeft, 2) + Math.pow(newTop - holeTop, 2)
     );
-    return distance < 50; // Within 50px of the "hole"
+  
+    return distance < 60; // Adjust radius for easier entry (larger suction area)
   }
 
   // Lock the button into the hole
   lockIntoHole(newLeft, newTop) {
-    this.velocity = { x: 0, y: 0 }; // Stop any movement
-    this.element.style.left = `${this.holePosition.left - 60}px`;  // Exact position of the hole
-    this.element.style.top = `${this.holePosition.top - 60}px`;    // Exact position of the hole
+    // Stop any further movement and reset velocity
+    this.velocity = { x: 0, y: 0 };
+
+    // Ensure the button locks exactly in the center of the hole
+    this.element.style.left = `${this.holePosition.left - (this.element.offsetWidth / 2)}px`; // Adjust to center the button within the hole
+    this.element.style.top = `${this.holePosition.top - (this.element.offsetHeight / 2)}px`;   // Adjust to center the button within the hole
+
     this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
     console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
     this.strokeCount = 0; // Reset stroke count
