@@ -36,18 +36,21 @@ export class Bounceable {
     this.createHole();
   }
 
-  // Create the hole as a visual element
   createHole() {
     const hole = document.createElement('div');
     hole.className = 'hole';
-    hole.style.position = 'absolute';
-    hole.style.left = `${this.holePosition.left - 60}px`; // Center the hole (120px size, centered)
-    hole.style.top = `${this.holePosition.top - 60}px`;   // Center the hole (120px size, centered)
-    hole.style.width = '120px';  // Hole size remains 120px
-    hole.style.height = '120px'; // Hole size remains 120px
+
+    // Position hole exactly where the kiss button starts
+    hole.style.left = `${this.initialPosition.left}px`;  // Match kiss button's left position
+    hole.style.top = `${this.initialPosition.top}px`;    // Match kiss button's top position
+    hole.style.width = '120px';  // Match the size of the kiss button
+    hole.style.height = '120px'; // Match the size of the kiss button
+
     hole.style.backgroundColor = '#333'; // Dark hole color
     hole.style.borderRadius = '50%'; // Make it circular
-    hole.style.zIndex = '1'; // Ensure it's beneath the button
+    hole.style.zIndex = '1'; // Ensure it stays below the button
+
+    // Append hole to body
     document.body.appendChild(hole);
   }
 
@@ -175,20 +178,21 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
+  // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
     // Define the "hole" (a target position) - exact point in the center
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 80; // Easier hole detection with larger radius
+    return distance < 60; // Easier hole detection with larger radius (60px radius)
   }
 
+  // Check if near the hole but not inside it
   isNearHole(newLeft, newTop) {
-    // Check if near the hole but not inside it
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 120; // Wider range for curving effect
+    return distance < 100; // Wider range for curving effect
   }
 
   applyRoundingEffect(newLeft, newTop) {
