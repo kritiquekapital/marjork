@@ -587,11 +587,12 @@ body {
 }
 
 .hole {
-  position: absolute;
-  left: 50%; /* Center horizontally based on the button */
-  top: 50%;  /* Center vertically based on the button */
-  width: 120px;  /* Match the size of the kiss button */
-  height: 120px; /* Match the size of the kiss button */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   background-color: #333; /* Dark hole color */
   border-radius: 50%;  /* Circular hole */
   transform: translate(-50%, -50%);  /* Adjust to ensure it's centered */
