@@ -26,20 +26,26 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Define the hole's fixed initial position based on the kiss button's position
-    this.holePosition = { left: this.initialPosition.left, top: this.initialPosition.top };
+    // Center the hole based on the kiss button's initial position
+    this.holePosition = {
+      left: this.initialPosition.left + this.element.offsetWidth / 2,  // Centered horizontally
+      top: this.initialPosition.top + this.element.offsetHeight / 2   // Centered vertically
+    };
 
-    // Create the hole once and position it at the same place as the kiss button
-    this.createHole();
+    this.createHole();  // Create the hole at the button's position
   }
 
-  // Create the hole as a visual element (only once)
+  // Create the hole visually at the same position as the kiss button
   createHole() {
-    const hole = document.querySelector('.hole');
+    const hole = document.createElement('div');
+    hole.className = 'hole';
 
-    // Position the hole exactly where the kiss button starts (and keep it fixed)
-    hole.style.left = `${this.holePosition.left}px`;  // Match kiss button's left position
-    hole.style.top = `${this.holePosition.top}px`;    // Match kiss button's top position
+    // Position the hole at the center of the button's initial position
+    hole.style.left = `${this.holePosition.left - 60}px`; // Adjust for centering (120px / 2)
+    hole.style.top = `${this.holePosition.top - 60}px`;   // Adjust for centering (120px / 2)
+    
+    // Append hole to body
+    document.body.appendChild(hole);
   }
 
   handleClick(e) {
@@ -132,7 +138,7 @@ export class Bounceable {
 
       // Check if the button is in the "hole" (reset position)
       if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.lockIntoHole(newLeft, newTop); // Lock the button into the hole
+        this.lockIntoHole(newLeft, newTop);
       }
     };
 
@@ -164,48 +170,28 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
-  // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" position based on the fixed hole (center of hole)
+    // Define the "hole" position
     const holeLeft = this.holePosition.left;
     const holeTop = this.holePosition.top;
 
-    // Adjust distance check to ensure it recognizes the button from all sides
     const distance = Math.sqrt(
       Math.pow(newLeft - holeLeft, 2) + Math.pow(newTop - holeTop, 2)
     );
-  
-    return distance < 60; // Adjust radius for easier entry (larger suction area)
+    return distance < 60; // Easier detection with 60px radius
   }
 
-  // Lock the button into the hole
   lockIntoHole(newLeft, newTop) {
-    // Stop any further movement and reset velocity
+    // Lock button into the hole
     this.velocity = { x: 0, y: 0 };
-
-    // Ensure the button locks exactly in the center of the hole
-    this.element.style.left = `${this.holePosition.left - (this.element.offsetWidth / 2)}px`; // Adjust to center the button within the hole
-    this.element.style.top = `${this.holePosition.top - (this.element.offsetHeight / 2)}px`;   // Adjust to center the button within the hole
-
+    this.element.style.left = `${this.holePosition.left - (this.element.offsetWidth / 2)}px`;
+    this.element.style.top = `${this.holePosition.top - (this.element.offsetHeight / 2)}px`;
     this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
     console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
     this.strokeCount = 0; // Reset stroke count
   }
 
-  resetPosition() {
-    // Reset to the starting position
-    this.isFree = false;
-    this.velocity = { x: 0, y: 0 };
-    this.element.classList.remove('free');
-    this.element.style.left = `${this.initialPosition.left}px`;
-    this.element.style.top = `${this.initialPosition.top}px`;
-    this.element.style.zIndex = ''; // Reset z-index
-    console.log(`Button returned to hole after ${this.strokeCount} strokes!`);
-    this.strokeCount = 0; // Reset stroke count
-  }
-
   static createTrailDot(sourceEl, left, top) {
-    // Only create trail in retro theme
     if (!document.body.classList.contains('theme-retro')) return;
 
     if (!Bounceable.trailLayer) {
@@ -237,7 +223,7 @@ export class Bounceable {
       borderRadius: '1px',
       left: `${left}px`,
       top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-      zIndex: '9998', // Ensure the dot is below the kiss button
+      zIndex: '9998', // Ensure trail dot stays behind button
       pointerEvents: 'none'
     });
 
