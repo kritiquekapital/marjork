@@ -157,7 +157,7 @@ export class Bounceable {
     const distance = Math.sqrt(
       Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
     );
-    return distance < 30; // Narrower hole detection area
+    return distance < 20; // Narrower hole detection area for easier entry
   }
 
   isNearHole(newLeft, newTop) {
@@ -166,24 +166,24 @@ export class Bounceable {
     const distance = Math.sqrt(
       Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2)
     );
-    return distance < 100; // Wider range for curving effect
+    return distance < 80; // Wider range for curving effect
   }
 
   applyRoundingEffect(newLeft, newTop) {
     // If the button is near the hole but not quite in it, apply rounding/curving
     const holePosition = { left: window.innerWidth / 2, top: window.innerHeight / 2 };
     const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
-    const curveStrength = 0.1; // Adjust this to control how sharply the button curves
+    const curveStrength = 0.2; // Adjust this to control how sharply the button curves
     const distanceToHole = Math.sqrt(Math.pow(newLeft - holePosition.left, 2) + Math.pow(newTop - holePosition.top, 2));
 
-    // Modify velocity to curve away from hole
-    this.velocity.x += Math.cos(angle + curveStrength) * 5;
-    this.velocity.y += Math.sin(angle + curveStrength) * 5;
+    // Modify velocity to curve away from hole based on angle
+    this.velocity.x += Math.cos(angle + curveStrength) * 3;
+    this.velocity.y += Math.sin(angle + curveStrength) * 3;
 
-    // Keep the button from ever reaching the hole if it is curving
-    if (distanceToHole < 100) {
-      this.velocity.x *= 0.8; // Slow down as it rounds the hole
-      this.velocity.y *= 0.8;
+    // Slow down as it rounds the hole
+    if (distanceToHole < 80) {
+      this.velocity.x *= 0.9; // Apply a slow down effect
+      this.velocity.y *= 0.9;
     }
 
     this.element.style.left = `${newLeft + this.velocity.x}px`;
@@ -230,8 +230,8 @@ export class Bounceable {
       width: `${sourceEl.offsetWidth}px`,
       height: '6px',
       position: 'fixed',
-      background: 'linear-gradient(45deg, #FF1493, #00FFFF)', // Gradient effect
-      opacity: '0.6',
+      background: 'linear-gradient(45deg, #FF1493, #00FFFF, #32CD32)', // Multi-color gradient
+      opacity: '0.7',
       borderRadius: '1px',
       left: `${left}px`,
       top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
