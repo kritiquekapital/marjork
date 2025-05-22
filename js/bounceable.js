@@ -149,7 +149,7 @@ export class Bounceable {
       if (this.isFree && this.isNearHole(newLeft, newTop)) {
         this.applyRoundingEffect(newLeft, newTop);
       } else if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.resetPosition();
+        this.lockIntoHole(); // Lock button into the hole
       }
     };
 
@@ -198,6 +198,7 @@ export class Bounceable {
     return distance < 100; // Wider range for curving effect
   }
 
+  // Apply a slight rounding effect when near the hole
   applyRoundingEffect(newLeft, newTop) {
     // Slight curving effect when near the hole
     const holePosition = this.holePosition;
@@ -217,6 +218,16 @@ export class Bounceable {
 
     this.element.style.left = `${newLeft + this.velocity.x}px`;
     this.element.style.top = `${newTop + this.velocity.y}px`;
+  }
+
+  // Lock the button into the hole
+  lockIntoHole() {
+    this.velocity = { x: 0, y: 0 }; // Stop any movement
+    this.element.style.left = `${this.holePosition.left - 60}px`;  // Exact position of the hole
+    this.element.style.top = `${this.holePosition.top - 60}px`;    // Exact position of the hole
+    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
+    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
+    this.strokeCount = 0; // Reset stroke count
   }
 
   resetPosition() {
