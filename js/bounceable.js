@@ -37,19 +37,19 @@ export class Bounceable {
   }
 
   // Create the hole as a visual element
-// Create the hole as a visual element
-createHole() {
-  const hole = document.createElement('div');
-  hole.className = 'hole';
-  
-  // Position hole exactly where the kiss button starts
-  hole.style.left = `${this.initialPosition.left}px`;  // Match kiss button's left position
-  hole.style.top = `${this.initialPosition.top}px`;    // Match kiss button's top position
-  hole.style.width = '120px';  // Match the size of the kiss button
-  hole.style.height = '120px'; // Match the size of the kiss button
-
-  document.body.appendChild(hole);
-}
+  createHole() {
+    const hole = document.createElement('div');
+    hole.className = 'hole';
+    hole.style.position = 'absolute';
+    hole.style.left = `${this.holePosition.left - 60}px`; // Center the hole (120px size, centered)
+    hole.style.top = `${this.holePosition.top - 60}px`;   // Center the hole (120px size, centered)
+    hole.style.width = '120px';  // Hole size remains 120px
+    hole.style.height = '120px'; // Hole size remains 120px
+    hole.style.backgroundColor = '#333'; // Dark hole color
+    hole.style.borderRadius = '50%'; // Make it circular
+    hole.style.zIndex = '1'; // Ensure it's beneath the button
+    document.body.appendChild(hole);
+  }
 
   handleClick(e) {
     if (!this.isFree) {
@@ -180,7 +180,7 @@ createHole() {
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 30; // Easier hole detection
+    return distance < 80; // Easier hole detection with larger radius
   }
 
   isNearHole(newLeft, newTop) {
@@ -188,11 +188,11 @@ createHole() {
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 100; // Wider range for curving effect
+    return distance < 120; // Wider range for curving effect
   }
 
   applyRoundingEffect(newLeft, newTop) {
-    // Simplified curving effect when near the hole
+    // Slight curving effect when near the hole
     const holePosition = this.holePosition;
     const angle = Math.atan2(newTop - holePosition.top, newLeft - holePosition.left);
     const curveStrength = 0.1; // Slight curve to mimic natural physics
@@ -202,8 +202,8 @@ createHole() {
     this.velocity.x += Math.cos(angle + curveStrength) * 2;
     this.velocity.y += Math.sin(angle + curveStrength) * 2;
 
-    // Slow down as it rounds the hole
-    if (distanceToHole < 80) {
+    // Slow down as it rounds the hole and ensure it doesn't reverse direction
+    if (distanceToHole < 120) {
       this.velocity.x *= 0.9; // Apply a slow down effect
       this.velocity.y *= 0.9;
     }
