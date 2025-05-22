@@ -16,7 +16,6 @@ export class Bounceable {
     this.isFree = false;
     this.animationFrame = null;
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
-    this.strokeCount = 0; // Track the number of strokes
     Bounceable.instances.push(this);
 
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
@@ -25,27 +24,6 @@ export class Bounceable {
 
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
-
-    // Center the hole based on the kiss button's initial position
-    this.holePosition = {
-      left: this.initialPosition.left + this.element.offsetWidth / 2,  // Centered horizontally
-      top: this.initialPosition.top + this.element.offsetHeight / 2   // Centered vertically
-    };
-
-    this.createHole();  // Create the hole at the button's position
-  }
-
-  // Create the hole visually at the same position as the kiss button
-  createHole() {
-    const hole = document.createElement('div');
-    hole.className = 'hole';
-
-    // Position the hole at the center of the button's initial position
-    hole.style.left = `${this.holePosition.left - 60}px`; // Adjust for centering (120px / 2)
-    hole.style.top = `${this.holePosition.top - 60}px`;   // Adjust for centering (120px / 2)
-    
-    // Append hole to body
-    document.body.appendChild(hole);
   }
 
   handleClick(e) {
@@ -78,7 +56,6 @@ export class Bounceable {
     this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
     this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
     this.applyMovement();
-    this.strokeCount++; // Increment stroke count
   }
 
   applyMovement() {
@@ -135,11 +112,6 @@ export class Bounceable {
           this.applyNormalMovement(newLeft, newTop);
           break;
       }
-
-      // Check if the button is in the "hole" (reset position)
-      if (this.isFree && this.isInHole(newLeft, newTop)) {
-        this.lockIntoHole(newLeft, newTop);
-      }
     };
 
     this.animationFrame = requestAnimationFrame(animate);
@@ -170,28 +142,8 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
-  isInHole(newLeft, newTop) {
-    // Define the "hole" position
-    const holeLeft = this.holePosition.left;
-    const holeTop = this.holePosition.top;
-
-    const distance = Math.sqrt(
-      Math.pow(newLeft - holeLeft, 2) + Math.pow(newTop - holeTop, 2)
-    );
-    return distance < 60; // Easier detection with 60px radius
-  }
-
-  lockIntoHole(newLeft, newTop) {
-    // Lock button into the hole
-    this.velocity = { x: 0, y: 0 };
-    this.element.style.left = `${this.holePosition.left - (this.element.offsetWidth / 2)}px`;
-    this.element.style.top = `${this.holePosition.top - (this.element.offsetHeight / 2)}px`;
-    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
-    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
-    this.strokeCount = 0; // Reset stroke count
-  }
-
   static createTrailDot(sourceEl, left, top) {
+    // Only create trail in retro theme
     if (!document.body.classList.contains('theme-retro')) return;
 
     if (!Bounceable.trailLayer) {
@@ -218,12 +170,12 @@ export class Bounceable {
       width: `${sourceEl.offsetWidth}px`,
       height: '6px',
       position: 'fixed',
-      background: 'linear-gradient(45deg, #FF1493, #00FFFF)', // Gradient effect
+      backgroundColor: 'teal',
       opacity: '0.6',
       borderRadius: '1px',
       left: `${left}px`,
       top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-      zIndex: '9998', // Ensure trail dot stays behind button
+      zIndex: '9998', // Ensure the dot is below the kiss button
       pointerEvents: 'none'
     });
 
