@@ -16,6 +16,7 @@ export class Bounceable {
     this.isFree = false;
     this.animationFrame = null;
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
+    this.strokeCount = 0; // Track the number of strokes
     Bounceable.instances.push(this);
 
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
@@ -24,6 +25,26 @@ export class Bounceable {
 
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
+
+    // Center hole position on the button's initial position
+    this.holePosition = {
+      left: this.initialPosition.left + this.element.offsetWidth / 2 - 40, // Adjust for hole size
+      top: this.initialPosition.top + this.element.offsetHeight / 2 - 40, // Adjust for hole size
+    };
+
+    // Create hole at initial position
+    this.createHole();
+  }
+
+  createHole() {
+    const hole = document.createElement('div');
+    hole.className = 'hole';
+
+    // Position hole exactly where the kiss button starts
+    hole.style.left = `${this.holePosition.left}px`;
+    hole.style.top = `${this.holePosition.top}px`;
+
+    document.body.appendChild(hole);
   }
 
   handleClick(e) {
@@ -112,9 +133,31 @@ export class Bounceable {
           this.applyNormalMovement(newLeft, newTop);
           break;
       }
+
+      // Check if the button is in the "hole" (reset position)
+      if (this.isFree && this.isInHole(newLeft, newTop)) {
+        this.lockIntoHole(newLeft, newTop);
+      }
     };
 
     this.animationFrame = requestAnimationFrame(animate);
+  }
+
+  isInHole(newLeft, newTop) {
+    const holeRadius = 60; // Hole size (half of the diameter)
+    const distance = Math.sqrt(
+      Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
+    );
+    return distance < holeRadius; // If the button is within the hole's radius
+  }
+
+  lockIntoHole(newLeft, newTop) {
+    this.velocity = { x: 0, y: 0 }; // Stop any movement
+    this.element.style.left = `${this.holePosition.left - 60}px`;  // Lock to hole center
+    this.element.style.top = `${this.holePosition.top - 60}px`;    // Lock to hole center
+    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
+    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
+    this.strokeCount = 0; // Reset stroke count
   }
 
   applyNormalMovement(newLeft, newTop) {
