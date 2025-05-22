@@ -166,11 +166,11 @@ export class Bounceable {
 
   // Check if the button is in the "hole" (reset position) with easier entry
   isInHole(newLeft, newTop) {
-    // Define the "hole" (a target position)
+    // Define the "hole" (a target position) and check if the button is within it
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 60; // Within 60px of the "hole"
+    return distance < 50; // Within 50px of the "hole"
   }
 
   // Lock the button into the hole
