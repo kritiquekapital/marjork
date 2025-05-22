@@ -586,16 +586,14 @@ body {
 }
 
 .hole {
-  position: fixed;
-  width: 80px; /* Smaller hole for better alignment */
-  height: 80px; /* Same size as above */
+  position: absolute; /* Remove fixed, use absolute for grid */
+  width: 80px; /* Reduced size */
+  height: 80px;
   border-radius: 50%;
   display: inline-block;
-  align-items: center;
-  justify-content: center;
   background-color: #333; /* Dark hole color */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow to emphasize the hole */
-  z-index: 1; /* Make sure it's beneath the kiss button */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow */
+  z-index: 1; /* Ensure it's beneath the kiss button */
 }
 
 .kiss-button.free {
