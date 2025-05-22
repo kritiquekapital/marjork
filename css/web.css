@@ -585,12 +585,35 @@ body {
   overflow: visible;
 }
 
+.hole {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: #333; /* Dark hole color */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow to emphasize the hole */
+  z-index: 1; /* Ensure it appears above the grid */
+}
+
 .kiss-button.free {
   position: fixed !important;
   z-index: 1010;
   cursor: pointer;
   transition: transform 0.1s linear;
   contain: layout;
+}
+
+.bounce-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1; /* Trail stays behind button */
 }
 
 /* Hover and active effects */
