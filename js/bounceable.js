@@ -26,11 +26,11 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Calculate the hole's initial position based on the kiss button's position
-    this.holePosition = {
-      left: this.initialPosition.left + this.element.offsetWidth / 2,
-      top: this.initialPosition.top + this.element.offsetHeight / 2
-    };
+  // Calculate the hole's initial position based on the kiss button's position
+  this.holePosition = {
+    left: this.initialPosition.left + this.element.offsetWidth / 2 - 60, // Corrected for center alignment
+    top: this.initialPosition.top + this.element.offsetHeight / 2 - 60 // Corrected for center alignment
+  };
 
     // Create a visual hole at the initial position
     this.createHole();
