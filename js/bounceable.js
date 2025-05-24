@@ -48,8 +48,8 @@ export class Bounceable {
 
     // Position hole centered on the button
     hole.style.position = 'absolute'; // Hole will be placed absolutely in the container
-    hole.style.left = `${this.holePosition.left - 30}px`;  // Set the correct left position
-    hole.style.top = `${this.holePosition.top - 30}px`;    // Set the correct top position
+    hole.style.left = `${this.holePosition.left - 60}px`;  // Set the correct left position
+    hole.style.top = `${this.holePosition.top - 60}px`;    // Set the correct top position
     hole.style.width = '120px';
     hole.style.height = '120px';
     hole.style.backgroundColor = '#333';
