@@ -26,8 +26,8 @@ export class Bounceable {
     const gridContainer = document.querySelector('.grid-container');
     const containerRect = gridContainer.getBoundingClientRect();
     this.holePosition = {
-      left: this.initialPosition.left + this.element.offsetWidth / 2 - 60, // Center hole based on button position
-      top: this.initialPosition.top + this.element.offsetHeight / 2 - 60
+      left: this.initialPosition.left + 60, // Center hole based on button position
+      top: this.initialPosition.top + 60
     };
 
     // Create the hole in the grid's position
@@ -46,8 +46,8 @@ export class Bounceable {
     
     // Set hole's position relative to the grid container
     hole.style.position = 'absolute'; // Hole will be placed absolutely in the container
-    hole.style.left = `${this.holePosition.left - containerRect.left}px`;  // Adjust position within grid
-    hole.style.top = `${this.holePosition.top - containerRect.top}px`;    // Adjust position within grid
+    hole.style.left = `${this.holePosition.left}px`;  // Adjust position within grid
+    hole.style.top = `${this.holePosition.top}px`;    // Adjust position within grid
     hole.style.width = '120px';
     hole.style.height = '120px';
     hole.style.backgroundColor = '#333';
