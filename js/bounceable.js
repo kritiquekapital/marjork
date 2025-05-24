@@ -28,23 +28,23 @@ export class Bounceable {
 
     // Position the hole based on the kiss button's initial position
     this.holePosition = {
-      left: this.initialPosition.left + this.element.offsetWidth / 2 - 40, // Adjust for hole size
-      top: this.initialPosition.top + this.element.offsetHeight / 2 - 40, // Adjust for hole size
+      left: this.initialPosition.left + this.element.offsetWidth / 2 - 60, // Adjust for hole size
+      top: this.initialPosition.top + this.element.offsetHeight / 2 - 60, // Adjust for hole size
     };
 
-    // Create hole at initial position
+    // Create hole at initial position (if not created already)
     this.createHole();
   }
 
   createHole() {
-    const hole = document.createElement('div');
-    hole.className = 'hole';
-
-    // Position hole exactly where the kiss button starts
-    hole.style.left = `${this.holePosition.left}px`;
-    hole.style.top = `${this.holePosition.top}px`;
-
-    document.body.appendChild(hole); // Append hole to the document
+    // Check if hole already exists to avoid creating a duplicate
+    if (!document.querySelector('.hole')) {
+      const hole = document.createElement('div');
+      hole.className = 'hole';
+      hole.style.left = `${this.holePosition.left}px`;
+      hole.style.top = `${this.holePosition.top}px`;
+      document.body.appendChild(hole); // Append hole to the document
+    }
   }
 
   handleClick(e) {
