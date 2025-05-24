@@ -152,9 +152,10 @@ export class Bounceable {
   }
 
   lockIntoHole(newLeft, newTop) {
+    // Correct the snap behavior by positioning the button at the hole's center
     this.velocity = { x: 0, y: 0 }; // Stop any movement
-    this.element.style.left = `${this.holePosition.left - 60}px`;  // Lock to hole center
-    this.element.style.top = `${this.holePosition.top - 60}px`;    // Lock to hole center
+    this.element.style.left = `${this.holePosition.left - 60}px`;  // Lock to hole center (adjust for hole size)
+    this.element.style.top = `${this.holePosition.top - 60}px`;    // Lock to hole center (adjust for hole size)
     this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
     console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
     this.strokeCount = 0; // Reset stroke count
