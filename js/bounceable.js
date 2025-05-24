@@ -1,3 +1,4 @@
+
 export class Bounceable {
   static instances = [];
   static trailLayer = null;
@@ -28,8 +29,8 @@ export class Bounceable {
 
     // Position the hole based on the kiss button's initial position
     this.holePosition = {
-      left: this.initialPosition.left + 120, // Adjust for hole size
-      top: this.initialPosition.top + 120, // Adjust for hole size
+      left: this.initialPosition.left + this.element.offsetWidth / 2 + 120, // Adjust for hole size
+      top: this.initialPosition.top + this.element.offsetHeight / 2 + 120, // Adjust for hole size
     };
 
     // Create hole at initial position (if not created already)
