@@ -18,7 +18,6 @@ export class Bounceable {
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
     Bounceable.instances.push(this);
 
-    // Initial position of the kiss button
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
     this.element.style.position = 'absolute';
     this.element.addEventListener('click', this.handleClick.bind(this));
@@ -26,27 +25,8 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Position the hole in the same spot as the kiss button
-    this.holePosition = {
-      left: this.initialPosition.left + 60, // Center of the button, adjusted by 60px
-      top: this.initialPosition.top + 60  // Same for the top
-    };
-
-    this.createHole(); // Create the visual hole
-  }
-
-  // Create the visual hole element (CSS-defined hole)
-  createHole() {
-    this.hole = document.createElement('div');
-    this.hole.className = 'hole';
-    document.body.appendChild(this.hole);
-    this.updateHolePosition(); // Ensure hole is centered initially
-  }
-
-  // Create a visual hole element that follows the button
-  updateHolePosition() {
-    this.hole.style.left = `${this.holePosition.left - 60}px`;  // Center hole position
-    this.hole.style.top = `${this.holePosition.top - 60}px`;  // Same as above
+    // Create the hole element and position it
+    this.createHole();
   }
 
   handleClick(e) {
@@ -90,6 +70,22 @@ export class Bounceable {
     this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
     this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
     this.applyMovement();
+  }
+
+  // Update hole position based on button's position
+  updateHolePosition() {
+    const holePosition = this.element.getBoundingClientRect();
+    // Adjust hole's center to match the button's center
+    this.hole.style.left = `${holePosition.left + holePosition.width / 2 - 60}px`;  // 60px is half the size of the hole
+    this.hole.style.top = `${holePosition.top + holePosition.height / 2 - 60}px`;    // Same for the top
+  }
+
+  // Create the hole element
+  createHole() {
+    this.hole = document.createElement('div');
+    this.hole.className = 'hole';
+    document.body.appendChild(this.hole);
+    this.updateHolePosition(); // Initial hole position
   }
 
   applyMovement() {
