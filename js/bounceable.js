@@ -54,7 +54,7 @@ export class Bounceable {
     hole.style.height = '120px';
     hole.style.backgroundColor = '#333';
     hole.style.borderRadius = '50%';
-    hole.style.zIndex = '3'; // Ensure it's above the grid container but below the button
+    hole.style.zIndex = '1'; // Ensure it's above the grid container but below the button
     document.body.appendChild(hole);  // Hole stays fixed in front of everything
   }
 
