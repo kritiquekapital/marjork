@@ -29,8 +29,8 @@ export class Bounceable {
 
     // Position the hole based on the kiss button's initial position
     this.holePosition = {
-      left: this.initialPosition.left + 80, // Adjust for hole size
-      top: this.initialPosition.top + 80, // Adjust for hole size
+      left: this.initialPosition.left + 60, // Adjust for hole size
+      top: this.initialPosition.top + 60, // Adjust for hole size
     };
 
     // Create hole at initial position (if not created already)
