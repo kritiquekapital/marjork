@@ -585,17 +585,6 @@ body {
   overflow: visible;
 }
 
-.hole {
-  position: absolute; /* Remove fixed, use absolute for grid */
-  width: 80px; /* Reduced size */
-  height: 80px;
-  border-radius: 50%;
-  display: inline-block;
-  background-color: #333; /* Dark hole color */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Optional shadow */
-  z-index: 1; /* Ensure it's beneath the kiss button */
-}
-
 .kiss-button.free {
   position: fixed !important;
   z-index: 1010;
