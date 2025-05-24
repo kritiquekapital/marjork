@@ -48,13 +48,13 @@ export class Bounceable {
 
     // Position hole centered on the button
     hole.style.position = 'absolute'; // Hole will be placed absolutely in the container
-    hole.style.left = `${this.holePosition.left}px`;  // Set the correct left position
-    hole.style.top = `${this.holePosition.top}px`;    // Set the correct top position
+    hole.style.left = `${this.holePosition.left - 30}px`;  // Set the correct left position
+    hole.style.top = `${this.holePosition.top - 30}px`;    // Set the correct top position
     hole.style.width = '120px';
     hole.style.height = '120px';
     hole.style.backgroundColor = '#333';
     hole.style.borderRadius = '50%';
-    hole.style.zIndex = '10'; // Ensure it's above the grid container but below the button
+    hole.style.zIndex = '3'; // Ensure it's above the grid container but below the button
     document.body.appendChild(hole);  // Hole stays fixed in front of everything
   }
 
