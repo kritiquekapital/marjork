@@ -25,13 +25,15 @@ export class Bounceable {
     // Fix hole position relative to the grid container
     const gridContainer = document.querySelector('.grid-container');
     const containerRect = gridContainer.getBoundingClientRect();
+
+    // Ensure hole is centered on the button (add 60px to center)
     this.holePosition = {
       left: this.initialPosition.left + 60, // Center hole based on button position
       top: this.initialPosition.top + 60
     };
 
-    // Create the hole in the grid's position
-    this.createHole(containerRect);
+    // Create the hole visually and position it in front of the grid container
+    this.createHole();
 
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
@@ -39,21 +41,21 @@ export class Bounceable {
     this.ignoreHoleDetection = false; // Start with no hole detection
   }
 
-  // Create the hole (visually fixed)
-  createHole(containerRect) {
+  // Create the hole (visually fixed and in front of the grid)
+  createHole() {
     const hole = document.createElement('div');
     hole.className = 'hole';
-    
-    // Set hole's position relative to the grid container
+
+    // Position hole centered on the button
     hole.style.position = 'absolute'; // Hole will be placed absolutely in the container
-    hole.style.left = `${this.holePosition.left}px`;  // Adjust position within grid
-    hole.style.top = `${this.holePosition.top}px`;    // Adjust position within grid
+    hole.style.left = `${this.holePosition.left}px`;  // Set the correct left position
+    hole.style.top = `${this.holePosition.top}px`;    // Set the correct top position
     hole.style.width = '120px';
     hole.style.height = '120px';
     hole.style.backgroundColor = '#333';
     hole.style.borderRadius = '50%';
-    hole.style.zIndex = '1';
-    document.body.appendChild(hole);  // Hole stays fixed
+    hole.style.zIndex = '10'; // Ensure it's above the grid container but below the button
+    document.body.appendChild(hole);  // Hole stays fixed in front of everything
   }
 
   handleClick(e) {
