@@ -18,6 +18,7 @@ export class Bounceable {
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
     Bounceable.instances.push(this);
 
+    // Initial position of the kiss button
     this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
     this.element.style.position = 'absolute';
     this.element.addEventListener('click', this.handleClick.bind(this));
@@ -25,21 +26,21 @@ export class Bounceable {
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Hole position adjusted manually
+    // Position the hole in the same spot as the kiss button
     this.holePosition = {
-      left: this.initialPosition.left + 60,  // Adjust hole to be centered around the button
-      top: this.initialPosition.top + 60
+      left: this.initialPosition.left + 60, // Center of the button, adjusted by 60px
+      top: this.initialPosition.top + 60  // Same for the top
     };
 
-    this.createHole();
+    this.createHole(); // Create the visual hole
   }
 
   // Create the visual hole element (CSS-defined hole)
   createHole() {
     const hole = document.createElement('div');
     hole.className = 'hole';
-    hole.style.left = `${this.holePosition.left}px`;  // Position hole
-    hole.style.top = `${this.holePosition.top}px`;   // Position hole
+    hole.style.left = `${this.holePosition.left}px`;  // Correct hole position
+    hole.style.top = `${this.holePosition.top}px`;   // Correct hole position
     document.body.appendChild(hole);
   }
 
@@ -130,12 +131,9 @@ export class Bounceable {
           break;
       }
 
-      // Temporarily disable hole detection when button is "free"
-      if (!this.isFree) {
-        // Check if the button is near the hole (easier entry)
-        if (this.isNearHole(newLeft, newTop)) {
-          this.lockIntoHole(newLeft, newTop);  // Snap into the hole
-        }
+      // Check for hole entry when the button is not free (not moving)
+      if (!this.isFree && this.isNearHole(newLeft, newTop)) {
+        this.lockIntoHole(newLeft, newTop);
       }
     };
 
@@ -172,7 +170,7 @@ export class Bounceable {
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 70; // Wider proximity range for "falling" into the hole
+    return distance < 70; // Allow for fall into hole from any direction within 70px
   }
 
   // Lock the button into the hole
