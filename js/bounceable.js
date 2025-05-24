@@ -37,11 +37,16 @@ export class Bounceable {
 
   // Create the visual hole element (CSS-defined hole)
   createHole() {
-    const hole = document.createElement('div');
-    hole.className = 'hole';
-    hole.style.left = `${this.holePosition.left}px`;  // Correct hole position
-    hole.style.top = `${this.holePosition.top}px`;   // Correct hole position
-    document.body.appendChild(hole);
+    this.hole = document.createElement('div');
+    this.hole.className = 'hole';
+    document.body.appendChild(this.hole);
+    this.updateHolePosition(); // Ensure hole is centered initially
+  }
+
+  // Create a visual hole element that follows the button
+  updateHolePosition() {
+    this.hole.style.left = `${this.holePosition.left - 60}px`;  // Center hole position
+    this.hole.style.top = `${this.holePosition.top - 60}px`;  // Same as above
   }
 
   handleClick(e) {
@@ -57,11 +62,22 @@ export class Bounceable {
       // Set z-index to 99999 when free
       this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
 
+      // Temporarily disable hole detection for 2 seconds on the first click (while the button is free)
+      this.disableHoleDetectionTemporarily();
+
       // Apply inertia based on click position
       this.moveOppositeDirection(e.clientX, e.clientY);
     } else {
       this.moveOppositeDirection(e.clientX, e.clientY); // Continue movement in the opposite direction
     }
+  }
+
+  // Temporarily disable hole detection (only during first click when the button is free)
+  disableHoleDetectionTemporarily() {
+    this.holeDetectionDisabled = true;
+    setTimeout(() => {
+      this.holeDetectionDisabled = false; // Re-enable hole detection after 2 seconds
+    }, 2000); // 2000ms = 2 seconds
   }
 
   moveOppositeDirection(clickX, clickY) {
@@ -131,8 +147,11 @@ export class Bounceable {
           break;
       }
 
-      // Check for hole entry when the button is not free (not moving)
-      if (!this.isFree && this.isNearHole(newLeft, newTop)) {
+      // Update hole position as the button moves
+      this.updateHolePosition();
+
+      // Re-enable hole detection after the first click if the button stops moving
+      if (!this.holeDetectionDisabled && this.isNearHole(newLeft, newTop)) {
         this.lockIntoHole(newLeft, newTop);
       }
     };
@@ -167,6 +186,8 @@ export class Bounceable {
 
   // Check if the button is near the "hole" (target position)
   isNearHole(newLeft, newTop) {
+    if (this.holeDetectionDisabled) return false; // Skip hole detection if disabled
+
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
