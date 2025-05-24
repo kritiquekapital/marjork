@@ -22,11 +22,33 @@ export class Bounceable {
     this.element.style.position = 'absolute';
     this.element.addEventListener('click', this.handleClick.bind(this));
 
+    // Define the hole's fixed position, initially centered on the button
+    this.holePosition = {
+      left: this.initialPosition.left + this.element.offsetWidth / 2 - 60, // Centered in the button's grid cell
+      top: this.initialPosition.top + this.element.offsetHeight / 2 - 60
+    };
+
+    // Create the hole visually in this position
+    this.createHole();
+
     // Default mode is NORMAL
     this.currentMode = Bounceable.modes.NORMAL;
 
-    // Create the hole element and position it
-    this.createHole();
+    this.ignoreHoleDetection = false; // Start with no hole detection
+  }
+
+  // Create the hole (visually fixed)
+  createHole() {
+    const hole = document.createElement('div');
+    hole.className = 'hole';
+    hole.style.left = `${this.holePosition.left}px`;  // Hole centered at the fixed position
+    hole.style.top = `${this.holePosition.top}px`;    // Hole centered at the fixed position
+    hole.style.width = '120px';
+    hole.style.height = '120px';
+    hole.style.backgroundColor = '#333';
+    hole.style.borderRadius = '50%';
+    hole.style.zIndex = '1';
+    document.body.appendChild(hole);  // Hole stays fixed
   }
 
   handleClick(e) {
@@ -42,22 +64,17 @@ export class Bounceable {
       // Set z-index to 99999 when free
       this.element.style.zIndex = '99999';  // Makes the kiss button appear on top
 
-      // Temporarily disable hole detection for 2 seconds on the first click (while the button is free)
-      this.disableHoleDetectionTemporarily();
-
       // Apply inertia based on click position
       this.moveOppositeDirection(e.clientX, e.clientY);
+
+      // Temporarily disable hole detection for 2 seconds after click
+      this.ignoreHoleDetection = true;
+      setTimeout(() => {
+        this.ignoreHoleDetection = false;
+      }, 2000); // 2 seconds timer to ignore hole detection
     } else {
       this.moveOppositeDirection(e.clientX, e.clientY); // Continue movement in the opposite direction
     }
-  }
-
-  // Temporarily disable hole detection (only during first click when the button is free)
-  disableHoleDetectionTemporarily() {
-    this.holeDetectionDisabled = true;
-    setTimeout(() => {
-      this.holeDetectionDisabled = false; // Re-enable hole detection after 2 seconds
-    }, 2000); // 2000ms = 2 seconds
   }
 
   moveOppositeDirection(clickX, clickY) {
@@ -70,22 +87,6 @@ export class Bounceable {
     this.velocity.x = (dirX / length) * 25; // Inverse velocity based on click position
     this.velocity.y = (dirY / length) * 25; // Inverse velocity based on click position
     this.applyMovement();
-  }
-
-  // Update hole position based on button's position
-  updateHolePosition() {
-    const holePosition = this.element.getBoundingClientRect();
-    // Adjust hole's center to match the button's center
-    this.hole.style.left = `${holePosition.left + holePosition.width / 2 - 60}px`;  // 60px is half the size of the hole
-    this.hole.style.top = `${holePosition.top + holePosition.height / 2 - 60}px`;    // Same for the top
-  }
-
-  // Create the hole element
-  createHole() {
-    this.hole = document.createElement('div');
-    this.hole.className = 'hole';
-    document.body.appendChild(this.hole);
-    this.updateHolePosition(); // Initial hole position
   }
 
   applyMovement() {
@@ -143,11 +144,8 @@ export class Bounceable {
           break;
       }
 
-      // Update hole position as the button moves
-      this.updateHolePosition();
-
-      // Re-enable hole detection after the first click if the button stops moving
-      if (!this.holeDetectionDisabled && this.isNearHole(newLeft, newTop)) {
+      // Only check hole detection if the button isn't being freed or released
+      if (!this.ignoreHoleDetection && this.isInHole(newLeft, newTop)) {
         this.lockIntoHole(newLeft, newTop);
       }
     };
@@ -169,7 +167,6 @@ export class Bounceable {
     const snappedTop = Math.round(newTop / 4) * 4;
     this.element.style.left = `${snappedLeft}px`;
     this.element.style.top = `${snappedTop}px`;
-    Bounceable.createTrailDot(this.element, snappedLeft, snappedTop);
   }
 
   applyZeroGravityMovement(newLeft, newTop) {
@@ -180,66 +177,22 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
-  // Check if the button is near the "hole" (target position)
-  isNearHole(newLeft, newTop) {
-    if (this.holeDetectionDisabled) return false; // Skip hole detection if disabled
-
+  // Check if the button is within the hole range
+  isInHole(newLeft, newTop) {
     const distance = Math.sqrt(
       Math.pow(newLeft - this.holePosition.left, 2) + Math.pow(newTop - this.holePosition.top, 2)
     );
-    return distance < 70; // Allow for fall into hole from any direction within 70px
+    return distance < 60;  // Within 60px of the "hole"
   }
 
-  // Lock the button into the hole
+  // Lock the button into the hole visually and position it correctly
   lockIntoHole(newLeft, newTop) {
-    this.velocity = { x: 0, y: 0 }; // Stop movement
-    this.element.style.left = `${this.holePosition.left - 60}px`;  // Center the button in the hole
-    this.element.style.top = `${this.holePosition.top - 60}px`;    // Center the button in the hole
-    this.element.classList.add('locked'); // Optional: Add a "locked" class for styling
+    this.velocity = { x: 0, y: 0 };  // Stop any movement
+    this.element.style.left = `${this.holePosition.left - 60}px`;  // Snap to hole's center
+    this.element.style.top = `${this.holePosition.top - 60}px`;    // Snap to hole's center
+    this.element.classList.add('locked'); // Optionally add a "locked" class for styling
     console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
     this.strokeCount = 0; // Reset stroke count
-  }
-
-  static createTrailDot(sourceEl, left, top) {
-    // Only create trail in retro theme
-    if (!document.body.classList.contains('theme-retro')) return;
-
-    if (!Bounceable.trailLayer) {
-      Bounceable.trailLayer = document.createElement('div');
-      Bounceable.trailLayer.className = 'bounce-trail';
-      Object.assign(Bounceable.trailLayer.style, {
-        position: 'fixed',
-        left: '0',
-        top: '0',
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        zIndex: '9999' // One layer below the kiss button
-      });
-      document.body.appendChild(Bounceable.trailLayer);
-    }
-
-    const dot = document.createElement('div');
-    dot.className = 'bounce-dot';
-
-    Object.assign(dot.style, {
-      width: `${sourceEl.offsetWidth}px`,
-      height: '6px',
-      position: 'fixed',
-      backgroundColor: 'teal',
-      opacity: '0.6',
-      borderRadius: '1px',
-      left: `${left}px`,
-      top: `${top + sourceEl.offsetHeight / 2 - 3}px`,
-      zIndex: '9998', // Ensure the dot is below the kiss button
-      pointerEvents: 'none'
-    });
-
-    // Ensure the bounceable button (like kiss) stays visually on top
-    sourceEl.style.zIndex = '99999';
-
-    Bounceable.trailLayer.appendChild(dot);
-    setTimeout(() => dot.remove(), 500);
   }
 
   static switchMode(newMode) {
