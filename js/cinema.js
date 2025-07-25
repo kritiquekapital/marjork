@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Hardcoded list of live links for the video player
   const liveLinks1 = [
-    "https://geo.dailymotion.com/player.html?video=x9irfr8",
     "https://www.youtube.com/watch?v=XBbkt2vYC4M",                    // i beg ur pardon
     "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080", // hairpin circus
     "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080", // crack
