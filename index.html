@@ -142,11 +142,16 @@
   <script src="js/spinna.js"></script>
   <script type="module" src="js/newsButton_0.9.js" defer></script>
 
-  <div id="bookcase" class="popup-bookcase" style="display:none;">
-    <div class="bookcase-header">
-      <h2>Library</h2>
-      <button id="closeBookcase" class="close-button">×</button>
+  <div id="bookcaseWrapper" class="bookcase-wrapper" style="display:none;">
+    <div id="bookcaseBackdrop" class="bookcase-backdrop"></div>
+    <div id="bookcase" class="popup-bookcase">
+      <div class="bookcase-header">
+        <h2>Library</h2>
+        <button id="closeBookcase" class="close-button">×</button>
+      </div>
+      <div id="bookGrid" class="book-grid"></div>
     </div>
+  </div>
 
     <div id="bookGrid" class="book-grid">
       <!-- JS will inject books here -->
@@ -169,6 +174,7 @@
 
 </body>
 </html>
+
 
 
 
