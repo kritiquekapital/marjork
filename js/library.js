@@ -41,7 +41,6 @@ closeReader.addEventListener("click", () => {
 // Track current book
 let currentBook = null;
 
-// Book list: all under History > Russia & The Soviet Union: Post-1917
 const books = [
   { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
   { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
@@ -87,4 +86,5 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
 
