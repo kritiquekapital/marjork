@@ -10,8 +10,10 @@ const bookGrid         = document.getElementById("bookGrid");
 const pdfReader        = document.getElementById("pdfReader");
 const pdfFrame         = document.getElementById("pdfFrame");
 const closeReader      = document.getElementById("closeReader");
-const pdfSectionEl     = document.getElementById("pdfSection");
-const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle");
+
+// Header elements in PDF reader shelf
+const pdfSectionEl     = document.getElementById("pdfSection");  // <span id="pdfSection"></span>
+const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle"); // <span id="pdfWorkTitle"></span>
 
 // Make draggable for bookcase
 new Draggable(bookcase, '.bookcase-header');
@@ -34,22 +36,20 @@ closeReader.addEventListener("click", () => {
   }
   pdfReader.style.display = "none";
   pdfFrame.src = "";
-  pdfReader.style.transition = "";
-  pdfReader.style.transform = "";
-  pdfReader.style.opacity = "";
 });
 
+// Current book
 let currentBook = null;
 
 // Book list
 const books = [
-  { title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)", section: "History" },
-  { title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)", section: "History" },
-  { title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)", section: "Film" },
-  { title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)", section: "Film" },
+  { section: "History", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "Film", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)" },
+  { section: "History", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)" },
+  { section: "Film", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)" },
 ];
 
-// Build book grid and handle clicks
+// Build book grid
 books.forEach(b => {
   const div = document.createElement("div");
   div.className = "book";
@@ -70,28 +70,18 @@ books.forEach(b => {
     });
     div.classList.add("picked-up");
 
-    // Show PDF modal
+    // Show PDF reader and force on top
     pdfReader.style.display = "flex";
     pdfReader.style.zIndex = "2000";
 
-    // Optional: originate visually from book
-    const rect = div.getBoundingClientRect();
-    pdfReader.style.opacity = 0;
-    pdfReader.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(0.2)`;
-    setTimeout(() => {
-      pdfReader.style.transition = "all 0.3s ease";
-      pdfReader.style.transform = "translate(0,0) scale(1)";
-      pdfReader.style.opacity = 1;
-    }, 10);
+    // Set header info
+    pdfSectionEl.textContent = b.section || "";
+    pdfWorkTitleEl.textContent = b.title || "";
 
-    // Load PDF
-    pdfFrame.src = b.pdf + "#view=FitH";
+    // Load PDF at 100% zoom
+    pdfFrame.src = b.pdf + "#zoom=100";
     pdfFrame.style.width = "95%";
     pdfFrame.style.height = "95%";
-
-    // Header info
-    pdfSectionEl.textContent = b.section || "General";
-    pdfWorkTitleEl.textContent = b.title;
   });
 
   bookGrid.appendChild(div);
