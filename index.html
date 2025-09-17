@@ -142,6 +142,7 @@
   <script src="js/spinna.js"></script>
   <script type="module" src="js/library.js" defer></script>
 
+  <!-- Bookcase / Library Shelf -->
   <div id="bookcaseWrapper" class="bookcase-wrapper" style="display:none;">
     <div id="bookcaseBackdrop" class="bookcase-backdrop"></div>
     <div id="bookcase" class="popup-bookcase">
@@ -149,22 +150,11 @@
         <h2>Library</h2>
         <button id="closeBookcase" class="close-button">×</button>
       </div>
-      <div id="bookGrid" class="book-grid"></div>
+      <div id="bookGrid" class="book-grid"></div> <!-- JS injects books here -->
     </div>
   </div>
 
-    <div id="bookGrid" class="book-grid">
-      <!-- JS will inject books here -->
-      <!-- Example static book (remove if fully dynamic) -->
-      <!--
-      <div class="book" data-pdf="papers/sample.pdf">
-        <img src="covers/sample.jpg" alt="Sample">
-        <span>Sample Title</span>
-      </div>
-      -->
-    </div>
-  </div>
-
+  <!-- PDF Reader -->
   <div id="pdfReader" class="popup-pdfreader" style="display:none;">
     <div class="pdf-header">
       <div class="pdf-title">
@@ -177,6 +167,7 @@
 
 </body>
 </html>
+
 
 
 
