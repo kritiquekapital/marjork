@@ -51,3 +51,43 @@ books.forEach(b => {
   });
   bookGrid.appendChild(div);
 });
+
+let currentBook = null;
+
+books.forEach(b => {
+  const div = document.createElement("div");
+  div.className = "book";
+  div.dataset.pdf = b.pdf;
+  div.innerHTML = `<img src="${b.cover}" alt="${b.title}"><span>${b.title}</span>`;
+
+  div.addEventListener("click", () => {
+    if (currentBook) return; // already reading another book
+
+    currentBook = div;
+    div.classList.add("checked-out"); // dim/lock it visually
+    bookGrid.querySelectorAll(".book").forEach(book => {
+      if (book !== div) book.classList.add("locked");
+    });
+
+    // Animate "picking up" the book
+    div.classList.add("picked-up");
+
+    // Open PDF reader
+    pdfFrame.src = b.pdf + "#view=FitH";
+    pdfReader.style.display = "block";
+  });
+
+  bookGrid.appendChild(div);
+});
+
+// When closing the PDF reader
+closeReader.addEventListener("click", () => {
+  if (currentBook) {
+    currentBook.classList.remove("picked-up", "checked-out");
+    bookGrid.querySelectorAll(".book").forEach(book => book.classList.remove("locked"));
+    currentBook = null;
+  }
+
+  pdfReader.style.display = "none";
+  pdfFrame.src = "";
+});
