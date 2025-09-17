@@ -35,8 +35,10 @@ closeReader.addEventListener("click", () => {
 
 // Book list
 const books = [
-  { title: "Russia1", cover: "suprises/covers/each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf" },
-  { title: "Color of Pomegranates Notes", cover: "covers/pomegranates.jpg", pdf: "papers/pomegranates.pdf" }
+  { title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/II. ussr 15 year.jpg", pdf: "suprises/books/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf" },
 ];
 
 let currentBook = null;
@@ -65,3 +67,4 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
