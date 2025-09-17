@@ -44,9 +44,10 @@ let currentBook = null;
 // Book list: all under History > Russia & The Soviet Union: Post-1917
 const books = [
   { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "Film: Soviet Montage", title: "State Funeral - 2019 - Sergei Loznitsa", cover: "suprises/stills/state-funeral_kremlin.png", color: "rgba(139,0,0,0.7)" },
 ];
 
 // Build book grid
@@ -86,3 +87,4 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
