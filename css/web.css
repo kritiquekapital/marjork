@@ -434,6 +434,8 @@ body {
   position: fixed;
   inset: 0;
   z-index: 999;
+  display: none;
+  background: rgba(0,0,0,0.2);
 }
 
 .popup-bookcase {
