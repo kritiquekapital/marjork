@@ -430,6 +430,30 @@ body {
   100% { transform: translateY(0); }
 }  
 
+#bookcaseWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+.popup-bookcase {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+  max-height: 90%;
+  overflow: auto;
+  cursor: grab; /* draggable hint */
+}
+
 .popup-bookcase {
   /* dark walnut vibe with layered gradients */
   background:
