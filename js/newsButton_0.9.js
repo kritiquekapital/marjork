@@ -1,15 +1,17 @@
 import { Draggable } from './draggable.js';
 
-const newsButton = document.querySelector(".news-button");
-const bookcaseWrapper = document.getElementById("bookcaseWrapper");
+// DOM elements
+const newsButton       = document.querySelector(".news-button");
+const bookcaseWrapper  = document.getElementById("bookcaseWrapper");
 const bookcaseBackdrop = document.getElementById("bookcaseBackdrop");
 const closeBookcaseBtn = document.getElementById("closeBookcase");
-const bookGrid = document.getElementById("bookGrid");
-const pdfReader = document.getElementById("pdfReader");
-const pdfFrame = document.getElementById("pdfFrame");
-const closeReader = document.getElementById("closeReader");
+const bookcase         = document.getElementById("bookcase");  // <-- must exist
+const bookGrid         = document.getElementById("bookGrid");
+const pdfReader        = document.getElementById("pdfReader");
+const pdfFrame         = document.getElementById("pdfFrame");
+const closeReader      = document.getElementById("closeReader");
 
-// Make draggable
+// Make draggable like the music player
 new Draggable(bookcase, '.bookcase-header');
 
 // Open/close functions
@@ -25,13 +27,13 @@ function closeBookcase() {
 newsButton.addEventListener("click", openBookcase);
 closeBookcaseBtn.addEventListener("click", closeBookcase);
 bookcaseBackdrop.addEventListener("click", closeBookcase);
-bookcase.addEventListener("click", (e) => e.stopPropagation());
+bookcase.addEventListener("click", e => e.stopPropagation());
 closeReader.addEventListener("click", () => {
   pdfReader.style.display = "none";
   pdfFrame.src = "";
 });
 
-// Simple array of your writings
+// Book list
 const books = [
   { title: "Russia1", cover: "covers/Russia1.jpg", pdf: "papers/Russia1.pdf" },
   { title: "Color of Pomegranates Notes", cover: "covers/pomegranates.jpg", pdf: "papers/pomegranates.pdf" }
