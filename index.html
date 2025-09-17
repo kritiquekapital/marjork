@@ -141,5 +141,33 @@
   <script src="js/touch-events.js" defer></script>
   <script src="js/handleLinks.js"></script>
   <script src="js/spinna.js"></script>
+  <script src="js/newsButton_library.js" defer></script>
+
+  <div id="bookcase" class="popup-bookcase" style="display:none;">
+    <div class="bookcase-header">
+      <h2>Library</h2>
+      <button id="closeBookcase" class="close-button">×</button>
+    </div>
+
+    <div id="bookGrid" class="book-grid">
+      <!-- JS will inject books here -->
+      <!-- Example static book (remove if fully dynamic) -->
+      <!--
+      <div class="book" data-pdf="papers/sample.pdf">
+        <img src="covers/sample.jpg" alt="Sample">
+        <span>Sample Title</span>
+      </div>
+      -->
+    </div>
+  </div>
+
+  <div id="pdfReader" class="popup-pdfreader" style="display:none;">
+    <div class="pdf-header">
+      <button id="closeReader" class="close-button">×</button>
+    </div>
+    <iframe id="pdfFrame" class="pdf-frame" src="" frameborder="0"></iframe>
+  </div>
+
 </body>
 </html>
+
