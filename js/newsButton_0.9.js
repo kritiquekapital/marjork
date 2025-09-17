@@ -33,12 +33,12 @@ closeReader.addEventListener("click", () => {
   pdfFrame.src = "";
 });
 
-// Book list
+// Book list with optional overlay colors
 const books = [
-  { title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf" },
-  { title: "Russia1", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf" },
-  { title: "Russia1", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf" },
-  { title: "Russia1", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)" },
+  { title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)" },
+  { title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)" },
 ];
 
 let currentBook = null;
@@ -48,7 +48,12 @@ books.forEach(b => {
   const div = document.createElement("div");
   div.className = "book";
   div.dataset.pdf = b.pdf;
-  div.innerHTML = `<img src="${b.cover}" alt="${b.title}"><span>${b.title}</span>`;
+  
+  // Overlay color applied per book
+  div.innerHTML = `
+    <img src="${b.cover}" alt="${b.title}">
+    <span style="background-color: ${b.color || 'rgba(0,0,0,0.6)'}">${b.title}</span>
+  `;
 
   div.addEventListener("click", () => {
     if (currentBook) return; // only one book at a time
@@ -67,5 +72,3 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
-
-
