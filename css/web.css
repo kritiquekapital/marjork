@@ -556,6 +556,42 @@ body {
   transform: scale(1.07);
 }
 
+#pdfReader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2000;
+}
+
+.pdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: rgba(30,30,30,0.95);
+  color: #fff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+.pdf-frame {
+  width: 95%;
+  height: 90%;
+  border: none;
+  background: #fff;
+}
+
 /* Surprise Button */
 .surprise {
   background-color: #222;
