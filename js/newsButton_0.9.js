@@ -35,7 +35,7 @@ closeReader.addEventListener("click", () => {
 
 // Book list
 const books = [
-  { title: "Russia1", cover: "suprises/covers/each productivist needs to read his newspaper.jpg", pdf: "suprises/papers/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf" },
   { title: "Color of Pomegranates Notes", cover: "covers/pomegranates.jpg", pdf: "papers/pomegranates.pdf" }
 ];
 
@@ -91,4 +91,5 @@ closeReader.addEventListener("click", () => {
   pdfReader.style.display = "none";
   pdfFrame.src = "";
 });
+
 
