@@ -1,3 +1,32 @@
+import { Draggable } from './draggable.js';
+
+const newsButton = document.querySelector(".news-button");
+const bookcaseWrapper = document.getElementById("bookcaseWrapper");
+const bookcaseBackdrop = document.getElementById("bookcaseBackdrop");
+const closeBookcaseBtn = document.getElementById("closeBookcase");
+const bookcase = document.getElementById("bookcase");
+
+// Make draggable like music player
+new Draggable(bookcase, '.bookcase-header');
+
+function openBookcase() {
+  bookcaseWrapper.style.display = "block";
+}
+
+function closeBookcase() {
+  bookcaseWrapper.style.display = "none";
+}
+
+// Open on News button click
+newsButton.addEventListener("click", openBookcase);
+
+// Close on backdrop or X click
+bookcaseBackdrop.addEventListener("click", closeBookcase);
+closeBookcaseBtn.addEventListener("click", closeBookcase);
+
+// Optional: stop propagation if clicking inside
+bookcase.addEventListener("click", (e) => e.stopPropagation());
+
 // Simple array of your writings
 const books = [
   {
@@ -42,3 +71,4 @@ closeReader.addEventListener("click", () => {
   pdfReader.style.display = "none";
   pdfFrame.src = "";
 });
+
