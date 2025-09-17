@@ -11,23 +11,23 @@ const pdfReader        = document.getElementById("pdfReader");
 const pdfFrame         = document.getElementById("pdfFrame");
 const closeReader      = document.getElementById("closeReader");
 
-// Header elements in PDF reader shelf
-const pdfSectionEl     = document.getElementById("pdfSection");  // <span id="pdfSection"></span>
-const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle"); // <span id="pdfWorkTitle"></span>
+// Header elements in bookcase shelf
+const pdfSectionEl     = document.getElementById("pdfSection");   // section title in shelf
+const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle"); // book title in shelf
 
-// Make draggable for bookcase
+// Make bookcase draggable
 new Draggable(bookcase, '.bookcase-header');
 
-// Open/close functions
+// Open/close bookcase
 function openBookcase() { bookcaseWrapper.style.display = "block"; }
 function closeBookcase() { bookcaseWrapper.style.display = "none"; }
 
-// Event listeners
 newsButton.addEventListener("click", openBookcase);
 closeBookcaseBtn.addEventListener("click", closeBookcase);
 bookcaseBackdrop.addEventListener("click", closeBookcase);
 bookcase.addEventListener("click", e => e.stopPropagation());
 
+// Close PDF reader
 closeReader.addEventListener("click", () => {
   if (currentBook) {
     currentBook.classList.remove("picked-up", "checked-out");
@@ -38,15 +38,15 @@ closeReader.addEventListener("click", () => {
   pdfFrame.src = "";
 });
 
-// Current book
+// Track current book
 let currentBook = null;
 
-// Book list
+// Book list: all under History > Russia & The Soviet Union: Post-1917
 const books = [
-  { section: "History", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
-  { section: "Film", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)" },
-  { section: "History", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)" },
-  { section: "Film", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,0,139,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(0,139,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf", color: "rgba(139,69,19,0.7)" },
 ];
 
 // Build book grid
@@ -61,7 +61,7 @@ books.forEach(b => {
   `;
 
   div.addEventListener("click", () => {
-    if (currentBook) return;
+    if (currentBook) return; // only one at a time
 
     currentBook = div;
     div.classList.add("checked-out");
@@ -70,15 +70,15 @@ books.forEach(b => {
     });
     div.classList.add("picked-up");
 
-    // Show PDF reader and force on top
+    // Show PDF reader on top
     pdfReader.style.display = "flex";
     pdfReader.style.zIndex = "2000";
 
-    // Set header info
-    pdfSectionEl.textContent = b.section || "";
-    pdfWorkTitleEl.textContent = b.title || "";
+    // Update shelf header
+    pdfSectionEl.textContent = b.section;
+    pdfWorkTitleEl.textContent = b.title;
 
-    // Load PDF at 100% zoom
+    // Load PDF at 100%
     pdfFrame.src = b.pdf + "#zoom=100";
     pdfFrame.style.width = "95%";
     pdfFrame.style.height = "95%";
