@@ -1,26 +1,44 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const newsLinks = [
-    "https://www.slideshare.net/slideshow/the-frames-of-a-nation-3-stills-from-3-movies-pptx-fc4f/277799242#2",
-    "https://open.substack.com/pub/dropsitenews/p/gaza-children-israel-sniper-shoot-jazeera?r=jonc4&utm_medium=ios",
-    "https://www.documentcloud.org/documents/25592020-letter-from-a-palestinian-political-prisoner-in-louisiana-march-18-2025/",
-    "https://www.diagonalthoughts.com/?p=1728",
-    "https://archive.org/details/palisriciailleursalighter",
-    "https://www.salon.com/2001/10/16/susans/",
-    "https://mirror.xyz/sartoshi.eth/QukjtL1076-1SEoNJuqyc-x4Ut2v8_TocKkszo-S_nU"
-  ];
-
-  let currentNewsLinkIndex = 0;
-  const newsButton = document.querySelector(".news-button");
-
-  // Handle click on the "NEWS" button
-  if (newsButton) {
-    newsButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      const link = newsLinks[currentNewsLinkIndex];
-      const newTab = window.open(link, "_blank");
-
-      // Cycle to the next link
-      currentNewsLinkIndex = (currentNewsLinkIndex + 1) % newsLinks.length;
-    });
+// Simple array of your writings
+const books = [
+  {
+    title: "Gorbachev Essay",
+    cover: "covers/gorbachev.jpg",
+    pdf:  "papers/gorbachev.pdf"
+  },
+  {
+    title: "Color of Pomegranates Notes",
+    cover: "covers/pomegranates.jpg",
+    pdf:  "papers/pomegranates.pdf"
   }
+  // add more here
+];
+
+const bookcase      = document.getElementById("bookcase");
+const pdfReader     = document.getElementById("pdfReader");
+const bookGrid      = document.getElementById("bookGrid");
+const pdfFrame      = document.getElementById("pdfFrame");
+const newsButton    = document.querySelector(".news-button");
+
+const closeBookcase = document.getElementById("closeBookcase");
+const closeReader   = document.getElementById("closeReader");
+
+// Build grid
+books.forEach(b => {
+  const div = document.createElement("div");
+  div.className = "book";
+  div.dataset.pdf = b.pdf;
+  div.innerHTML = `<img src="${b.cover}" alt="${b.title}"><span>${b.title}</span>`;
+  div.addEventListener("click", () => {
+    pdfFrame.src = b.pdf + "#view=FitH";
+    pdfReader.style.display = "block";
+  });
+  bookGrid.appendChild(div);
+});
+
+// Button wiring
+newsButton.addEventListener("click", () => bookcase.style.display = "block");
+closeBookcase.addEventListener("click", () => bookcase.style.display = "none");
+closeReader.addEventListener("click", () => {
+  pdfReader.style.display = "none";
+  pdfFrame.src = "";
 });
