@@ -430,6 +430,69 @@ body {
   100% { transform: translateY(0); }
 }  
 
+.popup-bookcase {
+  /* dark walnut vibe with layered gradients */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #4b2e1f 0,
+      #4b2e1f 40px,
+      #5a3a27 40px,
+      #5a3a27 80px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.05) 0,
+      rgba(255,255,255,0.05) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  background-blend-mode: overlay;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+  border: 4px solid #3a2414;
+  border-radius: 12px;
+}
+
+.bookcase-header {
+  background: linear-gradient(to bottom, #3a2414, #2a180d);
+  border-bottom: 2px solid #1a0e08;
+  color: #f8e6c0;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* “Shelves” effect: horizontal strips */
+.book-grid {
+  padding: 2rem;
+  gap: 2rem;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(33% - 4px),
+      rgba(0,0,0,0.3) calc(33% - 2px),
+      rgba(0,0,0,0.3) 33%
+    );
+}
+
+.book {
+  text-align: center;
+  cursor: pointer;
+}
+
+.book img {
+  height: 160px;
+  width: auto;
+  border: 3px solid #2c1b0f;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+
+.book:hover img {
+  transform: scale(1.07);
+}
+
 /* Surprise Button */
 .surprise {
   background-color: #222;
