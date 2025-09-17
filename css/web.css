@@ -499,9 +499,30 @@ body {
 }
 
 .book {
-  text-align: center;
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
+
+.book:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.book.checked-out {
+  opacity: 0.7;
+}
+
+.book.locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.book.picked-up {
+  transform: translateY(-20px) scale(1.1);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
 
 .book img {
   height: 160px;
