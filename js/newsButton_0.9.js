@@ -4,11 +4,15 @@ const newsButton = document.querySelector(".news-button");
 const bookcaseWrapper = document.getElementById("bookcaseWrapper");
 const bookcaseBackdrop = document.getElementById("bookcaseBackdrop");
 const closeBookcaseBtn = document.getElementById("closeBookcase");
-const bookcase = document.getElementById("bookcase");
+const bookGrid = document.getElementById("bookGrid");
+const pdfReader = document.getElementById("pdfReader");
+const pdfFrame = document.getElementById("pdfFrame");
+const closeReader = document.getElementById("closeReader");
 
-// Make draggable like music player
+// Make draggable
 new Draggable(bookcase, '.bookcase-header');
 
+// Open/close functions
 function openBookcase() {
   bookcaseWrapper.style.display = "block";
 }
@@ -17,41 +21,23 @@ function closeBookcase() {
   bookcaseWrapper.style.display = "none";
 }
 
-// Open on News button click
+// Event listeners
 newsButton.addEventListener("click", openBookcase);
-
-// Close on backdrop or X click
-bookcaseBackdrop.addEventListener("click", closeBookcase);
 closeBookcaseBtn.addEventListener("click", closeBookcase);
-
-// Optional: stop propagation if clicking inside
+bookcaseBackdrop.addEventListener("click", closeBookcase);
 bookcase.addEventListener("click", (e) => e.stopPropagation());
+closeReader.addEventListener("click", () => {
+  pdfReader.style.display = "none";
+  pdfFrame.src = "";
+});
 
 // Simple array of your writings
 const books = [
-  {
-    title: "Gorbachev Essay",
-    cover: "covers/gorbachev.jpg",
-    pdf:  "papers/gorbachev.pdf"
-  },
-  {
-    title: "Color of Pomegranates Notes",
-    cover: "covers/pomegranates.jpg",
-    pdf:  "papers/pomegranates.pdf"
-  }
-  // add more here
+  { title: "Russia1", cover: "covers/Russia1.jpg", pdf: "papers/Russia1.pdf" },
+  { title: "Color of Pomegranates Notes", cover: "covers/pomegranates.jpg", pdf: "papers/pomegranates.pdf" }
 ];
 
-const bookcase      = document.getElementById("bookcase");
-const pdfReader     = document.getElementById("pdfReader");
-const bookGrid      = document.getElementById("bookGrid");
-const pdfFrame      = document.getElementById("pdfFrame");
-const newsButton    = document.querySelector(".news-button");
-
-const closeBookcase = document.getElementById("closeBookcase");
-const closeReader   = document.getElementById("closeReader");
-
-// Build grid
+// Build book grid
 books.forEach(b => {
   const div = document.createElement("div");
   div.className = "book";
@@ -63,12 +49,3 @@ books.forEach(b => {
   });
   bookGrid.appendChild(div);
 });
-
-// Button wiring
-newsButton.addEventListener("click", () => bookcase.style.display = "block");
-closeBookcase.addEventListener("click", () => bookcase.style.display = "none");
-closeReader.addEventListener("click", () => {
-  pdfReader.style.display = "none";
-  pdfFrame.src = "";
-});
-
