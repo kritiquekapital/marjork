@@ -36,7 +36,7 @@ closeReader.addEventListener("click", () => {
 // Book list
 const books = [
   { title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/Russia1.pdf" },
-  { title: "Russia1", cover: "suprises/covers/II. ussr 15 year.jpg", pdf: "suprises/books/Russia1.pdf" },
+  { title: "Russia1", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/Russia1.pdf" },
   { title: "Russia1", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/Russia1.pdf" },
   { title: "Russia1", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/Russia1.pdf" },
 ];
@@ -67,4 +67,5 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
 
