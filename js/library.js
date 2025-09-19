@@ -42,6 +42,7 @@ closeReader.addEventListener("click", () => {
 let currentBook = null;
 
 const books = [
+  { section: "Creative: Poetry", title: "Poem Chompsky", cover: "suprises/covers/Poem Chompsky.png", pdf: "suprises/books/Poem Chompsky.pdf", color: "rgba(139,0,0,0.7)" },
   { section: "History: Russia & The Soviet Union: Post-1917", title: "I. Seeds of Rebellion, Sown Over Centuries", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/I. Seeds of Rebellion, Sown Over Centuries.pdf", color: "rgba(139,0,0,0.7)" },
   { section: "History: Russia & The Soviet Union: Post-1917", title: "II. Grown in Blood, Erased from the Land.pdf", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/II. Grown in Blood, Erased from the Land.pdf", color: "rgba(139,0,0,0.7)" },
   { section: "History: Russia & The Soviet Union: Post-1917", title: "III. I Cry to Techno(cracy).pdf", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/III. I Cry to Techno(cracy).pdf", color: "rgba(139,0,0,0.7)" },
@@ -86,6 +87,7 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
 
 
 
