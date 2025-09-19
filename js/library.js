@@ -42,10 +42,10 @@ closeReader.addEventListener("click", () => {
 let currentBook = null;
 
 const books = [
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia1", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/I. Seeds of Rebellion, Sown Over Centuries.pdf", color: "rgba(139,0,0,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia2", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/II. Grown in Blood, Erased from the Land.pdf", color: "rgba(139,0,0,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia3", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/III. I Cry to Techno(cracy).pdf", color: "rgba(139,0,0,0.7)" },
-  { section: "History: Russia & The Soviet Union: Post-1917", title: "Russia4", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/IV. On Clearance. One Superpower, Some Assembly Required.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "I. Seeds of Rebellion, Sown Over Centuries", cover: "suprises/covers/I. each productivist needs to read his newspaper.jpg", pdf: "suprises/books/I. Seeds of Rebellion, Sown Over Centuries.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "II. Grown in Blood, Erased from the Land.pdf", cover: "suprises/covers/II. ussr october XV anniversary.jpg", pdf: "suprises/books/II. Grown in Blood, Erased from the Land.pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "III. I Cry to Techno(cracy).pdf", cover: "suprises/covers/III. look me in the eye and answer honestly.jpg", pdf: "suprises/books/III. I Cry to Techno(cracy).pdf", color: "rgba(139,0,0,0.7)" },
+  { section: "History: Russia & The Soviet Union: Post-1917", title: "IV. On Clearance. One Superpower, Some Assembly Required.pdf", cover: "suprises/covers/IV. international solidarity.jpg", pdf: "suprises/books/IV. On Clearance. One Superpower, Some Assembly Required.pdf", color: "rgba(139,0,0,0.7)" },
   { section: "Film: Soviet Montage", title: "State Funeral - 2019 - Sergei Loznitsa", cover: "suprises/stills/state-funeral_kremlin.png", color: "rgba(139,0,0,0.7)" },
 ];
 
@@ -86,6 +86,7 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
+
 
 
 
