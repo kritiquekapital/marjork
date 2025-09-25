@@ -55,6 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
     "space-background-stream"
   );
 
+  const lofiBackground = createBackground(
+  "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
+  "lofi-background-stream"
+  );
+  document.body.prepend(lofiBackground);
+
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
   natureVideo.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_lapse_x07.mp4";
@@ -158,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+    lofiBackground.style.display = currentTheme.name === "lofi" ? "block" : "none";
+
 
     const logisticsPlayer = document.getElementById('logistics-player');
     if (currentTheme.name === "logistics") {
@@ -269,5 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
+
 
 
