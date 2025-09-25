@@ -10,9 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const allThemes = [
     { name: "retro", displayName: "🕹️" },
-    { name: "modern", displayName: "🌚" },
+    { name: "lofi", displayName: "🎧" },
     { name: "art", displayName: "🎨" },
     { name: "space", displayName: "🚀" },
+    { name: "modern", displayName: "🌚" },
     { name: "nature", displayName: "🌞" },
     { name: "classic", displayName: "😎" },
     { name: "logistics", displayName: "📦" }
@@ -267,3 +268,4 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
+
