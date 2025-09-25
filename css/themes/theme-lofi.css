@@ -1,0 +1,31 @@
+.theme-lofi {
+  position: relative; 
+  background: transparent;
+  color: #2e2e2e;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+}
+
+/* Lo-Fi background layer (e.g. iframe or video) */
+.lofi-background-stream {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  object-fit: cover;
+  display: none;
+}
+
+/* Lo-Fi Grid Backdrop */
+body.theme-lofi .grid-backdrop {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 229, 211, 0.8) 0%,
+    rgba(223, 206, 188, 0.8) 50%,
+    rgba(200, 185, 168, 0.8) 100%
+  );
+  backdrop-filter: blur(6px) saturate(90%);
+  z-index: -1;
+}
