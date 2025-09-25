@@ -129,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTheme = themes[currentThemeIndex];
 
     document.body.classList.remove(
-      'theme-classic', 'theme-modern', 'theme-retro', 'theme-nature', 'theme-space', 'theme-art', 'theme-logistics'
+      'theme-classic','theme-modern','theme-retro','theme-nature',
+      'theme-space','theme-art','theme-logistics','theme-lofi'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
     themeButton.textContent = currentTheme.displayName;
@@ -268,4 +269,5 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
+
 
