@@ -56,10 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   const lofiBackground = createBackground(
-  "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
-  "lofi-background-stream"
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080", 
+    "lofi-background-stream"
   );
   document.body.prepend(lofiBackground);
+
+  function unmuteLofi() {
+    if (document.body.classList.contains("theme-lofi")) {
+      // reload src without mute param to be sure
+      const base = "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
+      lofiBackground.src = base;
+    }
+    document.removeEventListener("click", unmuteLofi);
+  }
 
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
@@ -277,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
+
 
 
 
