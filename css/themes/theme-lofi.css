@@ -1,21 +1,20 @@
 .theme-lofi {
-  position: relative; 
-  background: transparent;
+  position: relative;
+  background-color: transparent; /* no white at all */
   color: #2e2e2e;
-  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-/* Lo-Fi background layer (e.g. iframe or video) */
 .lofi-background-stream {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -1; /* behind all UI */
   pointer-events: none;
   object-fit: cover;
-  display: none;
+  display: block; /* show immediately */
 }
 
 /* Lo-Fi Grid Backdrop */
