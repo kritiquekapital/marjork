@@ -1,7 +1,8 @@
 (function () {
+  const THEME_CLASS = "theme-lofi";
   const lofiStreams = [
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1",
-    "https://www.youtube.com/embed/Zq9-4INDsvY?autoplay=1&controls=0&loop=1"
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&mute=1",
+    "https://www.youtube.com/embed/Zq9-4INDsvY?autoplay=1&controls=0&loop=1&mute=1"
   ];
   let currentIndex = 0;
 
@@ -12,7 +13,7 @@
     allow: "autoplay; encrypted-media",
     frameborder: "0",
     style: `position:fixed;top:0;left:0;width:100%;height:100%;
-            pointer-events:none;z-index:-1;opacity:0.25;display:none;`
+            pointer-events:none;z-index:-1;opacity:1;display:block;`
   });
   document.body.prepend(iframe);
 
@@ -33,7 +34,7 @@
     }
   });
 
-  // --- inactivity fade just for lofi ---
+  // Inactivity fade only for lofi
   let fadeTimer;
   function startFadeLogic() {
     resetTimer();
