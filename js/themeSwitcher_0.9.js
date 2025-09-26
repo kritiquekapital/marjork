@@ -56,19 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   const lofiBackground = createBackground(
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080", 
+    // start muted so autoplay works
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
     "lofi-background-stream"
   );
   document.body.prepend(lofiBackground);
 
-  function unmuteLofi() {
+  function enableLofiAudio() {
     if (document.body.classList.contains("theme-lofi")) {
-      // reload src without mute param to be sure
-      const base = "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
-      lofiBackground.src = base;
+      lofiBackground.src =
+        "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
+      document.removeEventListener("click", enableLofiAudio);
+      document.removeEventListener("touchstart", enableLofiAudio);
     }
-    document.removeEventListener("click", unmuteLofi);
   }
+  document.addEventListener("click", enableLofiAudio);
+  document.addEventListener("touchstart", enableLofiAudio);
 
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
@@ -286,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
+
 
 
 
