@@ -19,7 +19,7 @@
 
 /* Lo-Fi Grid Backdrop */
 body.theme-space .grid-backdrop {
-  background: rgba(0, 0, 0, 0.6); /* Space-appropriate darkness */
-  backdrop-filter: blur(8px); /* Deeper blur for space theme */
+  background: rgba(0, 0, 0, 0.2); /* Space-appropriate darkness */
+  backdrop-filter: blur(4px); /* Deeper blur for space theme */
   z-index: -1;
 }
