@@ -18,13 +18,8 @@
 }
 
 /* Lo-Fi Grid Backdrop */
-body.theme-lofi .grid-backdrop {
-  background: linear-gradient(
-    135deg,
-    rgba(245, 229, 211, 0.8) 0%,
-    rgba(223, 206, 188, 0.8) 50%,
-    rgba(200, 185, 168, 0.8) 100%
-  );
-  backdrop-filter: blur(6px) saturate(90%);
+body.theme-space .grid-backdrop {
+  background: rgba(0, 0, 0, 0.6); /* Space-appropriate darkness */
+  backdrop-filter: blur(8px); /* Deeper blur for space theme */
   z-index: -1;
 }
