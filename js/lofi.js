@@ -1,7 +1,7 @@
 (function () {
   const THEME_CLASS = "theme-lofi";
   const lofiStreams = [
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&mute=1&vq=hd1080",
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&mute=1&vq=medium",
     "https://www.youtube.com/embed/Zq9-4INDsvY?autoplay=1&controls=0&loop=1&mute=1&vq=hd1080"
   ];
   let currentIndex = 0;
