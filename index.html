@@ -82,7 +82,7 @@
 
       <!-- Fifth Row -->
       <button class="theme-button" id="themeButton">🌓</button>
-      <button class="wip">🔜</button>
+      <button class="cool-games-i-like-button" id="games-like-button">🎮</button>
       <button class="secret-button">🔜</button>
     </div>
   </div>
@@ -112,6 +112,19 @@
     </div>
   </div>
 
+  <div id="gamesShelfOverlay" class="games-shelf-overlay" aria-hidden="true">
+   <div class="games-shelf-modal" role="dialog" aria-modal="true" aria-labelledby="gamesShelfTitle">
+     <div class="games-shelf-header">
+        <h2 id="gamesShelfTitle">Games I Like</h2>
+        <button id="closeGamesShelf" class="close-button games-shelf-close" aria-label="Close games shelf">×</button>
+     </div>
+
+     <div class="games-shelf-frame">
+       <div id="gamesShelfRow" class="games-shelf-row"></div>
+      </div>
+   </div>
+  </div>
+
   <div class="popup-game" id="minesweeper-game" style="display: none;">
     <div class="minesweeper-header">
       <div class="minesweeper-controls">
@@ -135,7 +148,7 @@
   <script src="js/photoButton_0.9.js" defer></script>
   <script type="module" src="js/kissButton_0.9.js" defer></script>
   <script src="js/vinylButton_0.9.js" defer></script>
-  <script type="module" src="js/musicPlayer_1.0.js" defer></script>
+  <script src="js/coolgamesilike.js" defer></script>
   <script type="module" src="js/minesweeper.js" defer></script>
   <script src="js/touch-events.js" defer></script>
   <script src="js/handleLinks.js"></script>
@@ -167,11 +180,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
