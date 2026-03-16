@@ -59,8 +59,8 @@ body {
 .vinyl               { grid-area: 4 / 3; }
 
 /* Fifth Row */
-.wip                 { grid-area: 5 / 1; }
-#themeButton        { grid-area: 5 / 2; }
+.games-like-button   { grid-area: 5 / 1; }
+#themeButton         { grid-area: 5 / 2; }
 .secret-button       { grid-area: 5 / 3; }
 
 /* Backdrop Element */
@@ -1461,6 +1461,357 @@ body.theme-retro .click-wheel {
   border-radius: 50%;
   opacity: 1; /* Make sure the image is fully visible */
   transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+}
+
+/* ==================== */
+/* Games I Like Button */
+/* ==================== */
+.games-like-button {
+  grid-area: 5 / 1;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 35% 35%, #ffffff 0 18%, #f2f2f2 19% 45%, #d6d6d6 46% 100%);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    inset 0 -6px 12px rgba(0,0,0,0.14),
+    0 6px 16px rgba(0,0,0,0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  font-size: 52px;
+  color: #1c1c1c;
+}
+
+.games-like-button::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.95) 0 16%, transparent 17% 100%),
+    linear-gradient(135deg, rgba(255,255,255,0.55), rgba(0,0,0,0.04));
+  pointer-events: none;
+}
+
+.games-like-button:hover {
+  transform: scale(1.08);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.9),
+    inset 0 -6px 12px rgba(0,0,0,0.16),
+    0 10px 24px rgba(0,0,0,0.34);
+}
+
+.games-like-button:active {
+  transform: scale(0.96);
+}
+
+.games-like-button:focus-visible {
+  outline: 3px solid rgba(255,255,255,0.9);
+  outline-offset: 4px;
+}
+
+/* ==================== */
+/* Games Shelf Overlay */
+/* ==================== */
+.games-shelf-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(6px);
+  z-index: 10020;
+}
+
+.games-shelf-overlay.is-open {
+  display: flex;
+}
+
+.games-shelf-modal {
+  width: min(92vw, 860px);
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: gamesShelfIn 0.22s ease;
+}
+
+@keyframes gamesShelfIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.games-shelf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ffffff;
+  padding-inline: 2px;
+}
+
+.games-shelf-header h2 {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.games-shelf-close {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+  color: #222;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.games-shelf-frame {
+  position: relative;
+  width: 100%;
+  padding: 10px 12px 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, #fefefe 0%, #f3f3f3 58%, #dfdfdf 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.95),
+    inset 0 -8px 14px rgba(0,0,0,0.12),
+    0 18px 40px rgba(0,0,0,0.28);
+}
+
+.games-shelf-frame::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+  pointer-events: none;
+}
+
+.games-shelf-frame::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.games-shelf-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 6px;
+  min-height: 186px;
+}
+
+/* ==================== */
+/* Game Cases */
+/* ==================== */
+.game-case {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 168px;
+  min-height: 168px;
+  padding: 0;
+  text-decoration: none;
+  border-radius: 10px 10px 6px 6px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,240,240,0.98)),
+    linear-gradient(90deg, #ececec, #ffffff 10%, #d8d8d8 100%);
+  border: 1px solid rgba(60,60,60,0.12);
+  box-shadow:
+    inset 3px 0 0 rgba(255,255,255,0.95),
+    inset -8px 0 10px rgba(0,0,0,0.08),
+    inset 0 -10px 12px rgba(0,0,0,0.08),
+    0 8px 12px rgba(0,0,0,0.14);
+  transform: translateY(0);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-case::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 14px;
+  height: 100%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.85), rgba(0,0,0,0.08)),
+    var(--case-accent, linear-gradient(180deg, #7d7d7d, #bdbdbd));
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.6);
+}
+
+.game-case::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.34), transparent 36%),
+    linear-gradient(180deg, transparent 70%, rgba(0,0,0,0.07));
+  pointer-events: none;
+}
+
+.game-case:hover,
+.game-case:focus-visible,
+.game-case.is-active {
+  transform: translateY(-10px);
+  box-shadow:
+    inset 3px 0 0 rgba(255,255,255,0.95),
+    inset -8px 0 10px rgba(0,0,0,0.08),
+    inset 0 -10px 12px rgba(0,0,0,0.08),
+    0 18px 22px rgba(0,0,0,0.22);
+}
+
+.game-case:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.9);
+  outline-offset: 4px;
+}
+
+.game-case-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 14px 10px 10px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.game-case-topline {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(20,20,20,0.58);
+}
+
+.game-case-title {
+  font-size: clamp(0.88rem, 1.2vw, 1rem);
+  line-height: 1.05;
+  font-weight: 700;
+  color: #151515;
+  text-transform: lowercase;
+  word-break: break-word;
+}
+
+.game-case-desc {
+  font-size: 0.72rem;
+  line-height: 1.15;
+  color: rgba(15,15,15,0.72);
+}
+
+.game-case-pill {
+  align-self: flex-start;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #111;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* game-specific accents */
+.game-case[data-game="colorguesser"] {
+  --case-accent: linear-gradient(180deg, #ff3b7a, #ffb703, #65d46e, #4ea8ff);
+}
+
+.game-case[data-game="songless"] {
+  --case-accent: linear-gradient(180deg, #111111, #404040, #9a9a9a);
+}
+
+.game-case[data-game="tradle"] {
+  --case-accent: linear-gradient(180deg, #0f766e, #38bdf8, #d9f99d);
+}
+
+.game-case[data-game="framed"] {
+  --case-accent: linear-gradient(180deg, #121212, #7f1d1d, #f1f1f1);
+}
+
+/* ==================== */
+/* Mobile */
+/* ==================== */
+@media (max-width: 700px) {
+  .games-shelf-overlay {
+    padding: 14px;
+    align-items: flex-end;
+  }
+
+  .games-shelf-modal {
+    width: 100%;
+    max-width: none;
+  }
+
+  .games-shelf-frame {
+    padding: 10px 10px 12px;
+    border-radius: 16px;
+  }
+
+  .games-shelf-row {
+    display: flex;
+    gap: 8px;
+    min-height: 174px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .games-shelf-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .game-case {
+    flex: 0 0 126px;
+    width: 126px;
+    height: 160px;
+    min-height: 160px;
+    scroll-snap-align: start;
+  }
+
+  .game-case:hover {
+    transform: none;
+  }
+
+  .game-case:active,
+  .game-case.is-active {
+    transform: translateY(-8px);
+  }
 }
 
 #minesweeper-game {
