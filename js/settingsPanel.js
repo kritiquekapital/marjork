@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cog = document.getElementById("settingsCog");
   const dropdown = document.getElementById("settingsDropdown");
-  const volumeSlider = document.getElementById("siteVolume");
   const volumeOrb = document.getElementById("siteVolumeOrb");
-  const themeButtons = document.querySelectorAll(".settings-theme-option");
+  const themeButtons = Array.from(document.querySelectorAll(".settings-theme-option"));
 
   if (!cog || !dropdown) return;
 
@@ -43,18 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") closeDropdown();
   });
 
+  function clampVolume(value) {
+    return Math.max(0, Math.min(1, Number(value) || 0));
+  }
+
   function updateVolumeOrb(volume) {
-    const clamped = Math.max(0, Math.min(1, Number(volume) || 0));
+    const clamped = clampVolume(volume);
     const percent = Math.round(clamped * 100);
 
     if (volumeOrb) {
       volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
       volumeOrb.setAttribute("aria-valuenow", String(percent));
+      volumeOrb.title = `Volume ${percent}%`;
     }
   }
 
   function applyVolume(value) {
-    const volume = Math.max(0, Math.min(1, parseFloat(value) || 0));
+    const volume = clampVolume(value);
 
     document.querySelectorAll("audio, video").forEach((media) => {
       try {
@@ -73,22 +77,72 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     localStorage.setItem(STORAGE_KEYS.volume, String(volume));
+    return volume;
   }
 
-  const savedVolume = parseFloat(localStorage.getItem(STORAGE_KEYS.volume));
-  const initialVolume = Number.isFinite(savedVolume) ? savedVolume : 0.4;
+  let currentVolume = applyVolume(
+    Number.isFinite(parseFloat(localStorage.getItem(STORAGE_KEYS.volume)))
+      ? parseFloat(localStorage.getItem(STORAGE_KEYS.volume))
+      : 0.4
+  );
 
-  if (volumeSlider) {
-    volumeSlider.value = String(initialVolume);
-    updateVolumeOrb(initialVolume);
-    applyVolume(initialVolume);
+  function setVolumeFromPointer(clientY) {
+    if (!volumeOrb) return;
 
-    volumeSlider.addEventListener("input", () => {
-      applyVolume(volumeSlider.value);
+    const rect = volumeOrb.getBoundingClientRect();
+    const relativeY = clientY - rect.top;
+    const ratio = 1 - (relativeY / rect.height);
+    currentVolume = applyVolume(ratio);
+  }
+
+  if (volumeOrb) {
+    let isDragging = false;
+
+    volumeOrb.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      isDragging = true;
+      volumeOrb.classList.add("dragging");
+      volumeOrb.setPointerCapture?.(e.pointerId);
+      setVolumeFromPointer(e.clientY);
     });
 
-    volumeSlider.addEventListener("change", () => {
-      applyVolume(volumeSlider.value);
+    volumeOrb.addEventListener("pointermove", (e) => {
+      if (!isDragging) return;
+      setVolumeFromPointer(e.clientY);
+    });
+
+    const stopDragging = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      volumeOrb.classList.remove("dragging");
+      if (e?.pointerId !== undefined) {
+        try {
+          volumeOrb.releasePointerCapture?.(e.pointerId);
+        } catch {}
+      }
+    };
+
+    volumeOrb.addEventListener("pointerup", stopDragging);
+    volumeOrb.addEventListener("pointercancel", stopDragging);
+    volumeOrb.addEventListener("lostpointercapture", () => {
+      isDragging = false;
+      volumeOrb.classList.remove("dragging");
+    });
+
+    volumeOrb.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const step = e.deltaY < 0 ? 0.05 : -0.05;
+      currentVolume = applyVolume(currentVolume + step);
+    }, { passive: false });
+
+    volumeOrb.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        currentVolume = applyVolume(currentVolume + 0.05);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        currentVolume = applyVolume(currentVolume - 0.05);
+      }
     });
   }
 
@@ -115,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.toggle("disabled-theme", isDisabled);
       btn.setAttribute("aria-pressed", String(!isDisabled));
       btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
+      btn.style.display = "flex";
     });
   }
 
