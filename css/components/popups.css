@@ -22,6 +22,7 @@
 /* ==================== */
 /* Music Player Popup */
 /* ==================== */
+
 #musicPlayer {
   position: fixed;
   top: 50%;
@@ -29,6 +30,12 @@
   transform: translate(-50%, -50%);
   z-index: 9999;
   display: none;
+  cursor: move;
+  user-select: none;
+}
+
+#musicPlayer * {
+  user-select: none;
 }
 
 .drag-handle {
@@ -37,6 +44,154 @@
   background: #333;
   cursor: move;
   border-radius: 5px 5px 0 0;
+}
+
+#musicPlayer.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ipod-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  background: #f0f0f0;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  z-index: 10000;
+  display: none;
+}
+
+.ipod-screen {
+  background: #000;
+  border-radius: 5px;
+  height: 180px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.click-wheel {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ipod-btn {
+  border: none;
+  background: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.shuffle-btn {
+  position: absolute;
+  top: 10px; /* Position it above the play/pause button */
+  background-color: #505050; /* Default gray */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shuffle-icon {
+  font-size: 24px; /* Size of the shuffle icon */
+  color: #fff;    /* Icon color */
+}
+
+.shuffle-btn:hover .shuffle-icon {
+  color: #00ccff; /* Change color when hovered */
+}
+
+.shuffle-btn:active .shuffle-icon {
+  color: #ffcc00; /* Change color when clicked */
+  background-color: #00ccff; /* Bright blue when active */
+  box-shadow: 0 0 10px #00ccff; /* Glow effect */
+  border-radius: 5px;
+}
+
+.playpause {
+  position: absolute;
+  bottom: 10px;
+}
+
+/* iPod-like theme */
+body.theme-retro .ipod-popup {
+  background: #383838;
+  color: #00ffcc;
+}
+
+body.theme-retro .click-wheel {
+  background: #505050;
+}
+/* ==================== */
+/* Video Player Popup */
+/* ==================== */
+#videoPlayer {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 400px;
+  background-color: #111;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  z-index: 999;
+  overflow: hidden;
+}
+
+#videoPlayer iframe {
+  width: 100%;
+  height: calc(100% - 50px);
+  border: none;
+  border-radius: 0 0 10px 10px;
+}
+
+.video-controls {
+  height: 50px;
+  background-color: #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  color: white;
+  font-family: sans-serif;
+}
+
+.video-controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.pin-btn {
+  opacity: 0.5;
+}
+
+.pin-btn.active {
+  opacity: 1;
+}
+
+.video-resize-bar {
+  height: 12px;
+  cursor: ns-resize;
+  background: #444;
+  width: 100%;
 }
 
 /* ==================== */
@@ -95,92 +250,169 @@
     background: repeating-conic-gradient(black 0deg 45deg, transparent 45deg 90deg, black 90deg 135deg);
     opacity: 0.6;
 }
-
 /* ==================== */
-/* Video Popups */
+/*   Bookshelf Popup   */
 /* ==================== */
-.video-popup {
+#bookcaseWrapper {
   position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: none;
+  background: rgba(0,0,0,0.2); /* semi-transparent overlay only when bookcase is open */
+}
+
+.popup-bookcase {
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 85%;
-  max-width: 1200px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  padding: 20px;
-  z-index: 999;
+  width: 80%;
+  max-width: 1000px;
+  max-height: 90%;
+  overflow: auto;
+  cursor: grab; /* draggable hint */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #4b2e1f 0,
+      #4b2e1f 40px,
+      #5a3a27 40px,
+      #5a3a27 80px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.05) 0,
+      rgba(255,255,255,0.05) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  background-blend-mode: overlay;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+  border: 4px solid #3a2414;
+  border-radius: 12px;
 }
 
-.video-container {
+.bookcase-header {
+  background: linear-gradient(to bottom, #3a2414, #2a180d);
+  border-bottom: 2px solid #1a0e08;
+  color: #f8e6c0;
+  font-family: "Orbitron", sans-serif;
+  padding: 1rem;
+}
+
+/* Grid for books: 5 per row */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 books per row */
+  gap: 1.5rem; /* spacing */
+  padding: 2rem;
+  justify-items: center; /* center books horizontally */
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(33% - 4px),
+      rgba(0,0,0,0.15) calc(33% - 2px),
+      rgba(0,0,0,0.15) 33%
+    ); /* subtle shelf lines */
+}
+
+.book {
+  position: relative; /* allows overlay inside */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.book span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.7rem;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6); /* default overlay color */
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* optional: hover highlight */
+.book:hover span {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+.book:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.book.checked-out {
+  opacity: 0.7;
+}
+
+.book.locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.book.picked-up {
+  transform: translateY(-20px) scale(1.1);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.book img {
+  height: 160px;
+  width: auto;
+  border: 3px solid #2c1b0f;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+
+.book:hover img {
+  transform: scale(1.07);
+}
+
+#pdfReader {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  display: none;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-/* ==================== */
-/* iPod-Style Modal */
-/* ==================== */
-.ipod-popup {
-  position: fixed;
-  width: 320px;
-  background: #f0f0f0;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  z-index: 10000;
-}
-
-.ipod-screen {
-  background: #000;
-  border-radius: 5px;
-  height: 180px;
-  margin-bottom: 15px;
-}
-
-.click-wheel {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: #e0e0e0;
-}
-
-.shuffle-btn {
-    position: absolute;
-    top: 10px;
-    background-color: #505050;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-  
-  .shuffle-btn:hover .shuffle-icon {
-    color: #00ccff;
-}
-  
-  .shuffle-btn:active .shuffle-icon {
-    color: #ffcc00;
-    background-color: #00ccff;
-    box-shadow: 0 0 10px #00ccff;
-}
-
-/* ==================== */
-/* Popup States & Transitions */
-/* ==================== */
-#musicPlayer.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.video-popup.show {
-  display: block;
-}
-
-.video-container.visible {
+  background: rgba(0,0,0,0.9);
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2000;
+}
+
+.pdf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  background: rgba(30,30,30,0.95);
+  color: #fff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+.pdf-frame {
+  width: 95%;
+  height: 90%;
+  border: none;
+  background: #fff;
 }
 
 /* ==================== */
@@ -203,8 +435,8 @@
 }
 
 .games-shelf-modal {
-  width: min(92vw, 860px);
-  max-width: 860px;
+  width: min(96vw, 1120px);
+  max-width: 1120px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -253,78 +485,90 @@
   box-shadow: 0 4px 14px rgba(0,0,0,0.25);
 }
 
+/* ==================== */
+/* Shelf Body */
+/* ==================== */
 .games-shelf-frame {
   position: relative;
   width: 100%;
-  padding: 10px 12px 14px;
+  padding: 18px 14px 20px;
   border-radius: 18px;
-  background:
-    linear-gradient(180deg, #fefefe 0%, #f3f3f3 58%, #dfdfdf 100%);
+  background: linear-gradient(180deg, #fdfdfd 0%, #efefef 60%, #dcdcdc 100%);
   box-shadow:
     inset 0 2px 0 rgba(255,255,255,0.95),
-    inset 0 -8px 14px rgba(0,0,0,0.12),
+    inset 0 -10px 18px rgba(0,0,0,0.14),
     0 18px 40px rgba(0,0,0,0.28);
+  overflow: hidden;
 }
 
 .games-shelf-frame::before {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
-  top: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  bottom: 18px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, #f7f7f7 0%, #ececec 40%, #d8d8d8 100%);
+  box-shadow:
+    inset 0 8px 14px rgba(255,255,255,0.85),
+    inset 0 -8px 12px rgba(0,0,0,0.12);
   pointer-events: none;
+  z-index: 0;
 }
 
 .games-shelf-frame::after {
   content: "";
   position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.08);
-  filter: blur(2px);
+  left: 8px;
+  right: 8px;
+  bottom: 6px;
+  height: 18px;
+  border-radius: 0 0 14px 14px;
+  background: linear-gradient(180deg, #f3f3f3 0%, #d0d0d0 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.75),
+    0 -2px 6px rgba(0,0,0,0.08);
   pointer-events: none;
+  z-index: 3;
 }
 
 .games-shelf-row {
+  position: relative;
+  z-index: 2;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(10, minmax(0, 1fr));
   align-items: end;
-  gap: 6px;
-  min-height: 186px;
+  gap: 2px;
+  min-height: 170px;
+  padding: 10px 6px 10px;
 }
 
 /* ==================== */
-/* Game Cases */
+/* Game Cases / Spines */
 /* ==================== */
 .game-case {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   justify-content: center;
-  height: 168px;
-  min-height: 168px;
-  padding: 0;
+  height: 138px;
+  min-height: 138px;
   text-decoration: none;
-  border-radius: 10px 10px 6px 6px;
+  border-radius: 6px 6px 3px 3px;
   overflow: hidden;
   isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(240,240,240,0.98)),
-    linear-gradient(90deg, #ececec, #ffffff 10%, #d8d8d8 100%);
-  border: 1px solid rgba(60,60,60,0.12);
+    linear-gradient(180deg, #fefefe 0%, #f2f2f2 55%, #dddddd 100%);
+  border: 1px solid rgba(50,50,50,0.12);
   box-shadow:
-    inset 3px 0 0 rgba(255,255,255,0.95),
-    inset -8px 0 10px rgba(0,0,0,0.08),
-    inset 0 -10px 12px rgba(0,0,0,0.08),
-    0 8px 12px rgba(0,0,0,0.14);
-  transform: translateY(0);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    inset 2px 0 0 rgba(255,255,255,0.92),
+    inset -6px 0 8px rgba(0,0,0,0.08),
+    inset 0 -8px 10px rgba(0,0,0,0.08),
+    0 3px 6px rgba(0,0,0,0.12);
+  transform: translateY(8px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -333,12 +577,13 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 14px;
+  width: 10px;
   height: 100%;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.85), rgba(0,0,0,0.08)),
     var(--case-accent, linear-gradient(180deg, #7d7d7d, #bdbdbd));
   box-shadow: inset -1px 0 0 rgba(255,255,255,0.6);
+  z-index: 0;
 }
 
 .game-case::after {
@@ -349,17 +594,18 @@
     linear-gradient(135deg, rgba(255,255,255,0.34), transparent 36%),
     linear-gradient(180deg, transparent 70%, rgba(0,0,0,0.07));
   pointer-events: none;
+  z-index: 2;
 }
 
 .game-case:hover,
 .game-case:focus-visible,
 .game-case.is-active {
-  transform: translateY(-10px);
+  transform: translateY(0);
   box-shadow:
-    inset 3px 0 0 rgba(255,255,255,0.95),
-    inset -8px 0 10px rgba(0,0,0,0.08),
-    inset 0 -10px 12px rgba(0,0,0,0.08),
-    0 18px 22px rgba(0,0,0,0.22);
+    inset 2px 0 0 rgba(255,255,255,0.92),
+    inset -6px 0 8px rgba(0,0,0,0.08),
+    inset 0 -8px 10px rgba(0,0,0,0.08),
+    0 10px 14px rgba(0,0,0,0.18);
 }
 
 .game-case:focus-visible {
@@ -372,45 +618,71 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  padding: 14px 10px 10px 22px;
+  padding: 8px 4px 8px 14px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 }
 
-.game-case-topline {
-  font-size: 0.66rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(20,20,20,0.58);
+/* vertical spine text */
+.game-case-spine {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
 }
 
 .game-case-title {
-  font-size: clamp(0.88rem, 1.2vw, 1rem);
-  line-height: 1.05;
+  font-size: 0.7rem;
+  line-height: 1;
   font-weight: 700;
   color: #151515;
   text-transform: lowercase;
-  word-break: break-word;
+  letter-spacing: 0.03em;
+  text-align: center;
 }
 
-.game-case-desc {
-  font-size: 0.72rem;
-  line-height: 1.15;
-  color: rgba(15,15,15,0.72);
+.game-case-meta {
+  font-size: 0.52rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(20,20,20,0.56);
 }
 
 .game-case-pill {
-  align-self: flex-start;
-  padding: 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  padding: 4px 3px;
   border-radius: 999px;
-  font-size: 0.66rem;
+  font-size: 0.5rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #111;
-  background: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.9);
   border: 1px solid rgba(0,0,0,0.08);
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* optional subtle label near bottom */
+.game-case-bottom-tag {
+  position: absolute;
+  left: 14px;
+  right: 4px;
+  bottom: 6px;
+  z-index: 1;
+  font-size: 0.48rem;
+  line-height: 1;
+  text-align: center;
+  color: rgba(20,20,20,0.52);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
 }
 
 /* game-specific accents */
@@ -430,6 +702,31 @@
   --case-accent: linear-gradient(180deg, #121212, #7f1d1d, #f1f1f1);
 }
 
+/* extra slots so 10 items don't all look the same later */
+.game-case[data-game="gamedefault-1"] {
+  --case-accent: linear-gradient(180deg, #6b7280, #d1d5db);
+}
+
+.game-case[data-game="gamedefault-2"] {
+  --case-accent: linear-gradient(180deg, #7c3aed, #c4b5fd);
+}
+
+.game-case[data-game="gamedefault-3"] {
+  --case-accent: linear-gradient(180deg, #b45309, #fde68a);
+}
+
+.game-case[data-game="gamedefault-4"] {
+  --case-accent: linear-gradient(180deg, #166534, #86efac);
+}
+
+.game-case[data-game="gamedefault-5"] {
+  --case-accent: linear-gradient(180deg, #9f1239, #f9a8d4);
+}
+
+.game-case[data-game="gamedefault-6"] {
+  --case-accent: linear-gradient(180deg, #1d4ed8, #93c5fd);
+}
+
 /* ==================== */
 /* Mobile */
 /* ==================== */
@@ -445,17 +742,17 @@
   }
 
   .games-shelf-frame {
-    padding: 10px 10px 12px;
+    padding: 16px 10px 18px;
     border-radius: 16px;
   }
 
   .games-shelf-row {
     display: flex;
-    gap: 8px;
-    min-height: 174px;
+    gap: 2px;
+    min-height: 164px;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 2px;
+    padding: 8px 4px 10px;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
@@ -465,20 +762,39 @@
   }
 
   .game-case {
-    flex: 0 0 126px;
-    width: 126px;
-    height: 160px;
-    min-height: 160px;
+    flex: 0 0 82px;
+    width: 82px;
+    height: 132px;
+    min-height: 132px;
     scroll-snap-align: start;
+    transform: translateY(6px);
   }
 
   .game-case:hover {
-    transform: none;
+    transform: translateY(6px);
   }
 
   .game-case:active,
   .game-case.is-active {
-    transform: translateY(-8px);
+    transform: translateY(0);
+  }
+
+  .game-case-title {
+    font-size: 0.62rem;
+  }
+
+  .game-case-meta {
+    font-size: 0.46rem;
+  }
+
+  .game-case-pill {
+    font-size: 0.46rem;
+    min-width: 16px;
+    padding: 3px 2px;
+  }
+
+  .game-case-bottom-tag {
+    font-size: 0.44rem;
   }
 }
 
@@ -492,4 +808,319 @@ body.theme-retro .ipod-popup {
 
 body.theme-retro .click-wheel {
   background: #505050;
+}
+
+/* ==================== */
+/*   Minesweeper Game   */
+/* ==================== */
+#minesweeper-game {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+#minesweeper-grid {
+  display: grid;
+  gap: 2px;
+  user-select: none;
+}
+
+.tile {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  transition: background 0.2s, transform 0.2s;
+  box-sizing: border-box;
+}
+
+.minesweeper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.close-button {
+  font-size: 18px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.tile.pulse {
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); box-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+  100% { transform: scale(1); }
+}
+
+.minesweeper-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  align-items: center;
+}
+
+.difficulty-select,
+.new-game-button,
+.fullscreen-button,
+.close-button {
+  padding: 6px 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: inline-block;
+  }
+
+  #minesweeper-game.mobile-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    z-index: 9999;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-header {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    border-bottom: 2px solid #0ff;
+    z-index: 10;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-controls {
+    display: flex;
+    gap: 6px;
+    flex-grow: 1;
+    overflow-x: auto;
+    align-items: center;
+  }
+
+  #minesweeper-game.mobile-fullscreen .difficulty-select,
+  #minesweeper-game.mobile-fullscreen .new-game-button,
+  #minesweeper-game.mobile-fullscreen .fullscreen-button,
+  #minesweeper-game.mobile-fullscreen .close-button {
+    font-size: 10px;
+    padding: 4px 6px;
+    background: linear-gradient(45deg, #f06, #0cf, #ff0);
+    background-size: 400% 400%;
+    animation: rainbow 5s ease infinite;
+    color: #000;
+    border: 2px solid #00ccff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #minesweeper-game.mobile-fullscreen #minesweeper-grid {
+    flex-grow: 1;
+    display: grid;
+    gap: 2px;
+    padding: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-items: center;
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="easy"] .tile {
+    width: calc((100vw - 24px) / 10);
+    height: calc((100vh - 200px) / 8);
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="medium"] .tile {
+    width: calc((100vw - 24px) / 12);
+    height: calc((100vh - 200px) / 14);
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .tile {
+    width: calc((100vw - 24px) / 14);
+    height: calc((100vh - 200px) / 20);
+  }
+
+  #minesweeper-game.mobile-fullscreen .tile {
+    font-size: min(4vw, 16px);
+  }
+
+  .minesweeper-username {
+    font-family: monospace;
+    margin-left: 12px;
+    padding: 4px 6px;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    background-color: #111;
+    color: #0ff;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-info,
+  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
+    padding: 4px 10px;
+    background-color: #111;
+    font-size: 11px;
+    color: #0ff;
+    font-family: 'Press Start 2P', monospace;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 auto;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-stats {
+    margin-bottom: 6px;
+  }
+
+  /* Hard fullscreen = inline stats */
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats .wins,
+  #minesweeper-game.mobile-fullscreen[data-difficulty="hard"] .minesweeper-stats .booms {
+    flex: 1;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Stack stats on easy/medium */
+  #minesweeper-game.mobile-fullscreen:not([data-difficulty="hard"]) .minesweeper-stats .wins,
+  #minesweeper-game.mobile-fullscreen:not([data-difficulty="hard"]) .minesweeper-stats .booms {
+    display: block;
+    text-align: left;
+    margin: 4px 0;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-timer {
+    flex: 1;
+    text-align: left;
+  }
+
+  #minesweeper-game.mobile-fullscreen .minesweeper-best-time {
+    flex: 1;
+    text-align: right;
+    color: #888;
+    opacity: 0.5;
+  }
+}
+
+/* Leaderboard panel container */
+.leaderboard-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  max-height: 640px;
+  background-color: rgba(25, 25, 25, 0.95);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+  overflow: auto;
+}
+
+/* Leaderboard header row with sort buttons */
+.leaderboard-header {
+  display: flex;
+  justify-content: space-around;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sort-btn {
+  background-color: #222;
+  border: 2px solid #00ffff;
+  padding: 6px 12px;
+  color: #00ffff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: monospace;
+  transition: background 0.3s;
+}
+
+.sort-btn:hover {
+  background-color: #00ffff;
+  color: black;
+}
+
+/* Leaderboard list */
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+
+.leaderboard-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #555;
+}
+
+/* Back button */
+.leaderboard-panel .back-button {
+  align-self: center;
+  margin-top: 1rem;
+  padding: 6px 12px;
+  background: #222;
+  color: #00ffff;
+  border: 2px solid #00ffff;
+  border-radius: 6px;
+  font-family: monospace;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.leaderboard-panel .back-button:hover {
+  background: #00ffff;
+  color: black;
 }
