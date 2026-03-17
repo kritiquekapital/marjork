@@ -102,7 +102,7 @@ if (kissButton) {
       holeMessages[Math.floor(Math.random() * holeMessages.length)];
 
     const strokeLabel =
-      `${strokeCount} stroke${strokeCount === 1 ? "" : "s"}`;
+      `${strokeCount} stroke${strokeCount === 1 - 1 ? "" : "s"}`;
 
     showFloatingMessage(strokeLabel, {
       color: "#FF1493",
