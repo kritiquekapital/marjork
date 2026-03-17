@@ -169,13 +169,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const themeButton = document.getElementById("themeButton");
 
+  function getThemeHref(themeName) {
+    return `css/themes/theme-${themeName}.css`;
+  }
+
+  function getOrCreateThemeLink() {
+    let themeLink = document.querySelector('link[data-theme="true"]');
+
+    if (!themeLink) {
+      themeLink = document.createElement('link');
+      themeLink.rel = 'stylesheet';
+      themeLink.dataset.theme = 'true';
+
+      const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
+      if (responsiveLink) {
+        document.head.insertBefore(themeLink, responsiveLink);
+      } else {
+        document.head.appendChild(themeLink);
+      }
+    }
+
+    return themeLink;
+  }
+
   function preloadThemes() {
     if (!themes.length) return;
 
-    const activeHref = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
+    const activeTheme = themes[currentThemeIndex];
+    const activeHref = activeTheme ? getThemeHref(activeTheme.name) : null;
+
     themes.forEach(theme => {
-      const href = `css/themes/theme-${theme.name}.css`;
-      if (href !== activeHref) {
+      const href = getThemeHref(theme.name);
+      if (href === activeHref) return;
+
+      const alreadyExists = document.head.querySelector(
+        `link[rel="preload"][as="style"][href="${href}"]`
+      );
+
+      if (!alreadyExists) {
         const themeLink = document.createElement("link");
         themeLink.rel = "preload";
         themeLink.href = href;
@@ -204,13 +235,30 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener("themeRotationSettingsChanged", () => {
-    const currentThemeName = themes[currentThemeIndex]?.name;
-    rebuildThemes(currentThemeName);
-    applyTheme();
+    const previousThemeName = themes[currentThemeIndex]?.name || savedThemeName;
+
+    rebuildThemes(previousThemeName);
+
+    const nextThemeName = themes[currentThemeIndex]?.name;
+
+    if (nextThemeName !== previousThemeName) {
+      applyTheme();
+    } else {
+      if (themeButton) {
+        const currentTheme = themes[currentThemeIndex];
+        if (currentTheme) themeButton.textContent = currentTheme.displayName;
+      }
+
+      localStorage.setItem(
+        "currentThemeIndex",
+        allThemes.findIndex(t => t.name === previousThemeName)
+      );
+
+      document.dispatchEvent(new Event("themeChange"));
+    }
+
     preloadThemes();
   });
-
-  document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
     if (!themes.length) {
@@ -219,25 +267,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     cleanupLogistics();
-    document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
     const currentTheme = themes[currentThemeIndex];
+    const nextHref = getThemeHref(currentTheme.name);
+    const themeLink = getOrCreateThemeLink();
 
-    const themeLink = document.createElement('link');
-    themeLink.rel = 'stylesheet';
-    themeLink.href = `css/themes/theme-${currentTheme.name}.css`;
-    themeLink.dataset.theme = true;
-
-    const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
-    if (responsiveLink) {
-      document.head.insertBefore(themeLink, responsiveLink);
-    } else {
-      document.head.appendChild(themeLink);
+    if (themeLink.getAttribute('href') !== nextHref) {
+      themeLink.setAttribute('href', nextHref);
     }
 
     document.body.classList.remove(
-      'theme-classic', 'theme-modern', 'theme-retro', 'theme-nature',
-      'theme-space', 'theme-art', 'theme-logistics', 'theme-lofi'
+      'theme-classic',
+      'theme-modern',
+      'theme-retro',
+      'theme-nature',
+      'theme-space',
+      'theme-art',
+      'theme-logistics',
+      'theme-lofi'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
 
@@ -391,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
           allThemes.findIndex(t => t.name === themes[currentThemeIndex].name)
         );
         applyTheme();
+        preloadThemes();
         themeButton.style.animation = "";
       }, 500);
     });
