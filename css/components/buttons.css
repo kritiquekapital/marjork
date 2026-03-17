@@ -74,8 +74,12 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .settings-cog {
@@ -146,101 +150,62 @@
 
 .settings-volume-orb {
   --volume-fill: 40%;
-  --thumb-y: 60%;
+  --orb-fill: rgba(255, 255, 255, 0.9);
+  --orb-base: rgba(255, 255, 255, 0.08);
   position: relative;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
-  background:
-    linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0.88) 0%,
-      rgba(255, 255, 255, 0.88) var(--volume-fill),
-      rgba(255, 255, 255, 0.08) var(--volume-fill),
-      rgba(255, 255, 255, 0.08) 100%
-    );
-  color: rgba(255, 255, 255, 0.95);
-  display: flex;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: var(--orb-base);
+  display: flex !important;
   align-items: center;
   justify-content: center;
   padding: 0;
   cursor: ns-resize;
   opacity: 0.82;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease,
-    background 0.08s linear;
-  overflow: hidden;
-  appearance: none;
-  -webkit-appearance: none;
+    background 0.12s linear;
+}
+
+.settings-volume-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--orb-fill);
+  clip-path: inset(calc(100% - var(--volume-fill)) 0 0 0);
+  z-index: 1;
+  transition: clip-path 0.08s linear, background 0.12s linear;
 }
 
 .settings-volume-orb:hover,
 .settings-volume-orb.dragging {
   opacity: 0.98;
   transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.46);
+  border-color: rgba(255, 255, 255, 0.42);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
-.settings-volume-orb::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 50%;
-  width: 2px;
-  transform: translateX(-50%);
-  background: rgba(20, 20, 20, 0.32);
-  border-radius: 999px;
-  pointer-events: none;
+.settings-volume-label {
+  position: relative;
   z-index: 2;
-}
-
-.settings-volume-orb::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: var(--thumb-y);
-  width: 14px;
-  height: 14px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: rgba(20, 20, 20, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  font-size: 18px;
+  line-height: 1;
   pointer-events: none;
-  z-index: 3;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
-@media (max-width: 768px) {
-  .settings-volume-orb {
-    width: 48px;
-    height: 48px;
-  }
-
-  .settings-volume-orb::before {
-    top: 9px;
-    bottom: 9px;
-  }
-
-  .settings-volume-orb::after {
-    width: 12px;
-    height: 12px;
-  }
-}
-
-.settings-theme-option {
+.settings-dropdown > .settings-theme-option {
   position: relative;
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   background: rgba(24, 24, 24, 0.24);
   color: rgba(255, 255, 255, 0.94);
   display: flex !important;
+  visibility: visible !important;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -248,6 +213,7 @@
   line-height: 1;
   cursor: pointer;
   opacity: 0.76;
+  user-select: none;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
@@ -256,7 +222,7 @@
     box-shadow 0.2s ease;
 }
 
-.settings-theme-option:hover {
+.settings-dropdown > .settings-theme-option:hover {
   opacity: 0.96;
   transform: scale(1.05);
   background: rgba(24, 24, 24, 0.42);
@@ -264,11 +230,11 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
-.settings-theme-option.disabled-theme {
+.settings-dropdown > .settings-theme-option.disabled-theme {
   opacity: 0.34;
 }
 
-.settings-theme-option.disabled-theme::after {
+.settings-dropdown > .settings-theme-option.disabled-theme::after {
   content: "✕";
   position: absolute;
   inset: 0;
@@ -280,6 +246,12 @@
   color: rgba(255, 255, 255, 0.96);
   opacity: inherit;
   pointer-events: none;
+}
+
+.settings-cog:active,
+.settings-volume-orb:active,
+.settings-theme-option:active {
+  transform: scale(0.96);
 }
 
 @media (max-width: 768px) {
@@ -300,12 +272,12 @@
     font-size: 27px;
   }
 
-  .settings-theme-option {
-    font-size: 20px;
+  .settings-volume-label {
+    font-size: 16px;
   }
 
-  .settings-volume-icon {
-    font-size: 16px;
+  .settings-dropdown > .settings-theme-option {
+    font-size: 20px;
   }
 }
 
