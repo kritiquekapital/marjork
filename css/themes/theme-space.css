@@ -36,6 +36,22 @@ body.theme-space .grid-backdrop {
   box-shadow: 0 0 10px #ffd700;
 }
 
+body.theme-space .settings-volume-orb::before {
+  background: #ffd700 !important;
+  box-shadow: 0 0 12px #ffd700;
+}
+
+.settings-volume-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  clip-path: inset(calc(100% - var(--volume-fill)) 0 0 0);
+
+  transition: clip-path 0.08s linear;
+}
+
 .theme-space .substack-button {
   border: 2px solid transparent;
   border-radius: 50%;
