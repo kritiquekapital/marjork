@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const cog = document.getElementById("settingsCog");
   const dropdown = document.getElementById("settingsDropdown");
   const volumeSlider = document.getElementById("siteVolume");
+  const volumeOrb = document.getElementById("siteVolumeOrb");
   const themeButtons = document.querySelectorAll(".settings-theme-option");
 
   if (!cog || !dropdown) return;
 
   const STORAGE_KEYS = {
-    volume: "siteWideVolume"
+    volume: "siteWideVolume",
+    disabledThemes: "disabledThemes"
   };
 
   function openDropdown() {
@@ -23,9 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleDropdown() {
-    const isOpen = dropdown.classList.contains("open");
-    if (isOpen) closeDropdown();
-    else openDropdown();
+    if (dropdown.classList.contains("open")) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   }
 
   cog.addEventListener("click", (e) => {
@@ -37,24 +41,33 @@ document.addEventListener("DOMContentLoaded", () => {
     e.stopPropagation();
   });
 
-  document.addEventListener("click", () => {
-    closeDropdown();
-  });
+  document.addEventListener("click", closeDropdown);
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeDropdown();
   });
 
+  function updateVolumeOrb(volume) {
+    const percent = Math.round(Math.max(0, Math.min(1, volume)) * 100);
+    if (volumeOrb) {
+      volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
+      volumeOrb.setAttribute("aria-valuenow", String(percent));
+    }
+  }
+
   function applyVolume(value) {
     const volume = Math.max(0, Math.min(1, parseFloat(value) || 0));
 
-    // native media
     document.querySelectorAll("audio, video").forEach((media) => {
-      media.volume = volume;
-      media.dataset.siteWideManaged = "true";
+      try {
+        media.volume = volume;
+      } catch (err) {
+        console.warn("Could not apply volume to media element:", err);
+      }
     });
 
-    // custom event for any module that wants to listen
+    updateVolumeOrb(volume);
+
     document.dispatchEvent(
       new CustomEvent("siteVolumeChange", {
         detail: { volume }
@@ -64,11 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(STORAGE_KEYS.volume, String(volume));
   }
 
-  const savedVolume = localStorage.getItem(STORAGE_KEYS.volume);
-  const initialVolume = savedVolume !== null ? savedVolume : "0.4";
+  const savedVolume = parseFloat(localStorage.getItem(STORAGE_KEYS.volume));
+  const initialVolume = Number.isFinite(savedVolume) ? savedVolume : 0.4;
 
   if (volumeSlider) {
-    volumeSlider.value = initialVolume;
+    volumeSlider.value = String(initialVolume);
+    updateVolumeOrb(initialVolume);
     applyVolume(initialVolume);
 
     volumeSlider.addEventListener("input", () => {
@@ -76,16 +90,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function detectCurrentTheme() {
-    const bodyClasses = Array.from(document.body.classList);
-    const themeClass = bodyClasses.find(cls => cls.startsWith("theme-"));
-    return themeClass ? themeClass.replace("theme-", "") : null;
+  function getDisabledThemes() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEYS.disabledThemes) || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
-  function refreshActiveThemeButtons() {
-    const currentTheme = detectCurrentTheme();
+  function setDisabledThemes(disabledThemes) {
+    localStorage.setItem(STORAGE_KEYS.disabledThemes, JSON.stringify(disabledThemes));
+  }
+
+  function refreshThemeButtons() {
+    const disabledThemes = getDisabledThemes();
+
     themeButtons.forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.theme === currentTheme);
+      const themeName = btn.dataset.theme;
+      const isDisabled = disabledThemes.includes(themeName);
+
+      btn.classList.toggle("disabled-theme", isDisabled);
+      btn.setAttribute("aria-pressed", String(!isDisabled));
+      btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
     });
   }
 
@@ -94,17 +121,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const themeName = btn.dataset.theme;
       if (!themeName) return;
 
+      let disabledThemes = getDisabledThemes();
+
+      if (disabledThemes.includes(themeName)) {
+        disabledThemes = disabledThemes.filter((name) => name !== themeName);
+      } else {
+        const enabledCount = themeButtons.length - disabledThemes.length;
+        if (enabledCount <= 1) return;
+        disabledThemes = [...disabledThemes, themeName];
+      }
+
+      setDisabledThemes(disabledThemes);
+      refreshThemeButtons();
+
       document.dispatchEvent(
-        new CustomEvent("setTheme", {
-          detail: { themeName }
+        new CustomEvent("themeRotationSettingsChanged", {
+          detail: { disabledThemes }
         })
       );
-
-      refreshActiveThemeButtons();
     });
   });
 
-  document.addEventListener("themeChange", refreshActiveThemeButtons);
-
-  refreshActiveThemeButtons();
+  refreshThemeButtons();
+  document.addEventListener("themeChange", refreshThemeButtons);
 });
