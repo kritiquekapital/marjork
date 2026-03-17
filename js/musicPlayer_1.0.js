@@ -13,7 +13,6 @@ const musicFrame = document.getElementById("musicFrame");
 new Draggable(musicPlayer, '.ipod-screen');
 
 const liveLinks2 = [
-  { title: "La Musique House", url: "https://www.youtube.com/embed/48wo5KINI?autoplay=1" },
   { title: "Candy", url: "https://www.youtube.com/embed/x3xYXGMRRYk?autoplay=1" },
   { title: "Avatar's Love", url: "https://www.youtube.com/embed/-JH5X_-Px-4?autoplay=1" },
   { title: "Плачу на техно", url: "https://www.youtube.com/embed/L1Snj1Pt-Hs?autoplay=1" },
