@@ -1,5 +1,6 @@
 export class Bounceable {
   static instances = [];
+
   static modes = {
     NORMAL: 'normal',
     RETRO: 'retro',
@@ -11,35 +12,31 @@ export class Bounceable {
     this.velocity = { x: 0, y: 0 };
     this.friction = 0.92;
     this.isFree = false;
+    this.isLockedInHole = false;
     this.animationFrame = null;
+    this.ignoreHoleDetection = false;
+    this.currentMode = Bounceable.modes.NORMAL;
 
-    // Button radius
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
+    this.strokeCount = 0;
+
+    // Hole behavior
+    this.snapRadius = 34;
+    this.lockSnapDistance = 6;
+    this.slipSpeed = 3.5;
 
     Bounceable.instances.push(this);
 
-    // Initial position
-    this.initialPosition = { left: element.offsetLeft, top: element.offsetTop };
     this.element.style.position = 'absolute';
 
-    // Stroke count for mini-golf style logging
-    this.strokeCount = 0;
-
-    // Event listener
-    this.element.addEventListener('click', this.handleClick.bind(this));
-
-    // Create hole
     this.createHole();
-
-    // Default mode
-    this.currentMode = Bounceable.modes.NORMAL;
-    this.ignoreHoleDetection = false;
+    this.element.addEventListener('click', this.handleClick.bind(this));
   }
 
   createHole() {
     const hole = document.createElement('div');
     hole.className = 'hole';
-    hole.style.position = 'absolute';
+    hole.style.position = 'fixed';
     hole.style.width = '120px';
     hole.style.height = '120px';
     hole.style.borderRadius = '50%';
@@ -47,20 +44,26 @@ export class Bounceable {
     hole.style.zIndex = '1';
     document.body.appendChild(hole);
 
-    // Hole position at button center
+    this.hole = hole;
     this.holeRadius = hole.offsetWidth / 2;
+
+    const rect = this.element.getBoundingClientRect();
     this.holePosition = {
-      left: this.initialPosition.left + this.element.offsetWidth / 2,
-      top: this.initialPosition.top + this.element.offsetHeight / 2
+      left: rect.left + rect.width / 2,
+      top: rect.top + rect.height / 2
     };
 
-    // Center hole visually
     hole.style.left = `${this.holePosition.left - this.holeRadius}px`;
     hole.style.top = `${this.holePosition.top - this.holeRadius}px`;
   }
 
   handleClick(e) {
     this.strokeCount++;
+
+    if (this.isLockedInHole) {
+      this.ejectFromHole();
+      return;
+    }
 
     if (!this.isFree) {
       this.isFree = true;
@@ -72,36 +75,104 @@ export class Bounceable {
       this.element.style.left = `${rect.left}px`;
       this.element.style.top = `${rect.top}px`;
       this.element.style.zIndex = '99999';
-
-      this.moveOppositeDirection(e.clientX, e.clientY);
-
-      this.ignoreHoleDetection = true;
-      setTimeout(() => { this.ignoreHoleDetection = false; }, 2000);
-    } else {
-      this.moveOppositeDirection(e.clientX, e.clientY);
     }
+
+    this.moveOppositeDirection(e.clientX, e.clientY);
+
+    this.ignoreHoleDetection = true;
+    setTimeout(() => {
+      this.ignoreHoleDetection = false;
+    }, 120);
   }
 
-  moveOppositeDirection(clickX, clickY) {
+  getCenterRect() {
+    const rect = this.element.getBoundingClientRect();
+    return {
+      left: rect.left + rect.width / 2,
+      top: rect.top + rect.height / 2
+    };
+  }
+
+  getClickVectorAndPower(clickX, clickY) {
     const rect = this.element.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const dx = centerX - clickX;
-    const dy = centerY - clickY;
-    const length = Math.sqrt(dx * dx + dy * dy);
 
-    // Apply inverse velocity
-    const speed = 25;
-    this.velocity.x = (dx / length) * speed;
-    this.velocity.y = (dy / length) * speed;
+    let dx = centerX - clickX;
+    let dy = centerY - clickY;
+    let length = Math.hypot(dx, dy);
+
+    if (length < 0.001) {
+      const angle = Math.random() * Math.PI * 2;
+      dx = Math.cos(angle);
+      dy = Math.sin(angle);
+      length = 1;
+    }
+
+    const nx = dx / length;
+    const ny = dy / length;
+
+    // Stronger contrast between center and edge clicks
+    const maxRelevantDistance = this.radius;
+    const clampedDistance = Math.min(length, maxRelevantDistance);
+    const powerRatio = clampedDistance / maxRelevantDistance;
+
+    return { nx, ny, powerRatio };
+  }
+
+  moveOppositeDirection(clickX, clickY) {
+    const { nx, ny, powerRatio } = this.getClickVectorAndPower(clickX, clickY);
+
+    // Much more obvious difference:
+    // center click = weak
+    // edge click = strong
+    const minSpeed = 3;
+    const maxSpeed = 34;
+    const curvedPower = Math.pow(powerRatio, 2.4);
+    const speed = minSpeed + (maxSpeed - minSpeed) * curvedPower;
+
+    this.velocity.x = nx * speed;
+    this.velocity.y = ny * speed;
 
     this.applyMovement();
+  }
+
+  ejectFromHole() {
+    this.isLockedInHole = false;
+    this.element.classList.remove('locked');
+
+    this.element.style.left = `${this.holePosition.left - this.radius}px`;
+    this.element.style.top = `${this.holePosition.top - this.radius}px`;
+
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 25 + Math.random() * 8;
+
+    this.velocity.x = Math.cos(angle) * speed;
+    this.velocity.y = Math.sin(angle) * speed;
+
+    this.ignoreHoleDetection = true;
+    setTimeout(() => {
+      this.ignoreHoleDetection = false;
+    }, 180);
+
+    this.applyMovement();
+  }
+
+  getHoleDistance() {
+    const center = this.getCenterRect();
+    const dx = this.holePosition.left - center.left;
+    const dy = this.holePosition.top - center.top;
+    const distance = Math.hypot(dx, dy);
+
+    return { distance, dx, dy };
   }
 
   applyMovement() {
     if (!this.isFree) return;
 
-    if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+    }
 
     let lastFrameTime = 0;
 
@@ -113,19 +184,35 @@ export class Bounceable {
         lastFrameTime = time;
       }
 
-      let newLeft = parseFloat(this.element.style.left) + this.velocity.x;
-      let newTop = parseFloat(this.element.style.top) + this.velocity.y;
+      if (this.isLockedInHole) {
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+        return;
+      }
+
+      let newLeft = parseFloat(this.element.style.left || '0') + this.velocity.x;
+      let newTop = parseFloat(this.element.style.top || '0') + this.velocity.y;
 
       const maxX = window.innerWidth - this.element.offsetWidth;
       const maxY = window.innerHeight - this.element.offsetHeight;
 
-      // Bounce off edges
-      if (newLeft < 0) { newLeft = 0; this.velocity.x *= -0.9; }
-      if (newLeft > maxX) { newLeft = maxX; this.velocity.x *= -0.9; }
-      if (newTop < 0) { newTop = 0; this.velocity.y *= -0.9; }
-      if (newTop > maxY) { newTop = maxY; this.velocity.y *= -0.9; }
+      if (newLeft < 0) {
+        newLeft = 0;
+        this.velocity.x *= -0.9;
+      }
+      if (newLeft > maxX) {
+        newLeft = maxX;
+        this.velocity.x *= -0.9;
+      }
+      if (newTop < 0) {
+        newTop = 0;
+        this.velocity.y *= -0.9;
+      }
+      if (newTop > maxY) {
+        newTop = maxY;
+        this.velocity.y *= -0.9;
+      }
 
-      // Movement modes
       switch (this.currentMode) {
         case Bounceable.modes.RETRO:
           this.applyRetroMovement(newLeft, newTop);
@@ -135,11 +222,35 @@ export class Bounceable {
           break;
         default:
           this.applyNormalMovement(newLeft, newTop);
+          break;
       }
 
-      // Hole detection
-      if (!this.ignoreHoleDetection && this.isInHole(newLeft, newTop)) {
-        this.lockIntoHole();
+      if (!this.ignoreHoleDetection) {
+        const { distance, dx, dy } = this.getHoleDistance();
+
+        if (distance <= this.snapRadius) {
+          if (distance <= this.lockSnapDistance) {
+            this.lockIntoHole();
+            return;
+          }
+
+          const inv = 1 / Math.max(distance, 0.001);
+          this.velocity.x = dx * inv * this.slipSpeed;
+          this.velocity.y = dy * inv * this.slipSpeed;
+          return;
+        }
+      }
+
+      const speed = Math.hypot(this.velocity.x, this.velocity.y);
+      if (
+        this.currentMode !== Bounceable.modes.ZERO_GRAVITY &&
+        speed < 0.35 &&
+        !this.isLockedInHole
+      ) {
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
       }
     };
 
@@ -156,6 +267,8 @@ export class Bounceable {
   applyRetroMovement(newLeft, newTop) {
     const snappedLeft = Math.round(newLeft / 4) * 4;
     const snappedTop = Math.round(newTop / 4) * 4;
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
     this.element.style.left = `${snappedLeft}px`;
     this.element.style.top = `${snappedTop}px`;
   }
@@ -165,27 +278,29 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
-  isInHole(newLeft, newTop) {
-    const distance = Math.hypot(
-      newLeft + this.radius - this.holePosition.left,
-      newTop + this.radius - this.holePosition.top
-    );
-    return distance < this.holeRadius + this.radius;
-  }
-
   lockIntoHole() {
     this.velocity = { x: 0, y: 0 };
+    this.isLockedInHole = true;
+    this.ignoreHoleDetection = false;
+
     this.element.style.left = `${this.holePosition.left - this.radius}px`;
     this.element.style.top = `${this.holePosition.top - this.radius}px`;
     this.element.classList.add('locked');
+
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
+    }
+
     console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
     this.strokeCount = 0;
   }
 
   static switchMode(newMode) {
-    this.instances.forEach(inst => {
+    this.instances.forEach((inst) => {
       inst.currentMode = newMode;
-      if (newMode === Bounceable.modes.ZERO_GRAVITY && inst.isFree) inst.applyMovement();
+      if (newMode === Bounceable.modes.ZERO_GRAVITY && inst.isFree && !inst.isLockedInHole) {
+        inst.applyMovement();
+      }
     });
   }
-}
