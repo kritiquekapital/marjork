@@ -112,11 +112,21 @@
 }
 
 .settings-dropdown {
+  position: absolute;
+  top: 64px;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
-  margin-top: 10px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
   opacity: 0;
   transform: translateY(-8px) scale(0.96);
   pointer-events: none;
@@ -131,31 +141,16 @@
   pointer-events: auto;
 }
 
-.settings-volume-wrap,
-.theme-toggle-list {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.settings-volume-orb,
-.settings-theme-option {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
-}
-
+/* volume orb */
 .settings-volume-orb {
   --volume-fill: 40%;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.28);
   background:
+    radial-gradient(circle at center, rgba(255,255,255,0.06) 0 58%, transparent 59%),
     linear-gradient(
       to top,
       rgba(255, 255, 255, 0.82) 0%,
@@ -163,13 +158,14 @@
       rgba(255, 255, 255, 0.08) var(--volume-fill),
       rgba(255, 255, 255, 0.08) 100%
     );
-  opacity: 0.72;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  opacity: 0.74;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.12s linear;
+    box-shadow 0.2s ease;
   overflow: hidden;
 }
 
@@ -190,24 +186,28 @@
   font-size: 18px;
   color: rgba(20, 20, 20, 0.86);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .settings-volume-slider {
   position: absolute;
   inset: 0;
-  margin: auto;
-  width: 54px;
-  height: 54px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
   opacity: 0;
   cursor: ns-resize;
-  writing-mode: bt-lr;
-  -webkit-appearance: slider-vertical;
+  z-index: 3;
   appearance: none;
-  z-index: 2;
+  -webkit-appearance: none;
+  background: transparent;
+  writing-mode: vertical-lr;
+  direction: rtl;
 }
 
 .settings-volume-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 100%;
   background: transparent;
 }
 
@@ -215,38 +215,46 @@
   -webkit-appearance: none;
   appearance: none;
   width: 54px;
-  height: 8px;
-  background: transparent;
+  height: 54px;
   border: none;
+  background: transparent;
 }
 
 .settings-volume-slider::-moz-range-track {
+  width: 100%;
+  height: 100%;
   background: transparent;
   border: none;
 }
 
 .settings-volume-slider::-moz-range-thumb {
   width: 54px;
-  height: 8px;
-  background: transparent;
+  height: 54px;
   border: none;
+  background: transparent;
   border-radius: 0;
 }
 
-.theme-toggle-list {
-  max-height: none;
-  overflow: visible;
-}
-
+/* theme circles */
 .settings-theme-option {
   position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   background: rgba(24, 24, 24, 0.24);
   color: rgba(255, 255, 255, 0.94);
-  display: flex;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  display: flex !important;
   align-items: center;
   justify-content: center;
   font-size: 23px;
+  line-height: 1;
+  text-indent: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0;
   cursor: pointer;
   opacity: 0.76;
   transition:
@@ -266,7 +274,7 @@
 }
 
 .settings-theme-option.disabled-theme {
-  opacity: 0.36;
+  opacity: 0.34;
 }
 
 .settings-theme-option.disabled-theme::after {
@@ -279,7 +287,7 @@
   font-size: 22px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.96);
-  opacity: 1;
+  opacity: inherit;
   pointer-events: none;
 }
 
@@ -301,7 +309,8 @@
     font-size: 27px;
   }
 
-  .settings-volume-slider {
+  .settings-volume-slider::-webkit-slider-thumb,
+  .settings-volume-slider::-moz-range-thumb {
     width: 48px;
     height: 48px;
   }
