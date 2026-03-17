@@ -39,16 +39,17 @@ if (kissButton) {
     }
   }
 
-  function showFloatingMessage(text, options = {}) {
+    function showFloatingMessage(text, options = {}) {
     const {
       color = "#FF1493",
       fontSize = "1.5rem",
       fontWeight = "bold",
       zIndex = "5",
       maxOffset = 100,
-      duration = 1600,      scale = 1,
-    drift = 1
-   } = options;
+      duration = 1600,
+      scale = 1,
+      drift = 1
+    } = options;
 
     const message = document.createElement("div");
     message.textContent = text;
@@ -76,37 +77,6 @@ if (kissButton) {
         `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px)) scale(${scale * 0.9})`;
       message.style.opacity = "0";
     }, 80);
-
-    setTimeout(() => {
-      if (message.parentNode === kissButton) {
-        kissButton.removeChild(message);
-      }
-    }, duration);
-  }
-
-    const message = document.createElement("div");
-    message.textContent = text;
-    message.style.position = "absolute";
-    message.style.color = color;
-    message.style.fontSize = fontSize;
-    message.style.fontWeight = fontWeight;
-    message.style.top = "50%";
-    message.style.left = "50%";
-    message.style.transform = "translate(-50%, -50%)";
-    message.style.opacity = "1";
-    message.style.transition = "opacity 1.5s ease, transform 1.5s ease";
-    message.style.pointerEvents = "none";
-    message.style.zIndex = zIndex;
-    message.style.whiteSpace = "nowrap";
-
-    kissButton.appendChild(message);
-
-    setTimeout(() => {
-      const randomX = Math.random() * (maxOffset * 2) - maxOffset;
-      const randomY = Math.random() * (maxOffset * 2) - maxOffset;
-      message.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-      message.style.opacity = "0";
-    }, 100);
 
     setTimeout(() => {
       if (message.parentNode === kissButton) {
