@@ -55,21 +55,41 @@ document.addEventListener('DOMContentLoaded', () => {
     "space-background-stream"
   );
 
+  const LOFI_MUTED_SRC =
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080";
+
+  const LOFI_AUDIO_SRC =
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
+
   const lofiBackground = createBackground(
-    // start muted so autoplay works
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
+    LOFI_MUTED_SRC,
     "lofi-background-stream"
   );
   document.body.prepend(lofiBackground);
 
+  function startLofiBackground(withAudio = false) {
+    const targetSrc = withAudio ? LOFI_AUDIO_SRC : LOFI_MUTED_SRC;
+
+    if (lofiBackground.src !== targetSrc) {
+      lofiBackground.src = targetSrc;
+    }
+
+    lofiBackground.style.display = "block";
+  }
+
+  function stopLofiBackground() {
+    lofiBackground.style.display = "none";
+    lofiBackground.src = "about:blank";
+  }
+
   function enableLofiAudio() {
     if (document.body.classList.contains("theme-lofi")) {
-      lofiBackground.src =
-        "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
+      startLofiBackground(true);
       document.removeEventListener("click", enableLofiAudio);
       document.removeEventListener("touchstart", enableLofiAudio);
     }
   }
+
   document.addEventListener("click", enableLofiAudio);
   document.addEventListener("touchstart", enableLofiAudio);
 
@@ -289,8 +309,3 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   preloadThemes();
 });
-
-
-
-
-
