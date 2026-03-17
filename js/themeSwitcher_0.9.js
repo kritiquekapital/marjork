@@ -196,8 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
-    lofiBackground.style.display = currentTheme.name === "lofi" ? "block" : "none";
-
+    if (currentTheme.name === "lofi") {
+      startLofiBackground(false);
+    } else {
+      stopLofiBackground();
+    }
 
     const logisticsPlayer = document.getElementById('logistics-player');
     if (currentTheme.name === "logistics") {
