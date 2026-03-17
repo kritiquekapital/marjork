@@ -182,5 +182,41 @@
     <iframe id="pdfFrame" class="pdf-frame" src="" frameborder="0"></iframe>
   </div>
 
+    <!-- Site Settings -->
+  <div id="siteSettings" class="site-settings">
+    <button id="settingsCog" class="settings-cog" aria-label="Open site settings" aria-expanded="false">
+      ⚙
+    </button>
+
+    <div id="settingsDropdown" class="settings-dropdown" aria-hidden="true">
+      <div class="settings-section">
+        <label for="siteVolume" class="settings-label">sound</label>
+        <input
+          id="siteVolume"
+          class="settings-slider"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.4"
+        >
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-label">themes</div>
+        <div class="theme-toggle-list">
+          <button type="button" class="settings-theme-option" data-theme="retro">🕹️ retro</button>
+          <button type="button" class="settings-theme-option" data-theme="lofi">🎧 lofi</button>
+          <button type="button" class="settings-theme-option" data-theme="art">🎨 art</button>
+          <button type="button" class="settings-theme-option" data-theme="space">🚀 space</button>
+          <button type="button" class="settings-theme-option" data-theme="modern">🌚 modern</button>
+          <button type="button" class="settings-theme-option" data-theme="nature">🌞 nature</button>
+          <button type="button" class="settings-theme-option" data-theme="classic">😎 classic</button>
+          <button type="button" class="settings-theme-option" data-theme="logistics">📦 logistics</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
