@@ -26,6 +26,48 @@ const gamesILike = [
     url: "https://framed.wtf/",
     desc: "movie of the day",
     label: "daily"
+  },
+  {
+    id: "gamedefault-1",
+    title: "game five",
+    url: "#",
+    desc: "add later",
+    label: "link"
+  },
+  {
+    id: "gamedefault-2",
+    title: "game six",
+    url: "#",
+    desc: "add later",
+    label: "link"
+  },
+  {
+    id: "gamedefault-3",
+    title: "game seven",
+    url: "#",
+    desc: "add later",
+    label: "link"
+  },
+  {
+    id: "gamedefault-4",
+    title: "game eight",
+    url: "#",
+    desc: "add later",
+    label: "link"
+  },
+  {
+    id: "gamedefault-5",
+    title: "game nine",
+    url: "#",
+    desc: "add later",
+    label: "link"
+  },
+  {
+    id: "gamedefault-6",
+    title: "game ten",
+    url: "#",
+    desc: "add later",
+    label: "link"
   }
 ];
 
@@ -35,7 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = document.getElementById("closeGamesShelf");
   const shelfRow = document.getElementById("gamesShelfRow");
 
-  if (!openButton || !overlay || !closeButton || !shelfRow) return;
+  if (!openButton || !overlay || !closeButton || !shelfRow) {
+    console.warn("Games shelf elements missing.");
+    return;
+  }
 
   function renderGames() {
     shelfRow.innerHTML = "";
@@ -51,16 +96,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.innerHTML = `
         <div class="game-case-inner">
-          <div>
-            <div class="game-case-topline">browser game</div>
-            <div class="game-case-title">${game.title}</div>
-          </div>
-
-          <div>
-            <div class="game-case-desc">${game.desc}</div>
-            <div class="game-case-pill">${game.label}</div>
+          <div class="game-case-spine">
+            <span class="game-case-meta">browser</span>
+            <span class="game-case-title">${game.title}</span>
+            <span class="game-case-pill">${game.label}</span>
           </div>
         </div>
+        <div class="game-case-bottom-tag">${game.desc}</div>
       `;
 
       card.addEventListener("touchstart", () => {
