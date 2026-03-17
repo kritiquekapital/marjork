@@ -50,48 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const spaceBackground = createBackground(
-    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080",
-    "space-background-stream"
-  );
-
   const LOFI_MUTED_SRC =
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&vq=hd1080";
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
 
   const LOFI_AUDIO_SRC =
-    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&vq=hd1080";
+    "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
 
   const lofiBackground = createBackground(
-    LOFI_MUTED_SRC,
+    LOFI_AUDIO_SRC,
     "lofi-background-stream"
   );
   document.body.prepend(lofiBackground);
 
-  function startLofiBackground(withAudio = false) {
+  function setLofiMode(withAudio) {
     const targetSrc = withAudio ? LOFI_AUDIO_SRC : LOFI_MUTED_SRC;
-
     if (lofiBackground.src !== targetSrc) {
       lofiBackground.src = targetSrc;
     }
-
     lofiBackground.style.display = "block";
   }
-
-  function stopLofiBackground() {
-    lofiBackground.style.display = "none";
-    lofiBackground.src = "about:blank";
-  }
-
-  function enableLofiAudio() {
-    if (document.body.classList.contains("theme-lofi")) {
-      startLofiBackground(true);
-      document.removeEventListener("click", enableLofiAudio);
-      document.removeEventListener("touchstart", enableLofiAudio);
-    }
-  }
-
-  document.addEventListener("click", enableLofiAudio);
-  document.addEventListener("touchstart", enableLofiAudio);
 
   const natureVideo = document.createElement("video");
   natureVideo.classList.add("nature-background-video");
@@ -197,9 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
     if (currentTheme.name === "lofi") {
-      startLofiBackground(false);
+      setLofiMode(true);
     } else {
-      stopLofiBackground();
+      setLofiMode(false);
+      lofiBackground.style.display = "none";
     }
 
     const logisticsPlayer = document.getElementById('logistics-player');
