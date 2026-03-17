@@ -143,6 +143,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentTheme = themes[currentThemeIndex];
 
+    function setThemeByName(themeName) {
+      const nextIndex = themes.findIndex(t => t.name === themeName);
+      if (nextIndex === -1) return;
+
+      currentThemeIndex = nextIndex;
+      localStorage.setItem(
+        "currentThemeIndex",
+        allThemes.findIndex(t => t.name === themeName)
+      );
+      applyTheme();
+    }
+    
     document.body.classList.remove(
       'theme-classic','theme-modern','theme-retro','theme-nature',
       'theme-space','theme-art','theme-logistics','theme-lofi'
