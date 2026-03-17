@@ -22,20 +22,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const isPhone = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 1024;
 
-  const savedThemeIndex = parseInt(localStorage.getItem("currentThemeIndex")) || 0;
-  const savedThemeName = allThemes[savedThemeIndex]?.name;
+  const savedThemeIndex = parseInt(localStorage.getItem("currentThemeIndex"), 10) || 0;
+  const savedThemeName = allThemes[savedThemeIndex]?.name || allThemes[0].name;
 
-  let themes;
-  if (isPhone) {
-    themes = allThemes.filter(t => ["retro", "art"].includes(t.name) || t.name === savedThemeName);
-  } else if (isTablet) {
-    themes = allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
-  } else {
-    themes = allThemes;
+  function getDisabledThemes() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem("disabledThemes") || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
+
+  function getBaseThemes() {
+    if (isPhone) {
+      return allThemes.filter(t => ["retro", "art"].includes(t.name) || t.name === savedThemeName);
+    }
+
+    if (isTablet) {
+      return allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
+    }
+
+    return allThemes;
+  }
+
+  function buildEnabledThemes() {
+    const disabledThemes = getDisabledThemes();
+    const baseThemes = getBaseThemes();
+
+    let enabledThemes = baseThemes.filter(t => !disabledThemes.includes(t.name));
+
+    if (!enabledThemes.length) {
+      enabledThemes = baseThemes.slice();
+    }
+
+    return enabledThemes;
+  }
+
+  let themes = buildEnabledThemes();
 
   let currentThemeIndex = themes.findIndex(t => t.name === savedThemeName);
   if (currentThemeIndex === -1) currentThemeIndex = 0;
+
+  function rebuildThemes(keepThemeName = null) {
+    const previousThemeName = keepThemeName || themes[currentThemeIndex]?.name || savedThemeName;
+    themes = buildEnabledThemes();
+
+    let nextIndex = themes.findIndex(t => t.name === previousThemeName);
+    if (nextIndex === -1) nextIndex = 0;
+
+    currentThemeIndex = nextIndex;
+  }
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
@@ -88,18 +125,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const natureAudio = document.createElement("audio");
   natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
   natureAudio.loop = true;
-  natureAudio.volume = 0.4;
+
+  const savedSiteWideVolume = parseFloat(localStorage.getItem("siteWideVolume"));
+  const initialSiteWideVolume = Number.isFinite(savedSiteWideVolume) ? savedSiteWideVolume : 0.4;
+  natureAudio.volume = initialSiteWideVolume;
 
   const volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
   volumeSlider.min = "0";
   volumeSlider.max = "1";
   volumeSlider.step = "0.01";
-  volumeSlider.value = natureAudio.volume;
+  volumeSlider.value = String(initialSiteWideVolume);
   volumeSlider.classList.add("nature-volume-slider");
   volumeSlider.style.display = "none";
   volumeSlider.addEventListener("input", () => {
-    natureAudio.volume = volumeSlider.value;
+    natureAudio.volume = parseFloat(volumeSlider.value);
+  });
+
+  document.addEventListener("siteVolumeChange", (event) => {
+    const volume = event.detail?.volume;
+    if (!Number.isFinite(volume)) return;
+    natureAudio.volume = volume;
+    volumeSlider.value = String(volume);
   });
 
   const speedSlider = document.createElement("input");
@@ -111,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   speedSlider.classList.add("nature-speed-slider");
   speedSlider.style.display = "none";
   speedSlider.addEventListener("input", () => {
-    natureVideo.playbackRate = speedSlider.value;
+    natureVideo.playbackRate = parseFloat(speedSlider.value);
   });
 
   document.body.appendChild(volumeSlider);
@@ -123,6 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeButton = document.getElementById("themeButton");
 
   function preloadThemes() {
+    if (!themes.length) return;
+
     const activeHref = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
     themes.forEach(theme => {
       const href = `css/themes/theme-${theme.name}.css`;
@@ -154,15 +203,29 @@ document.addEventListener('DOMContentLoaded', () => {
     setThemeByName(themeName);
   });
 
+  document.addEventListener("themeRotationSettingsChanged", () => {
+    const currentThemeName = themes[currentThemeIndex]?.name;
+    rebuildThemes(currentThemeName);
+    applyTheme();
+    preloadThemes();
+  });
+
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
+    if (!themes.length) {
+      rebuildThemes(savedThemeName);
+      if (!themes.length) return;
+    }
+
     cleanupLogistics();
     document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
+    const currentTheme = themes[currentThemeIndex];
+
     const themeLink = document.createElement('link');
     themeLink.rel = 'stylesheet';
-    themeLink.href = `css/themes/theme-${themes[currentThemeIndex].name}.css`;
+    themeLink.href = `css/themes/theme-${currentTheme.name}.css`;
     themeLink.dataset.theme = true;
 
     const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
@@ -172,13 +235,12 @@ document.addEventListener('DOMContentLoaded', () => {
       document.head.appendChild(themeLink);
     }
 
-    const currentTheme = themes[currentThemeIndex];
-
     document.body.classList.remove(
       'theme-classic', 'theme-modern', 'theme-retro', 'theme-nature',
       'theme-space', 'theme-art', 'theme-logistics', 'theme-lofi'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
+
     if (themeButton) themeButton.textContent = currentTheme.displayName;
 
     document.dispatchEvent(new Event("themeChange"));
@@ -224,7 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
-    localStorage.setItem("currentThemeIndex", allThemes.findIndex(t => t.name === currentTheme.name));
+
+    localStorage.setItem(
+      "currentThemeIndex",
+      allThemes.findIndex(t => t.name === currentTheme.name)
+    );
   }
 
   function handleArtSplatter(e) {
@@ -315,6 +381,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (themeButton) {
     themeButton.addEventListener("click", () => {
+      if (!themes.length) return;
+
       themeButton.style.animation = "spin 0.5s ease-in-out";
       setTimeout(() => {
         currentThemeIndex = (currentThemeIndex + 1) % themes.length;
