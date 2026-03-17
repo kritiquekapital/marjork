@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
+  const spaceBackground = createBackground(
+    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&playlist=H999s0P1Er0&vq=hd1080",
+    "space-background-stream"
+  );
+  spaceBackground.style.display = "none";
+
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
 
@@ -60,14 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
     LOFI_AUDIO_SRC,
     "lofi-background-stream"
   );
+  lofiBackground.style.display = "none";
   document.body.prepend(lofiBackground);
 
   function setLofiMode(withAudio) {
     const targetSrc = withAudio ? LOFI_AUDIO_SRC : LOFI_MUTED_SRC;
-    if (lofiBackground.src !== targetSrc) {
-      lofiBackground.src = targetSrc;
+    if (lofiBackground.getAttribute("src") !== targetSrc) {
+      lofiBackground.setAttribute("src", targetSrc);
     }
-    lofiBackground.style.display = "block";
   }
 
   const natureVideo = document.createElement("video");
@@ -77,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   natureVideo.loop = true;
   natureVideo.muted = true;
   natureVideo.playsInline = true;
+  natureVideo.style.display = "none";
 
   const natureAudio = document.createElement("audio");
   natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
@@ -90,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   volumeSlider.step = "0.01";
   volumeSlider.value = natureAudio.volume;
   volumeSlider.classList.add("nature-volume-slider");
+  volumeSlider.style.display = "none";
   volumeSlider.addEventListener("input", () => {
     natureAudio.volume = volumeSlider.value;
   });
@@ -101,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
   speedSlider.step = "0.05";
   speedSlider.value = "1.0";
   speedSlider.classList.add("nature-speed-slider");
+  speedSlider.style.display = "none";
   speedSlider.addEventListener("input", () => {
     natureVideo.playbackRate = speedSlider.value;
   });
@@ -127,6 +136,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function setThemeByName(themeName) {
+    const nextIndex = themes.findIndex(t => t.name === themeName);
+    if (nextIndex === -1) return;
+
+    currentThemeIndex = nextIndex;
+    localStorage.setItem(
+      "currentThemeIndex",
+      allThemes.findIndex(t => t.name === themeName)
+    );
+    applyTheme();
+  }
+
+  document.addEventListener("setTheme", (event) => {
+    const themeName = event.detail?.themeName;
+    if (!themeName) return;
+    setThemeByName(themeName);
+  });
+
   document.querySelectorAll('[data-theme]').forEach(link => link.remove());
 
   function applyTheme() {
@@ -139,33 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
     themeLink.dataset.theme = true;
 
     const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
-    document.head.insertBefore(themeLink, responsiveLink);
+    if (responsiveLink) {
+      document.head.insertBefore(themeLink, responsiveLink);
+    } else {
+      document.head.appendChild(themeLink);
+    }
 
     const currentTheme = themes[currentThemeIndex];
 
-    function setThemeByName(themeName) {
-      const nextIndex = themes.findIndex(t => t.name === themeName);
-      if (nextIndex === -1) return;
-
-      currentThemeIndex = nextIndex;
-      localStorage.setItem(
-        "currentThemeIndex",
-        allThemes.findIndex(t => t.name === themeName)
-      );
-      applyTheme();
-    }
-        document.addEventListener("setTheme", (event) => {
-      const themeName = event.detail?.themeName;
-      if (!themeName) return;
-      setThemeByName(themeName);
-    });
-    
     document.body.classList.remove(
-      'theme-classic','theme-modern','theme-retro','theme-nature',
-      'theme-space','theme-art','theme-logistics','theme-lofi'
+      'theme-classic', 'theme-modern', 'theme-retro', 'theme-nature',
+      'theme-space', 'theme-art', 'theme-logistics', 'theme-lofi'
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
-    themeButton.textContent = currentTheme.displayName;
+    if (themeButton) themeButton.textContent = currentTheme.displayName;
 
     document.dispatchEvent(new Event("themeChange"));
 
@@ -189,9 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
+
     spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+
     if (currentTheme.name === "lofi") {
       setLofiMode(true);
+      lofiBackground.style.display = "block";
     } else {
       setLofiMode(false);
       lofiBackground.style.display = "none";
@@ -203,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cleanupLogistics = initLogisticsTheme() || (() => {});
     } else {
       if (logisticsPlayer) logisticsPlayer.style.display = "none";
+      cleanupLogistics = () => {};
     }
 
     draggable.setZeroGravityMode(currentTheme.name === "space");
@@ -257,8 +275,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleUIState = (shouldHide) => {
     if (!gridContainer || !mediaControlBar) return;
 
-    if (document.body.classList.contains("theme-space") ||
-        document.body.classList.contains("theme-logistics")) {
+    if (
+      document.body.classList.contains("theme-space") ||
+      document.body.classList.contains("theme-logistics")
+    ) {
       gridContainer.style.opacity = shouldHide ? "0" : "1";
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
       gridContainer.style.transition = "opacity 0.5s ease-in-out";
@@ -293,15 +313,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  themeButton.addEventListener("click", () => {
-    themeButton.style.animation = "spin 0.5s ease-in-out";
-    setTimeout(() => {
-      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-      localStorage.setItem("currentThemeIndex", allThemes.findIndex(t => t.name === themes[currentThemeIndex].name));
-      applyTheme();
-      themeButton.style.animation = "";
-    }, 500);
-  });
+  if (themeButton) {
+    themeButton.addEventListener("click", () => {
+      themeButton.style.animation = "spin 0.5s ease-in-out";
+      setTimeout(() => {
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+        localStorage.setItem(
+          "currentThemeIndex",
+          allThemes.findIndex(t => t.name === themes[currentThemeIndex].name)
+        );
+        applyTheme();
+        themeButton.style.animation = "";
+      }, 500);
+    });
+  }
 
   resetInactivityTimer();
   applyTheme();
