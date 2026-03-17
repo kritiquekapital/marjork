@@ -24,7 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleDropdown() {
-    dropdown.classList.contains("open") ? closeDropdown() : openDropdown();
+    if (dropdown.classList.contains("open")) {
+      closeDropdown();
+    } else {
+      openDropdown();
+    }
   }
 
   cog.addEventListener("click", (e) => {
@@ -49,12 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateVolumeOrb(volume) {
     const clamped = clampVolume(volume);
     const percent = Math.round(clamped * 100);
+    const thumbY = 100 - percent;
 
-    if (volumeOrb) {
-      volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
-      volumeOrb.setAttribute("aria-valuenow", String(percent));
-      volumeOrb.title = `Volume ${percent}%`;
-    }
+    if (!volumeOrb) return;
+
+    volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
+    volumeOrb.style.setProperty("--thumb-y", `${thumbY}%`);
+    volumeOrb.setAttribute("aria-valuenow", String(percent));
+    volumeOrb.title = `Volume ${percent}%`;
   }
 
   function applyVolume(value) {
@@ -111,10 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
       setVolumeFromPointer(e.clientY);
     });
 
+    volumeOrb.addEventListener("click", (e) => {
+      setVolumeFromPointer(e.clientY);
+    });
+
     const stopDragging = (e) => {
       if (!isDragging) return;
       isDragging = false;
       volumeOrb.classList.remove("dragging");
+
       if (e?.pointerId !== undefined) {
         try {
           volumeOrb.releasePointerCapture?.(e.pointerId);
@@ -129,11 +140,15 @@ document.addEventListener("DOMContentLoaded", () => {
       volumeOrb.classList.remove("dragging");
     });
 
-    volumeOrb.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      const step = e.deltaY < 0 ? 0.05 : -0.05;
-      currentVolume = applyVolume(currentVolume + step);
-    }, { passive: false });
+    volumeOrb.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        const step = e.deltaY < 0 ? 0.05 : -0.05;
+        currentVolume = applyVolume(currentVolume + step);
+      },
+      { passive: false }
+    );
 
     volumeOrb.addEventListener("keydown", (e) => {
       if (e.key === "ArrowUp") {
@@ -170,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.setAttribute("aria-pressed", String(!isDisabled));
       btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
       btn.style.display = "flex";
+      btn.style.visibility = "visible";
     });
   }
 
