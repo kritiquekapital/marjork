@@ -4,70 +4,70 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    label: "daily"
+    image: "css/pic/Vibrant Color Fiesta - Pane.png"
   },
   {
     id: "songless",
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    label: "daily"
+    image: "css/pic/songless.jpg"
   },
   {
     id: "tradle",
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
     desc: "international trade of the day",
-    label: "daily"
+    image: "css/pic/TRADLE.png"
   },
   {
     id: "framed",
     title: "framed",
     url: "https://framed.wtf/",
     desc: "movie of the day",
-    label: "daily"
+    image: "css/pic/framed.jpg"
   },
   {
     id: "gamedefault-1",
     title: "game five",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-five.jpg"
   },
   {
     id: "gamedefault-2",
     title: "game six",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-six.jpg"
   },
   {
     id: "gamedefault-3",
     title: "game seven",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-seven.jpg"
   },
   {
     id: "gamedefault-4",
     title: "game eight",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-eight.jpg"
   },
   {
     id: "gamedefault-5",
     title: "game nine",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-nine.jpg"
   },
   {
     id: "gamedefault-6",
     title: "game ten",
     url: "#",
     desc: "add later",
-    label: "link"
+    image: "css/pic/game-ten.jpg"
   }
 ];
 
@@ -92,29 +92,35 @@ document.addEventListener("DOMContentLoaded", () => {
       card.href = game.url;
       card.target = "_blank";
       card.rel = "noopener noreferrer";
-      card.setAttribute("aria-label", `${game.title} — ${game.desc}`);
+      card.setAttribute("aria-label", game.title);
+      card.style.setProperty("--game-bg", `url("${game.image}")`);
 
       card.innerHTML = `
         <div class="game-case-inner">
           <div class="game-case-spine">
-            <span class="game-case-meta">browser</span>
             <span class="game-case-title">${game.title}</span>
-            <span class="game-case-pill">${game.label}</span>
           </div>
         </div>
-        <div class="game-case-bottom-tag">${game.desc}</div>
       `;
 
-      card.addEventListener("touchstart", () => {
-        shelfRow.querySelectorAll(".game-case.is-active").forEach((el) => {
-          if (el !== card) el.classList.remove("is-active");
-        });
-        card.classList.add("is-active");
-      }, { passive: true });
+      card.addEventListener(
+        "touchstart",
+        () => {
+          shelfRow.querySelectorAll(".game-case.is-active").forEach((el) => {
+            if (el !== card) el.classList.remove("is-active");
+          });
+          card.classList.add("is-active");
+        },
+        { passive: true }
+      );
 
-      card.addEventListener("touchend", () => {
-        setTimeout(() => card.classList.remove("is-active"), 180);
-      }, { passive: true });
+      card.addEventListener(
+        "touchend",
+        () => {
+          setTimeout(() => card.classList.remove("is-active"), 180);
+        },
+        { passive: true }
+      );
 
       shelfRow.appendChild(card);
     });
