@@ -46,8 +46,43 @@ if (kissButton) {
       fontWeight = "bold",
       zIndex = "5",
       maxOffset = 100,
-      duration = 1600
-    } = options;
+      duration = 1600,      scale = 1,
+    drift = 1
+   } = options;
+
+    const message = document.createElement("div");
+    message.textContent = text;
+
+    message.style.position = "absolute";
+    message.style.color = color;
+    message.style.fontSize = fontSize;
+    message.style.fontWeight = fontWeight;
+    message.style.top = "50%";
+    message.style.left = "50%";
+    message.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    message.style.opacity = "1";
+    message.style.transition = "opacity 1.4s ease, transform 1.4s ease";
+    message.style.pointerEvents = "none";
+    message.style.zIndex = zIndex;
+    message.style.whiteSpace = "nowrap";
+
+    kissButton.appendChild(message);
+
+    setTimeout(() => {
+      const randomX = (Math.random() * 2 - 1) * maxOffset * drift;
+      const randomY = (Math.random() * 2 - 1) * maxOffset * drift;
+
+      message.style.transform =
+        `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px)) scale(${scale * 0.9})`;
+      message.style.opacity = "0";
+    }, 80);
+
+    setTimeout(() => {
+      if (message.parentNode === kissButton) {
+        kissButton.removeChild(message);
+      }
+    }, duration);
+  }
 
     const message = document.createElement("div");
     message.textContent = text;
@@ -93,28 +128,35 @@ if (kissButton) {
   }
 
   function showSinkMessages(strokeCount) {
-    const randomHoleMessage = holeMessages[Math.floor(Math.random() * holeMessages.length)];
-    const strokeLabel = `${strokeCount} stroke${strokeCount === 1 ? "" : "s"}`;
+    const randomHoleMessage =
+      holeMessages[Math.floor(Math.random() * holeMessages.length)];
+
+    const strokeLabel =
+      `${strokeCount} stroke${strokeCount === 1 ? "" : "s"}`;
 
     showFloatingMessage(strokeLabel, {
-      color: "#FFD700",
-      fontSize: "1.15rem",
-      fontWeight: "bold",
+      color: "#FF1493",
+      fontSize: "1.9rem",
+      fontWeight: "900",
       zIndex: "6",
-      maxOffset: 70,
-      duration: 1700
+      maxOffset: 80,
+      duration: 1700,
+      scale: 1.25,
+      drift: 0.8
     });
 
     setTimeout(() => {
       showFloatingMessage(randomHoleMessage, {
-        color: "#FFFFFF",
-        fontSize: "1.3rem",
+        color: "#FF69B4",
+        fontSize: "1.35rem",
         fontWeight: "bold",
         zIndex: "6",
-        maxOffset: 110,
-        duration: 1800
+        maxOffset: 120,
+        duration: 1800,
+        scale: 1,
+        drift: 1.2
       });
-    }, 90);
+    }, 140);
   }
 
   applyKissThemeMode();
