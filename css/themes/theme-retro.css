@@ -25,6 +25,12 @@ body.theme-retro button {
   background-clip: padding-box; /* Ensure the background applies only to the button */
 }
 
+body.theme-retro .settings-volume-orb::before {
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00) !important;
+  background-size: 400% 400% !important;
+  animation: rainbow 5s ease infinite !important;
+}
+
 /* Scanline Effect */
 body.theme-retro::before {
   content: "";
