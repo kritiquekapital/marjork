@@ -416,76 +416,6 @@ body.theme-retro .click-wheel {
 }
 
 /* ==================== */
-/* Games Shelf Overlay */
-/* ==================== */
-.games-shelf-overlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(6px);
-  z-index: 10020;
-}
-
-.games-shelf-overlay.is-open {
-  display: flex;
-}
-
-.games-shelf-modal {
-  width: min(96vw, 1120px);
-  max-width: 1120px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  animation: gamesShelfIn 0.22s ease;
-}
-
-@keyframes gamesShelfIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.games-shelf-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: #ffffff;
-  padding-inline: 2px;
-}
-
-.games-shelf-header h2 {
-  margin: 0;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  letter-spacing: 0.04em;
-  font-weight: 700;
-}
-
-.games-shelf-close {
-  width: 44px !important;
-  height: 44px !important;
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 28px;
-  line-height: 1;
-  color: #222;
-  background: #ffffff;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-}
-
-/* ==================== */
 /* Shelf Body */
 /* ==================== */
 .games-shelf-frame {
@@ -540,8 +470,8 @@ body.theme-retro .click-wheel {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));
   align-items: end;
-  gap: 2px;
-  min-height: 170px;
+  gap: 4px;
+  min-height: 190px;
   padding: 10px 6px 10px;
 }
 
@@ -553,37 +483,37 @@ body.theme-retro .click-wheel {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  height: 138px;
-  min-height: 138px;
+  width: 100%;
+  height: 168px;
+  min-height: 168px;
   text-decoration: none;
-  border-radius: 6px 6px 3px 3px;
+  border-radius: 4px 4px 2px 2px;
   overflow: hidden;
   isolation: isolate;
-  background:
-    linear-gradient(180deg, #fefefe 0%, #f2f2f2 55%, #dddddd 100%);
-  border: 1px solid rgba(50,50,50,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
   box-shadow:
-    inset 2px 0 0 rgba(255,255,255,0.92),
-    inset -6px 0 8px rgba(0,0,0,0.08),
-    inset 0 -8px 10px rgba(0,0,0,0.08),
-    0 3px 6px rgba(0,0,0,0.12);
-  transform: translateY(8px);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+    inset 1px 0 0 rgba(255,255,255,0.35),
+    inset -4px 0 8px rgba(0,0,0,0.18),
+    0 4px 10px rgba(0,0,0,0.22);
+  transform: translateY(10px);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
   -webkit-tap-highlight-color: transparent;
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)),
+    var(--game-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .game-case::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 10px;
-  height: 100%;
+  inset: 0;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.85), rgba(0,0,0,0.08)),
-    var(--case-accent, linear-gradient(180deg, #7d7d7d, #bdbdbd));
-  box-shadow: inset -1px 0 0 rgba(255,255,255,0.6);
-  z-index: 0;
+    linear-gradient(90deg, rgba(255,255,255,0.22) 0 8%, rgba(255,255,255,0.06) 8% 16%, transparent 16% 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .game-case::after {
@@ -591,8 +521,7 @@ body.theme-retro .click-wheel {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.34), transparent 36%),
-    linear-gradient(180deg, transparent 70%, rgba(0,0,0,0.07));
+    linear-gradient(180deg, rgba(255,255,255,0.12), transparent 22%, rgba(0,0,0,0.18) 100%);
   pointer-events: none;
   z-index: 2;
 }
@@ -602,10 +531,10 @@ body.theme-retro .click-wheel {
 .game-case.is-active {
   transform: translateY(0);
   box-shadow:
-    inset 2px 0 0 rgba(255,255,255,0.92),
-    inset -6px 0 8px rgba(0,0,0,0.08),
-    inset 0 -8px 10px rgba(0,0,0,0.08),
-    0 10px 14px rgba(0,0,0,0.18);
+    inset 1px 0 0 rgba(255,255,255,0.4),
+    inset -4px 0 8px rgba(0,0,0,0.22),
+    0 10px 16px rgba(0,0,0,0.26);
+  filter: brightness(1.05);
 }
 
 .game-case:focus-visible {
@@ -615,116 +544,44 @@ body.theme-retro .click-wheel {
 
 .game-case-inner {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   height: 100%;
-  padding: 8px 4px 8px 14px;
+  padding: 8px 2px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* vertical spine text */
 .game-case-spine {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   height: 100%;
 }
 
 .game-case-title {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   line-height: 1;
   font-weight: 700;
-  color: #151515;
+  color: #ffffff;
   text-transform: lowercase;
-  letter-spacing: 0.03em;
-  text-align: center;
-}
-
-.game-case-meta {
-  font-size: 0.52rem;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(20,20,20,0.56);
-}
-
-.game-case-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  padding: 4px 3px;
-  border-radius: 999px;
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #111;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-/* optional subtle label near bottom */
-.game-case-bottom-tag {
-  position: absolute;
-  left: 14px;
-  right: 4px;
-  bottom: 6px;
-  z-index: 1;
-  font-size: 0.48rem;
-  line-height: 1;
-  text-align: center;
-  color: rgba(20,20,20,0.52);
-  text-transform: uppercase;
   letter-spacing: 0.06em;
-  pointer-events: none;
+  text-align: center;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.95),
+    0 0 10px rgba(0,0,0,0.55);
+  padding: 4px 0;
 }
 
-/* game-specific accents */
-.game-case[data-game="colorguesser"] {
-  --case-accent: linear-gradient(180deg, #ff3b7a, #ffb703, #65d46e, #4ea8ff);
-}
-
-.game-case[data-game="songless"] {
-  --case-accent: linear-gradient(180deg, #111111, #404040, #9a9a9a);
-}
-
-.game-case[data-game="tradle"] {
-  --case-accent: linear-gradient(180deg, #0f766e, #38bdf8, #d9f99d);
-}
-
-.game-case[data-game="framed"] {
-  --case-accent: linear-gradient(180deg, #121212, #7f1d1d, #f1f1f1);
-}
-
-/* extra slots so 10 items don't all look the same later */
-.game-case[data-game="gamedefault-1"] {
-  --case-accent: linear-gradient(180deg, #6b7280, #d1d5db);
-}
-
-.game-case[data-game="gamedefault-2"] {
-  --case-accent: linear-gradient(180deg, #7c3aed, #c4b5fd);
-}
-
-.game-case[data-game="gamedefault-3"] {
-  --case-accent: linear-gradient(180deg, #b45309, #fde68a);
-}
-
-.game-case[data-game="gamedefault-4"] {
-  --case-accent: linear-gradient(180deg, #166534, #86efac);
-}
-
-.game-case[data-game="gamedefault-5"] {
-  --case-accent: linear-gradient(180deg, #9f1239, #f9a8d4);
-}
-
-.game-case[data-game="gamedefault-6"] {
-  --case-accent: linear-gradient(180deg, #1d4ed8, #93c5fd);
+/* remove old extra text blocks */
+.game-case-meta,
+.game-case-pill,
+.game-case-bottom-tag {
+  display: none !important;
 }
 
 /* ==================== */
@@ -748,8 +605,8 @@ body.theme-retro .click-wheel {
 
   .games-shelf-row {
     display: flex;
-    gap: 2px;
-    min-height: 164px;
+    gap: 4px;
+    min-height: 180px;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 8px 4px 10px;
@@ -762,10 +619,10 @@ body.theme-retro .click-wheel {
   }
 
   .game-case {
-    flex: 0 0 82px;
-    width: 82px;
-    height: 132px;
-    min-height: 132px;
+    flex: 0 0 58px;
+    width: 58px;
+    height: 160px;
+    min-height: 160px;
     scroll-snap-align: start;
     transform: translateY(6px);
   }
@@ -781,20 +638,6 @@ body.theme-retro .click-wheel {
 
   .game-case-title {
     font-size: 0.62rem;
-  }
-
-  .game-case-meta {
-    font-size: 0.46rem;
-  }
-
-  .game-case-pill {
-    font-size: 0.46rem;
-    min-width: 16px;
-    padding: 3px 2px;
-  }
-
-  .game-case-bottom-tag {
-    font-size: 0.44rem;
   }
 }
 
