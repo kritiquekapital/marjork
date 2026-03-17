@@ -146,10 +146,13 @@
 
 .settings-volume-orb {
   --volume-fill: 40%;
+  --thumb-y: 60%;
   position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.28);
   background:
-    radial-gradient(circle at center, rgba(255,255,255,0.06) 0 58%, transparent 59%),
     linear-gradient(
       to top,
       rgba(255, 255, 255, 0.88) 0%,
@@ -157,13 +160,15 @@
       rgba(255, 255, 255, 0.08) var(--volume-fill),
       rgba(255, 255, 255, 0.08) 100%
     );
-  color: rgba(20, 20, 20, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   cursor: ns-resize;
-  opacity: 0.8;
+  opacity: 0.82;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
   transition:
     opacity 0.2s ease,
     transform 0.2s ease,
@@ -171,32 +176,63 @@
     box-shadow 0.2s ease,
     background 0.08s linear;
   overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .settings-volume-orb:hover,
 .settings-volume-orb.dragging {
-  opacity: 0.97;
+  opacity: 0.98;
   transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(255, 255, 255, 0.46);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
 }
 
-.settings-volume-icon {
-  position: relative;
-  z-index: 2;
-  font-size: 18px;
-  font-weight: 700;
+.settings-volume-orb::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 20, 0.32);
+  border-radius: 999px;
   pointer-events: none;
-  opacity: 0.95;
+  z-index: 2;
 }
 
 .settings-volume-orb::after {
   content: "";
   position: absolute;
-  inset: 6px;
+  left: 50%;
+  top: var(--thumb-y);
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(20, 20, 20, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   pointer-events: none;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .settings-volume-orb {
+    width: 48px;
+    height: 48px;
+  }
+
+  .settings-volume-orb::before {
+    top: 9px;
+    bottom: 9px;
+  }
+
+  .settings-volume-orb::after {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 .settings-theme-option {
