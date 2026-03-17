@@ -2,14 +2,53 @@ document.addEventListener("DOMContentLoaded", () => {
   const cog = document.getElementById("settingsCog");
   const dropdown = document.getElementById("settingsDropdown");
   const volumeOrb = document.getElementById("siteVolumeOrb");
-  const themeButtons = Array.from(document.querySelectorAll(".settings-theme-option"));
 
-  if (!cog || !dropdown) return;
+  if (!cog || !dropdown || !volumeOrb) return;
+
+  const THEME_META = [
+    { name: "retro", emoji: "🕹️", color: "#27e1ff" },
+    { name: "lofi", emoji: "🎧", color: "#7b68ee" },
+    { name: "art", emoji: "🎨", color: "#ff5fa2" },
+    { name: "space", emoji: "🚀", color: "#4b3cff" },
+    { name: "modern", emoji: "🌚", color: "#7f8cff" },
+    { name: "nature", emoji: "🌞", color: "#50c878" },
+    { name: "classic", emoji: "😎", color: "#ffb347" },
+    { name: "logistics", emoji: "📦", color: "#f0c64a" }
+  ];
 
   const STORAGE_KEYS = {
     volume: "siteWideVolume",
     disabledThemes: "disabledThemes"
   };
+
+  function ensureVolumeLabel() {
+    let label = volumeOrb.querySelector(".settings-volume-label");
+    if (!label) {
+      label = document.createElement("span");
+      label.className = "settings-volume-label";
+      label.textContent = "🔊";
+      volumeOrb.appendChild(label);
+    }
+  }
+
+  function ensureThemeButtons() {
+    const existing = Array.from(dropdown.querySelectorAll(".settings-theme-option"));
+    if (existing.length) return existing;
+
+    return THEME_META.map((theme) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "settings-theme-option";
+      btn.dataset.theme = theme.name;
+      btn.setAttribute("aria-label", `${theme.name} theme`);
+      btn.textContent = theme.emoji;
+      dropdown.appendChild(btn);
+      return btn;
+    });
+  }
+
+  ensureVolumeLabel();
+  let themeButtons = ensureThemeButtons();
 
   function openDropdown() {
     dropdown.classList.add("open");
@@ -50,15 +89,38 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.max(0, Math.min(1, Number(value) || 0));
   }
 
+  function getCurrentThemeName() {
+    const cls = Array.from(document.body.classList).find((c) => c.startsWith("theme-"));
+    return cls ? cls.replace("theme-", "") : "retro";
+  }
+
+  function syncVolumeOrbTheme() {
+    const currentTheme = getCurrentThemeName();
+    const themeMeta = THEME_META.find((t) => t.name === currentTheme) || THEME_META[0];
+    const isInverse = currentTheme === "space";
+
+    volumeOrb.style.setProperty(
+      "--orb-base",
+      isInverse ? themeMeta.color : "rgba(255, 255, 255, 0.10)"
+    );
+
+    volumeOrb.style.setProperty(
+      "--orb-fill",
+      isInverse ? "rgba(255, 255, 255, 0.94)" : themeMeta.color
+    );
+
+    const label = volumeOrb.querySelector(".settings-volume-label");
+    if (label) {
+      label.textContent = "🔊";
+      label.style.color = "rgba(255, 255, 255, 0.96)";
+    }
+  }
+
   function updateVolumeOrb(volume) {
     const clamped = clampVolume(volume);
     const percent = Math.round(clamped * 100);
-    const thumbY = 100 - percent;
-
-    if (!volumeOrb) return;
 
     volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
-    volumeOrb.style.setProperty("--thumb-y", `${thumbY}%`);
     volumeOrb.setAttribute("aria-valuenow", String(percent));
     volumeOrb.title = `Volume ${percent}%`;
   }
@@ -93,73 +155,69 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   function setVolumeFromPointer(clientY) {
-    if (!volumeOrb) return;
-
     const rect = volumeOrb.getBoundingClientRect();
     const relativeY = clientY - rect.top;
     const ratio = 1 - (relativeY / rect.height);
     currentVolume = applyVolume(ratio);
   }
 
-  if (volumeOrb) {
-    let isDragging = false;
+  let isDragging = false;
 
-    volumeOrb.addEventListener("pointerdown", (e) => {
-      e.preventDefault();
-      isDragging = true;
-      volumeOrb.classList.add("dragging");
-      volumeOrb.setPointerCapture?.(e.pointerId);
-      setVolumeFromPointer(e.clientY);
-    });
+  volumeOrb.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+    isDragging = true;
+    volumeOrb.classList.add("dragging");
+    volumeOrb.setPointerCapture?.(e.pointerId);
+    setVolumeFromPointer(e.clientY);
+  });
 
-    volumeOrb.addEventListener("pointermove", (e) => {
-      if (!isDragging) return;
-      setVolumeFromPointer(e.clientY);
-    });
+  volumeOrb.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+    setVolumeFromPointer(e.clientY);
+  });
 
-    volumeOrb.addEventListener("click", (e) => {
-      setVolumeFromPointer(e.clientY);
-    });
+  volumeOrb.addEventListener("click", (e) => {
+    setVolumeFromPointer(e.clientY);
+  });
 
-    const stopDragging = (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-      volumeOrb.classList.remove("dragging");
+  function stopDragging(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    volumeOrb.classList.remove("dragging");
 
-      if (e?.pointerId !== undefined) {
-        try {
-          volumeOrb.releasePointerCapture?.(e.pointerId);
-        } catch {}
-      }
-    };
-
-    volumeOrb.addEventListener("pointerup", stopDragging);
-    volumeOrb.addEventListener("pointercancel", stopDragging);
-    volumeOrb.addEventListener("lostpointercapture", () => {
-      isDragging = false;
-      volumeOrb.classList.remove("dragging");
-    });
-
-    volumeOrb.addEventListener(
-      "wheel",
-      (e) => {
-        e.preventDefault();
-        const step = e.deltaY < 0 ? 0.05 : -0.05;
-        currentVolume = applyVolume(currentVolume + step);
-      },
-      { passive: false }
-    );
-
-    volumeOrb.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        currentVolume = applyVolume(currentVolume + 0.05);
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        currentVolume = applyVolume(currentVolume - 0.05);
-      }
-    });
+    if (e?.pointerId !== undefined) {
+      try {
+        volumeOrb.releasePointerCapture?.(e.pointerId);
+      } catch {}
+    }
   }
+
+  volumeOrb.addEventListener("pointerup", stopDragging);
+  volumeOrb.addEventListener("pointercancel", stopDragging);
+  volumeOrb.addEventListener("lostpointercapture", () => {
+    isDragging = false;
+    volumeOrb.classList.remove("dragging");
+  });
+
+  volumeOrb.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      const step = e.deltaY < 0 ? 0.05 : -0.05;
+      currentVolume = applyVolume(currentVolume + step);
+    },
+    { passive: false }
+  );
+
+  volumeOrb.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      currentVolume = applyVolume(currentVolume + 0.05);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      currentVolume = applyVolume(currentVolume - 0.05);
+    }
+  });
 
   function getDisabledThemes() {
     try {
@@ -187,6 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.display = "flex";
       btn.style.visibility = "visible";
     });
+
+    syncVolumeOrbTheme();
   }
 
   themeButtons.forEach((btn) => {
