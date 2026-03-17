@@ -25,11 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function toggleDropdown() {
-    if (dropdown.classList.contains("open")) {
-      closeDropdown();
-    } else {
-      openDropdown();
-    }
+    dropdown.classList.contains("open") ? closeDropdown() : openDropdown();
   }
 
   cog.addEventListener("click", (e) => {
@@ -48,7 +44,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateVolumeOrb(volume) {
-    const percent = Math.round(Math.max(0, Math.min(1, volume)) * 100);
+    const clamped = Math.max(0, Math.min(1, Number(volume) || 0));
+    const percent = Math.round(clamped * 100);
+
     if (volumeOrb) {
       volumeOrb.style.setProperty("--volume-fill", `${percent}%`);
       volumeOrb.setAttribute("aria-valuenow", String(percent));
@@ -86,6 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
     applyVolume(initialVolume);
 
     volumeSlider.addEventListener("input", () => {
+      applyVolume(volumeSlider.value);
+    });
+
+    volumeSlider.addEventListener("change", () => {
       applyVolume(volumeSlider.value);
     });
   }
