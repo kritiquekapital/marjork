@@ -123,7 +123,6 @@ export class Bounceable {
   moveOppositeDirection(clickX, clickY) {
     const { nx, ny, powerRatio } = this.getClickVectorAndPower(clickX, clickY);
 
-    // Much more obvious difference:
     // center click = weak
     // edge click = strong
     const minSpeed = 3;
@@ -279,6 +278,8 @@ export class Bounceable {
   }
 
   lockIntoHole() {
+    const completedStrokeCount = this.strokeCount;
+
     this.velocity = { x: 0, y: 0 };
     this.isLockedInHole = true;
     this.ignoreHoleDetection = false;
@@ -292,7 +293,15 @@ export class Bounceable {
       this.animationFrame = null;
     }
 
-    console.log(`Button locked into hole after ${this.strokeCount} strokes!`);
+    this.element.dispatchEvent(
+      new CustomEvent('bounceable:locked-in-hole', {
+        detail: {
+          strokeCount: completedStrokeCount
+        }
+      })
+    );
+
+    console.log(`Button locked into hole after ${completedStrokeCount} strokes!`);
     this.strokeCount = 0;
   }
 
