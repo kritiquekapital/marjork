@@ -154,6 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
       );
       applyTheme();
     }
+        document.addEventListener("setTheme", (event) => {
+      const themeName = event.detail?.themeName;
+      if (!themeName) return;
+      setThemeByName(themeName);
+    });
     
     document.body.classList.remove(
       'theme-classic','theme-modern','theme-retro','theme-nature',
