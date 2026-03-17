@@ -125,9 +125,9 @@ export class Bounceable {
 
     // center click = weak
     // edge click = strong
-    const minSpeed = 3;
-    const maxSpeed = 34;
-    const curvedPower = Math.pow(powerRatio, 2.4);
+    const minSpeed = 6;
+    const maxSpeed = 50;
+    const curvedPower = Math.pow(powerRatio, 2.6);
     const speed = minSpeed + (maxSpeed - minSpeed) * curvedPower;
 
     this.velocity.x = nx * speed;
