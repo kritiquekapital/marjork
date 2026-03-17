@@ -189,31 +189,27 @@
   </button>
 
   <div id="settingsDropdown" class="settings-dropdown" aria-hidden="true">
-    <div
+    <button
+      type="button"
       id="siteVolumeOrb"
       class="settings-volume-orb"
-      style="--volume-fill: 40%;"
       aria-label="Site volume"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="40"
+      style="--volume-fill: 40%;"
     >
-      <input
-        id="siteVolume"
-        class="settings-volume-slider"
-        min="0"
-        max="1"
-        step="0.01"
-        value="0.4"
-        aria-label="Adjust site volume"
-      >
-    </div>
+      <span class="settings-volume-icon">↕</span>
+    </button>
 
-    <button type="button" class="settings-theme-option" data-theme="retro" aria-label="retro theme">🕹️</button>
-    <button type="button" class="settings-theme-option" data-theme="lofi" aria-label="lofi theme">🎧</button>
-    <button type="button" class="settings-theme-option" data-theme="art" aria-label="art theme">🎨</button>
-    <button type="button" class="settings-theme-option" data-theme="space" aria-label="space theme">🚀</button>
-    <button type="button" class="settings-theme-option" data-theme="modern" aria-label="modern theme">🌚</button>
-    <button type="button" class="settings-theme-option" data-theme="nature" aria-label="nature theme">🌞</button>
-    <button type="button" class="settings-theme-option" data-theme="classic" aria-label="classic theme">😎</button>
-    <button type="button" class="settings-theme-option" data-theme="logistics" aria-label="logistics theme">📦</button>
+    <button type="button" class="settings-theme-option" data-theme="retro" title="retro" aria-label="retro theme">🕹️</button>
+    <button type="button" class="settings-theme-option" data-theme="lofi" title="lofi" aria-label="lofi theme">🎧</button>
+    <button type="button" class="settings-theme-option" data-theme="art" title="art" aria-label="art theme">🎨</button>
+    <button type="button" class="settings-theme-option" data-theme="space" title="space" aria-label="space theme">🚀</button>
+    <button type="button" class="settings-theme-option" data-theme="modern" title="modern" aria-label="modern theme">🌚</button>
+    <button type="button" class="settings-theme-option" data-theme="nature" title="nature" aria-label="nature theme">🌞</button>
+    <button type="button" class="settings-theme-option" data-theme="classic" title="classic" aria-label="classic theme">😎</button>
+    <button type="button" class="settings-theme-option" data-theme="logistics" title="logistics" aria-label="logistics theme">📦</button>
   </div>
 </div>
 
