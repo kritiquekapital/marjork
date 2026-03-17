@@ -1,68 +1,76 @@
 /* ==================== */
-/* Button Base Shapes */
+/* Theme Button */
 /* ==================== */
-button {
-  display: flex !important;
+#themeButton {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 120px;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
   position: relative;
+  transform: translate(0, 0);
+  z-index: 2; /* Ensure it stays above the grid container */
+}
+
+/* Spin Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==================== */
+/* Button Styles */
+/* ==================== */
+
+.wip, 
+.secret-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 80px;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  position: relative;
+  transform: translate(0, 0);
+  z-index: 2; /* Ensure it stays above the grid container */
+}
+
+.wip:active .secret-button:active {
+  transform: translate(55px, 0) scale(2.5); /* Move 10px right and scale up */
+  transition: transform 0.2s ease-in-out; /* Faster animation for click feedback */
 }
 
 /* Spotify Button */
 .spotify {
   background-color: #1DB954 !important;
-  /* Maintain logo bars */
-  overflow: hidden;
-}
-
-/* Duolingo Button */
-.duolingo {
-  background-color: #00b22d !important;
-  border: 3px solid darkgrey;
-}
-
-/* Propaganda Button */
-.propaganda {
-  background: radial-gradient(circle, #ff0000 50%, #8b0000 80%) !important;
-}
-
-/* Photo Lens Button */
-.photo {
-  background-color: black !important;
-  overflow: visible;
-}
-
-/* Kiss Button */
-.kiss-button {
-  background: url('pic/solavi.png') center/contain no-repeat !important;
-}
-
-/* ==================== */
-/* Theme Button */
-/* ==================== */
-#themeButton {
-  font-size: 120px;
-  width: 120px;
-  height: 120px;
-  grid-row: 5;
-  grid-column: 2;
-  z-index: 2;
-}
-
-/* ==================== */
-/* Service Buttons */
-/* ==================== */
-/* Spotify */
-.spotify {
-  background-color: #1DB954 !important;
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+  top: auto !important;
+  left: auto !important;
+  position: relative;
+  overflow: hidden;
+  opacity: 1 !important; /* Force visibility */
+  visibility: visible !important; /* Force visibility */
   transition: transform 0.6s ease, background-color 0.6s ease;
+  z-index: 1000; /* Ensure it stays above the grid container */
+  mix-blend-mode: normal !important;
 }
 
 .spotify .bar {
@@ -70,144 +78,1002 @@ button {
   height: 8px;
   border-radius: 10px;
   position: absolute;
+  transform: none;
+  z-index: 1001;
 }
 
-/* Duolingo */
+.spotify .bar.top {
+  width: 60%;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;  
+}
+
+.spotify .bar.middle {
+  width: 50%;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+}
+
+.spotify .bar.bottom {
+  width: 40%;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+}
+
+.spotify:hover {
+  background-color: black;
+  transform: scale(1.2);
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
+  animation: boomBoxPulse 1s ease-in-out infinite;
+}
+
+@keyframes boomBoxPulse {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1.1); }
+  75% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.spotify:hover .bar {
+  background-color: green;
+}
+
+/* Duolingo Button */
 .duolingo {
   background-color: #00b22d;
   border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
   border: 3px solid darkgrey;
   animation: none;
 }
 
-/* Letterboxd */
-.letterboxd {
-  background-color: #00e054 !important;
-  position: relative;
-  overflow: visible;
-}
-
-/* Twitter */
-.twitter {
-  background-color: black;
+.duolingo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   border-radius: 50%;
 }
 
-/* StatsFM */
-.statsfm {
-  background-color: #2b3a3e;
-  color: limegreen;
-  overflow: hidden;
+.duolingo:hover {
+  animation: spinOnce 5s ease-in-out forwards;
+  background-color: black;
 }
 
-/* ==================== */
-/* Special Effect Buttons */
-/* ==================== */
-/* Photo Lens Button */
+@keyframes spinOnce {
+  0% { transform: rotate(0deg); }
+  99% { transform: rotate(360000deg); }
+  100% { transform: rotate(360000deg); }
+}
+
+/* Letterboxd Button */
+.letterboxd {
+  background-color: #00e054 !important; /* Green circle */
+  opacity: 1 !important; 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+  transition: transform 0.3s ease;
+  z-index: 1001;
+  visibility: visible !important;
+  mix-blend-mode: normal !important;
+}
+
+.letterboxd::before, .letterboxd::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, right 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
+  visibility: hidden;
+  opacity: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000; /* Ensure pseudo-elements are behind the green circle */
+}
+
+.letterboxd::before {
+  left: -0px;
+  background-color: #FF8000; /* Orange circle */
+  z-index: 1001;
+}
+
+.letterboxd::after {
+  right: -0px;
+  background-color: #40BCF4; /* Blue circle */
+  z-index: 1001;
+}
+
+.letterboxd:hover {
+  transform: scale(1.1);
+  z-index: 1001;
+}
+
+.letterboxd:hover::before, .letterboxd:hover::after {
+  width: 120px;
+  height: 120px;
+  visibility: visible;
+  opacity: 1;
+  z-index: 10; /* Ensure pseudo-elements stay behind the green circle */
+}
+
+.letterboxd:hover::before {
+  left: -95px;
+  z-index: 1001;
+}
+
+.letterboxd:hover::after {
+  right: -95px;
+  z-index: 1001;
+}
+
+/* Photo Button */
 .photo {
   background-color: black;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  z-index: 2; /* Ensure it stays above the grid container */
 }
 
 .lens {
   background: radial-gradient(circle, #444 10%, #222 60%);
+  border-radius: 50%;
   width: 80%;
   height: 80%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 10%;
+  left: 10%;
 }
 
 .lens::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 75%);
-    border: 4px solid #444;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 75%);
+  border: 4px solid #444;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  z-index: -1;
+  background-size: 10px 10px;
 }
-  
-  .lens::after {
-    content: '';
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    width: 50%;
-    height: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 70%);
+
+.lens::after {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.photo:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  transform: translate(-50%, -50%);
+  animation: flashEffect 0.3s ease-out forwards;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@keyframes flashEffect {
+  0% { z-index: 99999; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { z-index: 99999; opacity: 0.5; transform: translate(-50%, -50%) scale(1.2); }
+  100% { z-index: 99999; opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+
+/* News Button */
+.news-button {
+  background-color: #d32f2f;
+  color: white;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.news-button::before {
+  content: "📰";
+  font-size: 2.5em;
+  position: absolute;
+  transition: transform 0.3s ease;
+}
+
+.news-button:hover {
+  background-color: #b71c1c;
+  transform: scale(1.1);
+}
+
+.news-button:hover::before {
+  transform: rotate(360deg);
+  animation: float 1.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}  
+
+/* Surprise Button */
+.surprise {
+  background-color: #222;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  z-index: 2;
+}
+
+.joystick {
+  background-color: #ff9e00;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 158, 0, 0.7);
+  z-index: 2;
+}
+
+.stick {
+  background-color: #00bcd4;
+  width: 10px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(15px) rotate(-25deg);
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.stick-ball {
+  background-color: #ff0000;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: -12px;
+  left: -6px;
+  transform: translateX(50%) translateY(18px);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+}
+
+.surprise:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+
+.surprise:active .joystick {
+  transform: scale(0.9);
+  background-color: #ff6f00;
+}
+
+.surprise:active .stick {
+  transform: translate(-50%, -50%) translateY(18px) rotate(-40deg);
+}
+
+.surprise:hover .stick {
+  box-shadow: 0 0 10px #00bcd4;
 }
 
 /* Propaganda Button */
 .propaganda {
-  background: radial-gradient(circle, #ff0000 50%, #8b0000 80%);
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-}
-
-.propaganda .symbol {
-    font-size: 18px;
-    font-weight: bold;
-    color: #ff4c4c;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-/* Kiss Button */
-.kiss-button {
-  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(circle, #ff0000 50%, #8b0000 80%);
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.love-message {
-    position: absolute;
-    color: red;
-    font-size: 20px;
-    font-weight: bold;
-    pointer-events: none;
-    transform: translate(0, 0);
-    transition: transform 2s ease, opacity 2s ease;
-    opacity: 1;
-    z-index: 10000;
+.propaganda-link {
+  text-decoration: none;
+  display: inline-block;
 }
 
-/* Surprise/Joytick Button */
-.surprise {
-  background-color: #222;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+.propaganda::before {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, transparent 60%, rgba(255, 0, 0, 0.3) 80%);
+  border-radius: 50%;
+  animation: pulseEffect 1.5s infinite;
 }
 
-/* ==================== */
-/* Button States & Interactions */
-/* ==================== */
-button:hover {
+@keyframes pulseEffect {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.propaganda:hover {
   transform: scale(1.1);
-}
-
-button:active {
-  transform: scale(0.95);
-}
-
-.spotify:hover {
-  box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.9);
 }
 
 .propaganda:active {
   animation: shake 0.3s linear;
 }
 
-/* ==================== */
-/* Button-Specific Animations */
-/* ==================== */
-@keyframes spinOnce {
-  0% { transform: rotate(0deg); }
-  99% { transform: rotate(360000deg); }
-}
-
-@keyframes boomBoxPulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
 @keyframes shake {
-  0%,100% { transform: translateX(0); }
-  25%,75% { transform: translateX(-4px); }
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
   50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.propaganda .symbol {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff4c4c;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/*  Button */
+.kiss-button {
+  background: url('pic/solavi.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: transparent;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 10;
+  overflow: visible;
+}
+
+.kiss-button.free {
+  position: fixed !important;
+  z-index: 1010;
+  cursor: pointer;
+  transition: transform 0.1s linear;
+  contain: layout;
+}
+
+.bounce-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1; /* Trail stays behind button */
+}
+
+/* Hover and active effects */
+.kiss-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
+}
+
+.kiss-button:active {
+  transform: scale(0.95);
+}
+
+/* Ray Container */
+.rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Individual Ray */
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 0;
+  background: rgba(255, 223, 0, 0.8);
+  transform-origin: top center;
+  opacity: 0;
+  animation: none;
+}
+
+/* Ray Animation */
+@keyframes ray-expand {
+  0% {
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    height: 150px;
+    opacity: 0;
+  }
+}
+
+/* Ray Direction */
+.ray:nth-child(1) { transform: translate(-50%, -50%) rotate(0deg); }
+.ray:nth-child(2) { transform: translate(-50%, -50%) rotate(45deg); }
+.ray:nth-child(3) { transform: translate(-50%, -50%) rotate(90deg); }
+.ray:nth-child(4) { transform: translate(-50%, -50%) rotate(135deg); }
+.ray:nth-child(5) { transform: translate(-50%, -50%) rotate(180deg); }
+.ray:nth-child(6) { transform: translate(-50%, -50%) rotate(225deg); }
+.ray:nth-child(7) { transform: translate(-50%, -50%) rotate(270deg); }
+.ray:nth-child(8) { transform: translate(-50%, -50%) rotate(315deg); }
+
+/* Active Effect */
+.kiss-button:active {
+  transform: scale(0.95);
+}
+
+/* Trigger Ray Animation on Click */
+.kiss-button:active .ray {
+  animation: ray-expand 0.5s ease-out forwards;
+}
+
+.love-message {
+  position: absolute;
+  color: red;
+  font-size: 20px;
+  font-weight: bold;
+  pointer-events: none;
+  transform: translate(0, 0);
+  transition: transform 2s ease, opacity 2s ease;
+  opacity: 1;
+  z-index: 10000;
+}
+
+/* ==================== */
+/* Vinyl and Video Popup Styles */
+/* ==================== */
+
+.vinyl-link {
+  text-decoration: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.vinyl {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%; /* Circle by default */
+  background: radial-gradient(circle, #4E3629, #8C5E3C); /* Brown vinyl background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  z-index: 20; /* Keeps the same z-index */
+  transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition */
+  transform: scale(1); /* Initial size */
+  transform-origin: center center; /* Make sure it expands from the center */
+  overflow: hidden; /* Prevents the content from overflowing the new rounded corners */
+}
+
+/* On hover, the circle's borders overflow and transform into a rounded square */
+.vinyl:hover {
+  border-radius: 15px; /* Transform the vinyl into a rounded square (squared circle) */
+  transform: scale(1.1); /* Slightly expand outward */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  z-index: 20; /* Keep it at the same z-index */
+}
+
+/* Record - The inner part of the vinyl doesn't change */
+.record {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #7A4E29 60%, #AA5B3A 85%, #7A4E29 100%); /* Darker brown color for vinyl */
+  border-radius: 50%;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Keep the record's size and position unchanged */
+  transition: none; /* No transition for the record */
+}
+
+.record::before {
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05), 
+              0 0 0 10px rgba(255, 255, 255, 0.02), 
+              0 0 0 20px rgba(255, 255, 255, 0.01);
+}
+
+.record::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #d4d4d4 40%, #a6a6a6 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.record .center-hole {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: black;
+  border-radius: 10%;
+  z-index: 3;
+}
+
+.vinyl .record {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: inset 0 0 6px #555;
+  transition: transform 0.5s ease-in-out;
+  z-index: 15;
+}
+
+.arm {
+  position: absolute;
+  width: 80px;
+  height: 15px;
+  background: #5B3D2B; /* Darker brown for the arm */
+  border-radius: 4px;
+  transform-origin: center right;
+  transition: transform 0.3s ease-in-out;
+  right: -10px;
+  top: 2%;
+  opacity: 0;
+  z-index: 15;
+}
+
+.stylus-base {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  right: 0;
+  top: 50%;
+  opacity: 0;
+  z-index: 15;
+}
+
+.grooves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(black 0deg 45deg, transparent 45deg 90deg, black 90deg 135deg);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Vinyl hover effects - These parts appear when hovered */
+.vinyl:hover .wood-box {
+  opacity: 1;
+}
+
+.vinyl:hover .arm {
+  opacity: 1;
+  transform: rotate(320deg);
+  overflow: visible;
+}
+
+.vinyl:hover .stylus-base {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(320deg);
+  overflow: visible;
+}
+
+/* ==================== */
+/* Stats.fm Button */
+/* ==================== */
+.statsfm {
+  background-color: #2b3a3e;
+  color: limegreen;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 2; /* Ensure it stays above the grid container */
+}
+
+.statsfm img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.statsfm .overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.statsfm:hover .overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.statsfm .overlay img {
+  width: 50%;
+  height: auto;
+  object-fit: contain;
+}
+
+.statsfm:hover img {
+  opacity: 1;
+}
+
+/* Existing Twitter Button Styling */
+.twitter {
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  z-index: 2; /* Ensure it stays above the grid container */
+  transform-style: preserve-3d; /* Enable 3D transformations */
+}
+
+.twitter img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+/* Twitter Button on Hover - 3D tilt towards the viewer */
+.twitter:hover {
+  animation: spin 3s linear infinite;
+  background-color: black;
+  transform: rotateY(45deg); /* Tilt towards the viewer on hover */
+  z-index: 3; /* Ensure the button appears above other elements */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Wrestling Button */
+.dropkickd-button {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* Initially circular */
+  background-color: #4A1F44; /* Dark purple background for the wrestling ring */
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  line-height: 120px; /* Vertically center text */
+  border: 5px solid #3A0E35; /* Darker purple border for the ring */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden; /* Prevent overflow */
+  cursor: pointer;
+  transition: all 0.6s ease; /* Smooth transition for scaling */
+  transform-origin: center; /* Ensure the expansion happens from the center */
+  z-index: 10; /* Ensure the button is on top of other elements */
+}
+
+/* On hover, the circle's borders flood outward to form the squared circle */
+.dropkickd-button:hover {
+  border-radius: 15px; /* Transform the button into a squared circle */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+  z-index: 20; /* Ensure it covers other elements when expanded */
+}
+
+/* Ring posts at the four corners */
+.dropkickd-button .top-left-post,
+.dropkickd-button .top-right-post,
+.dropkickd-button .bottom-left-post,
+.dropkickd-button .bottom-right-post {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #C74E85; /* Purple color for ring posts */
+  border-radius: 50%;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 99999; /* Ensure posts are above the button */
+}
+
+/* Top-left corner post */
+.dropkickd-button .top-left-post {
+  top: -20px; /* Position above the button */
+  left: -20px; /* Position left of the button */
+}
+
+/* Top-right corner post */
+.dropkickd-button .top-right-post {
+  top: -20px; /* Position above the button */
+  right: -20px; /* Position right of the button */
+}
+
+/* Bottom-left corner post */
+.dropkickd-button .bottom-left-post {
+  bottom: -20px; /* Position below the button */
+  left: -20px; /* Position left of the button */
+}
+
+/* Bottom-right corner post */
+.dropkickd-button .bottom-right-post {
+  bottom: -20px; /* Position below the button */
+  right: -20px; /* Position right of the button */
+}
+
+/* Ring ropes (stretch from each corner) */
+.dropkickd-button .rope-top,
+.dropkickd-button .rope-bottom,
+.dropkickd-button .rope-left,
+.dropkickd-button .rope-right {
+  content: "";
+  position: absolute;
+  background-color: #F0A7D1; /* Light purple ropes */
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999; /* Make sure ropes appear below posts but above the button */
+}
+
+/* Top rope */
+.dropkickd-button .rope-top {
+  top: 50%;
+  left: -40px;
+  width: 120%;
+  height: 5px;
+  transform: translateY(-50%);
+}
+
+/* Bottom rope */
+.dropkickd-button .rope-bottom {
+  bottom: 50%;
+  left: -40px;
+  width: 120%;
+  height: 5px;
+  transform: translateY(50%);
+}
+
+/* Left rope */
+.dropkickd-button .rope-left {
+  top: -40px;
+  left: 50%;
+  height: 120%;
+  width: 5px;
+  transform: translateX(-50%);
+}
+
+/* Right rope */
+.dropkickd-button .rope-right {
+  top: -40px;
+  right: 50%;
+  height: 120%;
+  width: 5px;
+  transform: translateX(50%);
+}
+
+/* On hover, make the ropes and posts visible and animate */
+.dropkickd-button:hover .top-left-post,
+.dropkickd-button:hover .top-right-post,
+.dropkickd-button:hover .bottom-left-post,
+.dropkickd-button:hover .bottom-right-post {
+  opacity: 1; /* Show the ring posts */
+}
+
+.dropkickd-button:hover .rope-top,
+.dropkickd-button:hover .rope-bottom,
+.dropkickd-button:hover .rope-left,
+.dropkickd-button:hover .rope-right {
+  opacity: 1; /* Show the ropes */
+  transform: translateX(0) translateY(0); /* Stretch the ropes to the corners */
+}
+
+/* Center logo in the middle of the ring */
+.dropkickd-button .logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the logo */
+  width: 80px;
+  height: 80px;
+  background-image: url('https://dropkickd.com/assets/logoMobile-Bvdlcwd2.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: opacity 0.3s ease;
+  opacity: 0; /* Initially hidden */
+  z-index: 10; /* Ensure logo stays on top of the ring */
+}
+
+.dropkickd-button:hover .logo {
+  opacity: 1; /* Make logo appear when hovered */
+}
+/* Substack Button Styling (Default) */
+.substack-button {
+  background-color: #FF6A13; /* Default orange background */
+  color: white;
+  border-radius: 50%; /* Circular shape */
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  z-index: 2; /* Ensure it stays above the grid container */
+  transform-style: preserve-3d; /* Enable 3D transformations */
+  position: relative; /* Ensure correct positioning */
+  border: 2px solid #FF6A13; /* Default orange border */
+  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png'); /* Default image */
+  background-size: cover; /* Ensure the image is fully covered within the button */
+  background-position: center; /* Center the image */
+}
+
+/* Ensure the image is fully visible and positioned correctly */
+.substack-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  opacity: 1; /* Make sure the image is fully visible */
+  transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+}
+
+/* ==================== */
+/* Games I Like Button */
+/* ==================== */
+.games-like-button {
+  grid-area: 5 / 1;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 35% 35%, #ffffff 0 18%, #f2f2f2 19% 45%, #d6d6d6 46% 100%);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    inset 0 -6px 12px rgba(0,0,0,0.14),
+    0 6px 16px rgba(0,0,0,0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  font-size: 80px;
+  color: #1c1c1c;
+}
+
+.games-like-button::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.95) 0 16%, transparent 17% 100%),
+    linear-gradient(135deg, rgba(255,255,255,0.55), rgba(0,0,0,0.04));
+  pointer-events: none;
+}
+
+.games-like-button:hover {
+  transform: scale(1.08);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.9),
+    inset 0 -6px 12px rgba(0,0,0,0.16),
+    0 10px 24px rgba(0,0,0,0.34);
+}
+
+.games-like-button:active {
+  transform: scale(0.96);
+}
+
+.games-like-button:focus-visible {
+  outline: 3px solid rgba(255,255,255,0.9);
+  outline-offset: 4px;
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
