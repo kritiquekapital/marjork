@@ -6,14 +6,46 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!cog || !dropdown || !volumeOrb) return;
 
   const THEME_META = [
-    { name: "retro", emoji: "🕹️", color: "#27e1ff" },
-    { name: "lofi", emoji: "🎧", color: "#7b68ee" },
-    { name: "art", emoji: "🎨", color: "#ff5fa2" },
-    { name: "space", emoji: "🚀", color: "#4b3cff" },
-    { name: "modern", emoji: "🌚", color: "#7f8cff" },
-    { name: "nature", emoji: "🌞", color: "#50c878" },
-    { name: "classic", emoji: "😎", color: "#ffb347" },
-    { name: "logistics", emoji: "📦", color: "#f0c64a" }
+    {
+      name: "retro",
+      emoji: "🕹️",
+      fill: "linear-gradient(180deg, #27e1ff 0%, #00ffa6 45%, #ffe600 100%)"
+    },
+    {
+      name: "lofi",
+      emoji: "🎧",
+      fill: "#7b68ee"
+    },
+    {
+      name: "art",
+      emoji: "🎨",
+      fill: "#ff5fa2"
+    },
+    {
+      name: "space",
+      emoji: "🚀",
+      fill: "radial-gradient(circle at 50% 65%, rgba(255, 232, 120, 0.98) 0%, rgba(255, 214, 10, 0.96) 38%, rgba(255, 184, 0, 0.92) 62%, rgba(255, 184, 0, 0.35) 100%)"
+    },
+    {
+      name: "modern",
+      emoji: "🌚",
+      fill: "#7f8cff"
+    },
+    {
+      name: "nature",
+      emoji: "🌞",
+      fill: "#50c878"
+    },
+    {
+      name: "classic",
+      emoji: "😎",
+      fill: "#ffb347"
+    },
+    {
+      name: "logistics",
+      emoji: "📦",
+      fill: "#f0c64a"
+    }
   ];
 
   const STORAGE_KEYS = {
@@ -32,19 +64,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function ensureThemeButtons() {
-    const existing = Array.from(dropdown.querySelectorAll(".settings-theme-option"));
-    if (existing.length) return existing;
+    const buttonsByTheme = new Map(
+      Array.from(dropdown.querySelectorAll(".settings-theme-option")).map((btn) => [
+        btn.dataset.theme,
+        btn
+      ])
+    );
 
-    return THEME_META.map((theme) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "settings-theme-option";
-      btn.dataset.theme = theme.name;
-      btn.setAttribute("aria-label", `${theme.name} theme`);
-      btn.textContent = theme.emoji;
-      dropdown.appendChild(btn);
-      return btn;
+    THEME_META.forEach((theme) => {
+      if (!buttonsByTheme.has(theme.name)) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "settings-theme-option";
+        btn.dataset.theme = theme.name;
+        btn.setAttribute("aria-label", `${theme.name} theme`);
+        btn.textContent = theme.emoji;
+        dropdown.appendChild(btn);
+        buttonsByTheme.set(theme.name, btn);
+      }
     });
+
+    return THEME_META.map((theme) => buttonsByTheme.get(theme.name)).filter(Boolean);
   }
 
   ensureVolumeLabel();
@@ -96,18 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function syncVolumeOrbTheme() {
     const currentTheme = getCurrentThemeName();
-    const themeMeta = THEME_META.find((t) => t.name === currentTheme) || THEME_META[0];
-    const isInverse = currentTheme === "space";
 
-    volumeOrb.style.setProperty(
-      "--orb-base",
-      isInverse ? themeMeta.color : "rgba(255, 255, 255, 0.10)"
-    );
+    volumeOrb.style.setProperty("--orb-base", "rgba(255, 255, 255, 0.08)");
+    volumeOrb.style.removeProperty("--orb-fill");
 
-    volumeOrb.style.setProperty(
-      "--orb-fill",
-      isInverse ? "rgba(255, 255, 255, 0.94)" : themeMeta.color
-    );
+    if (currentTheme !== "retro" && currentTheme !== "space") {
+      const themeMeta = THEME_META.find((t) => t.name === currentTheme) || THEME_META[0];
+      volumeOrb.style.setProperty("--orb-fill", themeMeta.color);
+    }
 
     const label = volumeOrb.querySelector(".settings-volume-label");
     if (label) {
@@ -157,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setVolumeFromPointer(clientY) {
     const rect = volumeOrb.getBoundingClientRect();
     const relativeY = clientY - rect.top;
-    const ratio = 1 - (relativeY / rect.height);
+    const ratio = 1 - relativeY / rect.height;
     currentVolume = applyVolume(ratio);
   }
 
@@ -232,24 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(STORAGE_KEYS.disabledThemes, JSON.stringify(disabledThemes));
   }
 
-  function refreshThemeButtons() {
-    const disabledThemes = getDisabledThemes();
+  function bindThemeButton(btn) {
+    if (!btn || btn.dataset.settingsBound === "true") return;
 
-    themeButtons.forEach((btn) => {
-      const themeName = btn.dataset.theme;
-      const isDisabled = disabledThemes.includes(themeName);
-
-      btn.classList.toggle("disabled-theme", isDisabled);
-      btn.setAttribute("aria-pressed", String(!isDisabled));
-      btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
-      btn.style.display = "flex";
-      btn.style.visibility = "visible";
-    });
-
-    syncVolumeOrbTheme();
-  }
-
-  themeButtons.forEach((btn) => {
+    btn.dataset.settingsBound = "true";
     btn.addEventListener("click", () => {
       const themeName = btn.dataset.theme;
       if (!themeName) return;
@@ -264,6 +286,8 @@ document.addEventListener("DOMContentLoaded", () => {
         disabledThemes = [...disabledThemes, themeName];
       }
 
+      const wasOpen = dropdown.classList.contains("open");
+
       setDisabledThemes(disabledThemes);
       refreshThemeButtons();
 
@@ -272,9 +296,45 @@ document.addEventListener("DOMContentLoaded", () => {
           detail: { disabledThemes }
         })
       );
+
+      if (wasOpen) {
+        requestAnimationFrame(() => openDropdown());
+      }
     });
-  });
+  }
+
+  function refreshThemeButtons() {
+    const disabledThemes = getDisabledThemes();
+    const wasOpen = dropdown.classList.contains("open");
+
+    themeButtons = ensureThemeButtons();
+    themeButtons.forEach(bindThemeButton);
+
+    themeButtons.forEach((btn) => {
+      const themeName = btn.dataset.theme;
+      const isDisabled = disabledThemes.includes(themeName);
+
+      btn.classList.toggle("disabled-theme", isDisabled);
+      btn.setAttribute("aria-pressed", String(!isDisabled));
+      btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
+      btn.hidden = false;
+      btn.style.display = "flex";
+      btn.style.visibility = "visible";
+      btn.style.pointerEvents = "auto";
+      btn.textContent =
+        THEME_META.find((theme) => theme.name === themeName)?.emoji || btn.textContent;
+    });
+
+    syncVolumeOrbTheme();
+
+    if (wasOpen) {
+      openDropdown();
+    }
+  }
+
+  themeButtons.forEach(bindThemeButton);
 
   refreshThemeButtons();
   document.addEventListener("themeChange", refreshThemeButtons);
+  document.addEventListener("themeRotationSettingsChanged", refreshThemeButtons);
 });
