@@ -472,7 +472,7 @@
 
 /*  Button */
 .kiss-button {
-  background: url('css/pic/solavi.png');
+  background: url('/marjork/css/pic/solavi.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
