@@ -1,159 +1,279 @@
-const gamesILike = [
-  {
-    id: "colorguesser",
-    title: "colorguesser",
-    url: "https://colorguesser.com/",
-    desc: "color of the day",
-    image: "/marjork/css/pic/Vibrant Color Fiesta - Pane.png"
-  },
-  {
-    id: "songless",
-    title: "songless",
-    url: "https://lessgames.com/songless",
-    desc: "song of the day",
-    image: "css/pic/songless.png"
-  },
-  {
-    id: "tradle",
-    title: "tradle",
-    url: "https://games.oec.world/en/tradle/",
-    desc: "international trade of the day",
-    image: "/marjork/css/pic/TRADLE.png"
-  },
-  {
-    id: "framed",
-    title: "framed",
-    url: "https://framed.wtf/",
-    desc: "movie of the day",
-    image: "/marjork/css/pic/framed.png"
-  },
-  {
-    id: "immaculate-grid",
-    title: "immaculate grid",
-    url: "https://www.sports-reference.com/immaculate-grid/",
-    desc: "sports grid of the day",
-    image: "/marjork/css/pic/imagrid.png"
-  },
-  {
-    id: "gamedefault-2",
-    title: "game six",
-    url: "#",
-    desc: "add later",
-    image: "css/pic/game-six.jpg"
-  },
-  {
-    id: "gamedefault-3",
-    title: "game seven",
-    url: "#",
-    desc: "add later",
-    image: "css/pic/game-seven.jpg"
-  },
-  {
-    id: "gamedefault-4",
-    title: "game eight",
-    url: "#",
-    desc: "add later",
-    image: "css/pic/game-eight.jpg"
-  },
-  {
-    id: "gamedefault-5",
-    title: "game nine",
-    url: "#",
-    desc: "add later",
-    image: "css/pic/game-nine.jpg"
-  }
-];
+const spotifyButton = document.querySelector(".spotify");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const openButton = document.getElementById("games-like-button");
-  const overlay = document.getElementById("gamesShelfOverlay");
-  const closeButton = document.getElementById("closeGamesShelf");
-  const shelfRow = document.getElementById("gamesShelfRow");
+if (spotifyButton) {
+  let isFree = false;
+  let hoverTimer = null;
+  let animationFrame = null;
+  let lastFrameTime = 0;
+  let lastMouseTime = performance.now();
 
-  if (!openButton || !overlay || !closeButton || !shelfRow) {
-    console.warn("Games shelf elements missing.");
-    return;
+  const velocity = { x: 0, y: 0 };
+
+  const mouse = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    prevX: window.innerWidth / 2,
+    prevY: window.innerHeight / 2,
+    vx: 0,
+    vy: 0,
+    speed: 0,
+    hasMoved: false
+  };
+
+  const friction = 0.996;
+  const bounce = 0.94;
+  const hoverBreakDelay = 5000;
+  const retroFrameInterval = 1000 / 15;
+
+  // contact should be basically flush to the button edge
+  const TRIGGER_PADDING = 0;
+  const HARD_PADDING = 8;
+  const MAX_SPEED = 42;
+
+  function getMode() {
+    if (document.body.classList.contains("theme-space")) return "zero-gravity";
+    if (document.body.classList.contains("theme-retro")) return "retro";
+    return "normal";
   }
 
-  let activeGameId = gamesILike[0]?.id || null;
-
-  function setActiveGame(gameId) {
-    activeGameId = gameId;
-
-    shelfRow.querySelectorAll(".game-case").forEach((card) => {
-      const isActive = card.dataset.game === activeGameId;
-      card.classList.toggle("is-active", isActive);
-      card.classList.toggle("game-case-featured", isActive);
-      card.setAttribute("aria-current", isActive ? "true" : "false");
-    });
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
   }
 
-  function renderGames() {
-    shelfRow.innerHTML = "";
-
-    gamesILike.forEach((game) => {
-      const card = document.createElement("a");
-      card.className = "game-case";
-      card.dataset.game = game.id;
-      card.href = game.url;
-      card.target = "_blank";
-      card.rel = "noopener noreferrer";
-      card.setAttribute("aria-label", `${game.title} — ${game.desc}`);
-
-      card.innerHTML = `
-        <div class="game-case-cover" style="--game-bg: url('${game.image}')">
-          <div class="game-case-cover-gloss"></div>
-          <div class="game-case-spine">
-            <span class="game-case-title">${game.title}</span>
-          </div>
-        </div>
-
-        <div class="game-case-details">
-          <div class="game-case-details-inner">
-            <div class="game-case-details-title">${game.title}</div>
-            <div class="game-case-details-desc">${game.desc}</div>
-          </div>
-        </div>
-      `;
-
-      card.addEventListener("mouseenter", () => setActiveGame(game.id));
-      card.addEventListener("focus", () => setActiveGame(game.id));
-      card.addEventListener(
-        "touchstart",
-        () => setActiveGame(game.id),
-        { passive: true }
-      );
-
-      shelfRow.appendChild(card);
-    });
-
-    setActiveGame(activeGameId);
+  function getRect() {
+    return spotifyButton.getBoundingClientRect();
   }
 
-  function openShelf() {
-    overlay.classList.add("is-open");
-    overlay.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+  function getCenter() {
+    const rect = getRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      radius: Math.max(rect.width, rect.height) / 2
+    };
   }
 
-  function closeShelf() {
-    overlay.classList.remove("is-open");
-    overlay.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+  function updateMouse(clientX, clientY) {
+    const now = performance.now();
+    const dt = Math.max((now - lastMouseTime) / 16.6667, 0.001);
+
+    mouse.prevX = mouse.x;
+    mouse.prevY = mouse.y;
+    mouse.x = clientX;
+    mouse.y = clientY;
+    mouse.vx = (mouse.x - mouse.prevX) / dt;
+    mouse.vy = (mouse.y - mouse.prevY) / dt;
+    mouse.speed = Math.hypot(mouse.vx, mouse.vy);
+    mouse.hasMoved = true;
+
+    lastMouseTime = now;
   }
 
-  renderGames();
+  function capSpeed(maxSpeed) {
+    const speed = Math.hypot(velocity.x, velocity.y);
+    if (speed <= maxSpeed) return;
 
-  openButton.addEventListener("click", openShelf);
-  closeButton.addEventListener("click", closeShelf);
+    const scale = maxSpeed / speed;
+    velocity.x *= scale;
+    velocity.y *= scale;
+  }
 
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) closeShelf();
+  function startHoverBreakTimer() {
+    if (isFree || hoverTimer) return;
+    hoverTimer = setTimeout(() => freeSpotify(), hoverBreakDelay);
+  }
+
+  function clearHoverBreakTimer() {
+    if (!hoverTimer) return;
+    clearTimeout(hoverTimer);
+    hoverTimer = null;
+  }
+
+  function applyInitialImpulseFromCursor(clientX, clientY) {
+    const center = getCenter();
+
+    let dx = center.x - clientX;
+    let dy = center.y - clientY;
+    let dist = Math.hypot(dx, dy);
+
+    if (dist < 0.001) {
+      const angle = Math.random() * Math.PI * 2;
+      dx = Math.cos(angle);
+      dy = Math.sin(angle);
+      dist = 1;
+    }
+
+    const nx = dx / dist;
+    const ny = dy / dist;
+
+    const speed = 24 + Math.random() * 8;
+    velocity.x = nx * speed;
+    velocity.y = ny * speed;
+  }
+
+  function freeSpotify(event = null) {
+    if (isFree) return;
+
+    isFree = true;
+    clearHoverBreakTimer();
+
+    const rect = spotifyButton.getBoundingClientRect();
+
+    spotifyButton.classList.add("free", "fleeing");
+    spotifyButton.style.position = "fixed";
+    spotifyButton.style.left = `${rect.left}px`;
+    spotifyButton.style.top = `${rect.top}px`;
+    spotifyButton.style.width = `${rect.width}px`;
+    spotifyButton.style.height = `${rect.height}px`;
+    spotifyButton.style.margin = "0";
+
+    const cx = event?.clientX ?? mouse.x ?? (rect.left + rect.width / 2);
+    const cy = event?.clientY ?? mouse.y ?? (rect.top + rect.height / 2);
+
+    applyInitialImpulseFromCursor(cx, cy);
+    startAnimation();
+  }
+
+  function applyCursorEscapePhysics() {
+    if (!isFree || !mouse.hasMoved) return;
+
+    const center = getCenter();
+
+    const dx = center.x - mouse.x;
+    const dy = center.y - mouse.y;
+    const distance = Math.hypot(dx, dy) || 0.0001;
+
+    const triggerRadius = center.radius + TRIGGER_PADDING;
+    const hardRadius = center.radius + HARD_PADDING;
+
+    // only react when cursor is actually touching the button edge / inside
+    if (distance > triggerRadius) return;
+
+    const nx = dx / distance;
+    const ny = dy / distance;
+
+    // overlap depth: how far the cursor has pushed into the circle
+    const overlap = Math.max(0, triggerRadius - distance);
+    const overlapRatio =
+      triggerRadius > 0
+        ? overlap / Math.max(triggerRadius, 1)
+        : 1 - Math.min(distance / Math.max(center.radius, 1), 1);
+
+    // draggable-like momentum from actual cursor movement
+    const pushFromMouseMotionX = mouse.vx * 0.55;
+    const pushFromMouseMotionY = mouse.vy * 0.55;
+
+    // base shove away from the cursor
+    const contactForce = 3 + overlapRatio * 10;
+
+    velocity.x += nx * contactForce + pushFromMouseMotionX;
+    velocity.y += ny * contactForce + pushFromMouseMotionY;
+
+    // extra shove if cursor gets close to center
+    if (distance < hardRadius) {
+      velocity.x += nx * 10;
+      velocity.y += ny * 10;
+    }
+
+    capSpeed(MAX_SPEED);
+  }
+
+  function step(time) {
+    const mode = getMode();
+
+    if (mode === "retro") {
+      if (time - lastFrameTime < retroFrameInterval) return;
+      lastFrameTime = time;
+    }
+
+    applyCursorEscapePhysics();
+
+    if (mode !== "zero-gravity") {
+      velocity.x *= friction;
+      velocity.y *= friction;
+    }
+
+    const rect = getRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    let left = parseFloat(spotifyButton.style.left || "0") + velocity.x;
+    let top = parseFloat(spotifyButton.style.top || "0") + velocity.y;
+
+    const maxX = window.innerWidth - width;
+    const maxY = window.innerHeight - height;
+
+    if (left <= 0) {
+      left = 0;
+      velocity.x = Math.abs(velocity.x) * bounce;
+    } else if (left >= maxX) {
+      left = maxX;
+      velocity.x = -Math.abs(velocity.x) * bounce;
+    }
+
+    if (top <= 0) {
+      top = 0;
+      velocity.y = Math.abs(velocity.y) * bounce;
+    } else if (top >= maxY) {
+      top = maxY;
+      velocity.y = -Math.abs(velocity.y) * bounce;
+    }
+
+    spotifyButton.style.left = `${left}px`;
+    spotifyButton.style.top = `${top}px`;
+  }
+
+  function animate(time) {
+    step(time);
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  function startAnimation() {
+    if (animationFrame) return;
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  function keepInsideViewport() {
+    if (!isFree) return;
+
+    const rect = getRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    spotifyButton.style.left = `${clamp(parseFloat(spotifyButton.style.left || "0"), 0, maxX)}px`;
+    spotifyButton.style.top = `${clamp(parseFloat(spotifyButton.style.top || "0"), 0, maxY)}px`;
+  }
+
+  spotifyButton.addEventListener("mouseenter", (event) => {
+    updateMouse(event.clientX, event.clientY);
+    startHoverBreakTimer();
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && overlay.classList.contains("is-open")) {
-      closeShelf();
+  spotifyButton.addEventListener("mousemove", (event) => {
+    updateMouse(event.clientX, event.clientY);
+    if (isFree) startAnimation();
+  });
+
+  spotifyButton.addEventListener("mouseleave", clearHoverBreakTimer);
+
+  document.addEventListener("mousemove", (event) => {
+    updateMouse(event.clientX, event.clientY);
+    if (isFree) startAnimation();
+  });
+
+  spotifyButton.addEventListener("click", (event) => {
+    updateMouse(event.clientX, event.clientY);
+
+    if (!isFree) {
+      freeSpotify(event);
+      event.preventDefault();
+      event.stopPropagation();
     }
   });
-});
+
+  window.addEventListener("resize", keepInsideViewport);
+
+  document.addEventListener("themeChange", () => {
+    if (isFree) startAnimation();
+  });
+}
