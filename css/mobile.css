@@ -137,8 +137,9 @@
   .statsfm             { grid-area: 2 / 5; }
   .news-button         { grid-area: 2 / 1; }
   .kiss-button         { grid-area: 2 / 3; }
-  .spotify             { grid-area: 2 / 4; }
+  .spotify             { grid-area: 2 / 5; }
   .propaganda-link     { grid-area: 1 / 1; }
+  .games-like-button   { grid-area: 2 / 4; }
 
   .photo               { grid-area: 3 / 1; }
   .vinyl               { grid-area: 3 / 5; }
