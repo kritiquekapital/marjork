@@ -74,7 +74,6 @@ if (spotifyButton) {
 
   function setSpeedFloor(minSpeed) {
     const speed = Math.hypot(velocity.x, velocity.y);
-
     if (speed >= minSpeed) return;
 
     const center = getCenter();
@@ -204,7 +203,7 @@ if (spotifyButton) {
     const mode = getMode();
 
     if (mode === "retro") {
-      if (time - lastFrameTime < retroFrameInterval) return true;
+      if (time - lastFrameTime < retroFrameInterval) return;
       lastFrameTime = time;
     }
 
@@ -243,10 +242,6 @@ if (spotifyButton) {
 
     spotifyButton.style.left = `${left}px`;
     spotifyButton.style.top = `${top}px`;
-
-    // DO NOT stop animation just because speed dropped.
-    // Free Spotify should keep simulating like a puck.
-    return true;
   }
 
   function animate(time) {
