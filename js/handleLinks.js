@@ -1,25 +1,40 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Function to check and open the link in a new tab using sessionStorage
+document.addEventListener("DOMContentLoaded", function () {
+  const STORAGE_KEY = "disableUrlLinks";
+  const selector = ".substack-button, .twitter, .duolingo, .dropkickd-button, .letterboxd, .spotify";
+
+  function urlLinksDisabled() {
+    return localStorage.getItem(STORAGE_KEY) === "true";
+  }
+
   function openLinkInNewTabIfNotOpened(url) {
-    // Check if the URL is already stored in sessionStorage
+    if (!url) return;
+
     if (!sessionStorage.getItem(url)) {
-      // If not, open the link in a new tab
-      window.open(url, '_blank');
-      // Store the URL in sessionStorage so it won't open again during this session
-      sessionStorage.setItem(url, 'opened');
+      window.open(url, "_blank");
+      sessionStorage.setItem(url, "opened");
     }
   }
 
-  // Attach the function to all specific links (Substack, Twitter, StatsFM, Letterboxd, DropkickD, Spotify)
-  const buttons = document.querySelectorAll('.substack-button, .twitter, .statsfm, .letterboxd, .dropkickd-button, .spotify');
-  buttons.forEach(button => {
-    button.addEventListener('click', function(event) {
-      // Prevent default link behavior
+  function syncDisabledVisualState() {
+    document.body.classList.toggle("url-links-disabled", urlLinksDisabled());
+  }
+
+  const buttons = document.querySelectorAll(selector);
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      if (urlLinksDisabled()) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
       event.preventDefault();
-      // Get the URL from the button's href attribute
-      const url = button.getAttribute('href');
-      // Call the function to open the link if not already opened
+      const url = button.getAttribute("href");
       openLinkInNewTabIfNotOpened(url);
     });
   });
+
+  document.addEventListener("urlLinksSettingChanged", syncDisabledVisualState);
+  syncDisabledVisualState();
 });
