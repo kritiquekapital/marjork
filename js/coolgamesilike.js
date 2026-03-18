@@ -11,7 +11,7 @@ const gamesILike = [
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    image: "css/pic/Songless.png"
+    image: "/marjork/css/pic/Songless.png"
   },
   {
     id: "tradle",
@@ -28,10 +28,10 @@ const gamesILike = [
     image: "/marjork/css/pic/FRAMED.png"
   },
   {
-    id: "immaculate grid",
+    id: "immaculate-grid",
     title: "immaculate grid",
     url: "https://www.sports-reference.com/immaculate-grid/",
-    desc: "add later",
+    desc: "sports grid of the day",
     image: "/marjork/css/pic/imagrid.png"
   },
   {
@@ -39,28 +39,28 @@ const gamesILike = [
     title: "game six",
     url: "#",
     desc: "add later",
-    image: "css/pic/game-six.jpg"
+    image: "/marjork/css/pic/game-six.jpg"
   },
   {
     id: "gamedefault-3",
     title: "game seven",
     url: "#",
     desc: "add later",
-    image: "css/pic/game-seven.jpg"
+    image: "/marjork/css/pic/game-seven.jpg"
   },
   {
     id: "gamedefault-4",
     title: "game eight",
     url: "#",
     desc: "add later",
-    image: "css/pic/game-eight.jpg"
+    image: "/marjork/css/pic/game-eight.jpg"
   },
   {
     id: "gamedefault-5",
     title: "game nine",
     url: "#",
     desc: "add later",
-    image: "css/pic/game-nine.jpg"
+    image: "/marjork/css/pic/game-nine.jpg"
   }
 ];
 
@@ -98,13 +98,24 @@ document.addEventListener("DOMContentLoaded", () => {
       card.href = game.url;
       card.target = "_blank";
       card.rel = "noopener noreferrer";
-      card.setAttribute("aria-label", game.title);
-      card.style.setProperty("--game-bg", `url("${game.image}")`);
+      card.setAttribute("aria-label", `${game.title} — ${game.desc}`);
 
       card.innerHTML = `
-        <div class="game-case-inner">
+        <div
+          class="game-case-cover"
+          style="background-image:
+            linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.28)),
+            url('${game.image}');"
+        >
           <div class="game-case-spine">
             <span class="game-case-title">${game.title}</span>
+          </div>
+        </div>
+
+        <div class="game-case-details">
+          <div class="game-case-details-inner">
+            <div class="game-case-details-title">${game.title}</div>
+            <div class="game-case-details-desc">${game.desc}</div>
           </div>
         </div>
       `;
