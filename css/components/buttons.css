@@ -303,16 +303,14 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   align-items: center;
   flex-direction: column;
   gap: 2px;
-  top: auto !important;
-  left: auto !important;
   position: relative;
   overflow: hidden;
   opacity: 1 !important;
   visibility: visible !important;
-  transition: transform 0.6s ease, background-color 0.6s ease, box-shadow 0.6s ease;
-  z-index: 1001; /* above statsfm while docked */
+  transition: transform 0.18s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  z-index: 1001;
   mix-blend-mode: normal !important;
-  will-change: transform, left, top;
+  will-change: left, top, transform;
 }
 
 .spotify .bar {
@@ -344,38 +342,32 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   transform: translateX(-50%);
 }
 
-/* normal docked hover */
 .spotify:not(.free):hover,
 .spotify.free {
-  position: fixed !important;
-  left: 0;
-  top: 0;
-  z-index: 1010;
-  pointer-events: auto;
-  cursor: pointer !important;
-  transition: none !important;
-}
-
-.spotify:not(.free):hover .bar,
-.spotify.free .bar {
-  background-color: green;
-}
-
-.spotify.free {
-  position: fixed !important;
-  left: 0;
-  top: 0;
-  z-index: 1010;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  transition: left 0.02s linear, top 0.02s linear !important;
   background-color: black !important;
   box-shadow: 0 0 30px rgba(0, 255, 0, 0.7) !important;
   animation: boomBoxPulse 1s ease-in-out infinite !important;
 }
 
+.spotify:not(.free):hover .bar,
 .spotify.free .bar {
   background-color: green !important;
+}
+
+.spotify.free {
+  position: fixed !important;
+  z-index: 1010 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: none !important;
+}
+
+@keyframes boomBoxPulse {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.3); }
+  50%  { transform: scale(1.1); }
+  75%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 /* Duolingo Button */
