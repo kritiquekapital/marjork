@@ -591,14 +591,10 @@ body.theme-retro .click-wheel {
   padding: 10px 6px 10px;
 }
 
-/* ==================== */
-/* Game Cases / Spines */
-/* ==================== */
 .game-case {
   position: relative;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
   height: 168px;
   min-height: 168px;
@@ -606,50 +602,23 @@ body.theme-retro .click-wheel {
   border-radius: 4px 4px 2px 2px;
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.18);
   box-shadow:
     inset 1px 0 0 rgba(255,255,255,0.35),
     inset -4px 0 8px rgba(0,0,0,0.18),
     0 4px 10px rgba(0,0,0,0.22);
-  transform: translateY(10px);
+  transform: translateY(8px);
   transition:
+    grid-column 0.22s ease,
     transform 0.18s ease,
-    box-shadow 0.18s ease,
-    filter 0.18s ease,
-    grid-column 0.18s ease,
-    width 0.18s ease;
+    box-shadow 0.18s ease;
   -webkit-tap-highlight-color: transparent;
-  background-image:
-    linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.34)),
-    var(--game-bg);
-  background-size: 100% auto;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: #151515;
+  background: #111;
 }
 
 .game-case-featured {
   grid-column: span 2;
-}
-
-.game-case::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.22) 0 8%, rgba(255,255,255,0.06) 8% 16%, transparent 16% 100%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.game-case::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.12), transparent 22%, rgba(0,0,0,0.18) 100%);
-  pointer-events: none;
-  z-index: 2;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .game-case:hover,
@@ -657,10 +626,10 @@ body.theme-retro .click-wheel {
 .game-case.is-active {
   transform: translateY(0);
   box-shadow:
-    inset 1px 0 0 rgba(255,255,255,0.4),
-    inset -4px 0 8px rgba(0,0,0,0.22),
-    0 10px 16px rgba(0,0,0,0.26);
-  filter: brightness(1.05);
+    inset 1px 0 0 rgba(255,255,255,0.38),
+    inset -4px 0 8px rgba(0,0,0,0.20),
+    0 8px 16px rgba(0,0,0,0.24);
+  filter: none;
 }
 
 .game-case:focus-visible {
@@ -668,18 +637,48 @@ body.theme-retro .click-wheel {
   outline-offset: 4px;
 }
 
-.game-case-inner {
+.game-case-cover {
   position: relative;
-  z-index: 3;
   width: 100%;
   height: 100%;
-  padding: 8px 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.28)),
+    var(--game-bg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* keeps the cover looking like a case spine */
+.game-case-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.22) 0 8%,
+      rgba(255,255,255,0.07) 8% 16%,
+      transparent 16% 100%
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.game-case-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10), transparent 22%, rgba(0,0,0,0.16) 100%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .game-case-spine {
+  position: relative;
+  z-index: 3;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
@@ -687,6 +686,7 @@ body.theme-retro .click-wheel {
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding: 8px 2px;
 }
 
 .game-case-title {
@@ -703,32 +703,51 @@ body.theme-retro .click-wheel {
   padding: 4px 0;
 }
 
-/* remove old extra text blocks */
+.game-case-details {
+  display: none;
+  min-width: 0;
+  height: 100%;
+  background:
+    linear-gradient(180deg, rgba(250,250,250,0.98), rgba(228,228,228,0.96));
+  border-left: 1px solid rgba(0,0,0,0.08);
+}
+
+.game-case-featured .game-case-details {
+  display: block;
+}
+
+.game-case-details-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 12px 14px 12px;
+  color: #111;
+}
+
+.game-case-details-title {
+  font-size: 0.95rem;
+  line-height: 1.05;
+  font-weight: 800;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.game-case-details-desc {
+  font-size: 0.72rem;
+  line-height: 1.15;
+  color: rgba(0,0,0,0.72);
+  text-transform: lowercase;
+}
+
 .game-case-meta,
 .game-case-pill,
 .game-case-bottom-tag {
   display: none !important;
 }
 
-/* ==================== */
-/* Mobile */
-/* ==================== */
 @media (max-width: 700px) {
-  .games-shelf-overlay {
-    padding: 14px;
-    align-items: flex-end;
-  }
-
-  .games-shelf-modal {
-    width: 100%;
-    max-width: none;
-  }
-
-  .games-shelf-frame {
-    padding: 16px 10px 18px;
-    border-radius: 16px;
-  }
-
   .games-shelf-row {
     display: flex;
     gap: 4px;
@@ -751,13 +770,12 @@ body.theme-retro .click-wheel {
     min-height: 160px;
     scroll-snap-align: start;
     transform: translateY(6px);
-    background-size: 100% auto;
-    background-position: center center;
   }
 
   .game-case-featured {
     flex: 0 0 120px;
     width: 120px;
+    grid-template-columns: 58px 1fr;
   }
 
   .game-case:hover {
@@ -770,6 +788,14 @@ body.theme-retro .click-wheel {
   }
 
   .game-case-title {
+    font-size: 0.62rem;
+  }
+
+  .game-case-details-title {
+    font-size: 0.8rem;
+  }
+
+  .game-case-details-desc {
     font-size: 0.62rem;
   }
 }
