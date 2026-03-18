@@ -50,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const STORAGE_KEYS = {
     volume: "siteWideVolume",
-    disabledThemes: "disabledThemes"
+    disabledThemes: "disabledThemes",
+    disableUrlLinks: "disableUrlLinks"
   };
 
   function ensureVolumeLabel() {
@@ -61,6 +62,20 @@ document.addEventListener("DOMContentLoaded", () => {
       label.textContent = "🔊";
       volumeOrb.appendChild(label);
     }
+  }
+
+  function ensureLinkToggle() {
+    let toggle = dropdown.querySelector(".settings-link-toggle");
+    if (toggle) return toggle;
+
+    toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "settings-link-toggle";
+    toggle.setAttribute("aria-label", "Toggle URL-style links");
+    toggle.textContent = "🔗";
+
+    dropdown.appendChild(toggle);
+    return toggle;
   }
 
   function ensureThemeButtons() {
@@ -88,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   ensureVolumeLabel();
+  const linkToggle = ensureLinkToggle();
   let themeButtons = ensureThemeButtons();
 
   function openDropdown() {
@@ -136,14 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function syncVolumeOrbTheme() {
     const currentTheme = getCurrentThemeName();
+    const themeMeta = THEME_META.find((t) => t.name === currentTheme) || THEME_META[0];
+    const isSpace = currentTheme === "space";
 
-    volumeOrb.style.setProperty("--orb-base", "rgba(255, 255, 255, 0.08)");
-    volumeOrb.style.removeProperty("--orb-fill");
-
-    if (currentTheme !== "retro" && currentTheme !== "space") {
-      const themeMeta = THEME_META.find((t) => t.name === currentTheme) || THEME_META[0];
-      volumeOrb.style.setProperty("--orb-fill", themeMeta.color);
-    }
+    volumeOrb.style.setProperty("--orb-base", isSpace ? themeMeta.fill : "rgba(255, 255, 255, 0.08)");
+    volumeOrb.style.setProperty("--orb-fill", isSpace ? "#ffffff" : themeMeta.fill);
 
     const label = volumeOrb.querySelector(".settings-volume-label");
     if (label) {
@@ -268,6 +281,20 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem(STORAGE_KEYS.disabledThemes, JSON.stringify(disabledThemes));
   }
 
+  function getDisableUrlLinks() {
+    return localStorage.getItem(STORAGE_KEYS.disableUrlLinks) === "true";
+  }
+
+  function setDisableUrlLinks(value) {
+    localStorage.setItem(STORAGE_KEYS.disableUrlLinks, String(Boolean(value)));
+    document.body.classList.toggle("url-links-disabled", Boolean(value));
+    document.dispatchEvent(
+      new CustomEvent("urlLinksSettingChanged", {
+        detail: { disabled: Boolean(value) }
+      })
+    );
+  }
+
   function bindThemeButton(btn) {
     if (!btn || btn.dataset.settingsBound === "true") return;
 
@@ -286,8 +313,6 @@ document.addEventListener("DOMContentLoaded", () => {
         disabledThemes = [...disabledThemes, themeName];
       }
 
-      const wasOpen = dropdown.classList.contains("open");
-
       setDisabledThemes(disabledThemes);
       refreshThemeButtons();
 
@@ -296,19 +321,22 @@ document.addEventListener("DOMContentLoaded", () => {
           detail: { disabledThemes }
         })
       );
-
-      if (wasOpen) {
-        requestAnimationFrame(() => openDropdown());
-      }
     });
+  }
+
+  function refreshLinkToggle() {
+    const disabled = getDisableUrlLinks();
+
+    linkToggle.classList.toggle("active-toggle", disabled);
+    linkToggle.setAttribute("aria-pressed", String(disabled));
+    linkToggle.title = disabled ? "URL links disabled" : "URL links enabled";
+    linkToggle.textContent = disabled ? "⛓️" : "🔗";
+
+    document.body.classList.toggle("url-links-disabled", disabled);
   }
 
   function refreshThemeButtons() {
     const disabledThemes = getDisabledThemes();
-    const wasOpen = dropdown.classList.contains("open");
-
-    themeButtons = ensureThemeButtons();
-    themeButtons.forEach(bindThemeButton);
 
     themeButtons.forEach((btn) => {
       const themeName = btn.dataset.theme;
@@ -317,24 +345,21 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.toggle("disabled-theme", isDisabled);
       btn.setAttribute("aria-pressed", String(!isDisabled));
       btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
-      btn.hidden = false;
       btn.style.display = "flex";
       btn.style.visibility = "visible";
-      btn.style.pointerEvents = "auto";
-      btn.textContent =
-        THEME_META.find((theme) => theme.name === themeName)?.emoji || btn.textContent;
     });
 
     syncVolumeOrbTheme();
-
-    if (wasOpen) {
-      openDropdown();
-    }
+    refreshLinkToggle();
   }
+
+  linkToggle.addEventListener("click", () => {
+    setDisableUrlLinks(!getDisableUrlLinks());
+    refreshLinkToggle();
+  });
 
   themeButtons.forEach(bindThemeButton);
 
   refreshThemeButtons();
   document.addEventListener("themeChange", refreshThemeButtons);
-  document.addEventListener("themeRotationSettingsChanged", refreshThemeButtons);
 });
