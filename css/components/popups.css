@@ -416,6 +416,122 @@ body.theme-retro .click-wheel {
 }
 
 /* ==================== */
+/* Games Shelf Overlay */
+/* ==================== */
+.games-shelf-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(6px);
+  z-index: 10020;
+}
+
+.games-shelf-overlay.is-open {
+  display: flex;
+}
+
+.games-shelf-modal {
+  width: min(92vw, 860px);
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: gamesShelfIn 0.22s ease;
+}
+
+@keyframes gamesShelfIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.games-shelf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #ffffff;
+  padding-inline: 2px;
+}
+
+.games-shelf-header h2 {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.games-shelf-close {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+  color: #222;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.games-shelf-frame {
+  position: relative;
+  width: 100%;
+  padding: 10px 12px 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, #fefefe 0%, #f3f3f3 58%, #dfdfdf 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.95),
+    inset 0 -8px 14px rgba(0,0,0,0.12),
+    0 18px 40px rgba(0,0,0,0.28);
+}
+
+.games-shelf-frame::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0));
+  pointer-events: none;
+}
+
+.games-shelf-frame::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.games-shelf-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 6px;
+  min-height: 186px;
+}
+
+/* ==================== */
 /* Shelf Body */
 /* ==================== */
 .games-shelf-frame {
