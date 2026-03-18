@@ -4,7 +4,7 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    image: "css/pic/Vibrant Color Fiesta - Pane.png"
+    image: "/marjork/css/pic/Vibrant Color Fiesta - Pane.png"
   },
   {
     id: "songless",
@@ -18,7 +18,7 @@ const gamesILike = [
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
     desc: "international trade of the day",
-    image: "css/pic/TRADLE.png"
+    image: "/marjork/css/pic/TRADLE.png"
   },
   {
     id: "framed",
