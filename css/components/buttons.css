@@ -366,9 +366,16 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   left: 0;
   top: 0;
   z-index: 1010;
-  pointer-events: none;
-  cursor: default !important;
-  transition: none !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: left 0.02s linear, top 0.02s linear !important;
+  background-color: black !important;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.7) !important;
+  animation: boomBoxPulse 1s ease-in-out infinite !important;
+}
+
+.spotify.free .bar {
+  background-color: green !important;
 }
 
 /* Duolingo Button */
