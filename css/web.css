@@ -47,11 +47,12 @@ body {
 .dropkickd-button    { grid-area: 2 / 1; }
 .letterboxd          { grid-area: 2 / 2; }
 .statsfm             { grid-area: 2 / 3; }
+.spotify             { grid-area: 2 / 3; }
 
 /* Third Row */
 .news-button         { grid-area: 3 / 1; }
 .kiss-button         { grid-area: 3 / 2; }
-.spotify             { grid-area: 3 / 3; }
+.wip                 { grid-area: 3 / 3; }
 
 /* Fourth Row */
 .propaganda-link     { grid-area: 4 / 1; }
