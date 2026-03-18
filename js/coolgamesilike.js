@@ -4,7 +4,7 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    image: "css/pic/Vibrant Color Fiesta - Pane.png"
+    image: "/marjork/css/pic/Vibrant Color Fiesta - Pane.png"
   },
   {
     id: "songless",
@@ -18,21 +18,21 @@ const gamesILike = [
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
     desc: "international trade of the day",
-    image: "css/pic/TRADLE.png"
+    image: "/marjork/css/pic/TRADLE.png"
   },
   {
     id: "framed",
     title: "framed",
     url: "https://framed.wtf/",
     desc: "movie of the day",
-    image: "css/pic/framed.jpg"
+    image: "/marjork/css/pic/framed.jpg"
   },
   {
     id: "immaculate grid",
     title: "immaculate grid",
     url: "https://www.sports-reference.com/immaculate-grid/",
     desc: "add later",
-    image: "css/pic/game-five.jpg"
+    image: "/marjork/css/pic/game-five.jpg"
   },
   {
     id: "gamedefault-2",
