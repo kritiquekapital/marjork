@@ -51,7 +51,134 @@
   transform: translate(55px, 0) scale(2.5); /* Move 10px right and scale up */
   transition: transform 0.2s ease-in-out; /* Faster animation for click feedback */
 }
+/* ==================== */
+/* Secret Button -> Mine */
+/* ==================== */
+.secret-button {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: visible;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 35% 35%, #6d6d6d 0 10%, #545454 11% 26%, #2f2f2f 27% 62%, #181818 63% 100%);
+  box-shadow:
+    inset 0 8px 14px rgba(255,255,255,0.18),
+    inset 0 -10px 18px rgba(0,0,0,0.45),
+    0 8px 18px rgba(0,0,0,0.35);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
 
+/* center cap */
+.secret-button::before {
+  content: "";
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, #8b8b8b 0 18%, #555 19% 58%, #242424 59% 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.14),
+    inset 0 -4px 8px rgba(0,0,0,0.4);
+  z-index: 2;
+}
+
+/* outer studs */
+.secret-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 1;
+  background:
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 50% 6% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 76% 13% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 91% 33% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 94% 50% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 91% 67% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 76% 87% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 50% 94% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 24% 87% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 9% 67% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 6% 50% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 9% 33% / 18px 18px no-repeat,
+    radial-gradient(circle, #4b4b4b 0 58%, transparent 59%) 24% 13% / 18px 18px no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(255,255,255,0.08))
+          drop-shadow(0 2px 2px rgba(0,0,0,0.45));
+}
+
+/* fuse */
+.secret-button .mine-fuse {
+  position: absolute;
+  top: 8px;
+  left: 52%;
+  width: 8px;
+  height: 28px;
+  background: linear-gradient(180deg, #7d5a35 0%, #3f2b17 100%);
+  border-radius: 8px;
+  transform: translateX(-50%) rotate(18deg);
+  z-index: 3;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.12);
+}
+
+.secret-button .mine-fuse::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(circle, #ffd54f 0 28%, #ff9800 29% 58%, rgba(255,120,0,0.15) 59% 100%);
+  box-shadow:
+    0 0 10px rgba(255, 170, 0, 0.8),
+    0 0 18px rgba(255, 90, 0, 0.5);
+}
+
+/* little danger mark */
+.secret-button .mine-mark {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  pointer-events: none;
+}
+
+.secret-button:hover {
+  transform: scale(1.08);
+  filter: brightness(1.08);
+  box-shadow:
+    inset 0 8px 14px rgba(255,255,255,0.2),
+    inset 0 -10px 18px rgba(0,0,0,0.5),
+    0 12px 24px rgba(0,0,0,0.45);
+}
+
+.secret-button:active {
+  transform: scale(0.95);
+}
+
+/* retro version can get extra glow */
+body.theme-retro .secret-button {
+  box-shadow:
+    inset 0 8px 14px rgba(255,255,255,0.18),
+    inset 0 -10px 18px rgba(0,0,0,0.5),
+    0 0 10px rgba(255, 0, 255, 0.35),
+    0 0 18px rgba(0, 255, 255, 0.25);
+}
 /* ==================== */
 /* Site Settings */
 /* ==================== */
