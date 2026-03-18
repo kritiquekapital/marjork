@@ -52,7 +52,7 @@ body {
 /* Third Row */
 .news-button         { grid-area: 3 / 1; }
 .kiss-button         { grid-area: 3 / 2; }
-.wip                 { grid-area: 3 / 3; }
+.games-like-button   { grid-area: 3 / 3; }
 
 /* Fourth Row */
 .propaganda-link     { grid-area: 4 / 1; }
@@ -60,7 +60,7 @@ body {
 .vinyl               { grid-area: 4 / 3; }
 
 /* Fifth Row */
-.games-like-button   { grid-area: 5 / 1; }
+.wip                 { grid-area: 5 / 1; }
 #themeButton         { grid-area: 5 / 2; }
 .secret-button       { grid-area: 5 / 3; }
 
