@@ -4,34 +4,34 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    image: "/marjork/css/pic/Vibrant Color Fiesta - Pane.png"
+    image: "css/pic/Vibrant Color Fiesta - Pane.png"
   },
   {
     id: "songless",
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    image: "/marjork/css/pic/Songless.png"
+    image: "css/pic/songless.jpg"
   },
   {
     id: "tradle",
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
     desc: "international trade of the day",
-    image: "/marjork/css/pic/TRADLE.png"
+    image: "css/pic/TRADLE.png"
   },
   {
     id: "framed",
     title: "framed",
     url: "https://framed.wtf/",
     desc: "movie of the day",
-    image: "/marjork/css/pic/FRAMED.png"
+    image: "css/pic/framed.jpg"
   },
   {
     id: "immaculate grid",
     title: "immaculate grid",
     url: "https://www.sports-reference.com/immaculate-grid/",
-    desc: "ball knower of the day",
+    desc: "add later",
     image: "css/pic/game-five.jpg"
   },
   {
@@ -61,13 +61,6 @@ const gamesILike = [
     url: "#",
     desc: "add later",
     image: "css/pic/game-nine.jpg"
-  },
-  {
-    id: "gamedefault-6",
-    title: "game ten",
-    url: "#",
-    desc: "add later",
-    image: "css/pic/game-ten.jpg"
   }
 ];
 
@@ -80,6 +73,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!openButton || !overlay || !closeButton || !shelfRow) {
     console.warn("Games shelf elements missing.");
     return;
+  }
+
+  let activeGameId = gamesILike[0]?.id || null;
+
+  function setActiveGame(gameId) {
+    activeGameId = gameId;
+
+    shelfRow.querySelectorAll(".game-case").forEach((card) => {
+      const isActive = card.dataset.game === activeGameId;
+      card.classList.toggle("is-active", isActive);
+      card.classList.toggle("game-case-featured", isActive);
+      card.setAttribute("aria-current", isActive ? "true" : "false");
+    });
   }
 
   function renderGames() {
@@ -103,27 +109,26 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
+      card.addEventListener("mouseenter", () => {
+        setActiveGame(game.id);
+      });
+
+      card.addEventListener("focus", () => {
+        setActiveGame(game.id);
+      });
+
       card.addEventListener(
         "touchstart",
         () => {
-          shelfRow.querySelectorAll(".game-case.is-active").forEach((el) => {
-            if (el !== card) el.classList.remove("is-active");
-          });
-          card.classList.add("is-active");
-        },
-        { passive: true }
-      );
-
-      card.addEventListener(
-        "touchend",
-        () => {
-          setTimeout(() => card.classList.remove("is-active"), 180);
+          setActiveGame(game.id);
         },
         { passive: true }
       );
 
       shelfRow.appendChild(card);
     });
+
+    setActiveGame(activeGameId);
   }
 
   function openShelf() {
