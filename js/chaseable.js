@@ -20,18 +20,15 @@ if (spotifyButton) {
     hasMoved: false
   };
 
-  const friction = 0.992;
+  const friction = 0.996;
   const bounce = 0.94;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
 
-  const TRIGGER_PADDING = 150;
-  const HARD_PADDING = 36;
-  const ESCAPE_FORCE = 4.5;
-  const HARD_ESCAPE_FORCE = 13.5;
-  const CURSOR_LEAD = 10;
-  const MIN_ESCAPE_SPEED = 13;
-  const MAX_SPEED = 36;
+  // contact should be basically flush to the button edge
+  const TRIGGER_PADDING = 0;
+  const HARD_PADDING = 8;
+  const MAX_SPEED = 42;
 
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
@@ -72,26 +69,6 @@ if (spotifyButton) {
     lastMouseTime = now;
   }
 
-  function setSpeedFloor(minSpeed) {
-    const speed = Math.hypot(velocity.x, velocity.y);
-    if (speed >= minSpeed) return;
-
-    const center = getCenter();
-    let dx = center.x - (mouse.x + mouse.vx * CURSOR_LEAD);
-    let dy = center.y - (mouse.y + mouse.vy * CURSOR_LEAD);
-    let dist = Math.hypot(dx, dy);
-
-    if (dist < 0.001) {
-      const angle = Math.random() * Math.PI * 2;
-      dx = Math.cos(angle);
-      dy = Math.sin(angle);
-      dist = 1;
-    }
-
-    velocity.x = (dx / dist) * minSpeed;
-    velocity.y = (dy / dist) * minSpeed;
-  }
-
   function capSpeed(maxSpeed) {
     const speed = Math.hypot(velocity.x, velocity.y);
     if (speed <= maxSpeed) return;
@@ -126,8 +103,12 @@ if (spotifyButton) {
       dist = 1;
     }
 
-    velocity.x = (dx / dist) * 24;
-    velocity.y = (dy / dist) * 24;
+    const nx = dx / dist;
+    const ny = dy / dist;
+
+    const speed = 24 + Math.random() * 8;
+    velocity.x = nx * speed;
+    velocity.y = ny * speed;
   }
 
   function freeSpotify(event = null) {
@@ -158,42 +139,40 @@ if (spotifyButton) {
 
     const center = getCenter();
 
-    const threatX = mouse.x + mouse.vx * CURSOR_LEAD;
-    const threatY = mouse.y + mouse.vy * CURSOR_LEAD;
-
-    let dx = center.x - threatX;
-    let dy = center.y - threatY;
-    let distance = Math.hypot(dx, dy) || 0.0001;
+    const dx = center.x - mouse.x;
+    const dy = center.y - mouse.y;
+    const distance = Math.hypot(dx, dy) || 0.0001;
 
     const triggerRadius = center.radius + TRIGGER_PADDING;
     const hardRadius = center.radius + HARD_PADDING;
 
+    // only react when cursor is actually touching the button edge / inside
     if (distance > triggerRadius) return;
 
     const nx = dx / distance;
     const ny = dy / distance;
 
-    const intensity = 1 - clamp(distance / triggerRadius, 0, 1);
-    const movingToward =
-      ((mouse.vx * (center.x - mouse.x)) + (mouse.vy * (center.y - mouse.y))) > 0;
+    // overlap depth: how far the cursor has pushed into the circle
+    const overlap = Math.max(0, triggerRadius - distance);
+    const overlapRatio =
+      triggerRadius > 0
+        ? overlap / Math.max(triggerRadius, 1)
+        : 1 - Math.min(distance / Math.max(center.radius, 1), 1);
 
-    velocity.x += nx * (ESCAPE_FORCE + intensity * 10);
-    velocity.y += ny * (ESCAPE_FORCE + intensity * 10);
+    // draggable-like momentum from actual cursor movement
+    const pushFromMouseMotionX = mouse.vx * 0.55;
+    const pushFromMouseMotionY = mouse.vy * 0.55;
 
-    velocity.x += mouse.vx * 0.15;
-    velocity.y += mouse.vy * 0.15;
+    // base shove away from the cursor
+    const contactForce = 3 + overlapRatio * 10;
 
-    if (movingToward) {
-      velocity.x += nx * 4.8;
-      velocity.y += ny * 4.8;
-    }
+    velocity.x += nx * contactForce + pushFromMouseMotionX;
+    velocity.y += ny * contactForce + pushFromMouseMotionY;
 
+    // extra shove if cursor gets close to center
     if (distance < hardRadius) {
-      velocity.x += nx * HARD_ESCAPE_FORCE;
-      velocity.y += ny * HARD_ESCAPE_FORCE;
-      setSpeedFloor(MIN_ESCAPE_SPEED + 7);
-    } else {
-      setSpeedFloor(MIN_ESCAPE_SPEED);
+      velocity.x += nx * 10;
+      velocity.y += ny * 10;
     }
 
     capSpeed(MAX_SPEED);
