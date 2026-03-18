@@ -11,7 +11,7 @@ const gamesILike = [
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    image: "css/pic/songless.jpg"
+    image: "css/pic/songless.png"
   },
   {
     id: "tradle",
@@ -25,7 +25,7 @@ const gamesILike = [
     title: "framed",
     url: "https://framed.wtf/",
     desc: "movie of the day",
-    image: "/marjork/css/pic/framed.jpg"
+    image: "/marjork/css/pic/framed.png"
   },
   {
     id: "immaculate grid",
