@@ -7,7 +7,13 @@ if (spotifyButton) {
   let lastFrameTime = 0;
 
   const velocity = { x: 0, y: 0 };
-  const friction = 0.93;
+  const mouse = {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
+    hasMoved: false
+  };
+
+  const friction = 0.94;
   const bounce = 0.9;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
@@ -35,14 +41,9 @@ if (spotifyButton) {
     return Math.max(min, Math.min(max, value));
   }
 
-  function openSpotifyNow() {
-    const url = spotifyButton.getAttribute("href");
-    if (!url || url === "#") return;
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-
   function startHoverBreakTimer() {
     if (isFree || hoverTimer) return;
+
     hoverTimer = setTimeout(() => {
       freeSpotify();
     }, hoverBreakDelay);
@@ -72,7 +73,7 @@ if (spotifyButton) {
     const nx = dx / dist;
     const ny = dy / dist;
 
-    const speed = 20 + Math.random() * 12;
+    const speed = 28 + Math.random() * 10;
     velocity.x = nx * speed;
     velocity.y = ny * speed;
   }
@@ -93,35 +94,40 @@ if (spotifyButton) {
     spotifyButton.style.height = `${rect.height}px`;
     spotifyButton.style.margin = "0";
 
-    const cx = event?.clientX ?? (rect.left + rect.width / 2);
-    const cy = event?.clientY ?? (rect.top + rect.height / 2);
-    applyInitialImpulseFromCursor(cx, cy);
+    const cx = event?.clientX ?? mouse.x ?? (rect.left + rect.width / 2);
+    const cy = event?.clientY ?? mouse.y ?? (rect.top + rect.height / 2);
 
+    applyInitialImpulseFromCursor(cx, cy);
     startAnimation();
   }
 
-  function repelFromCursor(event) {
-    if (!isFree) return;
+  function applyCursorRepel() {
+    if (!isFree || !mouse.hasMoved) return;
 
     const center = getCenter();
-    const dx = center.x - event.clientX;
-    const dy = center.y - event.clientY;
+    const dx = center.x - mouse.x;
+    const dy = center.y - mouse.y;
     const distance = Math.hypot(dx, dy);
 
-    const triggerRadius = center.radius + 40;
+    const triggerRadius = center.radius + 90;
     if (distance > triggerRadius) return;
 
     const nx = dx / (distance || 1);
     const ny = dy / (distance || 1);
 
     const intensity = clamp((triggerRadius - distance) / triggerRadius, 0, 1);
-    const shove = 2 + intensity * 14;
 
-    velocity.x += nx * shove;
-    velocity.y += ny * shove;
+    // stronger, continuous push while cursor is near
+    const repelForce = 1.5 + intensity * 8;
 
-    spotifyButton.classList.add("fleeing");
-    startAnimation();
+    velocity.x += nx * repelForce;
+    velocity.y += ny * repelForce;
+
+    // if cursor is basically on top of it, force a harder flee
+    if (distance < center.radius * 0.9) {
+      velocity.x += nx * 6;
+      velocity.y += ny * 6;
+    }
   }
 
   function step(time) {
@@ -131,6 +137,9 @@ if (spotifyButton) {
       if (time - lastFrameTime < retroFrameInterval) return true;
       lastFrameTime = time;
     }
+
+    // cursor affects it every frame, not just on mousemove
+    applyCursorRepel();
 
     if (mode !== "zero-gravity") {
       velocity.x *= friction;
@@ -208,17 +217,34 @@ if (spotifyButton) {
   spotifyButton.addEventListener("mouseenter", startHoverBreakTimer);
   spotifyButton.addEventListener("mouseleave", clearHoverBreakTimer);
 
+  spotifyButton.addEventListener("mousemove", (event) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+    mouse.hasMoved = true;
+
+    if (isFree) startAnimation();
+  });
+
+  document.addEventListener("mousemove", (event) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+    mouse.hasMoved = true;
+
+    if (isFree) startAnimation();
+  });
+
   spotifyButton.addEventListener("click", (event) => {
     if (!isFree) {
-      openSpotifyNow();
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+      mouse.hasMoved = true;
+
       freeSpotify(event);
       event.preventDefault();
       event.stopPropagation();
-      return;
     }
   });
 
-  document.addEventListener("mousemove", repelFromCursor);
   window.addEventListener("resize", keepInsideViewport);
 
   document.addEventListener("themeChange", () => {
