@@ -496,14 +496,24 @@ body.theme-retro .click-wheel {
     inset -4px 0 8px rgba(0,0,0,0.18),
     0 4px 10px rgba(0,0,0,0.22);
   transform: translateY(10px);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease,
+    grid-column 0.18s ease,
+    width 0.18s ease;
   -webkit-tap-highlight-color: transparent;
   background-image:
-    linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)),
+    linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.34)),
     var(--game-bg);
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: center center;
   background-repeat: no-repeat;
+  background-color: #151515;
+}
+
+.game-case-featured {
+  grid-column: span 2;
 }
 
 .game-case::before {
@@ -625,6 +635,13 @@ body.theme-retro .click-wheel {
     min-height: 160px;
     scroll-snap-align: start;
     transform: translateY(6px);
+    background-size: 100% auto;
+    background-position: center center;
+  }
+
+  .game-case-featured {
+    flex: 0 0 120px;
+    width: 120px;
   }
 
   .game-case:hover {
@@ -640,7 +657,6 @@ body.theme-retro .click-wheel {
     font-size: 0.62rem;
   }
 }
-
 /* ==================== */
 /* Theme Adaptations */
 /* ==================== */
