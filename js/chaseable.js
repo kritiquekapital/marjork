@@ -5,7 +5,7 @@ if (spotifyButton) {
   let hoverTimer = null;
   let animationFrame = null;
   let lastFrameTime = 0;
-  let lastMouseSampleTime = performance.now();
+  let lastMouseTime = performance.now();
 
   const velocity = { x: 0, y: 0 };
 
@@ -21,17 +21,17 @@ if (spotifyButton) {
   };
 
   const friction = 0.992;
-  const bounce = 0.96;
+  const bounce = 0.94;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
 
-  const TRIGGER_PADDING = 140;
-  const HARD_PADDING = 34;
-  const ESCAPE_FORCE = 3.8;
-  const HARD_ESCAPE_FORCE = 12.5;
-  const MOUSE_LEAD = 10;
-  const MIN_ESCAPE_SPEED = 12;
-  const MAX_SPEED = 34;
+  const TRIGGER_PADDING = 150;
+  const HARD_PADDING = 36;
+  const ESCAPE_FORCE = 4.5;
+  const HARD_ESCAPE_FORCE = 13.5;
+  const CURSOR_LEAD = 10;
+  const MIN_ESCAPE_SPEED = 13;
+  const MAX_SPEED = 36;
 
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
@@ -56,48 +56,50 @@ if (spotifyButton) {
     };
   }
 
-  function setMousePosition(clientX, clientY) {
+  function updateMouse(clientX, clientY) {
     const now = performance.now();
-    const dt = Math.max((now - lastMouseSampleTime) / 16.6667, 0.001);
+    const dt = Math.max((now - lastMouseTime) / 16.6667, 0.001);
 
     mouse.prevX = mouse.x;
     mouse.prevY = mouse.y;
     mouse.x = clientX;
     mouse.y = clientY;
-
     mouse.vx = (mouse.x - mouse.prevX) / dt;
     mouse.vy = (mouse.y - mouse.prevY) / dt;
     mouse.speed = Math.hypot(mouse.vx, mouse.vy);
     mouse.hasMoved = true;
 
-    lastMouseSampleTime = now;
+    lastMouseTime = now;
   }
 
   function setSpeedFloor(minSpeed) {
     const speed = Math.hypot(velocity.x, velocity.y);
-    if (speed < minSpeed) {
-      if (speed < 0.001) {
-        const center = getCenter();
-        let dx = center.x - (mouse.x + mouse.vx * MOUSE_LEAD);
-        let dy = center.y - (mouse.y + mouse.vy * MOUSE_LEAD);
-        let dist = Math.hypot(dx, dy) || 1;
-        velocity.x = (dx / dist) * minSpeed;
-        velocity.y = (dy / dist) * minSpeed;
-        return;
-      }
-      const scale = minSpeed / speed;
-      velocity.x *= scale;
-      velocity.y *= scale;
+
+    if (speed >= minSpeed) return;
+
+    const center = getCenter();
+    let dx = center.x - (mouse.x + mouse.vx * CURSOR_LEAD);
+    let dy = center.y - (mouse.y + mouse.vy * CURSOR_LEAD);
+    let dist = Math.hypot(dx, dy);
+
+    if (dist < 0.001) {
+      const angle = Math.random() * Math.PI * 2;
+      dx = Math.cos(angle);
+      dy = Math.sin(angle);
+      dist = 1;
     }
+
+    velocity.x = (dx / dist) * minSpeed;
+    velocity.y = (dy / dist) * minSpeed;
   }
 
   function capSpeed(maxSpeed) {
     const speed = Math.hypot(velocity.x, velocity.y);
-    if (speed > maxSpeed) {
-      const scale = maxSpeed / speed;
-      velocity.x *= scale;
-      velocity.y *= scale;
-    }
+    if (speed <= maxSpeed) return;
+
+    const scale = maxSpeed / speed;
+    velocity.x *= scale;
+    velocity.y *= scale;
   }
 
   function startHoverBreakTimer() {
@@ -157,8 +159,8 @@ if (spotifyButton) {
 
     const center = getCenter();
 
-    const threatX = mouse.x + mouse.vx * MOUSE_LEAD;
-    const threatY = mouse.y + mouse.vy * MOUSE_LEAD;
+    const threatX = mouse.x + mouse.vx * CURSOR_LEAD;
+    const threatY = mouse.y + mouse.vy * CURSOR_LEAD;
 
     let dx = center.x - threatX;
     let dy = center.y - threatY;
@@ -179,23 +181,22 @@ if (spotifyButton) {
     velocity.x += nx * (ESCAPE_FORCE + intensity * 10);
     velocity.y += ny * (ESCAPE_FORCE + intensity * 10);
 
-    velocity.x += mouse.vx * 0.18;
-    velocity.y += mouse.vy * 0.18;
+    velocity.x += mouse.vx * 0.15;
+    velocity.y += mouse.vy * 0.15;
 
     if (movingToward) {
-      velocity.x += nx * 4.2;
-      velocity.y += ny * 4.2;
+      velocity.x += nx * 4.8;
+      velocity.y += ny * 4.8;
     }
 
     if (distance < hardRadius) {
       velocity.x += nx * HARD_ESCAPE_FORCE;
       velocity.y += ny * HARD_ESCAPE_FORCE;
-      setSpeedFloor(MIN_ESCAPE_SPEED + 6);
+      setSpeedFloor(MIN_ESCAPE_SPEED + 7);
     } else {
       setSpeedFloor(MIN_ESCAPE_SPEED);
     }
 
-    spotifyButton.classList.add("fleeing");
     capSpeed(MAX_SPEED);
   }
 
@@ -243,30 +244,13 @@ if (spotifyButton) {
     spotifyButton.style.left = `${left}px`;
     spotifyButton.style.top = `${top}px`;
 
-    if (mode !== "zero-gravity") {
-      const center = getCenter();
-      const threatDistance = Math.hypot(center.x - mouse.x, center.y - mouse.y);
-      const threatened = threatDistance < center.radius + TRIGGER_PADDING + 20;
-      const speed = Math.hypot(velocity.x, velocity.y);
-
-      if (!threatened && speed < 0.12) {
-        velocity.x = 0;
-        velocity.y = 0;
-        return false;
-      }
-    }
-
+    // DO NOT stop animation just because speed dropped.
+    // Free Spotify should keep simulating like a puck.
     return true;
   }
 
   function animate(time) {
-    const keepGoing = step(time);
-
-    if (!keepGoing) {
-      animationFrame = null;
-      return;
-    }
-
+    step(time);
     animationFrame = requestAnimationFrame(animate);
   }
 
@@ -287,24 +271,24 @@ if (spotifyButton) {
   }
 
   spotifyButton.addEventListener("mouseenter", (event) => {
-    setMousePosition(event.clientX, event.clientY);
+    updateMouse(event.clientX, event.clientY);
     startHoverBreakTimer();
   });
 
   spotifyButton.addEventListener("mousemove", (event) => {
-    setMousePosition(event.clientX, event.clientY);
+    updateMouse(event.clientX, event.clientY);
     if (isFree) startAnimation();
   });
 
   spotifyButton.addEventListener("mouseleave", clearHoverBreakTimer);
 
   document.addEventListener("mousemove", (event) => {
-    setMousePosition(event.clientX, event.clientY);
+    updateMouse(event.clientX, event.clientY);
     if (isFree) startAnimation();
   });
 
   spotifyButton.addEventListener("click", (event) => {
-    setMousePosition(event.clientX, event.clientY);
+    updateMouse(event.clientX, event.clientY);
 
     if (!isFree) {
       freeSpotify(event);
