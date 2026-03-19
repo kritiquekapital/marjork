@@ -618,8 +618,8 @@ body.theme-retro .click-wheel {
 }
 
 .game-case-featured {
-  grid-column: span 3;
-  grid-template-columns: 58px minmax(0, 1fr);
+  grid-column: span 2;
+  grid-template-columns: 68px minmax(0, 1fr);
 }
 
 .game-case:hover,
@@ -737,37 +737,40 @@ body.theme-retro .click-wheel {
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  gap: 6px;
-  padding: 10px 10px 10px 12px;
+  gap: 4px;
+  padding: 10px 10px 10px 10px;
   color: #fff;
   min-width: 0;
+  overflow: hidden;
+}
+
+.game-case-details-title,
+.game-case-details-desc {
+  font-family: "Archivo", sans-serif;
+  font-weight: 500;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: lowercase;
+  display: block;
 }
 
 .game-case-details-title {
-  font-size: 0.88rem;
-  line-height: 1.02;
-  font-weight: 800;
-  text-transform: lowercase;
+  font-size: 0.98rem;
+  line-height: 1;
   letter-spacing: 0.01em;
   color: #fff;
-  white-space: normal;
-  overflow-wrap: anywhere;
   text-shadow: 0 1px 2px rgba(0,0,0,0.65);
 }
 
 .game-case-details-desc {
-  font-size: 0.66rem;
-  line-height: 1.18;
-  color: rgba(255,255,255,0.88);
-  text-transform: lowercase;
-  white-space: normal;
-  overflow: hidden;
-  overflow-wrap: anywhere;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  font-size: 0.76rem;
+  line-height: 1;
+  color: rgba(255,255,255,0.9);
   text-shadow: 0 1px 2px rgba(0,0,0,0.55);
-  max-width: 100%;
 }
 
 .game-case-meta,
@@ -803,9 +806,9 @@ body.theme-retro .click-wheel {
   }
 
   .game-case-featured {
-    flex: 0 0 162px;
-    width: 162px;
-    grid-template-columns: 58px minmax(0, 1fr);
+    flex: 0 0 146px;
+    width: 146px;
+    grid-template-columns: 68px minmax(0, 1fr);
   }
 
   .game-case:hover {
@@ -818,23 +821,28 @@ body.theme-retro .click-wheel {
   }
 
   .game-case-title {
-    font-size: 0.6rem;
+    font-family: "Archivo", sans-serif;
+    font-size: 0.66rem;
+    font-weight: 500;
   }
 
   .game-case-details-inner {
-    padding: 8px 8px 9px 10px;
-    gap: 5px;
+    padding: 8px 8px 8px 8px;
+    gap: 4px;
   }
 
   .game-case-details-title {
-    font-size: 0.74rem;
-    line-height: 1.02;
+    font-family: "Archivo", sans-serif;
+    font-size: 0.8rem;
+    line-height: 1;
+    font-weight: 500;
   }
 
   .game-case-details-desc {
-    font-size: 0.58rem;
-    line-height: 1.14;
-    -webkit-line-clamp: 2;
+    font-family: "Archivo", sans-serif;
+    font-size: 0.62rem;
+    line-height: 1;
+    font-weight: 500;
   }
 }
 /* ==================== */
