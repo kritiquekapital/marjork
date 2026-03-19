@@ -32,7 +32,7 @@ const gamesILike = [
     title: "immaculate grid",
     url: "https://www.sports-reference.com/immaculate-grid/",
     desc: "sports grid of the day",
-    image: "/marjork/css/pic/imagrid.png"
+    image: "/marjork/css/pic/ImaGrid.png"
   },
   {
     id: "gamedefault-2",
