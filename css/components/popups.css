@@ -686,14 +686,12 @@ body.theme-retro .click-wheel {
   overflow: hidden;
 }
 
-/* bottom description strip only */
 .game-case-details {
   display: none;
-  position: relative;
-  z-index: 2;
-  min-width: 0;
-  height: 100%;
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .game-case-featured .game-case-details,
@@ -712,28 +710,17 @@ body.theme-retro .click-wheel {
   padding: 0 8px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  box-sizing: border-box;
   font-family: "Archivo", sans-serif;
   font-size: 0.62rem;
-  line-height: 1;
   font-weight: 500;
-  color: #000000;
+  line-height: 1;
+  color: #000;
   background: rgba(255,255,255,0.92);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: lowercase;
-  box-sizing: border-box;
-}
-
-/* kill old extras if still present */
-.game-case-details-inner,
-.game-case-details-title,
-.game-case-meta,
-.game-case-pill,
-.game-case-bottom-tag,
-.game-case-cover-gloss {
-  display: none !important;
 }
 
 @media (max-width: 700px) {
