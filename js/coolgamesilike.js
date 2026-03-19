@@ -95,11 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.innerHTML = `
         <div
-          class="game-case-cover"
-          style="background-image:
-            linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.28)),
-            url('${game.image}');"
-        >
+          class="game-case-bg"
+          style="background-image: url('${game.image}');"
+        ></div>
+
+        <div class="game-case-cover">
           <div class="game-case-spine">
             <span class="game-case-title">${game.title}</span>
           </div>
