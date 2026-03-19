@@ -17,7 +17,7 @@ const gamesILike = [
     id: "tradle",
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
-    desc: "international trade of the day",
+    desc: "trade of the day",
     image: "/marjork/css/pic/TRADLE.png"
   },
   {
