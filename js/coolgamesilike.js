@@ -106,10 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="game-case-details">
-          <div class="game-case-details-inner">
-            <div class="game-case-details-title">${game.title}</div>
-            <div class="game-case-details-desc">${game.desc}</div>
-          </div>
+          <div class="game-case-details-desc">${game.desc}</div>
         </div>
       `;
 
