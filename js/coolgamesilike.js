@@ -35,10 +35,10 @@ const gamesILike = [
     image: "/marjork/css/pic/IMAG.png"
   },
   {
-    id: "gamedefault-2",
-    title: "game six",
-    url: "#",
-    desc: "add later",
+    id: "openguesser",
+    title: "openguesser",
+    url: "https://openguessr.com/",
+    desc: "location of the day",
     image: "/marjork/css/pic/game-six.jpg"
   },
   {
