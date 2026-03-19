@@ -39,7 +39,7 @@ const gamesILike = [
     title: "openguesser",
     url: "https://openguessr.com/",
     desc: "location of the day",
-    image: "/marjork/css/pic/game-six.jpg"
+    image: "/marjork/css/pic/GEO.png"
   },
   {
     id: "gamedefault-3",
