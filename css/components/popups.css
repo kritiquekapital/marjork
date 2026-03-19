@@ -711,12 +711,18 @@ body.theme-retro .click-wheel {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+
   font-family: "Archivo", sans-serif;
   font-size: 0.62rem;
   font-weight: 500;
   line-height: 1;
+
   color: #000;
-  background: rgba(255,255,255,0.92);
+
+  /* glassy strip */
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(4px);
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
