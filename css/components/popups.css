@@ -713,9 +713,9 @@ body.theme-retro .click-wheel {
   box-sizing: border-box;
 
   font-family: "Archivo", sans-serif;
-  font-size: 0.62rem;
-  font-weight: 500;
-  line-height: 1;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 2;
 
   color: #000;
 
