@@ -658,8 +658,8 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 
 /* Letterboxd Button */
 .letterboxd {
-  background-color: #00e054 !important; /* Green circle */
-  opacity: 1 !important; 
+  background-color: #00e054 !important;
+  opacity: 1 !important;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -669,58 +669,55 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
-  z-index: 1001;
+  z-index: 1015; /* above spotify base */
   visibility: visible !important;
   mix-blend-mode: normal !important;
 }
 
-.letterboxd::before, .letterboxd::after {
+.letterboxd::before,
+.letterboxd::after {
   content: '';
   position: absolute;
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, right 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
-  visibility: hidden;
-  opacity: 0;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1000; /* Ensure pseudo-elements are behind the green circle */
+  transition:
+    left 0.3s ease,
+    right 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1; /* behind green circle, but still inside letterboxd stack */
 }
 
 .letterboxd::before {
-  left: -0px;
-  background-color: #FF8000; /* Orange circle */
-  z-index: 1001;
+  left: 0;
+  background-color: #FF8000;
 }
 
 .letterboxd::after {
-  right: -0px;
-  background-color: #40BCF4; /* Blue circle */
-  z-index: 1001;
+  right: 0;
+  background-color: #40BCF4;
 }
 
 .letterboxd:hover {
   transform: scale(1.1);
-  z-index: 1001;
+  z-index: 1020; /* rise above spotify while hovered */
 }
 
-.letterboxd:hover::before, .letterboxd:hover::after {
-  width: 120px;
-  height: 120px;
-  visibility: visible;
+.letterboxd:hover::before,
+.letterboxd:hover::after {
   opacity: 1;
-  z-index: 10; /* Ensure pseudo-elements stay behind the green circle */
 }
 
 .letterboxd:hover::before {
   left: -95px;
-  z-index: 1001;
 }
 
 .letterboxd:hover::after {
   right: -95px;
-  z-index: 1001;
 }
 
 /* Photo Button */
