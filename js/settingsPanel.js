@@ -295,7 +295,34 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  function bindThemeButton(btn) {
+    function isPhone() {
+    return window.innerWidth <= 480;
+  }
+
+  function isTablet() {
+    return window.innerWidth > 480 && window.innerWidth <= 1024;
+  }
+
+  function getDeviceBlockedThemes() {
+    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space"];
+    const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space"];
+
+    if (isPhone()) {
+      return THEME_META
+        .map((theme) => theme.name)
+        .filter((name) => !PHONE_ALLOWED_THEMES.includes(name));
+    }
+
+    if (isTablet()) {
+      return THEME_META
+        .map((theme) => theme.name)
+        .filter((name) => !TABLET_ALLOWED_THEMES.includes(name));
+    }
+
+    return [];
+  }
+
+    function bindThemeButton(btn) {
     if (!btn || btn.dataset.settingsBound === "true") return;
 
     btn.dataset.settingsBound = "true";
@@ -303,12 +330,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const themeName = btn.dataset.theme;
       if (!themeName) return;
 
+      const deviceBlockedThemes = getDeviceBlockedThemes();
+      if (deviceBlockedThemes.includes(themeName)) return;
+
       let disabledThemes = getDisabledThemes();
 
       if (disabledThemes.includes(themeName)) {
         disabledThemes = disabledThemes.filter((name) => name !== themeName);
       } else {
-        const enabledCount = themeButtons.length - disabledThemes.length;
+        const toggleableButtons = themeButtons.filter(
+          (button) => !deviceBlockedThemes.includes(button.dataset.theme)
+        );
+        const enabledCount =
+          toggleableButtons.length -
+          disabledThemes.filter((name) => !deviceBlockedThemes.includes(name)).length;
+
         if (enabledCount <= 1) return;
         disabledThemes = [...disabledThemes, themeName];
       }
@@ -323,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
   }
-
+  
   function refreshLinkToggle() {
     const disabled = getDisableUrlLinks();
 
@@ -335,16 +371,26 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("url-links-disabled", disabled);
   }
 
-  function refreshThemeButtons() {
+    function refreshThemeButtons() {
     const disabledThemes = getDisabledThemes();
+    const deviceBlockedThemes = getDeviceBlockedThemes();
 
     themeButtons.forEach((btn) => {
       const themeName = btn.dataset.theme;
-      const isDisabled = disabledThemes.includes(themeName);
+      const isDeviceBlocked = deviceBlockedThemes.includes(themeName);
+      const isDisabled = !isDeviceBlocked && disabledThemes.includes(themeName);
 
       btn.classList.toggle("disabled-theme", isDisabled);
-      btn.setAttribute("aria-pressed", String(!isDisabled));
-      btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
+      btn.classList.toggle("desktop-only-theme", isDeviceBlocked);
+      btn.setAttribute("aria-pressed", String(!isDisabled && !isDeviceBlocked));
+      btn.setAttribute("aria-disabled", String(isDeviceBlocked));
+
+      if (isDeviceBlocked) {
+        btn.title = `${themeName} desktop only`;
+      } else {
+        btn.title = `${themeName}${isDisabled ? " disabled" : " enabled"}`;
+      }
+
       btn.style.display = "flex";
       btn.style.visibility = "visible";
     });
@@ -352,13 +398,15 @@ document.addEventListener("DOMContentLoaded", () => {
     syncVolumeOrbTheme();
     refreshLinkToggle();
   }
-
+  
   linkToggle.addEventListener("click", () => {
     setDisableUrlLinks(!getDisableUrlLinks());
     refreshLinkToggle();
   });
 
   themeButtons.forEach(bindThemeButton);
+
+  window.addEventListener("resize", refreshThemeButtons);
 
   refreshThemeButtons();
   document.addEventListener("themeChange", refreshThemeButtons);
