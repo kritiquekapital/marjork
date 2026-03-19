@@ -4,7 +4,7 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    image: "/marjork/css/pic/Vibrant Color Fiesta - Pane.png"
+    image: "/marjork/css/pic/COLOR.png"
   },
   {
     id: "songless",
