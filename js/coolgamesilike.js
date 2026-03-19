@@ -11,7 +11,7 @@ const gamesILike = [
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    image: "/marjork/css/pic/Songless.png"
+    image: "/marjork/css/pic/SONGLESS.png"
   },
   {
     id: "tradle",
