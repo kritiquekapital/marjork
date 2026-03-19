@@ -474,6 +474,44 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   transform: translateY(-6px);
 }
 
+.settings-dropdown > .settings-theme-option.desktop-only-theme {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: auto;
+}
+
+.settings-dropdown > .settings-theme-option.desktop-only-theme:hover {
+  opacity: 0.58;
+  transform: none;
+  background: rgba(24, 24, 24, 0.24);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.settings-dropdown > .settings-theme-option.desktop-only-theme::after {
+  content: "🖥️";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 1;
+  color: rgba(255, 90, 90, 0.78);
+  opacity: 0.88;
+  pointer-events: none;
+  transform: translateY(0);
+}
+
+.settings-dropdown > .settings-theme-option.desktop-only-theme::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255, 70, 70, 0.08);
+  pointer-events: none;
+}
+
 .settings-cog:active,
 .settings-volume-orb:active,
 .settings-theme-option:active {
