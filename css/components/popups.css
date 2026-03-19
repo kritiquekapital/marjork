@@ -567,9 +567,7 @@ body.theme-retro .click-wheel {
   transition:
     grid-column 0.22s ease,
     transform 0.18s ease,
-    box-shadow 0.18s ease,
-    width 0.22s ease,
-    height 0.22s ease;
+    box-shadow 0.18s ease;
   -webkit-tap-highlight-color: transparent;
   background: #111;
 }
@@ -594,14 +592,30 @@ body.theme-retro .click-wheel {
   outline-offset: 4px;
 }
 
+/* full art layer */
 .game-case-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-size: cover;
-  background-position: center center;
   background-repeat: no-repeat;
+  background-position: left center;
+  background-size: auto 100%;
   transform: none;
+}
+
+/* unhovered cards should show left side only */
+.game-case:not(.game-case-featured) .game-case-bg {
+  background-position: left center;
+  background-size: auto 100%;
+}
+
+/* expanded cards should fit full width with no left/right crop */
+.game-case.game-case-featured .game-case-bg,
+.game-case.is-active .game-case-bg,
+.game-case:hover .game-case-bg,
+.game-case:focus-visible .game-case-bg {
+  background-position: center center;
+  background-size: 100% 100%;
 }
 
 .game-case-bg::before {
@@ -623,7 +637,7 @@ body.theme-retro .click-wheel {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 22%, rgba(0,0,0,0.18) 100%);
+    linear-gradient(180deg, rgba(255,255,255,0.04), transparent 18%, rgba(0,0,0,0.12) 100%);
   pointer-events: none;
 }
 
@@ -649,7 +663,10 @@ body.theme-retro .click-wheel {
   overflow: hidden;
 }
 
-.game-case-featured .game-case-spine {
+.game-case-featured .game-case-spine,
+.game-case.is-active .game-case-spine,
+.game-case:hover .game-case-spine,
+.game-case:focus-visible .game-case-spine {
   opacity: 0;
 }
 
@@ -669,72 +686,49 @@ body.theme-retro .click-wheel {
   overflow: hidden;
 }
 
+/* bottom description strip only */
 .game-case-details {
   display: none;
   position: relative;
   z-index: 2;
   min-width: 0;
   height: 100%;
-  background: transparent;
   overflow: hidden;
 }
 
-.game-case-featured .game-case-details {
+.game-case-featured .game-case-details,
+.game-case.is-active .game-case-details,
+.game-case:hover .game-case-details,
+.game-case:focus-visible .game-case-details {
   display: block;
 }
 
-.game-case-details::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.16) 24%, rgba(0,0,0,0.42) 100%);
-  pointer-events: none;
-}
-
-.game-case-details-inner {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 4px;
-  padding: 10px;
-  color: #fff;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.game-case-details-title,
 .game-case-details-desc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-family: "Archivo", sans-serif;
+  font-size: 0.62rem;
+  line-height: 1;
   font-weight: 500;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
+  color: #000000;
+  background: rgba(255,255,255,0.92);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: lowercase;
-  display: block;
+  box-sizing: border-box;
 }
 
-.game-case-details-title {
-  font-size: 0.78rem;
-  line-height: 1;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.78);
-}
-
-.game-case-details-desc {
-  font-size: 0.62rem;
-  line-height: 1;
-  color: rgba(255,255,255,0.94);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.72);
-}
-
+/* kill old extras if still present */
+.game-case-details-inner,
+.game-case-details-title,
 .game-case-meta,
 .game-case-pill,
 .game-case-bottom-tag,
@@ -798,101 +792,17 @@ body.theme-retro .click-wheel {
   }
 
   .game-case-bg {
-    transform: none !important;
-    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: auto 100%;
+  }
+
+  .game-case.game-case-featured .game-case-bg,
+  .game-case.is-active .game-case-bg,
+  .game-case:hover .game-case-bg,
+  .game-case:focus-visible .game-case-bg {
     background-position: center center;
-  }
-
-  .game-case-details {
-    display: block;
-  }
-
-  .game-case:not(.game-case-featured) .game-case-details {
-    display: none;
-  }
-
-  .game-case-spine {
-    writing-mode: horizontal-tb;
-    text-orientation: mixed;
-    transform: none;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 8px 8px 10px;
-  }
-
-  .game-case-featured .game-case-spine {
-    opacity: 0;
-  }
-
-  .game-case-title {
-    font-family: "Archivo", sans-serif;
-    font-size: 0.66rem;
-    font-weight: 500;
-    text-align: left;
-  }
-
-  .game-case-details::before {
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.36) 100%);
-  }
-
-  .game-case-details-inner {
-    padding: 10px;
-    gap: 5px;
-    justify-content: flex-end;
-    align-items: flex-start;
-  }
-
-  .game-case-details-title {
-    font-size: 0.76rem;
-    line-height: 1;
-  }
-
-  .game-case-details-desc {
-    font-size: 0.6rem;
-    line-height: 1;
-  }
-}
-
-@media (max-width: 700px) {
-  .games-shelf-row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-height: 0;
-    max-height: 70vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 6px 2px 6px;
-  }
-
-  .game-case {
-    width: 100%;
-    height: 72px;
-    min-height: 72px;
-    flex: none;
-    transform: none;
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
-  .game-case-featured {
-    width: 100%;
-    height: 132px;
-    min-height: 132px;
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
-  .game-case:hover,
-  .game-case:active,
-  .game-case.is-active {
-    transform: none;
-  }
-
-  .game-case-bg {
-    inset: 0;
-    background-size: cover;
-    background-position: center center;
-    transform: none;
+    background-size: 100% 100%;
   }
 
   .game-case-details {
@@ -920,19 +830,13 @@ body.theme-retro .click-wheel {
     text-align: left;
   }
 
-  .game-case-details-inner {
-    padding: 10px;
-    gap: 5px;
-  }
-
-  .game-case-details-title {
-    font-size: 0.76rem;
-  }
-
   .game-case-details-desc {
+    height: 24px;
     font-size: 0.6rem;
+    padding: 0 8px;
   }
 }
+
 /* ==================== */
 /* Theme Adaptations */
 /* ==================== */
