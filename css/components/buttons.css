@@ -471,7 +471,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   color: rgba(255, 255, 255, 0.96);
   opacity: 1;
   pointer-events: none;
-  transform: translateY(-1px);
+  transform: translateY(-6px);
 }
 
 .settings-cog:active,
