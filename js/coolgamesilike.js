@@ -35,32 +35,32 @@ const gamesILike = [
     image: "/marjork/css/pic/IMAG.png"
   },
   {
-    id: "openguesser",
-    title: "openguesser",
+    id: "openguessr",
+    title: "openguessr",
     url: "https://openguessr.com/",
     desc: "location of the day",
     image: "/marjork/css/pic/GEO.png"
   },
   {
-    id: "gamedefault-3",
-    title: "game seven",
-    url: "#",
-    desc: "add later",
-    image: "/marjork/css/pic/game-seven.jpg"
+    id: "foodguessr",
+    title: "foodguessr",
+    url: "https://www.foodguessr.com/game/daily",
+    desc: "food of the day",
+    image: "/marjork/css/pic/FOOD.png"
   },
   {
-    id: "gamedefault-4",
-    title: "game eight",
-    url: "#",
-    desc: "add later",
-    image: "/marjork/css/pic/game-eight.jpg"
+    id: "guess-the-game",
+    title: "guess the game",
+    url: "https://guessthe.game/",
+    desc: "game of the day",
+    image: "/marjork/css/pic/GAME.jpg"
   },
   {
-    id: "gamedefault-5",
-    title: "game nine",
-    url: "#",
-    desc: "add later",
-    image: "/marjork/css/pic/game-nine.jpg"
+    id: "guess-the-book",
+    title: "guess the book",
+    url: "https://guessthebook.app/",
+    desc: "book of the day",
+    image: "/marjork/css/pic/BOOK.jpg"
   },
 ];
 
