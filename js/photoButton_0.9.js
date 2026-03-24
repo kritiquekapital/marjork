@@ -42,6 +42,7 @@ const CLASSIC_ROLL = {
 const PLACEHOLDER_ROLL = {
   folder: "DUDEHELLOCAMERON",
   files: [
+    "DUDEHELLOCAMERON",
     "quandry-01.jpg",
     "quandry-02.jpg",
     "quandry-03.jpg",
