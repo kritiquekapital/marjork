@@ -1,4 +1,5 @@
 import { Bounceable } from './bounceable.js';
+import { track } from './analytics.js';
 
 const kissButton = document.querySelector(".kiss-button");
 
@@ -39,7 +40,7 @@ if (kissButton) {
     }
   }
 
-    function showFloatingMessage(text, options = {}) {
+  function showFloatingMessage(text, options = {}) {
     const {
       color = "#FF1493",
       fontSize = "1.5rem",
@@ -87,6 +88,12 @@ if (kissButton) {
 
   function showLoveMessage() {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
+    // 🔥 track click event
+    track("kiss_click", {
+      message: randomMessage
+    });
+
     showFloatingMessage(randomMessage, {
       color: "#FF1493",
       fontSize: "1.5rem",
@@ -102,7 +109,12 @@ if (kissButton) {
       holeMessages[Math.floor(Math.random() * holeMessages.length)];
 
     const strokeLabel =
-      `${strokeCount} stroke${strokeCount === 1 - 1 ? "" : "s"}`;
+      `${strokeCount} stroke${strokeCount === 1 ? "" : "s"}`;
+
+    // 🔥 track hole event (this is the GOOD metric)
+    track("kiss_sink", {
+      strokes: strokeCount
+    });
 
     showFloatingMessage(strokeLabel, {
       color: "#FF1493",
