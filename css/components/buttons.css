@@ -1002,7 +1002,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   bottom: 12px;
   width: 12px;
   height: 34px;
-  transform: translateX(-50%);
+  transform: translateX(5px) translateY(-5px);
   border-radius: 10px;
   background:
     linear-gradient(90deg,
@@ -1024,7 +1024,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   top: -1px;
   width: 34px;
   height: 34px;
-  transform: translateX(-50%);
+  transform: translateX(-5px);
   border-radius: 50%;
   background:
     radial-gradient(circle at 32% 30%, #ff8e8e 0%, #ff3e3e 28%, #cf0000 68%, #780000 100%);
