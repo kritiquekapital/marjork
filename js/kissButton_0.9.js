@@ -89,8 +89,7 @@ if (kissButton) {
   function showLoveMessage() {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    // 🔥 track click event
-    track("kiss_click", {
+    track("kiss_button_click", {
       message: randomMessage
     });
 
@@ -111,8 +110,7 @@ if (kissButton) {
     const strokeLabel =
       `${strokeCount} stroke${strokeCount === 1 ? "" : "s"}`;
 
-    // 🔥 track hole event (this is the GOOD metric)
-    track("kiss_sink", {
+    track("kiss_button_sink", {
       strokes: strokeCount
     });
 
