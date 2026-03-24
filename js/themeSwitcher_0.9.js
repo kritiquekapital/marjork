@@ -288,6 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
 
+        track("theme_change", {
+      theme: currentTheme.name
+    });
+
     if (themeButton) themeButton.textContent = currentTheme.displayName;
 
     document.dispatchEvent(new Event("themeChange"));
