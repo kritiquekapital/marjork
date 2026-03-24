@@ -1,4 +1,5 @@
 import { Draggable } from './draggable.js';
+import { track } from './analytics.js';
 
 // Create overlay
 const overlay = document.createElement('div');
@@ -70,8 +71,14 @@ function showMusicPlayer() {
     isFirstOpen = false;
     updateButtonStates();
   }
+
   musicPlayer.style.display = "block";
   overlay.style.display = "block";
+
+  track("music_player_open", {
+    track: currentPlaylist[currentIndex]?.title,
+    shuffled: isShuffling
+  });
 }
 
 function hideMusicPlayer() {
@@ -95,12 +102,21 @@ vinylLink.addEventListener("click", (event) => {
 pinButton.addEventListener("click", () => {
   isPinned = !isPinned;
   updateButtonStates();
+
+  track("music_pin_toggle", {
+    pinned: isPinned
+  });
 });
 
 shuffleButton.addEventListener("click", () => {
   isShuffling = !isShuffling;
   isShuffling ? shufflePlaylist() : resetPlaylist();
   updateButtonStates();
+
+  track("music_shuffle_toggle", {
+    shuffled: isShuffling,
+    track: currentPlaylist[currentIndex]?.title
+  });
 });
 
 function updateButtonStates() {
@@ -111,11 +127,13 @@ function updateButtonStates() {
 function shufflePlaylist() {
   currentPlaylist = [...liveLinks2].sort(() => Math.random() - 0.5);
   currentIndex = 0;
+  updateMusicSource();
 }
 
 function resetPlaylist() {
   currentPlaylist = [...liveLinks2];
   currentIndex = 0;
+  updateMusicSource();
 }
 
 function updateMusicSource() {
@@ -124,23 +142,45 @@ function updateMusicSource() {
 
 function togglePlayState() {
   isPlaying = !isPlaying;
+
   musicFrame.contentWindow.postMessage({
     event: "command",
     func: isPlaying ? "playVideo" : "pauseVideo",
     args: ""
   }, "*");
+
+  track("music_play_toggle", {
+    playing: isPlaying,
+    track: currentPlaylist[currentIndex]?.title
+  });
 }
 
 function nextTrack() {
   currentIndex = (currentIndex + 1) % currentPlaylist.length;
   updateMusicSource();
-  if (!isPlaying) togglePlayState();
+
+  if (!isPlaying) {
+    isPlaying = true;
+  }
+
+  track("music_next_track", {
+    track: currentPlaylist[currentIndex]?.title,
+    shuffled: isShuffling
+  });
 }
 
 function prevTrack() {
   currentIndex = (currentIndex - 1 + currentPlaylist.length) % currentPlaylist.length;
   updateMusicSource();
-  if (!isPlaying) togglePlayState();
+
+  if (!isPlaying) {
+    isPlaying = true;
+  }
+
+  track("music_prev_track", {
+    track: currentPlaylist[currentIndex]?.title,
+    shuffled: isShuffling
+  });
 }
 
 document.querySelector(".next-btn").addEventListener("click", nextTrack);
@@ -160,16 +200,38 @@ dropdownMenu.style.maxHeight = "50px";
 dropdownMenu.style.overflowY = "auto";
 menuButton.appendChild(dropdownMenu);
 
-liveLinks2.forEach((track, index) => {
+liveLinks2.forEach((trackItem, index) => {
   const listItem = document.createElement("li");
-  listItem.textContent = track.title;
+  listItem.textContent = trackItem.title;
   listItem.style.padding = "5px";
   listItem.style.cursor = "pointer";
+
   listItem.addEventListener("click", () => {
-    currentIndex = index;
+    const selectedTrack = trackItem.title;
+
+    if (isShuffling) {
+      const shuffledIndex = currentPlaylist.findIndex(
+        (item) => item.title === selectedTrack && item.url === trackItem.url
+      );
+      currentIndex = shuffledIndex !== -1 ? shuffledIndex : 0;
+    } else {
+      currentIndex = index;
+    }
+
     updateMusicSource();
     dropdownMenu.style.display = "none";
+
+    if (!isPlaying) {
+      isPlaying = true;
+    }
+
+    track("music_track_select", {
+      track: currentPlaylist[currentIndex]?.title,
+      source: "menu",
+      shuffled: isShuffling
+    });
   });
+
   dropdownMenu.appendChild(listItem);
 });
 
@@ -208,7 +270,6 @@ const videoLinks = [
   { title: "Bob", url: "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080" }
 ];
 
-
 let videoIndex = 0;
 let videoPinned = false;
 const videoDraggable = new Draggable(videoPlayer);
@@ -224,6 +285,10 @@ function showVideoPlayer() {
   // Bring to front
   videoPlayer.style.zIndex = "999";
   videoPlayer.style.opacity = "1";
+
+  track("video_player_open", {
+    title: videoLinks[videoIndex]?.title
+  });
 }
 
 // Click outside to hide video player (unless pinned)
@@ -234,20 +299,32 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 videoNext.addEventListener("click", () => {
   videoIndex = (videoIndex + 1) % videoLinks.length;
   updateVideoSource();
+
+  track("video_next", {
+    title: videoLinks[videoIndex]?.title
+  });
 });
 
 videoPrev.addEventListener("click", () => {
   videoIndex = (videoIndex - 1 + videoLinks.length) % videoLinks.length;
   updateVideoSource();
+
+  track("video_prev", {
+    title: videoLinks[videoIndex]?.title
+  });
 });
 
 videoPin.addEventListener("click", () => {
   videoPinned = !videoPinned;
   videoPin.style.opacity = videoPinned ? "1" : "0.5";
+
+  track("video_pin_toggle", {
+    pinned: videoPinned,
+    title: videoLinks[videoIndex]?.title
+  });
 });
 
 if (propagandaLink) {
@@ -261,7 +338,8 @@ const resizeBar = document.querySelector(".video-resize-bar");
 
 if (resizeBar) {
   let isResizing = false;
-  let startY, startHeight;
+  let startY;
+  let startHeight;
 
   resizeBar.addEventListener("mousedown", (e) => {
     e.stopPropagation(); // Prevent triggering drag
@@ -275,6 +353,7 @@ if (resizeBar) {
 
   function resizeVideo(e) {
     if (!isResizing) return;
+
     const dy = e.clientY - startY;
     let newHeight = Math.max(180, startHeight + dy);
     let newWidth = newHeight * (16 / 9);
@@ -289,4 +368,3 @@ if (resizeBar) {
     document.removeEventListener("mouseup", stopResize);
   }
 }
-
