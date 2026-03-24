@@ -1,3 +1,5 @@
+import { track } from './analytics.js';
+
 document.addEventListener("DOMContentLoaded", function () {
   const STORAGE_KEY = "disableUrlLinks";
   const selector = ".substack-button, .twitter, .duolingo, .dropkickd-button, .letterboxd, .spotify";
@@ -6,6 +8,15 @@ document.addEventListener("DOMContentLoaded", function () {
     return localStorage.getItem(STORAGE_KEY) === "true";
   }
 
+  track("outbound_link_click", {
+    href: url,
+    label:
+      button.className ||
+      button.getAttribute("aria-label") ||
+      button.textContent?.trim() ||
+      "unknown"
+  });
+  
   function openLinkInNewTabIfNotOpened(url) {
     if (!url) return;
 
