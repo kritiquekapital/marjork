@@ -28,7 +28,6 @@
 /* Button Styles */
 /* ==================== */
 
-.games-like-button,
 .wip, 
 .secret-button {
   background: none;
@@ -47,7 +46,7 @@
   z-index: 2; /* Ensure it stays above the grid container */
 }
 
-.games-like-button:active, .wip:active, .secret-button:active {
+.wip:active, .secret-button:active {
   transform: translate(55px, 0) scale(2.5); /* Move 10px right and scale up */
   transition: transform 0.2s ease-in-out; /* Faster animation for click feedback */
 }
@@ -799,7 +798,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  display: flex;
+  display: none !important;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -832,24 +831,97 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   100% { transform: translateY(0); }
 }  
 
-/* Surprise Button */
-.surprise {
-  background-color: #222;
+/* ==================== */
+/* Backlog Button */
+/* ==================== */
+.backlog-button {
+  width: 120px;
+  height: 120px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at 35% 35%, #4f4f4f 0%, #2f2f2f 52%, #111 100%);
+  box-shadow:
+    inset 0 4px 10px rgba(255,255,255,0.10),
+    inset 0 -8px 14px rgba(0,0,0,0.45),
+    0 0 12px rgba(255,255,255,0.14);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  z-index: 2;
+}
+
+.backlog-button::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #8f8f8f 0 10%, #303030 11% 23%, #151515 24% 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.12),
+    inset 0 -3px 8px rgba(0,0,0,0.45);
+}
+
+.backlog-button::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0b0b0b;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.06);
+  z-index: 1;
+}
+
+.backlog-button:hover {
+  transform: scale(1.1);
+  box-shadow:
+    inset 0 4px 10px rgba(255,255,255,0.14),
+    inset 0 -8px 14px rgba(0,0,0,0.50),
+    0 0 18px rgba(255,255,255,0.22);
+}
+
+.backlog-button:active {
+  transform: scale(0.96);
+}
+
+.backlog-emoji {
+  position: relative;
+  z-index: 2;
+  font-size: 2.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+}
+
+/* ==================== */
+/* Games I Like Button */
+/* ==================== */
+.games-like-button.surprise,
+.surprise.games-like-button {
+  background-color: transparent;
+  border: none;
   border-radius: 50%;
   width: 120px;
   height: 120px;
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, background-color 0.3s ease;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  background-color: transparent;
   z-index: 2;
+  cursor: pointer;
+  padding: 0;
 }
 
-.joystick {
+.games-like-button.surprise .joystick,
+.surprise.games-like-button .joystick {
   background-color: #ff9e00;
   width: 70px;
   height: 70px;
@@ -857,12 +929,13 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   position: absolute;
   top: 10px;
   left: 10px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 0 15px rgba(255, 158, 0, 0.7);
   z-index: 2;
 }
 
-.stick {
+.games-like-button.surprise .stick,
+.surprise.games-like-button .stick {
   background-color: #00bcd4;
   width: 10px;
   height: 40px;
@@ -872,9 +945,11 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   transform: translate(-50%, -50%) translateY(15px) rotate(-25deg);
   border-radius: 5px;
   z-index: 1;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.stick-ball {
+.games-like-button.surprise .stick-ball,
+.surprise.games-like-button .stick-ball {
   background-color: #ff0000;
   width: 24px;
   height: 24px;
@@ -886,22 +961,26 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
 }
 
-.surprise:hover {
+.games-like-button.surprise:hover,
+.surprise.games-like-button:hover {
   transform: scale(1.1);
   background-color: #444;
 }
 
-.surprise:active .joystick {
+.games-like-button.surprise:hover .stick,
+.surprise.games-like-button:hover .stick {
+  box-shadow: 0 0 10px #00bcd4;
+}
+
+.games-like-button.surprise:active .joystick,
+.surprise.games-like-button:active .joystick {
   transform: scale(0.9);
   background-color: #ff6f00;
 }
 
-.surprise:active .stick {
+.games-like-button.surprise:active .stick,
+.surprise.games-like-button:active .stick {
   transform: translate(-50%, -50%) translateY(18px) rotate(-40deg);
-}
-
-.surprise:hover .stick {
-  box-shadow: 0 0 10px #00bcd4;
 }
 
 /* Propaganda Button */
