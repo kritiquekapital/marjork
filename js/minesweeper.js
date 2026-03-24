@@ -252,7 +252,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+ let gameStarted = false;
+
   function startTimer() {
+    gameStarted = true;
     startTime = Date.now();
     clearInterval(timerInterval);
     timerInterval = setInterval(updateTimerDisplay, 100);
@@ -261,9 +264,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function stopTimer(won = false) {
     clearInterval(timerInterval);
 
-    const elapsed = startTime ? Date.now() - startTime : null;
+    if (!gameStarted || !startTime) {
+      startTime = null;
+      updateTimerDisplay();
+      return;
+    }
+
+    const elapsed = Date.now() - startTime;
     updateTimerDisplay();
     startTime = null;
+    gameStarted = false;
 
     if (won) {
       track("minesweeper_win", {
@@ -280,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateBestTime();
   }
-
+  
   function generateGrid() {
     gridElement.innerHTML = "";
     board = [];
