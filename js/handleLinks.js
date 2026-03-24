@@ -1,53 +1,65 @@
 import { track } from './analytics.js';
 
-document.addEventListener("DOMContentLoaded", function () {
-  const STORAGE_KEY = "disableUrlLinks";
-  const selector = ".substack-button, .twitter, .duolingo, .dropkickd-button, .letterboxd, .spotify";
+document.addEventListener("DOMContentLoaded", () => {
+  const STORAGE_KEY = "openedOutboundLinks";
+  const selector = "a[href]";
 
-  function urlLinksDisabled() {
-    return localStorage.getItem(STORAGE_KEY) === "true";
-  }
-
-  function openLinkInNewTabIfNotOpened(url) {
-    if (!url) return;
-
-    if (!sessionStorage.getItem(url)) {
-      window.open(url, "_blank");
-      sessionStorage.setItem(url, "opened");
+  function getOpenedMap() {
+    try {
+      return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
+    } catch {
+      return {};
     }
   }
 
-  function syncDisabledVisualState() {
-    document.body.classList.toggle("url-links-disabled", urlLinksDisabled());
+  function setOpened(url) {
+    const opened = getOpenedMap();
+    opened[url] = true;
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(opened));
   }
 
-  const buttons = document.querySelectorAll(selector);
+  function alreadyOpened(url) {
+    return !!getOpenedMap()[url];
+  }
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", function (event) {
-      if (urlLinksDisabled()) {
+  function isExternal(url) {
+    try {
+      const parsed = new URL(url, window.location.href);
+      return parsed.origin !== window.location.origin;
+    } catch {
+      return false;
+    }
+  }
+
+  document.querySelectorAll(selector).forEach((anchor) => {
+    anchor.addEventListener("click", (event) => {
+      const url = anchor.href;
+      if (!url || !isExternal(url)) return;
+
+      if (localStorage.getItem("disableUrlLinks") === "true") {
         event.preventDefault();
         event.stopPropagation();
         return;
       }
 
+      if (alreadyOpened(url)) {
+        event.preventDefault();
+        return;
+      }
+
       event.preventDefault();
 
-      const url = button.getAttribute("href");
-
       track("outbound_link_click", {
-        href: url,
+        url,
         label:
-          button.className ||
-          button.getAttribute("aria-label") ||
-          button.textContent?.trim() ||
+          anchor.className ||
+          anchor.getAttribute("aria-label") ||
+          anchor.textContent?.trim() ||
           "unknown"
       });
 
-      openLinkInNewTabIfNotOpened(url);
+      setOpened(url);
+      window.open(url, "_blank", "noopener,noreferrer");
     });
   });
-
-  document.addEventListener("urlLinksSettingChanged", syncDisabledVisualState);
-  syncDisabledVisualState();
 });
