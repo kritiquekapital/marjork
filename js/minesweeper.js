@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const gridElement = document.getElementById("minesweeper-grid");
   const closeButton = document.getElementById("close-minesweeper");
   const secretButton = document.querySelector(".secret-button");
+    track("minesweeper_open");
 
   const API_BASE = "https://minesweeper-zeta-eight.vercel.app";
 
