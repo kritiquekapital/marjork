@@ -948,7 +948,6 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   z-index: 2;
 }
 
-/* outer plastic lip */
 .games-like-button.surprise::before,
 .surprise.games-like-button::before {
   content: "";
@@ -963,12 +962,14 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   z-index: 0;
 }
 
-/* recessed socket the stick comes out of */
 .games-like-button.surprise .joystick-base,
 .surprise.games-like-button .joystick-base {
   position: absolute;
   width: 56px;
   height: 56px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   background:
     radial-gradient(circle at 40% 35%, #111 0%, #1a1a1a 30%, #050505 75%, #000 100%);
@@ -979,7 +980,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   z-index: 1;
 }
 
-/* whole moving stick assembly */
+/* this is the important centering fix */
 .games-like-button.surprise .joystick-assembly,
 .surprise.games-like-button .joystick-assembly {
   position: absolute;
@@ -987,14 +988,13 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   height: 54px;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) rotate(-24deg);
+  transform: translate(calc(-50% - 2px), calc(-50% + 2px)) rotate(-24deg);
   transform-origin: 50% 85%;
   z-index: 3;
   transition: transform 0.14s ease;
   pointer-events: none;
 }
 
-/* shaft */
 .games-like-button.surprise .joystick-shaft,
 .surprise.games-like-button .joystick-shaft {
   position: absolute;
@@ -1017,7 +1017,6 @@ body.theme-space .settings-dropdown > .settings-theme-option {
     0 0 10px rgba(0,188,212,0.35);
 }
 
-/* knob */
 .games-like-button.surprise .joystick-knob,
 .surprise.games-like-button .joystick-knob {
   position: absolute;
@@ -1036,7 +1035,6 @@ body.theme-space .settings-dropdown > .settings-theme-option {
     0 0 10px rgba(255,0,0,0.22);
 }
 
-/* hover = slight lift */
 .games-like-button.surprise:hover,
 .surprise.games-like-button:hover {
   transform: scale(1.06);
@@ -1046,13 +1044,11 @@ body.theme-space .settings-dropdown > .settings-theme-option {
     0 12px 22px rgba(0,0,0,0.42);
 }
 
-/* hover = tiny extra tilt */
 .games-like-button.surprise:hover .joystick-assembly,
 .surprise.games-like-button:hover .joystick-assembly {
-  transform: translate(-50%, -50%) rotate(-28deg);
+  transform: translate(calc(-50% - 2px), calc(-50% + 2px)) rotate(-28deg);
 }
 
-/* active = pressed housing + stronger tilt */
 .games-like-button.surprise:active,
 .surprise.games-like-button:active {
   transform: scale(0.97);
@@ -1060,7 +1056,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 
 .games-like-button.surprise:active .joystick-assembly,
 .surprise.games-like-button:active .joystick-assembly {
-  transform: translate(-50%, -50%) rotate(-38deg) translateY(4px);
+  transform: translate(calc(-50% - 1px), calc(-50% + 5px)) rotate(-38deg);
 }
 
 .games-like-button.surprise:active .joystick-knob,
