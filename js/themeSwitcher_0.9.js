@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "logistics", displayName: "📦" }
   ];
 
+    track("site_loaded", {
+    theme: savedThemeName,
+    device: isPhone ? "mobile" : isTablet ? "tablet" : "desktop"
+  });
+
   const isPhone = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 1024;
 
