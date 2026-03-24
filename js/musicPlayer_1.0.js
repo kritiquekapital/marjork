@@ -155,7 +155,7 @@ function togglePlayState() {
   });
 }
 
-function nextTrack() {
+function nextTrack(source = "button") {
   currentIndex = (currentIndex + 1) % currentPlaylist.length;
   updateMusicSource();
 
@@ -165,7 +165,8 @@ function nextTrack() {
 
   track("music_next_track", {
     track: currentPlaylist[currentIndex]?.title,
-    shuffled: isShuffling
+    shuffled: isShuffling,
+    source
   });
 }
 
@@ -183,7 +184,7 @@ function prevTrack() {
   });
 }
 
-document.querySelector(".next-btn").addEventListener("click", nextTrack);
+document.querySelector(".next-btn").addEventListener("click", () => nextTrack("button"));
 prevButton.addEventListener("click", prevTrack);
 document.querySelector(".playpause").addEventListener("click", togglePlayState);
 
@@ -242,7 +243,7 @@ menuButton.addEventListener("click", (event) => {
 
 window.addEventListener("message", (event) => {
   if (event.data?.event === "onStateChange" && event.data.info === 0) {
-    nextTrack();
+    nextTrack("autoplay");
   }
 });
 
