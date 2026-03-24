@@ -20,16 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "logistics", displayName: "📦" }
   ];
 
-    track("site_loaded", {
-    theme: savedThemeName,
-    device: isPhone ? "mobile" : isTablet ? "tablet" : "desktop"
-  });
-
   const isPhone = window.innerWidth <= 480;
   const isTablet = window.innerWidth > 480 && window.innerWidth <= 1024;
 
   const savedThemeIndex = parseInt(localStorage.getItem("currentThemeIndex"), 10) || 0;
   const savedThemeName = allThemes[savedThemeIndex]?.name || allThemes[0].name;
+
+      track("site_loaded", {
+    theme: savedThemeName,
+    device: isPhone ? "mobile" : isTablet ? "tablet" : "desktop"
+  });
 
   function getDisabledThemes() {
     try {
@@ -294,9 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
 
-        track("theme_change", {
-      theme: currentTheme.name
-    });
+    track("theme_applied", { theme: currentTheme.name });
 
     if (themeButton) themeButton.textContent = currentTheme.displayName;
 
