@@ -748,7 +748,8 @@ body.theme-retro .click-wheel {
   .games-shelf-row {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
     min-height: 0;
     max-height: 70vh;
     overflow-y: auto;
@@ -761,71 +762,77 @@ body.theme-retro .click-wheel {
     display: none;
   }
 
+  /* closed state: same narrow upright case feel */
   .game-case {
-    width: 100%;
-    height: 72px;
-    min-height: 72px;
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    height: 168px;
+    min-height: 168px;
     flex: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
     transform: none;
-    grid-template-columns: 72px minmax(0, 1fr);
     scroll-snap-align: start;
   }
 
-  .game-case-featured {
-    width: 100%;
-    height: 132px;
-    min-height: 132px;
-    grid-template-columns: 72px minmax(0, 1fr);
-  }
-
+  /* active / tapped state: expand downward only */
+  .game-case.game-case-featured,
+  .game-case.is-active,
   .game-case:hover,
-  .game-case:active,
-  .game-case.is-active {
+  .game-case:focus-visible {
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
+    height: 252px;
+    min-height: 252px;
+    grid-template-columns: minmax(0, 1fr);
     transform: none;
   }
 
   .game-case-bg {
     background-repeat: no-repeat;
-    background-position: left center;
-    background-size: auto 100%;
-  }
-
-  .game-case.game-case-featured .game-case-bg,
-  .game-case.is-active .game-case-bg,
-  .game-case:hover .game-case-bg,
-  .game-case:focus-visible .game-case-bg {
     background-position: center center;
-    background-size: 100% 100%;
-  }
-
-  .game-case-details {
-    display: block;
-  }
-
-  .game-case:not(.game-case-featured) .game-case-details {
-    display: none;
+    background-size: cover;
   }
 
   .game-case-spine {
-    writing-mode: horizontal-tb;
+    writing-mode: vertical-rl;
     text-orientation: mixed;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding: 8px 8px 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+    padding: 8px 3px 10px;
+    overflow: hidden;
   }
 
-  .game-case-featured .game-case-spine {
+  .game-case.game-case-featured .game-case-spine,
+  .game-case.is-active .game-case-spine,
+  .game-case:hover .game-case-spine,
+  .game-case:focus-visible .game-case-spine {
     opacity: 0;
   }
 
   .game-case-title {
-    font-size: 0.66rem;
-    text-align: left;
+    font-size: 0.62rem;
+    text-align: center;
+  }
+
+  .game-case-details {
+    display: none;
+  }
+
+  .game-case.game-case-featured .game-case-details,
+  .game-case.is-active .game-case-details,
+  .game-case:hover .game-case-details,
+  .game-case:focus-visible .game-case-details {
+    display: block;
   }
 
   .game-case-details-desc {
     height: 24px;
-    font-size: 0.6rem;
+    font-size: 0.62rem;
     padding: 0 8px;
   }
 }
