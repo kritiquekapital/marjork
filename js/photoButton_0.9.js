@@ -1,136 +1,139 @@
-const imageList = [
-  "roll_03_01.jpg",
-  "roll_03_(02).jpg",
-  "roll_03_(03).jpg",
-  "roll_03_(04).jpg",
-  "roll_03_(05).jpg",
-  "roll_03_(06).jpg",
-  "roll_03_(07).jpg",
-  "roll_03_(08).jpg",
-  "roll_03_(09).jpg",
-  "roll_03_(10).jpg",
-  "roll_03_(11).jpg",
-  "roll_03_(12).jpg",
-  "roll_03_(13).jpg",
-  "roll_03_(14).jpg",
-  "roll_03_(15).jpg",
-  "roll_03_(16).jpg",
-  "roll_03_(17).jpg",
-  "roll_03_(18).jpg",
-  "roll_03_(19).jpg",
-  "roll_03_(20).jpg",
-  "roll_03_(21).jpg",
-  "roll_03_(22).jpg",
-  "roll_03_(23).jpg",
-  "roll_03_(24).jpg",
-  "roll_03_(25).jpg",
-  "roll_03_(26).jpg",
-  "roll_03_(27).jpg",
-  "roll_03_(28).jpg",
-  "roll_03_(29).jpg",
-  "roll_03_(30).jpg",
-  "roll_03_(31).jpg",
-  "roll_03_(32).jpg",
-  "roll_03_(33).jpg"
-];
+const photoButton = document.querySelector(".photo");
 
-let currentIndex = 0;
+const CLASSIC_ROLL = {
+  folder: "roll_03",
+  files: [
+    "roll_03_01.jpg",
+    "roll_03_(02).jpg",
+    "roll_03_(03).jpg",
+    "roll_03_(04).jpg",
+    "roll_03_(05).jpg",
+    "roll_03_(06).jpg",
+    "roll_03_(07).jpg",
+    "roll_03_(08).jpg",
+    "roll_03_(09).jpg",
+    "roll_03_(10).jpg",
+    "roll_03_(11).jpg",
+    "roll_03_(12).jpg",
+    "roll_03_(13).jpg",
+    "roll_03_(14).jpg",
+    "roll_03_(15).jpg",
+    "roll_03_(16).jpg",
+    "roll_03_(17).jpg",
+    "roll_03_(18).jpg",
+    "roll_03_(19).jpg",
+    "roll_03_(20).jpg",
+    "roll_03_(21).jpg",
+    "roll_03_(22).jpg",
+    "roll_03_(23).jpg",
+    "roll_03_(24).jpg",
+    "roll_03_(25).jpg",
+    "roll_03_(26).jpg",
+    "roll_03_(27).jpg",
+    "roll_03_(28).jpg",
+    "roll_03_(29).jpg",
+    "roll_03_(30).jpg",
+    "roll_03_(31).jpg",
+    "roll_03_(32).jpg",
+    "roll_03_(33).jpg"
+  ]
+};
 
-  const photoButton = document.querySelector(".photo");
-  const imageFolderURL = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/roll_03/";
+const PLACEHOLDER_ROLL = {
+  folder: "DUDEHELLOCAMERON",
+  files: [
+    "quandry-01.jpg",
+    "quandry-02.jpg",
+    "quandry-03.jpg",
+    "quandry-04.jpg",
+    "quandry-05.jpg",
+    "quandry-06.jpg",
+    "quandry-07.jpg",
+    "quandry-08.jpg",
+    "quandry-09.jpg",
+    "quandry-10.jpg"
+  ]
+};
 
-  // Prevent scrollbars from appearing
-  document.body.style.overflow = "hidden";
+const THEME_MAP = {
+  classic: CLASSIC_ROLL,
+  retro: PLACEHOLDER_ROLL,
+  art: PLACEHOLDER_ROLL,
+  modern: PLACEHOLDER_ROLL,
+  nature: PLACEHOLDER_ROLL,
+  lofi: PLACEHOLDER_ROLL,
+  space: PLACEHOLDER_ROLL,
+  logistics: PLACEHOLDER_ROLL
+};
 
-  function createFloatingImage(imageURL) {
-    // Create the image element
-    const img = document.createElement("img");
-    img.src = imageURL;
-    img.crossOrigin = "anonymous"; // Handle CORS for external images
-    img.style.position = "fixed";
-    img.style.width = "150px"; // Initial size
-    img.style.height = "auto"; // Maintain aspect ratio
-    img.style.opacity = "1"; // Start fully visible
-    img.style.pointerEvents = "none";
-    img.style.transition = "left 8s linear, top 8s linear, opacity 8s ease-out, transform 8s ease-out"; // Smooth transitions
-    img.style.zIndex = "1000";
-    img.style.border = "2px solid black"; // Add a black border
-    img.style.boxSizing = "border-box"; // Ensure the border is included in the element's dimensions
+const themeIndexes = {};
 
-    // Ensure the image is within the viewport and never starts offscreen
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+function getCurrentThemeName() {
+  const themeClass = [...document.body.classList].find(c => c.startsWith("theme-"));
+  return themeClass ? themeClass.replace("theme-", "") : "classic";
+}
 
-    // Calculate the maximum allowed starting positions to ensure the image stays within the viewport
-    const maxX = viewportWidth - 150; // Ensure the image doesn't go offscreen horizontally
-    const maxY = viewportHeight - 150; // Ensure the image doesn't go offscreen vertically
+function getThemeRoll() {
+  const theme = getCurrentThemeName();
+  return THEME_MAP[theme] || CLASSIC_ROLL;
+}
 
-    // Randomly position the image within the entire viewport
-    const startX = Math.random() * maxX; // Random X position within the viewport
-    const startY = Math.random() * maxY; // Random Y position within the viewport
+function getImageURL() {
+  const theme = getCurrentThemeName();
+  const roll = getThemeRoll();
 
-    // Apply the position directly to the image
-    img.style.left = `${startX}px`;
-    img.style.top = `${startY}px`;
+  if (!roll.files.length) return null;
 
-    console.log("Creating floating image:", imageURL, "at position:", startX, startY);
+  if (!(theme in themeIndexes)) themeIndexes[theme] = 0;
 
-    // Append the image to the DOM
-    document.body.appendChild(img);
+  const file = roll.files[themeIndexes[theme]];
+  return `https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/${roll.folder}/${file}`;
+}
 
-    // Debugging: Confirm the image is in the DOM
-    console.log("Image appended to DOM:", document.body.contains(img));
+function advanceIndex() {
+  const theme = getCurrentThemeName();
+  const roll = getThemeRoll();
 
-    // Function to move the image
-    function moveImage() {
-      // Calculate the maximum allowed ending positions to ensure the image stays within the viewport
-      const endX = Math.random() * maxX; // Random X position within the viewport
-      const endY = Math.random() * maxY; // Random Y position within the viewport
+  themeIndexes[theme] = (themeIndexes[theme] + 1) % roll.files.length;
+}
 
-      // Apply the new position directly to the image
-      img.style.left = `${endX}px`;
-      img.style.top = `${endY}px`;
+function createFloatingImage(src) {
+  const img = document.createElement("img");
 
-      // Gradually expand the image
-      img.style.transform = "scale(2)"; // Double the size
+  img.src = src;
+  img.style.position = "fixed";
+  img.style.width = "150px";
+  img.style.pointerEvents = "none";
+  img.style.transition = "all 8s linear";
+  img.style.zIndex = "1000";
+  img.style.border = "2px solid black";
 
-      // Gradually fade out the image
-      img.style.opacity = "0";
+  const maxX = window.innerWidth - 150;
+  const maxY = window.innerHeight - 150;
 
-      console.log("Moving image to:", endX, endY);
-    }
+  img.style.left = Math.random() * maxX + "px";
+  img.style.top = Math.random() * maxY + "px";
 
-    // Wait for the image to load before moving it
-    img.onload = () => {
-      console.log("Image loaded successfully:", imageURL);
-      console.log("Image dimensions:", img.naturalWidth, "x", img.naturalHeight);
-      moveImage(); // Start moving the image after it's fully loaded
-    };
+  document.body.appendChild(img);
 
-    img.onerror = () => {
-      console.error("Failed to load image:", imageURL);
-    };
-
-    // Remove image after 8 seconds
-    setTimeout(() => {
-      console.log("Removing image:", imageURL);
-      img.remove();
-    }, 8000);
-  }
-
-  photoButton.addEventListener("click", (event) => {
-    event.preventDefault();
-
-    // Construct the image URL
-    const imageURL = imageFolderURL + imageList[currentIndex];
-    console.log("Loading image:", imageURL);
-
-    // Test with a local image (for debugging)
-    // const imageURL = "path/to/local/image.jpg";
-
-    // Create and display the floating image
-    createFloatingImage(imageURL);
-
-    // Cycle to the next image
-    currentIndex = (currentIndex + 1) % imageList.length;
+  requestAnimationFrame(() => {
+    img.style.left = Math.random() * maxX + "px";
+    img.style.top = Math.random() * maxY + "px";
+    img.style.opacity = "0";
+    img.style.transform = "scale(2)";
   });
+
+  setTimeout(() => img.remove(), 8000);
+}
+
+if (photoButton) {
+  photoButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const url = getImageURL();
+    if (!url) return;
+
+    createFloatingImage(url);
+    advanceIndex();
+  });
+}
