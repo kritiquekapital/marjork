@@ -1,6 +1,7 @@
 import { Bounceable } from './bounceable.js';
 import { Draggable } from './draggable.js';
 import { initLogisticsTheme } from './logistics.js';
+import { track } from './analytics.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const draggableElement = document.getElementById('musicPlayer');
