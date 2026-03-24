@@ -53,14 +53,14 @@ const gamesILike = [
     title: "guess the game",
     url: "https://guessthe.game/",
     desc: "game of the day",
-    image: "/marjork/css/pic/GAME.jpg"
+    image: "/marjork/css/pic/GAME.png"
   },
   {
     id: "guess-the-book",
     title: "guess the book",
     url: "https://guessthebook.app/",
     desc: "book of the day",
-    image: "/marjork/css/pic/BOOK.jpg"
+    image: "/marjork/css/pic/BOOK.png"
   },
 ];
 
