@@ -1,3 +1,5 @@
+import { track } from './analytics.js';
+
 const gamesILike = [
   {
     id: "colorguesser",
@@ -132,7 +134,14 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         { passive: true }
       );
-
+      
+      card.addEventListener("click", () => {
+        track("games_shelf_game_click", {
+        game: game.id,
+        title: game.title
+      });
+    });
+      
       shelfRow.appendChild(card);
     });
 
@@ -143,12 +152,14 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay.classList.add("is-open");
     overlay.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
+    track("games_shelf_open");
   }
 
   function closeShelf() {
     overlay.classList.remove("is-open");
     overlay.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    track("games_shelf_close");
   }
 
   renderGames();
