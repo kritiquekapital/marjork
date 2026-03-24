@@ -8,15 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return localStorage.getItem(STORAGE_KEY) === "true";
   }
 
-  track("outbound_link_click", {
-    href: url,
-    label:
-      button.className ||
-      button.getAttribute("aria-label") ||
-      button.textContent?.trim() ||
-      "unknown"
-  });
-  
   function openLinkInNewTabIfNotOpened(url) {
     if (!url) return;
 
@@ -41,7 +32,18 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       event.preventDefault();
+
       const url = button.getAttribute("href");
+
+      track("outbound_link_click", {
+        href: url,
+        label:
+          button.className ||
+          button.getAttribute("aria-label") ||
+          button.textContent?.trim() ||
+          "unknown"
+      });
+
       openLinkInNewTabIfNotOpened(url);
     });
   });
