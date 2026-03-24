@@ -50,7 +50,8 @@ body {
 .spotify             { grid-area: 2 / 3; }
 
 /* Third Row */
-.news-button         { grid-area: 3 / 1; }
+.backlog-button      { grid-area: 3 / 1; }
+.news-button         { display: none !important; }
 .kiss-button         { grid-area: 3 / 2; }
 .games-like-button   { grid-area: 3 / 3; }
 
