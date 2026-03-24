@@ -12,31 +12,50 @@ const pdfFrame         = document.getElementById("pdfFrame");
 const closeReader      = document.getElementById("closeReader");
 
 // Header elements in bookcase shelf
-const pdfSectionEl     = document.getElementById("pdfSection");   // section title in shelf
-const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle"); // book title in shelf
+const pdfSectionEl     = document.getElementById("pdfSection");
+const pdfWorkTitleEl   = document.getElementById("pdfWorkTitle");
 
 // Make bookcase draggable
-new Draggable(bookcase, '.bookcase-header');
+if (bookcase) {
+  new Draggable(bookcase, '.bookcase-header');
+}
 
 // Open/close bookcase
-function openBookcase() { bookcaseWrapper.style.display = "block"; }
-function closeBookcase() { bookcaseWrapper.style.display = "none"; }
+function openBookcase() {
+  if (bookcaseWrapper) bookcaseWrapper.style.display = "block";
+}
 
-newsButton.addEventListener("click", openBookcase);
-closeBookcaseBtn.addEventListener("click", closeBookcase);
-bookcaseBackdrop.addEventListener("click", closeBookcase);
-bookcase.addEventListener("click", e => e.stopPropagation());
+function closeBookcase() {
+  if (bookcaseWrapper) bookcaseWrapper.style.display = "none";
+}
 
-// Close PDF reader
-closeReader.addEventListener("click", () => {
-  if (currentBook) {
-    currentBook.classList.remove("picked-up", "checked-out");
-    bookGrid.querySelectorAll(".book").forEach(book => book.classList.remove("locked"));
-    currentBook = null;
-  }
-  pdfReader.style.display = "none";
-  pdfFrame.src = "";
-});
+if (newsButton) {
+  newsButton.addEventListener("click", openBookcase);
+}
+
+if (closeBookcaseBtn) {
+  closeBookcaseBtn.addEventListener("click", closeBookcase);
+}
+
+if (bookcaseBackdrop) {
+  bookcaseBackdrop.addEventListener("click", closeBookcase);
+}
+
+if (bookcase) {
+  bookcase.addEventListener("click", e => e.stopPropagation());
+}
+
+if (closeReader) {
+  closeReader.addEventListener("click", () => {
+    if (currentBook) {
+      currentBook.classList.remove("picked-up", "checked-out");
+      bookGrid?.querySelectorAll(".book").forEach(book => book.classList.remove("locked"));
+      currentBook = null;
+    }
+    if (pdfReader) pdfReader.style.display = "none";
+    if (pdfFrame) pdfFrame.src = "";
+  });
+}
 
 // Track current book
 let currentBook = null;
@@ -87,9 +106,3 @@ books.forEach(b => {
 
   bookGrid.appendChild(div);
 });
-
-
-
-
-
-
