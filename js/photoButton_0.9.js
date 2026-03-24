@@ -1,3 +1,5 @@
+import { track } from './analytics.js';
+
 const photoButton = document.querySelector(".photo");
 
 const CLASSIC_ROLL = {
@@ -79,15 +81,20 @@ function getThemeRoll() {
   return THEME_MAP[theme] || CLASSIC_ROLL;
 }
 
-function getImageURL() {
+function getCurrentThemeIndex() {
   const theme = getCurrentThemeName();
+  if (!(theme in themeIndexes)) themeIndexes[theme] = 0;
+  return themeIndexes[theme];
+}
+
+function getImageURL() {
   const roll = getThemeRoll();
 
   if (!roll.files.length) return null;
 
-  if (!(theme in themeIndexes)) themeIndexes[theme] = 0;
+  const index = getCurrentThemeIndex();
+  const file = roll.files[index];
 
-  const file = roll.files[themeIndexes[theme]];
   return `https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/${roll.folder}/${file}`;
 }
 
@@ -95,7 +102,7 @@ function advanceIndex() {
   const theme = getCurrentThemeName();
   const roll = getThemeRoll();
 
-  themeIndexes[theme] = (themeIndexes[theme] + 1) % roll.files.length;
+  themeIndexes[theme] = (getCurrentThemeIndex() + 1) % roll.files.length;
 }
 
 function createFloatingImage(src) {
@@ -131,10 +138,21 @@ if (photoButton) {
   photoButton.addEventListener("click", (e) => {
     e.preventDefault();
 
+    const theme = getCurrentThemeName();
+    const roll = getThemeRoll();
+    const index = getCurrentThemeIndex();
+    const file = roll.files[index];
     const url = getImageURL();
+
     if (!url) return;
 
     createFloatingImage(url);
+
+    track("photo_click", {
+      theme,
+      file
+    });
+
     advanceIndex();
   });
 }
