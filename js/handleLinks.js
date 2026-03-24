@@ -48,6 +48,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", () => {
+      track("outbound_link_click", {
+        url: link.href
+      });
+    });
+  });
+
   document.addEventListener("urlLinksSettingChanged", syncDisabledVisualState);
   syncDisabledVisualState();
 });
