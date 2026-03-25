@@ -731,14 +731,14 @@ body.theme-retro .click-wheel {
 
 @media (max-width: 700px) {
   .games-shelf-overlay {
-    padding: 8px;
+    padding: 10px;
     align-items: center;
     justify-content: center;
   }
 
   .games-shelf-modal {
-    width: min(78vw, 270px);
-    max-width: 270px;
+    width: min(84vw, 290px);
+    max-width: 290px;
     margin: 0 auto;
     gap: 8px;
   }
@@ -749,37 +749,37 @@ body.theme-retro .click-wheel {
   }
 
   .games-shelf-header h2 {
-    font-size: 0.86rem;
+    font-size: 0.9rem;
   }
 
   .games-shelf-close {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px;
-    min-height: 36px;
-    font-size: 22px;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 24px;
   }
 
   .games-shelf-frame {
     width: 100%;
-    padding: 8px 4px 10px;
+    padding: 10px 8px 12px;
     border-radius: 14px;
     overflow: hidden;
   }
 
   .games-shelf-frame::before {
-    left: 4px;
-    right: 4px;
-    top: 4px;
-    bottom: 8px;
+    left: 6px;
+    right: 6px;
+    top: 6px;
+    bottom: 10px;
     border-radius: 10px;
   }
 
   .games-shelf-frame::after {
-    left: 3px;
-    right: 3px;
-    bottom: 3px;
-    height: 10px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    height: 12px;
     border-radius: 0 0 10px 10px;
   }
 
@@ -788,7 +788,7 @@ body.theme-retro .click-wheel {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 4px;
+    gap: 6px;
     min-height: 0;
     max-height: 68vh;
     overflow-y: auto;
@@ -802,86 +802,62 @@ body.theme-retro .click-wheel {
     display: none;
   }
 
-  /* outer slot for each sideways case */
-  .game-case {
-    position: relative;
-    width: 74px;
-    min-width: 74px;
-    max-width: 74px;
-    height: 132px;
-    min-height: 132px;
-    flex: none;
-    display: block;
-    overflow: visible;
-    border: none;
-    background: transparent;
-    box-shadow: none;
-    transform: none !important;
-    scroll-snap-align: start;
-    isolation: isolate;
-  }
-
-  .game-case:hover,
-  .game-case:focus-visible,
+  /* real mobile card = horizontal */
+  .game-case,
+  .game-case.game-case-featured,
   .game-case.is-active,
-  .game-case.game-case-featured {
-    width: 74px;
-    min-width: 74px;
-    max-width: 74px;
-    height: 132px;
-    min-height: 132px;
-    transform: none !important;
-    box-shadow: none;
-    outline: none;
-  }
-
-  /* rotated visible case body */
-  .game-case::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 132px;
-    height: 74px;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    transform-origin: center;
+  .game-case:hover,
+  .game-case:focus-visible {
+    position: relative;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: stretch;
+    width: 100%;
+    max-width: 250px;
+    min-width: 0;
+    height: 86px;
+    min-height: 86px;
+    flex: none;
     border-radius: 6px;
-    background: #111;
+    overflow: hidden;
+    isolation: isolate;
+    text-decoration: none;
     border: 1px solid rgba(255,255,255,0.18);
+    background: #111;
     box-shadow:
       inset 1px 0 0 rgba(255,255,255,0.35),
       inset -4px 0 8px rgba(0,0,0,0.18),
       0 4px 10px rgba(0,0,0,0.22);
-    z-index: 0;
+    transform: none !important;
+    scroll-snap-align: start;
   }
 
-  /* rotate the ART itself */
+  .game-case:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.9);
+    outline-offset: 2px;
+  }
+
+  /* image area now fills the card correctly */
   .game-case-bg {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 132px;
-    height: 74px;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    transform-origin: center;
-    border-radius: 6px;
+    inset: 0;
+    z-index: 0;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    z-index: 1;
+    transform: none !important;
   }
 
   .game-case-bg::before {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: 6px;
     background:
       linear-gradient(
         90deg,
-        rgba(255,255,255,0.20) 0 8%,
-        rgba(255,255,255,0.06) 8% 16%,
-        transparent 16% 100%
+        rgba(255,255,255,0.18) 0 7%,
+        rgba(255,255,255,0.05) 7% 14%,
+        transparent 14% 100%
       );
     pointer-events: none;
   }
@@ -890,45 +866,47 @@ body.theme-retro .click-wheel {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: 6px;
     background:
-      linear-gradient(180deg, rgba(255,255,255,0.04), transparent 18%, rgba(0,0,0,0.14) 100%);
+      linear-gradient(
+        90deg,
+        rgba(0,0,0,0.35) 0 38px,
+        rgba(0,0,0,0.10) 38px 60px,
+        rgba(0,0,0,0.00) 60px 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255,255,255,0.04),
+        transparent 22%,
+        rgba(0,0,0,0.16) 100%
+      );
     pointer-events: none;
   }
 
   .game-case-cover {
-    position: absolute;
-    inset: 0;
+    position: relative;
     z-index: 2;
+    grid-column: 1 / -1;
+    display: contents;
     background: transparent;
   }
 
-  /* rotate the title layer too */
+  /* left spine/title strip */
   .game-case-spine {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 132px;
-    height: 74px;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    transform-origin: center;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0 6px 8px;
-    writing-mode: horizontal-tb;
-    text-orientation: mixed;
-    overflow: hidden;
+    position: relative;
     z-index: 3;
+    grid-column: 1;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 6px 2px;
+    overflow: hidden;
     opacity: 1;
-    transition: opacity 0.16s ease;
-  }
-
-  .game-case.game-case-featured .game-case-spine,
-  .game-case.is-active .game-case-spine,
-  .game-case:hover .game-case-spine,
-  .game-case:focus-visible .game-case-spine {
-    opacity: 0;
+    background: rgba(0,0,0,0.32);
+    backdrop-filter: blur(2px);
+    transform: none !important;
   }
 
   .game-case-title {
@@ -938,7 +916,7 @@ body.theme-retro .click-wheel {
     font-weight: 600;
     color: #ffffff;
     text-transform: lowercase;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
     text-align: center;
     text-shadow:
       0 1px 2px rgba(0,0,0,0.95),
@@ -946,49 +924,41 @@ body.theme-retro .click-wheel {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 116px;
+    max-height: 72px;
   }
 
   .game-case-details {
-    display: none;
+    display: block;
     position: absolute;
     inset: 0;
     z-index: 5;
     pointer-events: none;
-  }
-
-  .game-case.game-case-featured .game-case-details,
-  .game-case.is-active .game-case-details,
-  .game-case:hover .game-case-details,
-  .game-case:focus-visible .game-case-details {
-    display: block;
+    transform: none !important;
   }
 
   .game-case-details-desc {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 132px;
-    height: 18px;
-    transform: translate(-50%, 40px) rotate(-90deg);
-    transform-origin: center;
-    padding: 0 6px;
+    left: 38px;
+    right: 0;
+    bottom: 0;
+    height: 22px;
+    padding: 0 8px;
     display: flex;
     align-items: center;
-    justify-content: center;
     box-sizing: border-box;
     font-family: "Archivo", sans-serif;
-    font-size: 0.54rem;
+    font-size: 0.58rem;
     font-weight: 800;
     line-height: 1;
     color: #000;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.55);
     backdrop-filter: blur(4px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: lowercase;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0;
+    transform: none !important;
   }
 }
 
