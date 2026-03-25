@@ -737,8 +737,8 @@ body.theme-retro .click-wheel {
   }
 
   .games-shelf-modal {
-    width: min(84vw, 290px);
-    max-width: 290px;
+    width: min(92vw, 340px);
+    max-width: 340px;
     margin: 0 auto;
     gap: 8px;
   }
@@ -783,41 +783,33 @@ body.theme-retro .click-wheel {
     border-radius: 0 0 10px 10px;
   }
 
+  /* 3x3 mobile grid */
   .games-shelf-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
     min-height: 0;
-    max-height: 68vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+    max-height: none;
+    overflow: visible;
     padding: 2px 0;
-    scroll-snap-type: y proximity;
-    scrollbar-width: none;
+    align-items: stretch;
+    justify-items: stretch;
   }
 
-  .games-shelf-row::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* real mobile card = horizontal */
   .game-case,
   .game-case.game-case-featured,
   .game-case.is-active,
   .game-case:hover,
   .game-case:focus-visible {
     position: relative;
-    display: grid;
-    grid-template-columns: 38px minmax(0, 1fr);
-    align-items: stretch;
+    display: block;
     width: 100%;
-    max-width: 250px;
     min-width: 0;
-    height: 86px;
-    min-height: 86px;
-    flex: none;
+    max-width: none;
+    height: 112px;
+    min-height: 112px;
     border-radius: 6px;
     overflow: hidden;
     isolation: isolate;
@@ -829,7 +821,7 @@ body.theme-retro .click-wheel {
       inset -4px 0 8px rgba(0,0,0,0.18),
       0 4px 10px rgba(0,0,0,0.22);
     transform: none !important;
-    scroll-snap-align: start;
+    grid-template-columns: none !important;
   }
 
   .game-case:focus-visible {
@@ -837,7 +829,7 @@ body.theme-retro .click-wheel {
     outline-offset: 2px;
   }
 
-  /* image area now fills the card correctly */
+  /* keep image format/orientation normal */
   .game-case-bg {
     position: absolute;
     inset: 0;
@@ -868,67 +860,36 @@ body.theme-retro .click-wheel {
     inset: 0;
     background:
       linear-gradient(
-        90deg,
-        rgba(0,0,0,0.35) 0 38px,
-        rgba(0,0,0,0.10) 38px 60px,
-        rgba(0,0,0,0.00) 60px 100%
-      ),
-      linear-gradient(
         180deg,
         rgba(255,255,255,0.04),
         transparent 22%,
-        rgba(0,0,0,0.16) 100%
+        rgba(0,0,0,0.18) 100%
       );
     pointer-events: none;
   }
 
   .game-case-cover {
     position: relative;
+    inset: auto;
     z-index: 2;
-    grid-column: 1 / -1;
-    display: contents;
+    width: 100%;
+    height: 100%;
     background: transparent;
+    display: block;
   }
 
-  /* left spine/title strip */
+  /* hide title strip completely */
   .game-case-spine {
-    position: relative;
-    z-index: 3;
-    grid-column: 1;
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 6px 2px;
-    overflow: hidden;
-    opacity: 1;
-    background: rgba(0,0,0,0.32);
-    backdrop-filter: blur(2px);
-    transform: none !important;
+    display: none !important;
   }
 
   .game-case-title {
-    font-family: "Archivo", sans-serif;
-    font-size: 0.56rem;
-    line-height: 1;
-    font-weight: 600;
-    color: #ffffff;
-    text-transform: lowercase;
-    letter-spacing: 0.02em;
-    text-align: center;
-    text-shadow:
-      0 1px 2px rgba(0,0,0,0.95),
-      0 0 10px rgba(0,0,0,0.55);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-height: 72px;
+    display: none !important;
   }
 
+  /* always show desc, no expansion */
   .game-case-details {
-    display: block;
+    display: block !important;
     position: absolute;
     inset: 0;
     z-index: 5;
@@ -938,20 +899,21 @@ body.theme-retro .click-wheel {
 
   .game-case-details-desc {
     position: absolute;
-    left: 38px;
+    left: 0;
     right: 0;
     bottom: 0;
     height: 22px;
-    padding: 0 8px;
+    padding: 0 6px;
     display: flex;
     align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     font-family: "Archivo", sans-serif;
-    font-size: 0.58rem;
+    font-size: 0.54rem;
     font-weight: 800;
     line-height: 1;
     color: #000;
-    background: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.58);
     backdrop-filter: blur(4px);
     white-space: nowrap;
     overflow: hidden;
