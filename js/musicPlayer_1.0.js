@@ -256,19 +256,25 @@ const videoPin = document.getElementById("videoPin");
 const propagandaLink = document.querySelector(".propaganda-link");
 
 const videoLinks = [
-  { title: "The Settlers", url: "https://geo.dailymotion.com/player.html?video=x9irfr8" },
+  
+  { title: "Costco Fahrenheit", url: "https://www.youtube.com/embed/jNiAy8T-MdE?autoplay=1&vq=hd1080" },
+  { title: "OG of Film Photo", url: "https://www.youtube.com/embed/BDi1hjH8oEs?autoplay=1&vq=hd1080" },
   { title: "Hairpin Circus", url: "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080" },
   { title: "Crack", url: "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080" },
   { title: "Overwhelming Harmony", url: "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080" },
   { title: "JRJRJRJR", url: "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080" },
   { title: "MNR", url: "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080" },
+  { title: "BARACK?!?!?", url: "https://www.youtube.com/embed/km7llfKheUc?autoplay=1&vq=hd1080" },
+  { title: "FETTERMAN!?", url: "https://www.youtube.com/embed/VKW3UxUJ2i8?autoplay=1&vq=hd1080" },
   { title: "Drive", url: "https://www.youtube.com/embed/TCm9788Tb5g?autoplay=1&vq=hd1080" },
   { title: "Fight", url: "https://www.youtube.com/embed/-DoaUyMGPWI?autoplay=1&vq=hd1080" },
+  { title: "Moon Bears", url: "https://www.youtube.com/embed/S3o-3pL79O4?autoplay=1&vq=hd1080" },
   { title: "La Souf", url: "https://www.youtube.com/embed/2NWdFWp0XKE?autoplay=1&vq=hd1080" },
   { title: "SocWen", url: "https://www.youtube.com/embed/Sq0EYo_ZQVU?autoplay=1&vq=hd1080" },
-  { title: "Fata", url: "https://www.youtube.com/embed/EGAzxO851c4?autoplay=1&vq=hd1080" },
   { title: "Tokyo", url: "https://www.youtube.com/embed/Kv-lO8aPOK8?autoplay=1&vq=hd1080" },
-  { title: "Bob", url: "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080" }
+  { title: "Drake n Drive", url: "https://www.youtube.com/embed/zGXDgx5fex8?autoplay=1&vq=hd1080" },
+  { title: "Bob", url: "https://www.youtube.com/embed/lvh6NLqKRfs?autoplay=1&vq=hd1080" },
+  { title: "Turn on to Love (Spcl)", url: "https://www.youtube.com/embed/S0tTbYy-A6E&t?autoplay=1&vq=hd1080" }
 ];
 
 let videoIndex = 0;
