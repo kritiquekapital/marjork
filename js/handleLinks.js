@@ -8,12 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return localStorage.getItem(STORAGE_KEY) === "true";
   }
 
-  function alreadyOpened(url) {
-    return sessionStorage.getItem(`opened:${url}`) === "true";
-  }
-
-  function markOpened(url) {
-    sessionStorage.setItem(`opened:${url}`, "true");
+  function syncDisabledVisualState() {
+    document.body.classList.toggle("url-links-disabled", urlLinksDisabled());
   }
 
   function isInAppBrowser() {
@@ -21,38 +17,21 @@ document.addEventListener("DOMContentLoaded", function () {
     return /Instagram|FBAN|FBAV/i.test(ua);
   }
 
-  function openUrl(url) {
-    if (!url) return;
+  const buttons = document.querySelectorAll(selector);
 
-    if (isInAppBrowser()) {
-      // less glitchy in IG/FB browser than window.open
-      window.location.href = url;
-      return;
-    }
-
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-
-  function syncDisabledVisualState() {
-    document.body.classList.toggle("url-links-disabled", urlLinksDisabled());
-  }
-
-  document.querySelectorAll(selector).forEach((button) => {
+  buttons.forEach((button) => {
     button.addEventListener("click", function (event) {
       const url = button.getAttribute("href");
       if (!url) return;
 
+      // block if disabled in settings
       if (urlLinksDisabled()) {
         event.preventDefault();
         event.stopPropagation();
         return;
       }
 
-      if (alreadyOpened(url)) {
-        event.preventDefault();
-        return;
-      }
-
+      // tracking
       track("outbound_link_click", {
         href: url,
         label:
@@ -62,9 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
           "unknown"
       });
 
-      markOpened(url);
-      event.preventDefault();
-      openUrl(url);
+      // fix IG / FB in-app browser behavior
+      if (isInAppBrowser()) {
+        event.preventDefault();
+        window.location.href = url;
+        return;
+      }
+
+      // otherwise: DO NOTHING
+      // let <a href target="_blank"> behave naturally
     });
   });
 
