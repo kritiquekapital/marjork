@@ -1,42 +1,48 @@
 import { track } from './analytics.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "openedOutboundLinks";
-  const selector = "a[href]";
+document.addEventListener("DOMContentLoaded", function () {
+  const STORAGE_KEY = "disableUrlLinks";
+  const selector = ".substack-button, .twitter, .duolingo, .dropkickd-button, .letterboxd, .spotify";
 
-  function getOpenedMap() {
-    try {
-      return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
-    } catch {
-      return {};
-    }
-  }
-
-  function setOpened(url) {
-    const opened = getOpenedMap();
-    opened[url] = true;
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(opened));
+  function urlLinksDisabled() {
+    return localStorage.getItem(STORAGE_KEY) === "true";
   }
 
   function alreadyOpened(url) {
-    return !!getOpenedMap()[url];
+    return sessionStorage.getItem(`opened:${url}`) === "true";
   }
 
-  function isExternal(url) {
-    try {
-      const parsed = new URL(url, window.location.href);
-      return parsed.origin !== window.location.origin;
-    } catch {
-      return false;
+  function markOpened(url) {
+    sessionStorage.setItem(`opened:${url}`, "true");
+  }
+
+  function isInAppBrowser() {
+    const ua = navigator.userAgent || "";
+    return /Instagram|FBAN|FBAV/i.test(ua);
+  }
+
+  function openUrl(url) {
+    if (!url) return;
+
+    if (isInAppBrowser()) {
+      // less glitchy in IG/FB browser than window.open
+      window.location.href = url;
+      return;
     }
+
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  document.querySelectorAll(selector).forEach((anchor) => {
-    anchor.addEventListener("click", (event) => {
-      const url = anchor.href;
-      if (!url || !isExternal(url)) return;
+  function syncDisabledVisualState() {
+    document.body.classList.toggle("url-links-disabled", urlLinksDisabled());
+  }
 
-      if (localStorage.getItem("disableUrlLinks") === "true") {
+  document.querySelectorAll(selector).forEach((button) => {
+    button.addEventListener("click", function (event) {
+      const url = button.getAttribute("href");
+      if (!url) return;
+
+      if (urlLinksDisabled()) {
         event.preventDefault();
         event.stopPropagation();
         return;
@@ -47,19 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      event.preventDefault();
-
       track("outbound_link_click", {
-        url,
+        href: url,
         label:
-          anchor.className ||
-          anchor.getAttribute("aria-label") ||
-          anchor.textContent?.trim() ||
+          button.className ||
+          button.getAttribute("aria-label") ||
+          button.textContent?.trim() ||
           "unknown"
       });
 
-      setOpened(url);
-      window.open(url, "_blank", "noopener,noreferrer");
+      markOpened(url);
+      event.preventDefault();
+      openUrl(url);
     });
   });
+
+  document.addEventListener("urlLinksSettingChanged", syncDisabledVisualState);
+  syncDisabledVisualState();
 });
