@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedThemeIndex = parseInt(localStorage.getItem("currentThemeIndex"), 10) || 0;
   const savedThemeName = allThemes[savedThemeIndex]?.name || allThemes[0].name;
 
-      track("site_loaded", {
+  track("site_loaded", {
     theme: savedThemeName,
-    device:  ? "mobile" : isTablet ? "tablet" : "desktop"
+    device: isPhone ? "mobile" : isTablet ? "tablet" : "desktop"
   });
 
   function getDisabledThemes() {
