@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       track("site_loaded", {
     theme: savedThemeName,
-    device: isPhone ? "mobile" : isTablet ? "tablet" : "desktop"
+    device:  ? "mobile" : isTablet ? "tablet" : "desktop"
   });
 
   function getDisabledThemes() {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getBaseThemes() {
     if (isPhone) {
-      return allThemes.filter(t => ["retro", "art"].includes(t.name) || t.name === savedThemeName);
+      return allThemes.filter(t => ["retro", "art", "modern", "classic", "space", "nature"].includes(t.name) || t.name === savedThemeName);
     }
 
     if (isTablet) {
