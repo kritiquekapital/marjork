@@ -295,17 +295,17 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-    function isPhone() {
-    return window.innerWidth <= 480;
+  function isPhone() {
+    return window.innerWidth <= 768;
   }
 
   function isTablet() {
-    return window.innerWidth > 480 && window.innerWidth <= 1024;
+    return window.innerWidth > 768 && window.innerWidth <= 1024;
   }
 
   function getDeviceBlockedThemes() {
-    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space"];
-    const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space"];
+    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "nature"];
+    const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "nature"];
 
     if (isPhone()) {
       return THEME_META
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return [];
   }
 
-    function bindThemeButton(btn) {
+  function bindThemeButton(btn) {
     if (!btn || btn.dataset.settingsBound === "true") return;
 
     btn.dataset.settingsBound = "true";
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
   }
-  
+
   function refreshLinkToggle() {
     const disabled = getDisableUrlLinks();
 
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("url-links-disabled", disabled);
   }
 
-    function refreshThemeButtons() {
+  function refreshThemeButtons() {
     const disabledThemes = getDisabledThemes();
     const deviceBlockedThemes = getDeviceBlockedThemes();
 
@@ -398,7 +398,7 @@ document.addEventListener("DOMContentLoaded", () => {
     syncVolumeOrbTheme();
     refreshLinkToggle();
   }
-  
+
   linkToggle.addEventListener("click", () => {
     setDisableUrlLinks(!getDisableUrlLinks());
     refreshLinkToggle();
