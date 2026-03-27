@@ -93,13 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  // =========================
-  // SPACE BACKGROUND VIDEO
-  // =========================
-  // replace these with your real files
   const SPACE_VIDEO_SOURCES = {
-    desktop: "videos/space-horizontal.mp4",
-    mobile: "videos/space-vertical.mp4"
+    desktop: "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4",
+    mobile: "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4"
   };
 
   const spaceBackground = document.createElement("video");
