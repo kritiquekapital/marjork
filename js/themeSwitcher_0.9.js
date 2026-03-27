@@ -93,13 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const SPACE_VIDEO_SOURCES = {
-    desktop: "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4",
-    mobile: "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4"
-  };
+  const SPACE_VIDEO_SRC =
+    "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4";
 
   const spaceBackground = document.createElement("video");
   spaceBackground.classList.add("space-background-video");
+  spaceBackground.src = SPACE_VIDEO_SRC;
   spaceBackground.autoplay = true;
   spaceBackground.loop = true;
   spaceBackground.muted = true;
@@ -115,69 +114,37 @@ document.addEventListener('DOMContentLoaded', () => {
   spaceBackground.style.pointerEvents = "none";
   spaceBackground.style.zIndex = "-1";
   spaceBackground.style.opacity = "0.35";
-  spaceBackground.style.transition = "opacity 0.25s ease-in-out";
+  spaceBackground.style.transition = "opacity 0.25s ease-in-out, transform 0.25s ease-in-out";
 
-  function getSpaceVideoSource() {
-    const isPhoneNow = window.innerWidth <= 480;
-    const isTabletNow = window.innerWidth > 480 && window.innerWidth <= 1024;
-    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+  function applySpaceVideoOrientation() {
+    const phoneNow = window.innerWidth <= 480;
+    const portraitNow = window.matchMedia("(orientation: portrait)").matches;
 
-    if (isPhoneNow) {
-      return SPACE_VIDEO_SOURCES.mobile;
+    if (phoneNow && portraitNow) {
+      spaceBackground.style.top = "50%";
+      spaceBackground.style.left = "50%";
+      spaceBackground.style.width = "100vh";
+      spaceBackground.style.height = "100vw";
+      spaceBackground.style.transform = "translate(-50%, -50%) rotate(90deg)";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
+    } else {
+      spaceBackground.style.top = "0";
+      spaceBackground.style.left = "0";
+      spaceBackground.style.width = "100%";
+      spaceBackground.style.height = "100%";
+      spaceBackground.style.transform = "none";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
     }
-
-    if (isTabletNow) {
-      return isPortrait ? SPACE_VIDEO_SOURCES.mobile : SPACE_VIDEO_SOURCES.desktop;
-    }
-
-    return SPACE_VIDEO_SOURCES.desktop;
-  }
-
-  function updateSpaceBackgroundSource(forceReload = false) {
-    const nextSrc = getSpaceVideoSource();
-    const currentSrcAttr = spaceBackground.getAttribute("src") || "";
-
-    if (!forceReload && currentSrcAttr === nextSrc) return;
-
-    const wasPlaying = !spaceBackground.paused && !spaceBackground.ended;
-    const previousTime = Number.isFinite(spaceBackground.currentTime) ? spaceBackground.currentTime : 0;
-
-    spaceBackground.style.opacity = "0";
-
-    const swapSource = () => {
-      spaceBackground.setAttribute("src", nextSrc);
-      spaceBackground.load();
-
-      spaceBackground.addEventListener(
-        "loadedmetadata",
-        () => {
-          try {
-            if (previousTime > 0 && spaceBackground.duration && previousTime < spaceBackground.duration) {
-              spaceBackground.currentTime = previousTime;
-            }
-          } catch {}
-
-          if (document.body.classList.contains("theme-space") || wasPlaying) {
-            spaceBackground.play().catch(() => {});
-          }
-
-          requestAnimationFrame(() => {
-            spaceBackground.style.opacity = "0.35";
-          });
-        },
-        { once: true }
-      );
-    };
-
-    setTimeout(swapSource, 180);
   }
 
   let spaceResizeTimer = null;
   function handleSpaceResize() {
     clearTimeout(spaceResizeTimer);
     spaceResizeTimer = setTimeout(() => {
-      updateSpaceBackgroundSource(false);
-    }, 180);
+      applySpaceVideoOrientation();
+    }, 120);
   }
 
   const LOFI_MUTED_SRC =
@@ -254,9 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
 
-  updateSpaceBackgroundSource(true);
+  applySpaceVideoOrientation();
   window.addEventListener("resize", handleSpaceResize);
-  window.addEventListener("orientationchange", () => updateSpaceBackgroundSource(false));
+  window.addEventListener("orientationchange", applySpaceVideoOrientation);
 
   const themeButton = document.getElementById("themeButton");
 
@@ -407,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
     if (currentTheme.name === "space") {
-      updateSpaceBackgroundSource(false);
+      applySpaceVideoOrientation();
       spaceBackground.style.display = "block";
       spaceBackground.play().catch(() => {});
     } else {
@@ -478,11 +445,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
+  const mediaControlBar = document.querySelector(".media-controls");
+  const arrowButton = document.querySelector(".logistics-shipper");
+
+  if (!gridContainer) console.warn("grid-container not found");
+  if (!mediaControlBar) console.warn("media-controls not found");
+  if (!arrowButton) console.warn("logistics-shipper button not found");
 
   const handleUIState = (shouldHide) => {
-    if (!gridContainer) return;
-
-    const logisticsMediaControlBar = document.querySelector(".media-controls");
+    if (!gridContainer || !mediaControlBar) return;
 
     if (
       document.body.classList.contains("theme-space") ||
@@ -492,19 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
       gridContainer.style.transition = "opacity 0.5s ease-in-out";
 
-      if (logisticsMediaControlBar) {
-        logisticsMediaControlBar.style.opacity = shouldHide ? "0" : "1";
-        logisticsMediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
-        logisticsMediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
-      }
-    } else {
-      gridContainer.style.opacity = "1";
-      gridContainer.style.pointerEvents = "auto";
-
-      if (logisticsMediaControlBar) {
-        logisticsMediaControlBar.style.opacity = "1";
-        logisticsMediaControlBar.style.transform = "translateY(0)";
-      }
+      mediaControlBar.style.opacity = shouldHide ? "0" : "1";
+      mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
+      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
     }
   };
 
