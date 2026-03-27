@@ -93,11 +93,96 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const spaceBackground = createBackground(
-    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&playlist=H999s0P1Er0&vq=hd1080",
-    "space-background-stream"
-  );
+  // =========================
+  // SPACE BACKGROUND VIDEO
+  // =========================
+  // replace these with your real files
+  const SPACE_VIDEO_SOURCES = {
+    desktop: "videos/space-horizontal.mp4",
+    mobile: "videos/space-vertical.mp4"
+  };
+
+  const spaceBackground = document.createElement("video");
+  spaceBackground.classList.add("space-background-video");
+  spaceBackground.autoplay = true;
+  spaceBackground.loop = true;
+  spaceBackground.muted = true;
+  spaceBackground.playsInline = true;
+  spaceBackground.preload = "auto";
   spaceBackground.style.display = "none";
+  spaceBackground.style.position = "fixed";
+  spaceBackground.style.top = "0";
+  spaceBackground.style.left = "0";
+  spaceBackground.style.width = "100%";
+  spaceBackground.style.height = "100%";
+  spaceBackground.style.objectFit = "cover";
+  spaceBackground.style.pointerEvents = "none";
+  spaceBackground.style.zIndex = "-1";
+  spaceBackground.style.opacity = "0.35";
+  spaceBackground.style.transition = "opacity 0.25s ease-in-out";
+
+  function getSpaceVideoSource() {
+    const isPhoneNow = window.innerWidth <= 480;
+    const isTabletNow = window.innerWidth > 480 && window.innerWidth <= 1024;
+    const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+
+    if (isPhoneNow) {
+      return SPACE_VIDEO_SOURCES.mobile;
+    }
+
+    if (isTabletNow) {
+      return isPortrait ? SPACE_VIDEO_SOURCES.mobile : SPACE_VIDEO_SOURCES.desktop;
+    }
+
+    return SPACE_VIDEO_SOURCES.desktop;
+  }
+
+  function updateSpaceBackgroundSource(forceReload = false) {
+    const nextSrc = getSpaceVideoSource();
+    const currentSrcAttr = spaceBackground.getAttribute("src") || "";
+
+    if (!forceReload && currentSrcAttr === nextSrc) return;
+
+    const wasPlaying = !spaceBackground.paused && !spaceBackground.ended;
+    const previousTime = Number.isFinite(spaceBackground.currentTime) ? spaceBackground.currentTime : 0;
+
+    spaceBackground.style.opacity = "0";
+
+    const swapSource = () => {
+      spaceBackground.setAttribute("src", nextSrc);
+      spaceBackground.load();
+
+      spaceBackground.addEventListener(
+        "loadedmetadata",
+        () => {
+          try {
+            if (previousTime > 0 && spaceBackground.duration && previousTime < spaceBackground.duration) {
+              spaceBackground.currentTime = previousTime;
+            }
+          } catch {}
+
+          if (document.body.classList.contains("theme-space") || wasPlaying) {
+            spaceBackground.play().catch(() => {});
+          }
+
+          requestAnimationFrame(() => {
+            spaceBackground.style.opacity = "0.35";
+          });
+        },
+        { once: true }
+      );
+    };
+
+    setTimeout(swapSource, 180);
+  }
+
+  let spaceResizeTimer = null;
+  function handleSpaceResize() {
+    clearTimeout(spaceResizeTimer);
+    spaceResizeTimer = setTimeout(() => {
+      updateSpaceBackgroundSource(false);
+    }, 180);
+  }
 
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
@@ -172,6 +257,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
+
+  updateSpaceBackgroundSource(true);
+  window.addEventListener("resize", handleSpaceResize);
+  window.addEventListener("orientationchange", () => updateSpaceBackgroundSource(false));
 
   const themeButton = document.getElementById("themeButton");
 
@@ -321,7 +410,14 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
-    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+    if (currentTheme.name === "space") {
+      updateSpaceBackgroundSource(false);
+      spaceBackground.style.display = "block";
+      spaceBackground.play().catch(() => {});
+    } else {
+      spaceBackground.pause();
+      spaceBackground.style.display = "none";
+    }
 
     if (currentTheme.name === "lofi") {
       setLofiMode(true);
@@ -386,15 +482,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let inactivityTimer;
   const gridContainer = document.querySelector(".grid-container");
-  const mediaControlBar = document.querySelector(".media-controls");
-  const arrowButton = document.querySelector(".logistics-shipper");
-
-  if (!gridContainer) console.warn("grid-container not found");
-  if (!mediaControlBar) console.warn("media-controls not found");
-  if (!arrowButton) console.warn("logistics-shipper button not found");
 
   const handleUIState = (shouldHide) => {
-    if (!gridContainer || !mediaControlBar) return;
+    if (!gridContainer) return;
+
+    const logisticsMediaControlBar = document.querySelector(".media-controls");
 
     if (
       document.body.classList.contains("theme-space") ||
@@ -404,9 +496,19 @@ document.addEventListener('DOMContentLoaded', () => {
       gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
       gridContainer.style.transition = "opacity 0.5s ease-in-out";
 
-      mediaControlBar.style.opacity = shouldHide ? "0" : "1";
-      mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
-      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+      if (logisticsMediaControlBar) {
+        logisticsMediaControlBar.style.opacity = shouldHide ? "0" : "1";
+        logisticsMediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
+        logisticsMediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+      }
+    } else {
+      gridContainer.style.opacity = "1";
+      gridContainer.style.pointerEvents = "auto";
+
+      if (logisticsMediaControlBar) {
+        logisticsMediaControlBar.style.opacity = "1";
+        logisticsMediaControlBar.style.transform = "translateY(0)";
+      }
     }
   };
 
