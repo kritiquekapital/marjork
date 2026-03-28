@@ -1,6 +1,9 @@
 /* ==================== */
 /* Rain Theme */
 /* ==================== */
+.theme-rain .substack-button img {
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png');
+}
 
 .theme-rain {
   position: relative;
