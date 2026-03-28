@@ -113,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
   spaceBackground.style.objectFit = "cover";
   spaceBackground.style.pointerEvents = "none";
   spaceBackground.style.zIndex = "-1";
-  spaceBackground.style.opacity = "0.35";
   spaceBackground.style.transition = "opacity 0.25s ease-in-out, transform 0.25s ease-in-out";
 
   function applySpaceVideoOrientation() {
