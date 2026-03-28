@@ -150,9 +150,10 @@
   .secret-button       { grid-area: 3 / 4; }
 }
 
-.site-footer {
-  width: 100%;
-  padding: 10px 12px 16px;
-  text-align: center;
-  font-size: 11px;
+@media (max-width: 768px) {
+  .site-footer {
+    right: 10px;
+    bottom: 10px;
+    font-size: 11px;
+  }
 }
