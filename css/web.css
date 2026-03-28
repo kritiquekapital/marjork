@@ -92,3 +92,11 @@ body {
     -ms-user-select: text;
     user-select: text;
 }
+
+.site-footer {
+  margin-top: auto;
+  padding: 10px;
+  text-align: center;
+  opacity: 0.6;
+  font-size: 12px;
+}
