@@ -55,11 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
               softBlocked.textContent?.trim() ||
               "unknown"
           });
-
-          if (isInAppBrowser()) {
-            event.preventDefault();
-            window.location.href = url;
-          }
         }
 
         return;
