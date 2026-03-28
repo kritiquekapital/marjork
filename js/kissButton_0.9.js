@@ -13,6 +13,7 @@ const messages = [
 ];
 
 const holeMessages = [
+  "holed",
   "Nice!",
   "Молодец!",
   "u made it!",
