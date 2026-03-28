@@ -88,11 +88,49 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const spaceBackground = createBackground(
-    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&playlist=H999s0P1Er0&vq=hd1080",
-    "space-background-stream"
-  );
+  const SPACE_VIDEO_SRC =
+    "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4";
+
+  const spaceBackground = document.createElement("video");
+  spaceBackground.classList.add("space-background-video");
+  spaceBackground.src = SPACE_VIDEO_SRC;
+  spaceBackground.autoplay = true;
+  spaceBackground.loop = true;
+  spaceBackground.muted = true;
+  spaceBackground.playsInline = true;
+  spaceBackground.preload = "auto";
   spaceBackground.style.display = "none";
+  spaceBackground.style.position = "fixed";
+  spaceBackground.style.top = "0";
+  spaceBackground.style.left = "0";
+  spaceBackground.style.width = "100%";
+  spaceBackground.style.height = "100%";
+  spaceBackground.style.objectFit = "cover";
+  spaceBackground.style.pointerEvents = "none";
+  spaceBackground.style.zIndex = "-1";
+
+  function applySpaceVideoOrientation() {
+    const phoneNow = window.innerWidth <= 480;
+    const portraitNow = window.matchMedia("(orientation: portrait)").matches;
+
+    if (phoneNow && portraitNow) {
+      spaceBackground.style.top = "50%";
+      spaceBackground.style.left = "50%";
+      spaceBackground.style.width = "100vh";
+      spaceBackground.style.height = "100vw";
+      spaceBackground.style.transform = "translate(-50%, -50%) rotate(90deg)";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
+    } else {
+      spaceBackground.style.top = "0";
+      spaceBackground.style.left = "0";
+      spaceBackground.style.width = "100%";
+      spaceBackground.style.height = "100%";
+      spaceBackground.style.transform = "none";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
+    }
+  }
 
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
@@ -165,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(volumeSlider);
   document.body.appendChild(speedSlider);
   document.body.prepend(spaceBackground);
+  applySpaceVideoOrientation();
+  window.addEventListener("resize", applySpaceVideoOrientation);
+  window.addEventListener("orientationchange", applySpaceVideoOrientation);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
 
@@ -289,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     document.body.classList.add(`theme-${currentTheme.name}`);
 
-        track("theme_change", {
+    track("theme_change", {
       theme: currentTheme.name
     });
 
@@ -318,7 +359,14 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
-    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+    if (currentTheme.name === "space") {
+      applySpaceVideoOrientation();
+      spaceBackground.style.display = "block";
+      spaceBackground.play().catch(() => {});
+    } else {
+      spaceBackground.pause();
+      spaceBackground.style.display = "none";
+    }
 
     if (currentTheme.name === "lofi") {
       setLofiMode(true);
