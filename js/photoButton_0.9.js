@@ -22,7 +22,7 @@ const CLASSIC_ROLL = {
   ]
 };
 
-const PLACEHOLDER_ROLL = {
+const DUDEHELLOCAMERON = {
   folder: "DUDEHELLOCAMERON",
   files: [
     "DUDEHELLOCAMERON.jpg",
@@ -68,12 +68,12 @@ const THEME_MAP = {
   classic: CLASSIC_ROLL,
   retro: DUDEHELLOCAMERON,
   art: DUDEHELLOCAMERON_ROLL,
-  modern: PLACEHOLDER_ROLL,
-  nature: PLACEHOLDER_ROLL,
-  lofi: PLACEHOLDER_ROLL,
+  modern: DUDEHELLOCAMERON,
+  nature: DUDEHELLOCAMERON,
+  lofi: DUDEHELLOCAMERON,
   space: DISTORT_ROLL,
   rain: FRENCHRAIN_ROLL,
-  logistics: PLACEHOLDER_ROLL
+  logistics: DUDEHELLOCAMERON
 };
 
 const themeIndexes = {};
