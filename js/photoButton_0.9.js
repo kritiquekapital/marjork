@@ -39,6 +39,18 @@ const PLACEHOLDER_ROLL = {
   ]
 };
 
+const FRENCHRAIN_ROLL = {
+  folder: "frenchrain",
+  files: [
+    "cordes en boyaux.png",
+    "brella.png",
+    "crowdd.png",
+    "net.png",
+    "range.png",
+    "tarp.png"
+  ]
+};
+
 const THEME_MAP = {
   classic: CLASSIC_ROLL,
   retro: PLACEHOLDER_ROLL,
@@ -47,6 +59,7 @@ const THEME_MAP = {
   nature: PLACEHOLDER_ROLL,
   lofi: PLACEHOLDER_ROLL,
   space: PLACEHOLDER_ROLL,
+  rain: FRENCHRAIN_ROLL,
   logistics: PLACEHOLDER_ROLL
 };
 
