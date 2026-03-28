@@ -300,13 +300,10 @@ body.theme-retro .secret-button {
   pointer-events: none;
 }
 
-.url-links-disabled .substack-button,
-.url-links-disabled .twitter,
-.url-links-disabled .duolingo,
-.url-links-disabled .dropkickd-button,
-.url-links-disabled .letterboxd,
-.url-links-disabled .spotify {
+.url-links-disabled .grid-container a:not(.vinyl-link) {
   opacity: 0.45 !important;
+  pointer-events: none !important;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
@@ -317,7 +314,6 @@ body.theme-retro .secret-button {
   }
 }
 
-/* Keep settings controls glassy even when theme CSS styles all buttons */
 body.theme-retro .settings-cog,
 body.theme-retro .settings-volume-orb,
 body.theme-retro .settings-dropdown > .settings-theme-option,
