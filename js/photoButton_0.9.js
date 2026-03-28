@@ -48,7 +48,7 @@ const DISTORT_ROLL = {
     "ideeeeek.jpg",
     "lightsonthewater.jpg",
     "PIKED.jpg",
-    "twicejpg"
+    "twice.jpg"
   ]
 };
 
@@ -66,7 +66,7 @@ const FRENCHRAIN_ROLL = {
 
 const THEME_MAP = {
   classic: CLASSIC_ROLL,
-  retro: DUDEHELLOCAMERON_ROLL,
+  retro: DUDEHELLOCAMERON,
   art: DUDEHELLOCAMERON_ROLL,
   modern: PLACEHOLDER_ROLL,
   nature: PLACEHOLDER_ROLL,
