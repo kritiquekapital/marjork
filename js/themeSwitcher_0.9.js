@@ -1,4 +1,3 @@
-import { Bounceable } from './bounceable.js';
 import { Draggable } from './draggable.js';
 import { initLogisticsTheme } from './logistics.js';
 import { track } from './analytics.js';
@@ -42,7 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getBaseThemes() {
     if (isPhone) {
-      return allThemes.filter(t => ["retro", "art", "modern", "classic", "space", "nature"].includes(t.name) || t.name === savedThemeName);
+      return allThemes.filter(
+        t => ["retro", "art", "modern", "classic", "space", "nature"].includes(t.name) || t.name === savedThemeName
+      );
     }
 
     if (isTablet) {
@@ -82,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
+  let inactivityTimer = null;
+  let logisticsControlsVisible = true;
 
   const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
@@ -121,19 +124,56 @@ document.addEventListener('DOMContentLoaded', () => {
     transition: "opacity 0.25s ease-in-out"
   });
 
-  document.body.prepend(spaceBackground);
+  function applySpaceVideoOrientation() {
+    const phoneNow = window.innerWidth <= 480;
+    const portraitNow = window.matchMedia("(orientation: portrait)").matches;
 
-  const observer = new MutationObserver(() => {
+    if (phoneNow && portraitNow) {
+      spaceBackground.style.top = "50%";
+      spaceBackground.style.left = "50%";
+      spaceBackground.style.width = "100vh";
+      spaceBackground.style.height = "100vw";
+      spaceBackground.style.transform = "translate(-50%, -50%) rotate(90deg)";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
+    } else {
+      spaceBackground.style.top = "0";
+      spaceBackground.style.left = "0";
+      spaceBackground.style.width = "100%";
+      spaceBackground.style.height = "100%";
+      spaceBackground.style.transform = "none";
+      spaceBackground.style.transformOrigin = "center center";
+      spaceBackground.style.objectFit = "cover";
+    }
+  }
+
+  let spaceResizeTimer = null;
+  function handleSpaceResize() {
+    clearTimeout(spaceResizeTimer);
+    spaceResizeTimer = setTimeout(() => {
+      applySpaceVideoOrientation();
+    }, 120);
+  }
+
+  document.body.prepend(spaceBackground);
+  applySpaceVideoOrientation();
+  window.addEventListener("resize", handleSpaceResize);
+  window.addEventListener("orientationchange", applySpaceVideoOrientation);
+
+  const spaceObserver = new MutationObserver(() => {
     const isSpace = document.body.classList.contains("theme-space");
 
     spaceBackground.style.opacity = isSpace ? "1" : "0";
 
-    if (isSpace && spaceBackground.paused) {
-      spaceBackground.play().catch(() => {});
+    if (isSpace) {
+      applySpaceVideoOrientation();
+      if (spaceBackground.paused) {
+        spaceBackground.play().catch(() => {});
+      }
     }
   });
 
-  observer.observe(document.body, {
+  spaceObserver.observe(document.body, {
     attributes: true,
     attributeFilter: ["class"]
   });
@@ -212,7 +252,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.appendChild(volumeSlider);
   document.body.appendChild(speedSlider);
-  document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
 
@@ -230,9 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
       themeLink.rel = 'stylesheet';
       themeLink.dataset.theme = 'true';
 
-      const responsiveLink = document.querySelector('link[href="css/responsive.css"]');
-      if (responsiveLink) {
-        document.head.insertBefore(themeLink, responsiveLink);
+      const mobileLink = document.querySelector('link[href="css/mobile.css"]');
+      if (mobileLink) {
+        document.head.insertBefore(themeLink, mobileLink);
       } else {
         document.head.appendChild(themeLink);
       }
@@ -304,10 +343,68 @@ document.addEventListener('DOMContentLoaded', () => {
       );
 
       document.dispatchEvent(new Event("themeChange"));
+      syncThemeInactivityState(false);
     }
 
     preloadThemes();
   });
+
+  function clearThemeInlineStyles() {
+    const gridContainer = document.querySelector(".grid-container");
+    const mediaControlBar = document.querySelector(".media-controls");
+
+    if (gridContainer) {
+      gridContainer.style.opacity = "";
+      gridContainer.style.pointerEvents = "";
+      gridContainer.style.transition = "";
+    }
+
+    if (mediaControlBar) {
+      mediaControlBar.style.opacity = "";
+      mediaControlBar.style.transform = "";
+      mediaControlBar.style.transition = "";
+      mediaControlBar.classList.remove("visible");
+    }
+  }
+
+  function syncThemeInactivityState(shouldHide) {
+    const isSpace = document.body.classList.contains("theme-space");
+    const isLogistics = document.body.classList.contains("theme-logistics");
+
+    const gridContainer = document.querySelector(".grid-container");
+    const mediaControlBar = document.querySelector(".media-controls");
+
+    if (!isSpace && !isLogistics) {
+      clearThemeInlineStyles();
+      return;
+    }
+
+    if (gridContainer) {
+      gridContainer.style.opacity = shouldHide ? "0" : "1";
+      gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
+      gridContainer.style.transition = "opacity 0.5s ease-in-out";
+    }
+
+    if (isLogistics && mediaControlBar) {
+      if (logisticsControlsVisible) {
+        mediaControlBar.style.opacity = shouldHide ? "0" : "1";
+        mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
+      } else {
+        mediaControlBar.style.opacity = "0";
+        mediaControlBar.style.transform = "translateY(100%)";
+      }
+
+      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+    }
+  }
+
+  function resetInactivityTimer() {
+    clearTimeout(inactivityTimer);
+    syncThemeInactivityState(false);
+    inactivityTimer = setTimeout(() => {
+      syncThemeInactivityState(true);
+    }, 7000);
+  }
 
   function applyTheme() {
     if (!themes.length) {
@@ -355,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (currentTheme.name === "nature") {
       natureVideo.style.display = "block";
-      natureAudio.play().catch(e => console.warn("Nature audio autoplay failed:", e));
+      natureAudio.play().catch((e) => console.warn("Nature audio autoplay failed:", e));
     } else {
       natureVideo.style.display = "none";
       natureAudio.pause();
@@ -364,7 +461,14 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
-    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
+    if (currentTheme.name === "space") {
+      applySpaceVideoOrientation();
+      spaceBackground.style.opacity = "1";
+      spaceBackground.play().catch(() => {});
+    } else {
+      spaceBackground.style.opacity = "0";
+      spaceBackground.pause();
+    }
 
     if (currentTheme.name === "lofi") {
       setLofiMode(true);
@@ -376,9 +480,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const logisticsPlayer = document.getElementById('logistics-player');
     if (currentTheme.name === "logistics") {
+      logisticsControlsVisible = true;
       if (logisticsPlayer) logisticsPlayer.style.display = "block";
       cleanupLogistics = initLogisticsTheme() || (() => {});
     } else {
+      logisticsControlsVisible = true;
       if (logisticsPlayer) logisticsPlayer.style.display = "none";
       cleanupLogistics = () => {};
     }
@@ -389,6 +495,8 @@ document.addEventListener('DOMContentLoaded', () => {
       "currentThemeIndex",
       allThemes.findIndex(t => t.name === currentTheme.name)
     );
+
+    resetInactivityTimer();
   }
 
   function handleArtSplatter(e) {
@@ -427,54 +535,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 600);
   }
 
-  let inactivityTimer;
-  const gridContainer = document.querySelector(".grid-container");
-  const mediaControlBar = document.querySelector(".media-controls");
-  const arrowButton = document.querySelector(".logistics-shipper");
-
-  if (!gridContainer) console.warn("grid-container not found");
-  if (!mediaControlBar) console.warn("media-controls not found");
-  if (!arrowButton) console.warn("logistics-shipper button not found");
-
-  const handleUIState = (shouldHide) => {
-    if (!gridContainer || !mediaControlBar) return;
-
-    if (
-      document.body.classList.contains("theme-space") ||
-      document.body.classList.contains("theme-logistics")
-    ) {
-      gridContainer.style.opacity = shouldHide ? "0" : "1";
-      gridContainer.style.pointerEvents = shouldHide ? "none" : "auto";
-      gridContainer.style.transition = "opacity 0.5s ease-in-out";
-
-      mediaControlBar.style.opacity = shouldHide ? "0" : "1";
-      mediaControlBar.style.transform = shouldHide ? "translateY(100%)" : "translateY(0)";
-      mediaControlBar.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
-    }
-  };
-
-  const resetInactivityTimer = () => {
-    clearTimeout(inactivityTimer);
-    handleUIState(false);
-    inactivityTimer = setTimeout(() => handleUIState(true), 7000);
-  };
-
-  ['mousemove', 'keydown', 'click', 'touchstart'].forEach(event => {
-    document.addEventListener(event, resetInactivityTimer);
+  ['mousemove', 'keydown', 'click', 'touchstart'].forEach((eventName) => {
+    document.addEventListener(eventName, resetInactivityTimer, { passive: true });
   });
 
   document.addEventListener('click', (event) => {
-    if (event.target.closest('.logistics-shipper')) {
-      const gridContainer = document.querySelector(".grid-container");
-      const mediaControlBar = document.querySelector(".media-controls");
-      const shipper = document.querySelector(".logistics-shipper");
+    const shipper = event.target.closest('.logistics-shipper');
+    if (!shipper) return;
+    if (!document.body.classList.contains("theme-logistics")) return;
 
-      if (!gridContainer || !mediaControlBar || !shipper) return;
+    const gridContainer = document.querySelector(".grid-container");
+    const mediaControlBar = document.querySelector(".media-controls");
 
-      gridContainer.classList.toggle("shipped");
-      mediaControlBar.classList.toggle("visible");
-      shipper.classList.toggle("visible");
-    }
+    if (!gridContainer || !mediaControlBar) return;
+
+    logisticsControlsVisible = !logisticsControlsVisible;
+
+    gridContainer.classList.toggle("shipped", logisticsControlsVisible);
+    mediaControlBar.classList.toggle("visible", logisticsControlsVisible);
+    shipper.classList.toggle("visible", logisticsControlsVisible);
+
+    resetInactivityTimer();
   });
 
   if (themeButton) {
@@ -495,7 +576,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  resetInactivityTimer();
   applyTheme();
   preloadThemes();
 });
