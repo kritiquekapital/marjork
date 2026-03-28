@@ -93,11 +93,54 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const spaceBackground = createBackground(
-    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&playlist=H999s0P1Er0&vq=hd1080",
-    "space-background-stream"
-  );
-  spaceBackground.style.display = "none";
+  const SPACE_VIDEO_SRC =
+    "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4";
+
+  const spaceBackground = document.createElement("video");
+  spaceBackground.className = "space-background-video";
+
+  Object.assign(spaceBackground, {
+    src: SPACE_VIDEO_SRC,
+    autoplay: true,
+    loop: true,
+    muted: true,
+    playsInline: true,
+    preload: "auto"
+  });
+
+  Object.assign(spaceBackground.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    pointerEvents: "none",
+    zIndex: "-1",
+    opacity: "0",
+    transition: "opacity 0.25s ease-in-out"
+  });
+
+  document.body.prepend(spaceBackground);
+
+  const observer = new MutationObserver(() => {
+    const isSpace = document.body.classList.contains("theme-space");
+
+    spaceBackground.style.opacity = isSpace ? "1" : "0";
+
+    if (isSpace && spaceBackground.paused) {
+      spaceBackground.play().catch(() => {});
+    }
+  });
+
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+
+  if (document.body.classList.contains("theme-space")) {
+    spaceBackground.style.opacity = "1";
+  }
 
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
