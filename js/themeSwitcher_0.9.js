@@ -93,58 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return iframe;
   };
 
-  const SPACE_VIDEO_SRC =
-    "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Space_by_Colin_Jones.mp4";
-
-  const spaceBackground = document.createElement("video");
-  spaceBackground.classList.add("space-background-video");
-  spaceBackground.src = SPACE_VIDEO_SRC;
-  spaceBackground.autoplay = true;
-  spaceBackground.loop = true;
-  spaceBackground.muted = true;
-  spaceBackground.playsInline = true;
-  spaceBackground.preload = "auto";
+  const spaceBackground = createBackground(
+    "https://www.youtube.com/embed/H999s0P1Er0?autoplay=1&mute=1&controls=0&loop=1&playlist=H999s0P1Er0&vq=hd1080",
+    "space-background-stream"
+  );
   spaceBackground.style.display = "none";
-  spaceBackground.style.position = "fixed";
-  spaceBackground.style.top = "0";
-  spaceBackground.style.left = "0";
-  spaceBackground.style.width = "100%";
-  spaceBackground.style.height = "100%";
-  spaceBackground.style.objectFit = "cover";
-  spaceBackground.style.pointerEvents = "none";
-  spaceBackground.style.zIndex = "-1";
-  spaceBackground.style.transition = "opacity 0.25s ease-in-out, transform 0.25s ease-in-out";
-
-  function applySpaceVideoOrientation() {
-    const phoneNow = window.innerWidth <= 480;
-    const portraitNow = window.matchMedia("(orientation: portrait)").matches;
-
-    if (phoneNow && portraitNow) {
-      spaceBackground.style.top = "50%";
-      spaceBackground.style.left = "50%";
-      spaceBackground.style.width = "100vh";
-      spaceBackground.style.height = "100vw";
-      spaceBackground.style.transform = "translate(-50%, -50%) rotate(90deg)";
-      spaceBackground.style.transformOrigin = "center center";
-      spaceBackground.style.objectFit = "cover";
-    } else {
-      spaceBackground.style.top = "0";
-      spaceBackground.style.left = "0";
-      spaceBackground.style.width = "100%";
-      spaceBackground.style.height = "100%";
-      spaceBackground.style.transform = "none";
-      spaceBackground.style.transformOrigin = "center center";
-      spaceBackground.style.objectFit = "cover";
-    }
-  }
-
-  let spaceResizeTimer = null;
-  function handleSpaceResize() {
-    clearTimeout(spaceResizeTimer);
-    spaceResizeTimer = setTimeout(() => {
-      applySpaceVideoOrientation();
-    }, 120);
-  }
 
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
@@ -219,10 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(spaceBackground);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
-
-  applySpaceVideoOrientation();
-  window.addEventListener("resize", handleSpaceResize);
-  window.addEventListener("orientationchange", applySpaceVideoOrientation);
 
   const themeButton = document.getElementById("themeButton");
 
@@ -372,14 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
-    if (currentTheme.name === "space") {
-      applySpaceVideoOrientation();
-      spaceBackground.style.display = "block";
-      spaceBackground.play().catch(() => {});
-    } else {
-      spaceBackground.pause();
-      spaceBackground.style.display = "none";
-    }
+    spaceBackground.style.display = currentTheme.name === "space" ? "block" : "none";
 
     if (currentTheme.name === "lofi") {
       setLofiMode(true);
