@@ -39,6 +39,19 @@ const PLACEHOLDER_ROLL = {
   ]
 };
 
+const DISTORT_ROLL = {
+  folder: "DISTORT_ROLL",
+  files: [
+    "blindingportal.jpg",
+    "branchesinthedark.jpg",
+    "gheist.jpg",
+    "ideeeeek.jpg",
+    "lightsonthewater.jpg",
+    "PIKED.jpg",
+    "twicejpg"
+  ]
+};
+
 const FRENCHRAIN_ROLL = {
   folder: "frenchrain",
   files: [
@@ -53,12 +66,12 @@ const FRENCHRAIN_ROLL = {
 
 const THEME_MAP = {
   classic: CLASSIC_ROLL,
-  retro: PLACEHOLDER_ROLL,
-  art: PLACEHOLDER_ROLL,
+  retro: DUDEHELLOCAMERON_ROLL,
+  art: DUDEHELLOCAMERON_ROLL,
   modern: PLACEHOLDER_ROLL,
   nature: PLACEHOLDER_ROLL,
   lofi: PLACEHOLDER_ROLL,
-  space: PLACEHOLDER_ROLL,
+  space: DISTORT_ROLL,
   rain: FRENCHRAIN_ROLL,
   logistics: PLACEHOLDER_ROLL
 };
