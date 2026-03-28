@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "lofi", displayName: "🎧" },
     { name: "art", displayName: "🎨" },
     { name: "space", displayName: "🚀" },
+    { name: "rain", displayName: "🌧️" },
     { name: "modern", displayName: "🌚" },
     { name: "nature", displayName: "🌞" },
     { name: "classic", displayName: "😎" },
@@ -37,11 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getBaseThemes() {
     if (isPhone) {
-      return allThemes.filter(t => ["retro", "art"].includes(t.name) || t.name === savedThemeName);
+      return allThemes.filter(t => ["retro", "art", "space", "rain", "nature"].includes(t.name) || t.name === savedThemeName);
     }
 
     if (isTablet) {
-      return allThemes.filter(t => ["retro", "art", "modern", "classic", "space"].includes(t.name));
+      return allThemes.filter(t => ["retro", "art", "rain", "modern", "classic", "space"].includes(t.name));
     }
 
     return allThemes;
@@ -132,6 +133,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const RAIN_VIDEO_SRC =
+  "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/Rain_by_Alex_BM.mp4";
+
+  const RAIN_AUDIO_SRC =
+  "temp";
+
+  const rainVideo = document.createElement("video");
+    rainVideo.classList.add("rain-background-video");
+    rainVideo.src = RAIN_VIDEO_SRC;
+    rainVideo.autoplay = true;
+    rainVideo.loop = true;
+    rainVideo.muted = true;
+    rainVideo.playsInline = true;
+    rainVideo.preload = "auto";
+    rainVideo.style.display = "none";
+    rainVideo.style.position = "fixed";
+    rainVideo.style.top = "0";
+    rainVideo.style.left = "0";
+    rainVideo.style.width = "100%";
+    rainVideo.style.height = "100%";
+    rainVideo.style.objectFit = "cover";
+    rainVideo.style.pointerEvents = "none";
+    rainVideo.style.zIndex = "-1";
+    rainVideo.style.transition = "opacity 0.25s ease-in-out, transform 0.25s ease-in-out";
+
+    const rainAudio = document.createElement("audio");
+    rainAudio.src = RAIN_AUDIO_SRC;
+    rainAudio.loop = true;
+    rainAudio.volume = initialSiteWideVolume;
+
+    function applyRainVideoOrientation() {
+      const phoneNow = window.innerWidth <= 480;
+      const portraitNow = window.matchMedia("(orientation: portrait)").matches;
+
+    if (phoneNow && portraitNow) {
+      rainVideo.style.top = "50%";
+      rainVideo.style.left = "50%";
+      rainVideo.style.width = "100vh";
+      rainVideo.style.height = "100vw";
+      rainVideo.style.transform = "translate(-50%, -50%) rotate(90deg)";
+      rainVideo.style.transformOrigin = "center center";
+      rainVideo.style.objectFit = "cover";
+    } else {
+      rainVideo.style.top = "0";
+      rainVideo.style.left = "0";
+      rainVideo.style.width = "100%";
+      rainVideo.style.height = "100%";
+      rainVideo.style.transform = "none";
+      rainVideo.style.transformOrigin = "center center";
+      rainVideo.style.objectFit = "cover";
+    }
+  }
+
+  let rainResizeTimer = null;
+  function handleRainResize() {
+    clearTimeout(rainResizeTimer);
+    rainResizeTimer = setTimeout(() => {
+      applyRainVideoOrientation();
+    }, 120);
+  }
+
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
 
@@ -208,6 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener("orientationchange", applySpaceVideoOrientation);
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
+  document.body.prepend(rainVideo);
+  document.body.appendChild(rainAudio);
 
   const themeButton = document.getElementById("themeButton");
 
@@ -318,16 +382,17 @@ document.addEventListener('DOMContentLoaded', () => {
       themeLink.setAttribute('href', nextHref);
     }
 
-    document.body.classList.remove(
-      'theme-classic',
-      'theme-modern',
-      'theme-retro',
-      'theme-nature',
-      'theme-space',
-      'theme-art',
-      'theme-logistics',
-      'theme-lofi'
-    );
+  document.body.classList.remove(
+    'theme-classic',
+    'theme-modern',
+    'theme-retro',
+    'theme-nature',
+    'theme-space',
+    'theme-rain',
+    'theme-art',
+    'theme-logistics',
+    'theme-lofi'
+  );
     document.body.classList.add(`theme-${currentTheme.name}`);
 
     track("theme_change", {
@@ -358,6 +423,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     speedSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
+
+    if (currentTheme.name === "rain") {
+      applyRainVideoOrientation();
+      rainVideo.style.display = "block";
+      rainVideo.play().catch(() => {});
+      rainAudio.play().catch(e => console.warn("Rain audio autoplay failed:", e));
+    } else {
+      rainVideo.style.display = "none";
+      rainVideo.pause();
+      rainAudio.pause();
+    }
 
     if (currentTheme.name === "space") {
       applySpaceVideoOrientation();
