@@ -80,8 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let paintSplatterListenerAdded = false;
   
   const savedSiteWideVolume = parseFloat(localStorage.getItem("siteWideVolume"));
-  const initialSiteWideVolume = Number.isFinite(savedSiteWideVolume) ? savedSiteWideVolume : 0.4;
-  natureAudio.volume = initialSiteWideVolume;
+  const initialSiteWideVolume = Number.isFinite(savedSiteWideVolume) ? savedSiteWideVolume : 0.40;
+
+  const natureAudio = document.createElement("audio");
+    natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
+    natureAudio.loop = true;
+    natureAudio.volume = initialSiteWideVolume;
 
   const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
