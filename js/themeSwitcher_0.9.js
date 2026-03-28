@@ -230,10 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
   natureVideo.playsInline = true;
   natureVideo.style.display = "none";
 
-  const natureAudio = document.createElement("audio");
-  natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
-  natureAudio.loop = true;
-
   const volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
   volumeSlider.min = "0";
