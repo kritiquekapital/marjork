@@ -4,6 +4,7 @@ import { track } from './analytics.js';
 const kissButton = document.querySelector(".kiss-button");
 
 const messages = [
+  "u get it",
   "i love you!",
   "я тебя люблю!",
   "☀️ solnyshko ☀️",
