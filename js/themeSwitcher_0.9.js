@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getBaseThemes() {
     if (isPhone) {
-      return allThemes.filter(t => ["retro", "art", "space", "rain", "nature"].includes(t.name) || t.name === savedThemeName);
+      return allThemes.filter(t => ["retro", "art", "space", "rain"].includes(t.name) || t.name === savedThemeName);
     }
 
     if (isTablet) {
