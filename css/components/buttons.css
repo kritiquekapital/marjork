@@ -300,10 +300,25 @@ body.theme-retro .secret-button {
   pointer-events: none;
 }
 
-.url-links-disabled .grid-container a:not(.vinyl-link) {
+.url-links-disabled .substack-button,
+.url-links-disabled .twitter,
+.url-links-disabled .duolingo,
+.url-links-disabled .dropkickd-button,
+.url-links-disabled .letterboxd,
+.url-links-disabled .statsfm,
+.url-links-disabled .backlog-button,
+.url-links-disabled .propaganda-link,
+.url-links-disabled .vinyl-link,
+.url-links-disabled #games-like-button,
+.url-links-disabled .secret-button,
+.url-links-disabled #themeButton,
+.url-links-disabled .wip {
   opacity: 0.45 !important;
-  pointer-events: none !important;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
+}
+
+.url-links-disabled .spotify {
+  opacity: 0.7 !important;
 }
 
 @media (max-width: 768px) {
