@@ -78,6 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let cleanupLogistics = () => {};
   let paintSplatterListenerAdded = false;
+  
+  const savedSiteWideVolume = parseFloat(localStorage.getItem("siteWideVolume"));
+  const initialSiteWideVolume = Number.isFinite(savedSiteWideVolume) ? savedSiteWideVolume : 0.4;
+  natureAudio.volume = initialSiteWideVolume;
 
   const createBackground = (url, className) => {
     const iframe = document.createElement("iframe");
@@ -172,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
       rainVideo.style.left = "50%";
       rainVideo.style.width = "100vh";
       rainVideo.style.height = "100vw";
-      rainVideo.style.transform = "translate(-50%, -50%) rotate(90deg)";
       rainVideo.style.transformOrigin = "center center";
       rainVideo.style.objectFit = "cover";
     } else {
@@ -226,10 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const natureAudio = document.createElement("audio");
   natureAudio.src = "https://github.com/kritiquekapital/marjork/releases/download/duck/book_mill_flow.mp3";
   natureAudio.loop = true;
-
-  const savedSiteWideVolume = parseFloat(localStorage.getItem("siteWideVolume"));
-  const initialSiteWideVolume = Number.isFinite(savedSiteWideVolume) ? savedSiteWideVolume : 0.4;
-  natureAudio.volume = initialSiteWideVolume;
 
   const volumeSlider = document.createElement("input");
   volumeSlider.type = "range";
