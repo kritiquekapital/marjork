@@ -2,7 +2,24 @@ import { track } from './analytics.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   const STORAGE_KEY = "disableUrlLinks";
-  const selector = ".substack-button, .twitter, .duolingo, .dropkickd-button, .letterboxd, .spotify";
+
+  const HARD_BLOCK_SELECTOR = [
+    ".substack-button",
+    ".twitter",
+    ".duolingo",
+    ".dropkickd-button",
+    ".letterboxd",
+    ".statsfm",
+    ".backlog-button",
+    ".propaganda-link",
+    ".vinyl-link",
+    "#games-like-button",
+    ".secret-button",
+    "#themeButton",
+    ".wip"
+  ].join(", ");
+
+  const SOFT_BLOCK_SELECTOR = ".spotify";
 
   function urlLinksDisabled() {
     return localStorage.getItem(STORAGE_KEY) === "true";
@@ -17,41 +34,50 @@ document.addEventListener("DOMContentLoaded", function () {
     return /Instagram|FBAN|FBAV/i.test(ua);
   }
 
-  const buttons = document.querySelectorAll(selector);
+  document.addEventListener(
+    "click",
+    function (event) {
+      const softBlocked = event.target.closest(SOFT_BLOCK_SELECTOR);
+      const hardBlocked = event.target.closest(HARD_BLOCK_SELECTOR);
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", function (event) {
-      const url = button.getAttribute("href");
-      if (!url) return;
+      if (!softBlocked && !hardBlocked) return;
 
-      // block if disabled in settings
-      if (urlLinksDisabled()) {
+      if (!urlLinksDisabled()) {
+        if (softBlocked) {
+          const url = softBlocked.getAttribute("href");
+          if (!url) return;
+
+          track("outbound_link_click", {
+            href: url,
+            label:
+              softBlocked.className ||
+              softBlocked.getAttribute("aria-label") ||
+              softBlocked.textContent?.trim() ||
+              "unknown"
+          });
+
+          if (isInAppBrowser()) {
+            event.preventDefault();
+            window.location.href = url;
+          }
+        }
+
+        return;
+      }
+
+      if (softBlocked) {
+        event.preventDefault();
+        return;
+      }
+
+      if (hardBlocked) {
         event.preventDefault();
         event.stopPropagation();
-        return;
+        event.stopImmediatePropagation();
       }
-
-      // tracking
-      track("outbound_link_click", {
-        href: url,
-        label:
-          button.className ||
-          button.getAttribute("aria-label") ||
-          button.textContent?.trim() ||
-          "unknown"
-      });
-
-      // fix IG / FB in-app browser behavior
-      if (isInAppBrowser()) {
-        event.preventDefault();
-        window.location.href = url;
-        return;
-      }
-
-      // otherwise: DO NOTHING
-      // let <a href target="_blank"> behave naturally
-    });
-  });
+    },
+    true
+  );
 
   document.addEventListener("urlLinksSettingChanged", syncDisabledVisualState);
   syncDisabledVisualState();
