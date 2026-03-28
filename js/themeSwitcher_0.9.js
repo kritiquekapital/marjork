@@ -148,58 +148,30 @@ document.addEventListener('DOMContentLoaded', () => {
   "temp";
 
   const rainVideo = document.createElement("video");
-    rainVideo.classList.add("rain-background-video");
-    rainVideo.src = RAIN_VIDEO_SRC;
-    rainVideo.autoplay = true;
-    rainVideo.loop = true;
-    rainVideo.muted = true;
-    rainVideo.playsInline = true;
-    rainVideo.preload = "auto";
-    rainVideo.style.display = "none";
-    rainVideo.style.position = "fixed";
-    rainVideo.style.top = "0";
-    rainVideo.style.left = "0";
-    rainVideo.style.width = "100%";
-    rainVideo.style.height = "100%";
-    rainVideo.style.objectFit = "cover";
-    rainVideo.style.pointerEvents = "none";
-    rainVideo.style.zIndex = "-1";
-    rainVideo.style.transition = "opacity 0.25s ease-in-out, transform 0.25s ease-in-out";
+  rainVideo.classList.add("rain-background-video");
+  rainVideo.src = RAIN_VIDEO_SRC;
+  rainVideo.autoplay = true;
+  rainVideo.loop = true;
+  rainVideo.muted = true;
+  rainVideo.playsInline = true;
+  rainVideo.preload = "auto";
+  rainVideo.style.display = "none";
+  rainVideo.style.position = "fixed";
+  rainVideo.style.top = "50%";
+  rainVideo.style.left = "50%";
+  rainVideo.style.width = "100vw";
+  rainVideo.style.height = "100dvh";
+  rainVideo.style.transform = "translate(-50%, -50%)";
+  rainVideo.style.objectFit = "cover";
+  rainVideo.style.objectPosition = "center center";
+  rainVideo.style.pointerEvents = "none";
+  rainVideo.style.zIndex = "-1";
+  rainVideo.style.transition = "opacity 0.25s ease-in-out";
 
-    const rainAudio = document.createElement("audio");
-    rainAudio.src = RAIN_AUDIO_SRC;
-    rainAudio.loop = true;
-    rainAudio.volume = initialSiteWideVolume;
-
-    function applyRainVideoOrientation() {
-      const phoneNow = window.innerWidth <= 480;
-      const portraitNow = window.matchMedia("(orientation: portrait)").matches;
-
-    if (phoneNow && portraitNow) {
-      rainVideo.style.top = "50%";
-      rainVideo.style.left = "50%";
-      rainVideo.style.width = "100vh";
-      rainVideo.style.height = "100vw";
-      rainVideo.style.transformOrigin = "center center";
-      rainVideo.style.objectFit = "cover";
-    } else {
-      rainVideo.style.top = "0";
-      rainVideo.style.left = "0";
-      rainVideo.style.width = "100%";
-      rainVideo.style.height = "100%";
-      rainVideo.style.transform = "none";
-      rainVideo.style.transformOrigin = "center center";
-      rainVideo.style.objectFit = "cover";
-    }
-  }
-
-  let rainResizeTimer = null;
-  function handleRainResize() {
-    clearTimeout(rainResizeTimer);
-    rainResizeTimer = setTimeout(() => {
-      applyRainVideoOrientation();
-    }, 120);
-  }
+  const rainAudio = document.createElement("audio");
+  rainAudio.src = RAIN_AUDIO_SRC;
+  rainAudio.loop = true;
+  rainAudio.volume = initialSiteWideVolume;
 
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
@@ -424,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
     volumeSlider.style.display = currentTheme.name === "nature" ? "block" : "none";
 
     if (currentTheme.name === "rain") {
-      applyRainVideoOrientation();
       rainVideo.style.display = "block";
       rainVideo.play().catch(() => {});
       rainAudio.play().catch(e => console.warn("Rain audio autoplay failed:", e));
