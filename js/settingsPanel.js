@@ -27,6 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
       fill: "radial-gradient(circle at 50% 65%, rgba(255, 232, 120, 0.98) 0%, rgba(255, 214, 10, 0.96) 38%, rgba(255, 184, 0, 0.92) 62%, rgba(255, 184, 0, 0.35) 100%)"
     },
     {
+      name: "rain",
+      emoji: "🌧️",
+      fill: "linear-gradient(180deg, #9bb7d4 0%, #6f8faa 45%, #42596e 100%)"
+    },
+    {
       name: "modern",
       emoji: "🌚",
       fill: "#7f8cff"
@@ -304,8 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getDeviceBlockedThemes() {
-    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "nature"];
-    const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "nature"];
+    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "rain", "nature"];
+    const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "rain", "nature"];
 
     if (isPhone()) {
       return THEME_META
