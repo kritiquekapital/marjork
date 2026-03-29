@@ -30,6 +30,15 @@ if (spotifyButton) {
   const HARD_PADDING = 8;
   const MAX_SPEED = 42;
 
+    function openSpotifyLink() {
+    const url = spotifyButton.getAttribute("href");
+    if (!url) return;
+
+    if (localStorage.getItem("disableUrlLinks") === "true") return;
+
+    window.location.href = url;
+  }
+
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
     if (document.body.classList.contains("theme-retro")) return "retro";
@@ -266,8 +275,10 @@ if (spotifyButton) {
 
     if (!isFree) {
       freeSpotify(event);
+      openSpotifyLink();
       event.preventDefault();
       event.stopPropagation();
+      return;
     }
   });
 
