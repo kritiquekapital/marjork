@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const SOFT_BLOCK_SELECTOR = ".spotify";
 
+  let spotifyPointerNavigated = false;
+
   function urlLinksDisabled() {
     return localStorage.getItem(STORAGE_KEY) === "true";
   }
@@ -34,6 +36,52 @@ document.addEventListener("DOMContentLoaded", function () {
     return /Instagram|FBAN|FBAV/i.test(ua);
   }
 
+  function getLabel(element) {
+    return (
+      element.className ||
+      element.getAttribute("aria-label") ||
+      element.textContent?.trim() ||
+      "unknown"
+    );
+  }
+
+  document.addEventListener(
+    "pointerdown",
+    function (event) {
+      const softBlocked = event.target.closest(SOFT_BLOCK_SELECTOR);
+      if (!softBlocked) return;
+
+      if (urlLinksDisabled()) return;
+
+      const url = softBlocked.getAttribute("href");
+      if (!url) return;
+
+      track("outbound_link_click", {
+        href: url,
+        label: getLabel(softBlocked)
+      });
+
+      spotifyPointerNavigated = true;
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      if (isInAppBrowser()) {
+        window.location.href = url;
+        return;
+      }
+
+      const target = softBlocked.getAttribute("target");
+      if (target === "_blank") {
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = url;
+      }
+    },
+    true
+  );
+
   document.addEventListener(
     "click",
     function (event) {
@@ -44,16 +92,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!urlLinksDisabled()) {
         if (softBlocked) {
+          if (spotifyPointerNavigated) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            spotifyPointerNavigated = false;
+            return;
+          }
+
           const url = softBlocked.getAttribute("href");
           if (!url) return;
 
           track("outbound_link_click", {
             href: url,
-            label:
-              softBlocked.className ||
-              softBlocked.getAttribute("aria-label") ||
-              softBlocked.textContent?.trim() ||
-              "unknown"
+            label: getLabel(softBlocked)
           });
         }
 
