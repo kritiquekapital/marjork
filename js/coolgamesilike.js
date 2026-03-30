@@ -6,63 +6,63 @@ const gamesILike = [
     title: "colorguesser",
     url: "https://colorguesser.com/",
     desc: "color of the day",
-    image: "/marjork/css/pic/COLOR.png"
+    image: "css/pic/gamesilike/COLOR.png"
   },
   {
     id: "songless",
     title: "songless",
     url: "https://lessgames.com/songless",
     desc: "song of the day",
-    image: "/marjork/css/pic/SONGLESS.png"
+    image: "/marjork/css/pic/gamesilike/SONGLESS.png"
   },
   {
     id: "tradle",
     title: "tradle",
     url: "https://games.oec.world/en/tradle/",
     desc: "trade of the day",
-    image: "/marjork/css/pic/TRADLE.png"
+    image: "/marjork/css/pic/gamesilike/TRADLE.png"
   },
   {
     id: "framed",
     title: "framed",
     url: "https://framed.wtf/",
     desc: "movie of the day",
-    image: "/marjork/css/pic/FRAMED.png"
+    image: "/marjork/css/pic/gamesilike/FRAMED.png"
   },
   {
     id: "immaculate-grid",
     title: "immaculate grid",
     url: "https://www.sports-reference.com/immaculate-grid/",
     desc: "sports grid of the day",
-    image: "/marjork/css/pic/IMAG.png"
+    image: "/marjork/css/pic/gamesilike/IMAG.png"
   },
   {
     id: "openguessr",
     title: "openguessr",
     url: "https://openguessr.com/",
     desc: "location of the day",
-    image: "/marjork/css/pic/GEO.png"
+    image: "/marjork/css/pic/gamesilike/GEO.png"
   },
   {
     id: "foodguessr",
     title: "foodguessr",
     url: "https://www.foodguessr.com/game/daily",
     desc: "food of the day",
-    image: "/marjork/css/pic/FOOD.png"
+    image: "/marjork/css/pic/gamesilike/FOOD.png"
   },
   {
     id: "guess-the-game",
     title: "guess the game",
     url: "https://guessthe.game/",
     desc: "game of the day",
-    image: "/marjork/css/pic/GAME.png"
+    image: "/marjork/css/pic/gamesilike/GAME.png"
   },
   {
     id: "guess-the-book",
     title: "guess the book",
     url: "https://guessthebook.app/",
     desc: "book of the day",
-    image: "/marjork/css/pic/BOOK.png"
+    image: "/marjork/css/pic/gamesilike/BOOK.png"
   },
 ];
 
