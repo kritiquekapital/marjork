@@ -10,7 +10,7 @@ if (spotifyButton) {
   let lastFrameTime = 0;
   let lastMouseTime = performance.now();
   let goalResetTimer = null;
-  let hasDesktopScoredOnce = false;
+  let hasOpenedOnGoal = false;
 
   const isCoarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
@@ -322,15 +322,23 @@ if (spotifyButton) {
 
   function openSpotifyLink() {
     if (urlLinksDisabled()) return false;
+    if (hasOpenedOnGoal) return false;
 
     const url = spotifyButton.getAttribute("href");
     if (!url) return false;
+
+    hasOpenedOnGoal = true;
 
     track("spotify_goal_open", {
       device: isCoarsePointer ? "mobile" : "desktop"
     });
 
-    window.open(url, "_blank", "noopener,noreferrer");
+    if (isCoarsePointer) {
+      window.location.href = url;
+    } else {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
     return true;
   }
 
@@ -381,16 +389,9 @@ if (spotifyButton) {
     const linksDisabled = urlLinksDisabled();
 
     if (!linksDisabled) {
-      if (isCoarsePointer) {
-        setTimeout(() => {
-          openSpotifyLink();
-        }, 140);
-      } else if (!hasDesktopScoredOnce) {
-        hasDesktopScoredOnce = true;
-        setTimeout(() => {
-          openSpotifyLink();
-        }, 140);
-      }
+      setTimeout(() => {
+        openSpotifyLink();
+      }, 140);
     }
 
     goalResetTimer = setTimeout(() => {
