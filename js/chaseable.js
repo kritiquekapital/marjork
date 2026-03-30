@@ -126,42 +126,23 @@ if (spotifyButton) {
     goal.style.backdropFilter = "blur(1.5px)";
     goal.style.transformOrigin = "center center";
 
-    if (isCoarsePointer) {
-      goal.style.width = "272px";
-      goal.style.height = "118px";
-      goal.style.left = "50%";
-      goal.style.right = "auto";
-      goal.style.top = "auto";
-      goal.style.bottom = "-30px";
-      goal.style.transform = "translateX(-50%)";
-
-      goal.style.borderTopWidth = "14px";
-      goal.style.borderBottomWidth = "5px";
-      goal.style.borderRadius = "28px 28px 20px 20px";
-
-      goal.style.background = `
-        linear-gradient(0deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.08) 18%, rgba(255,255,255,0.02) 100%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,0.24) 0 14px, rgba(255,255,255,0.05) 14px 28px),
-        repeating-linear-gradient(180deg, rgba(255,255,255,0.18) 0 14px, rgba(255,255,255,0.04) 14px 28px)
-      `;
-
-      goal.style.boxShadow = `
-        inset 0 -12px 16px rgba(255,255,255,0.22),
-        inset 0 16px 24px rgba(0,0,0,0.20),
-        inset 10px 0 14px rgba(255,255,255,0.10),
-        inset -12px 0 18px rgba(0,0,0,0.16),
-        0 18px 30px rgba(0,0,0,0.32),
-        0 0 20px rgba(255,255,255,0.16)
-      `;
+  if (isCoarsePointer) {
+    goal.style.width = "272px";
+    goal.style.height = "118px";
+    goal.style.left = "50%";
+    goal.style.right = "auto";
+    goal.style.top = "auto";
+    goal.style.bottom = "-30px";
+    goal.style.transform = "translateX(-50%) rotate(180deg)";
+  }
     } else {
-      goal.style.width = "110px";
-      goal.style.height = "276px";
-      goal.style.left = "-42px";
-      goal.style.right = "auto";
-      goal.style.top = "50%";
-      goal.style.bottom = "auto";
-      goal.style.transform = "translateY(-50%)";
-    }
+     goal.style.width = "110px";
+     goal.style.height = "276px";
+     goal.style.left = "-42px";
+     goal.style.right = "auto";
+     goal.style.top = "50%";
+     goal.style.bottom = "auto";
+     goal.style.transform = "translateY(-50%)";
   }
   
   function updateMouse(clientX, clientY) {
