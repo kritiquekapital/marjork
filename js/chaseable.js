@@ -1,11 +1,17 @@
+import { track } from './analytics.js';
+
 const spotifyButton = document.querySelector(".spotify");
 
 if (spotifyButton) {
   let isFree = false;
+  let isScored = false;
   let hoverTimer = null;
   let animationFrame = null;
   let lastFrameTime = 0;
   let lastMouseTime = performance.now();
+  let goalResetTimer = null;
+
+  const isCoarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   const velocity = { x: 0, y: 0 };
 
@@ -24,11 +30,25 @@ if (spotifyButton) {
   const bounce = 0.94;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
-
-  // contact should be basically flush to the button edge
   const TRIGGER_PADDING = 0;
   const HARD_PADDING = 8;
   const MAX_SPEED = 42;
+
+  const origin = {
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0
+  };
+
+  const goal = document.createElement("div");
+  goal.className = "spotify-goal";
+  goal.setAttribute("aria-hidden", "true");
+  document.body.appendChild(goal);
+
+  function urlLinksDisabled() {
+    return localStorage.getItem("disableUrlLinks") === "true";
+  }
 
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
@@ -51,6 +71,58 @@ if (spotifyButton) {
       y: rect.top + rect.height / 2,
       radius: Math.max(rect.width, rect.height) / 2
     };
+  }
+
+  function getGoalRect() {
+    return goal.getBoundingClientRect();
+  }
+
+  function getGoalCenter() {
+    const rect = getGoalRect();
+    return {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      radius: Math.min(rect.width, rect.height) / 2
+    };
+  }
+
+  function saveOrigin() {
+    if (isFree) return;
+    const rect = spotifyButton.getBoundingClientRect();
+    origin.left = rect.left;
+    origin.top = rect.top;
+    origin.width = rect.width;
+    origin.height = rect.height;
+  }
+
+  function styleGoal() {
+    goal.style.position = "fixed";
+    goal.style.zIndex = "1005";
+    goal.style.pointerEvents = "none";
+    goal.style.border = "4px solid rgba(255,255,255,0.95)";
+    goal.style.borderBottomWidth = "8px";
+    goal.style.borderRadius = "14px 14px 20px 20px";
+    goal.style.background =
+      "repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 10px, rgba(255,255,255,0.04) 10px 20px), repeating-linear-gradient(180deg, rgba(255,255,255,0.16) 0 10px, rgba(255,255,255,0.04) 10px 20px)";
+    goal.style.boxShadow = "0 0 18px rgba(255,255,255,0.25)";
+    goal.style.opacity = isFree ? "1" : "0.72";
+
+    if (isCoarsePointer) {
+      goal.style.width = "132px";
+      goal.style.height = "96px";
+      goal.style.left = "50%";
+      goal.style.top = "auto";
+      goal.style.bottom = "20px";
+      goal.style.transform = "translateX(-50%)";
+    } else {
+      goal.style.width = "118px";
+      goal.style.height = "84px";
+      goal.style.left = "auto";
+      goal.style.right = "24px";
+      goal.style.top = "auto";
+      goal.style.bottom = "22px";
+      goal.style.transform = "none";
+    }
   }
 
   function updateMouse(clientX, clientY) {
@@ -79,7 +151,7 @@ if (spotifyButton) {
   }
 
   function startHoverBreakTimer() {
-    if (isFree || hoverTimer) return;
+    if (isFree || hoverTimer || isCoarsePointer) return;
     hoverTimer = setTimeout(() => freeSpotify(), hoverBreakDelay);
   }
 
@@ -89,7 +161,7 @@ if (spotifyButton) {
     hoverTimer = null;
   }
 
-  function applyInitialImpulseFromCursor(clientX, clientY) {
+  function applyInitialImpulseFromCursor(clientX, clientY, strength = null) {
     const center = getCenter();
 
     let dx = center.x - clientX;
@@ -106,15 +178,40 @@ if (spotifyButton) {
     const nx = dx / dist;
     const ny = dy / dist;
 
-    const speed = 24 + Math.random() * 8;
+    const speed = strength ?? (isCoarsePointer ? 18 + Math.random() * 8 : 24 + Math.random() * 8);
     velocity.x = nx * speed;
     velocity.y = ny * speed;
+  }
+
+  function nudgeFromPointer(clientX, clientY) {
+    const center = getCenter();
+
+    let dx = center.x - clientX;
+    let dy = center.y - clientY;
+    let dist = Math.hypot(dx, dy);
+
+    if (dist < 0.001) {
+      const angle = Math.random() * Math.PI * 2;
+      dx = Math.cos(angle);
+      dy = Math.sin(angle);
+      dist = 1;
+    }
+
+    const nx = dx / dist;
+    const ny = dy / dist;
+
+    const speed = isCoarsePointer ? 16 : 12;
+    velocity.x += nx * speed;
+    velocity.y += ny * speed;
+
+    capSpeed(isCoarsePointer ? 26 : MAX_SPEED);
   }
 
   function freeSpotify(event = null) {
     if (isFree) return;
 
     isFree = true;
+    isScored = false;
     clearHoverBreakTimer();
 
     const rect = spotifyButton.getBoundingClientRect();
@@ -131,11 +228,12 @@ if (spotifyButton) {
     const cy = event?.clientY ?? mouse.y ?? (rect.top + rect.height / 2);
 
     applyInitialImpulseFromCursor(cx, cy);
+    styleGoal();
     startAnimation();
   }
 
   function applyCursorEscapePhysics() {
-    if (!isFree || !mouse.hasMoved) return;
+    if (!isFree || !mouse.hasMoved || isCoarsePointer) return;
 
     const center = getCenter();
 
@@ -146,30 +244,24 @@ if (spotifyButton) {
     const triggerRadius = center.radius + TRIGGER_PADDING;
     const hardRadius = center.radius + HARD_PADDING;
 
-    // only react when cursor is actually touching the button edge / inside
     if (distance > triggerRadius) return;
 
     const nx = dx / distance;
     const ny = dy / distance;
 
-    // overlap depth: how far the cursor has pushed into the circle
     const overlap = Math.max(0, triggerRadius - distance);
     const overlapRatio =
       triggerRadius > 0
         ? overlap / Math.max(triggerRadius, 1)
         : 1 - Math.min(distance / Math.max(center.radius, 1), 1);
 
-    // draggable-like momentum from actual cursor movement
     const pushFromMouseMotionX = mouse.vx * 0.55;
     const pushFromMouseMotionY = mouse.vy * 0.55;
-
-    // base shove away from the cursor
     const contactForce = 3 + overlapRatio * 10;
 
     velocity.x += nx * contactForce + pushFromMouseMotionX;
     velocity.y += ny * contactForce + pushFromMouseMotionY;
 
-    // extra shove if cursor gets close to center
     if (distance < hardRadius) {
       velocity.x += nx * 10;
       velocity.y += ny * 10;
@@ -178,7 +270,125 @@ if (spotifyButton) {
     capSpeed(MAX_SPEED);
   }
 
+  function showFloatingMessage(text) {
+    const message = document.createElement("div");
+    message.textContent = text;
+    message.style.position = "fixed";
+    message.style.left = "50%";
+    message.style.top = isCoarsePointer ? "18%" : "14%";
+    message.style.transform = "translate(-50%, -50%) scale(1)";
+    message.style.color = "#ffffff";
+    message.style.fontWeight = "900";
+    message.style.fontSize = isCoarsePointer ? "2rem" : "2.4rem";
+    message.style.letterSpacing = "0.08em";
+    message.style.textShadow = "0 0 10px rgba(0,255,0,0.55), 0 0 20px rgba(255,255,255,0.5)";
+    message.style.zIndex = "20000";
+    message.style.pointerEvents = "none";
+    message.style.opacity = "1";
+    message.style.transition = "transform 0.9s ease, opacity 0.9s ease";
+
+    document.body.appendChild(message);
+
+    requestAnimationFrame(() => {
+      message.style.transform = "translate(-50%, -80px) scale(1.08)";
+      message.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      message.remove();
+    }, 950);
+  }
+
+  function openSpotifyLink() {
+    if (urlLinksDisabled()) return;
+
+    const url = spotifyButton.getAttribute("href");
+    if (!url) return;
+
+    track("spotify_goal_open", {
+      device: isCoarsePointer ? "mobile" : "desktop"
+    });
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
+  function resetSpotify() {
+    clearTimeout(goalResetTimer);
+    isFree = false;
+    isScored = false;
+    velocity.x = 0;
+    velocity.y = 0;
+
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+
+    spotifyButton.classList.remove("free", "fleeing");
+    spotifyButton.style.position = "";
+    spotifyButton.style.left = "";
+    spotifyButton.style.top = "";
+    spotifyButton.style.width = "";
+    spotifyButton.style.height = "";
+    spotifyButton.style.margin = "";
+    spotifyButton.style.zIndex = "";
+
+    styleGoal();
+    saveOrigin();
+  }
+
+  function handleGoal() {
+    if (isScored) return;
+
+    isScored = true;
+    velocity.x = 0;
+    velocity.y = 0;
+
+    track("spotify_goal_scored", {
+      device: isCoarsePointer ? "mobile" : "desktop",
+      theme:
+        document.body.classList.contains("theme-space")
+          ? "space"
+          : document.body.classList.contains("theme-retro")
+          ? "retro"
+          : "normal"
+    });
+
+    showFloatingMessage("GOALLLL");
+
+    if (!urlLinksDisabled()) {
+      setTimeout(() => {
+        openSpotifyLink();
+      }, 140);
+    }
+
+    goalResetTimer = setTimeout(() => {
+      resetSpotify();
+    }, 900);
+  }
+
+  function checkGoalCollision() {
+    if (!isFree || isScored) return;
+
+    const buttonCenter = getCenter();
+    const goalCenter = getGoalCenter();
+
+    const dx = goalCenter.x - buttonCenter.x;
+    const dy = goalCenter.y - buttonCenter.y;
+    const distance = Math.hypot(dx, dy);
+
+    const threshold = isCoarsePointer
+      ? goalCenter.radius + buttonCenter.radius * 0.55
+      : goalCenter.radius + buttonCenter.radius * 0.42;
+
+    if (distance <= threshold) {
+      handleGoal();
+    }
+  }
+
   function step(time) {
+    if (!isFree || isScored) return;
+
     const mode = getMode();
 
     if (mode === "retro") {
@@ -189,8 +399,9 @@ if (spotifyButton) {
     applyCursorEscapePhysics();
 
     if (mode !== "zero-gravity") {
-      velocity.x *= friction;
-      velocity.y *= friction;
+      const localFriction = isCoarsePointer ? 0.985 : friction;
+      velocity.x *= localFriction;
+      velocity.y *= localFriction;
     }
 
     const rect = getRect();
@@ -221,6 +432,8 @@ if (spotifyButton) {
 
     spotifyButton.style.left = `${left}px`;
     spotifyButton.style.top = `${top}px`;
+
+    checkGoalCollision();
   }
 
   function animate(time) {
@@ -234,7 +447,12 @@ if (spotifyButton) {
   }
 
   function keepInsideViewport() {
-    if (!isFree) return;
+    styleGoal();
+
+    if (!isFree) {
+      saveOrigin();
+      return;
+    }
 
     const rect = getRect();
     const maxX = window.innerWidth - rect.width;
@@ -261,19 +479,39 @@ if (spotifyButton) {
     if (isFree) startAnimation();
   });
 
-  spotifyButton.addEventListener("click", (event) => {
-    updateMouse(event.clientX, event.clientY);
+  spotifyButton.addEventListener("pointerdown", (event) => {
+    const clientX = event.clientX ?? window.innerWidth / 2;
+    const clientY = event.clientY ?? window.innerHeight / 2;
+
+    updateMouse(clientX, clientY);
 
     if (!isFree) {
-      freeSpotify(event);
-      event.preventDefault();
-      event.stopPropagation();
+      freeSpotify({ clientX, clientY });
+    } else if (!isScored) {
+      nudgeFromPointer(clientX, clientY);
+      startAnimation();
     }
+
+    event.preventDefault();
+    event.stopPropagation();
+  });
+
+  spotifyButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   });
 
   window.addEventListener("resize", keepInsideViewport);
 
   document.addEventListener("themeChange", () => {
+    styleGoal();
     if (isFree) startAnimation();
+  });
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      saveOrigin();
+      styleGoal();
+    });
   });
 }
