@@ -518,8 +518,8 @@ if (spotifyButton) {
         {
           left: goalRect.left,
           right: goalRect.right,
-          top: goalRect.top,
-          bottom: goalRect.top + crossbarHeight
+          top: goalRect.bottom - crossbarHeight,
+          bottom: goalRect.bottom
         }
       ];
     } else {
