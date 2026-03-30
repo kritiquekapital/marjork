@@ -133,7 +133,7 @@ if (spotifyButton) {
       goal.style.right = "auto";
       goal.style.top = "auto";
       goal.style.bottom = "-30px";
-      goal.style.transform = "translateX(-50%)";
+      goal.style.transform = "translateX(-50%) scaleX(-1)";
     } else {
       goal.style.width = "110px";
       goal.style.height = "276px";
