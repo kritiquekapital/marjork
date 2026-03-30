@@ -144,8 +144,6 @@ if (spotifyButton) {
       goal.style.transform = "translateY(-50%)";
     }
   }
-
-  function updateMouse(clientX, clientY) {
   
   function updateMouse(clientX, clientY) {
     const now = performance.now();
