@@ -96,13 +96,13 @@ if (spotifyButton) {
     origin.height = rect.height;
   }
 
-  function styleGoal() {
+    function styleGoal() {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
 
     goal.style.opacity = isFree ? "1" : "0";
-    goal.style.transition = "opacity 0.18s ease-out, transform 0.18s ease-out";
+    goal.style.transition = "opacity 0.18s ease-out";
 
     goal.style.border = "5px solid rgba(255,255,255,0.98)";
     goal.style.borderBottomWidth = "14px";
@@ -127,21 +127,21 @@ if (spotifyButton) {
     goal.style.transformOrigin = "center center";
 
     if (isCoarsePointer) {
-      goal.style.width = "312px";
+      goal.style.width = "272px";
       goal.style.height = "118px";
       goal.style.left = "50%";
       goal.style.right = "auto";
       goal.style.top = "auto";
       goal.style.bottom = "-30px";
-      goal.style.transform = "translateX(-50%)";
+      goal.style.transform = "translateX(-50%) scaleX(-1)";
     } else {
-      goal.style.width = "276px";
-      goal.style.height = "110px";
-      goal.style.left = "-82px";
+      goal.style.width = "110px";
+      goal.style.height = "276px";
+      goal.style.left = "-86px";
       goal.style.right = "auto";
       goal.style.top = "50%";
       goal.style.bottom = "auto";
-      goal.style.transform = "translateY(-50%) rotate(90deg)";
+      goal.style.transform = "translateY(-50%)";
     }
   }
   
