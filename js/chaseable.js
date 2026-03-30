@@ -10,6 +10,7 @@ if (spotifyButton) {
   let lastFrameTime = 0;
   let lastMouseTime = performance.now();
   let goalResetTimer = null;
+  let hasDesktopScoredOnce = false;
 
   const isCoarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
@@ -95,7 +96,7 @@ if (spotifyButton) {
     origin.height = rect.height;
   }
 
-     function styleGoal() {
+  function styleGoal() {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
@@ -136,14 +137,14 @@ if (spotifyButton) {
     } else {
       goal.style.width = "276px";
       goal.style.height = "110px";
-      goal.style.left = "-62px";
+      goal.style.left = "-82px";
       goal.style.right = "auto";
       goal.style.top = "50%";
       goal.style.bottom = "auto";
-      goal.style.transform = "translateY(-50%) rotate(-90deg)";
+      goal.style.transform = "translateY(-50%) rotate(90deg)";
     }
   }
-
+  
   function updateMouse(clientX, clientY) {
     const now = performance.now();
     const dt = Math.max((now - lastMouseTime) / 16.6667, 0.001);
@@ -320,16 +321,17 @@ if (spotifyButton) {
   }
 
   function openSpotifyLink() {
-    if (urlLinksDisabled()) return;
+    if (urlLinksDisabled()) return false;
 
     const url = spotifyButton.getAttribute("href");
-    if (!url) return;
+    if (!url) return false;
 
     track("spotify_goal_open", {
       device: isCoarsePointer ? "mobile" : "desktop"
     });
 
     window.open(url, "_blank", "noopener,noreferrer");
+    return true;
   }
 
   function resetSpotify() {
@@ -357,7 +359,7 @@ if (spotifyButton) {
     saveOrigin();
   }
 
-  function handleGoal() {
+    function handleGoal() {
     if (isScored) return;
 
     isScored = true;
@@ -376,10 +378,19 @@ if (spotifyButton) {
 
     showFloatingMessage("GOALLLL");
 
-    if (!urlLinksDisabled()) {
-      setTimeout(() => {
-        openSpotifyLink();
-      }, 140);
+    const linksDisabled = urlLinksDisabled();
+
+    if (!linksDisabled) {
+      if (isCoarsePointer) {
+        setTimeout(() => {
+          openSpotifyLink();
+        }, 140);
+      } else if (!hasDesktopScoredOnce) {
+        hasDesktopScoredOnce = true;
+        setTimeout(() => {
+          openSpotifyLink();
+        }, 140);
+      }
     }
 
     goalResetTimer = setTimeout(() => {
@@ -390,22 +401,34 @@ if (spotifyButton) {
   function checkGoalCollision() {
     if (!isFree || isScored) return;
 
-    const buttonCenter = getCenter();
-    const goalCenter = getGoalCenter();
+    const buttonRect = getRect();
+    const goalRect = getGoalRect();
 
-    const dx = goalCenter.x - buttonCenter.x;
-    const dy = goalCenter.y - buttonCenter.y;
-    const distance = Math.hypot(dx, dy);
+    const buttonInset = isCoarsePointer ? 10 : 8;
+    const goalInsetX = isCoarsePointer ? 18 : 28;
+    const goalInsetY = isCoarsePointer ? 10 : 18;
 
-    const threshold = isCoarsePointer
-      ? goalCenter.radius + buttonCenter.radius * 0.55
-      : goalCenter.radius + buttonCenter.radius * 0.42;
+    const buttonLeft = buttonRect.left + buttonInset;
+    const buttonRight = buttonRect.right - buttonInset;
+    const buttonTop = buttonRect.top + buttonInset;
+    const buttonBottom = buttonRect.bottom - buttonInset;
 
-    if (distance <= threshold) {
+    const goalLeft = goalRect.left + goalInsetX;
+    const goalRight = goalRect.right - goalInsetX;
+    const goalTop = goalRect.top + goalInsetY;
+    const goalBottom = goalRect.bottom - goalInsetY;
+
+    const overlaps =
+      buttonRight >= goalLeft &&
+      buttonLeft <= goalRight &&
+      buttonBottom >= goalTop &&
+      buttonTop <= goalBottom;
+
+    if (overlaps) {
       handleGoal();
     }
   }
-
+  
   function step(time) {
     if (!isFree || isScored) return;
 
