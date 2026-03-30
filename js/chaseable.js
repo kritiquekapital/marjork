@@ -428,6 +428,131 @@ if (spotifyButton) {
       handleGoal();
     }
   }
+    function circleIntersectsRect(circleX, circleY, circleRadius, rect) {
+    const closestX = clamp(circleX, rect.left, rect.right);
+    const closestY = clamp(circleY, rect.top, rect.bottom);
+
+    const dx = circleX - closestX;
+    const dy = circleY - closestY;
+
+    return dx * dx + dy * dy <= circleRadius * circleRadius;
+  }
+
+  function resolvePostCollision(postRect, damping = 0.92) {
+    const center = getCenter();
+    const rect = getRect();
+
+    const closestX = clamp(center.x, postRect.left, postRect.right);
+    const closestY = clamp(center.y, postRect.top, postRect.bottom);
+
+    let dx = center.x - closestX;
+    let dy = center.y - closestY;
+    let dist = Math.hypot(dx, dy);
+
+    if (dist < 0.001) {
+      const postCenterX = (postRect.left + postRect.right) / 2;
+      const postCenterY = (postRect.top + postRect.bottom) / 2;
+      dx = center.x - postCenterX;
+      dy = center.y - postCenterY;
+      dist = Math.hypot(dx, dy) || 1;
+    }
+
+    const nx = dx / dist;
+    const ny = dy / dist;
+    const overlap = center.radius - dist;
+
+    if (overlap > 0) {
+      const push = overlap + 2;
+
+      spotifyButton.style.left = `${parseFloat(spotifyButton.style.left || "0") + nx * push}px`;
+      spotifyButton.style.top = `${parseFloat(spotifyButton.style.top || "0") + ny * push}px`;
+
+      const dot = velocity.x * nx + velocity.y * ny;
+
+      if (dot < 0) {
+        velocity.x = (velocity.x - 2 * dot * nx) * damping;
+        velocity.y = (velocity.y - 2 * dot * ny) * damping;
+      } else {
+        velocity.x += nx * 2.5;
+        velocity.y += ny * 2.5;
+      }
+
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+
+      spotifyButton.style.left = `${clamp(parseFloat(spotifyButton.style.left || "0"), 0, maxX)}px`;
+      spotifyButton.style.top = `${clamp(parseFloat(spotifyButton.style.top || "0"), 0, maxY)}px`;
+
+      return true;
+    }
+
+    return false;
+  }
+
+  function applyGoalPostCollision() {
+    if (!isFree || isScored) return;
+
+    const goalRect = getGoalRect();
+    const center = getCenter();
+
+    let posts = [];
+
+    if (isCoarsePointer) {
+      const postWidth = 18;
+      const crossbarHeight = 14;
+
+      posts = [
+        {
+          left: goalRect.left,
+          right: goalRect.left + postWidth,
+          top: goalRect.top,
+          bottom: goalRect.bottom
+        },
+        {
+          left: goalRect.right - postWidth,
+          right: goalRect.right,
+          top: goalRect.top,
+          bottom: goalRect.bottom
+        },
+        {
+          left: goalRect.left,
+          right: goalRect.right,
+          top: goalRect.top,
+          bottom: goalRect.top + crossbarHeight
+        }
+      ];
+    } else {
+      const postWidth = 18;
+      const crossbarHeight = 14;
+
+      posts = [
+        {
+          left: goalRect.left,
+          right: goalRect.right,
+          top: goalRect.top,
+          bottom: goalRect.top + postWidth
+        },
+        {
+          left: goalRect.left,
+          right: goalRect.right,
+          top: goalRect.bottom - postWidth,
+          bottom: goalRect.bottom
+        },
+        {
+          left: goalRect.left,
+          right: goalRect.left + crossbarHeight,
+          top: goalRect.top,
+          bottom: goalRect.bottom
+        }
+      ];
+    }
+
+    for (const post of posts) {
+      if (circleIntersectsRect(center.x, center.y, center.radius, post)) {
+        resolvePostCollision(post, 0.9);
+      }
+    }
+  }
   
   function step(time) {
     if (!isFree || isScored) return;
@@ -475,7 +600,8 @@ if (spotifyButton) {
 
     spotifyButton.style.left = `${left}px`;
     spotifyButton.style.top = `${top}px`;
-
+    
+    applyGoalPostCollision();
     checkGoalCollision();
   }
 
