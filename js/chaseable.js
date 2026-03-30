@@ -135,14 +135,17 @@ if (spotifyButton) {
     goal.style.bottom = "-30px";
     goal.style.transform = "translateX(-50%) rotate(180deg)";
     } else {
-     goal.style.width = "110px";
-     goal.style.height = "276px";
-     goal.style.left = "-42px";
-     goal.style.right = "auto";
-     goal.style.top = "50%";
-     goal.style.bottom = "auto";
-     goal.style.transform = "translateY(-50%)";
+      goal.style.width = "110px";
+      goal.style.height = "276px";
+      goal.style.left = "-42px";
+      goal.style.right = "auto";
+      goal.style.top = "50%";
+      goal.style.bottom = "auto";
+      goal.style.transform = "translateY(-50%)";
+    }
   }
+
+  function updateMouse(clientX, clientY) {
   
   function updateMouse(clientX, clientY) {
     const now = performance.now();
