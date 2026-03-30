@@ -95,33 +95,47 @@ if (spotifyButton) {
     origin.height = rect.height;
   }
 
-  function styleGoal() {
+   function styleGoal() {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
-    goal.style.border = "4px solid rgba(255,255,255,0.95)";
-    goal.style.borderBottomWidth = "8px";
-    goal.style.borderRadius = "14px 14px 20px 20px";
-    goal.style.background =
-      "repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0 10px, rgba(255,255,255,0.04) 10px 20px), repeating-linear-gradient(180deg, rgba(255,255,255,0.16) 0 10px, rgba(255,255,255,0.04) 10px 20px)";
-    goal.style.boxShadow = "0 0 18px rgba(255,255,255,0.25)";
-    goal.style.opacity = isFree ? "1" : "0.72";
+    goal.style.opacity = isFree ? "1" : "0.78";
+
+    goal.style.border = "4px solid rgba(255,255,255,0.96)";
+    goal.style.borderBottomWidth = "10px";
+    goal.style.borderRadius = "16px 16px 24px 24px";
+
+    goal.style.background = `
+      linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.24) 0 12px, rgba(255,255,255,0.04) 12px 24px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.18) 0 12px, rgba(255,255,255,0.03) 12px 24px)
+    `;
+
+    goal.style.boxShadow = `
+      inset 0 10px 14px rgba(255,255,255,0.18),
+      inset 0 -12px 18px rgba(0,0,0,0.18),
+      0 14px 28px rgba(0,0,0,0.26),
+      0 0 18px rgba(255,255,255,0.16)
+    `;
+
+    goal.style.transformOrigin = "center center";
 
     if (isCoarsePointer) {
-      goal.style.width = "132px";
-      goal.style.height = "96px";
+      goal.style.width = "156px";
+      goal.style.height = "112px";
       goal.style.left = "50%";
+      goal.style.right = "auto";
       goal.style.top = "auto";
-      goal.style.bottom = "20px";
+      goal.style.bottom = "-18px";
       goal.style.transform = "translateX(-50%)";
     } else {
-      goal.style.width = "118px";
-      goal.style.height = "84px";
-      goal.style.left = "auto";
-      goal.style.right = "24px";
-      goal.style.top = "auto";
-      goal.style.bottom = "22px";
-      goal.style.transform = "none";
+      goal.style.width = "138px";
+      goal.style.height = "104px";
+      goal.style.left = "-26px";
+      goal.style.right = "auto";
+      goal.style.top = "50%";
+      goal.style.bottom = "auto";
+      goal.style.transform = "translateY(-50%) rotate(-90deg)";
     }
   }
 
