@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getDeviceBlockedThemes() {
-    const PHONE_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "rain", "nature"];
+    const PHONE_ALLOWED_THEMES = ["retro", "art", "space", "rain"];
     const TABLET_ALLOWED_THEMES = ["retro", "art", "modern", "classic", "space", "rain", "nature"];
 
     if (isPhone()) {
