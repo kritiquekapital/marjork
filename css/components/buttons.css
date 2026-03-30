@@ -205,8 +205,8 @@ body.theme-retro .secret-button {
 
 .site-settings {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  top: 18px;
+  right: 20px;
   z-index: 10050;
   pointer-events: none;
 }
