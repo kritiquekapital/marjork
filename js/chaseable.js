@@ -95,43 +95,48 @@ if (spotifyButton) {
     origin.height = rect.height;
   }
 
-   function styleGoal() {
+     function styleGoal() {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
-    goal.style.opacity = isFree ? "1" : "0.78";
 
-    goal.style.border = "4px solid rgba(255,255,255,0.96)";
-    goal.style.borderBottomWidth = "10px";
-    goal.style.borderRadius = "16px 16px 24px 24px";
+    goal.style.opacity = isFree ? "1" : "0";
+    goal.style.transition = "opacity 0.18s ease-out, transform 0.18s ease-out";
+
+    goal.style.border = "5px solid rgba(255,255,255,0.98)";
+    goal.style.borderBottomWidth = "14px";
+    goal.style.borderRadius = "20px 20px 28px 28px";
 
     goal.style.background = `
-      linear-gradient(180deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 100%),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.24) 0 12px, rgba(255,255,255,0.04) 12px 24px),
-      repeating-linear-gradient(180deg, rgba(255,255,255,0.18) 0 12px, rgba(255,255,255,0.03) 12px 24px)
+      linear-gradient(180deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0.08) 18%, rgba(255,255,255,0.02) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.24) 0 14px, rgba(255,255,255,0.05) 14px 28px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,0.18) 0 14px, rgba(255,255,255,0.04) 14px 28px)
     `;
 
     goal.style.boxShadow = `
-      inset 0 10px 14px rgba(255,255,255,0.18),
-      inset 0 -12px 18px rgba(0,0,0,0.18),
-      0 14px 28px rgba(0,0,0,0.26),
-      0 0 18px rgba(255,255,255,0.16)
+      inset 0 12px 16px rgba(255,255,255,0.22),
+      inset 0 -16px 24px rgba(0,0,0,0.20),
+      inset 10px 0 14px rgba(255,255,255,0.10),
+      inset -12px 0 18px rgba(0,0,0,0.16),
+      0 18px 30px rgba(0,0,0,0.32),
+      0 0 20px rgba(255,255,255,0.16)
     `;
 
+    goal.style.backdropFilter = "blur(1.5px)";
     goal.style.transformOrigin = "center center";
 
     if (isCoarsePointer) {
-      goal.style.width = "156px";
-      goal.style.height = "112px";
+      goal.style.width = "312px";
+      goal.style.height = "118px";
       goal.style.left = "50%";
       goal.style.right = "auto";
       goal.style.top = "auto";
-      goal.style.bottom = "-18px";
+      goal.style.bottom = "-30px";
       goal.style.transform = "translateX(-50%)";
     } else {
-      goal.style.width = "138px";
-      goal.style.height = "104px";
-      goal.style.left = "-26px";
+      goal.style.width = "276px";
+      goal.style.height = "110px";
+      goal.style.left = "-62px";
       goal.style.right = "auto";
       goal.style.top = "50%";
       goal.style.bottom = "auto";
@@ -227,6 +232,7 @@ if (spotifyButton) {
     isFree = true;
     isScored = false;
     clearHoverBreakTimer();
+    goal.style.opacity = "0";
 
     const rect = spotifyButton.getBoundingClientRect();
 
