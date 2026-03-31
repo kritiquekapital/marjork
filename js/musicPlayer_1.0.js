@@ -256,11 +256,11 @@ const videoPin = document.getElementById("videoPin");
 const propagandaLink = document.querySelector(".propaganda-link");
 
 const videoLinks = [
-  
-  { title: "Costco Fahrenheit", url: "https://www.youtube.com/embed/jNiAy8T-MdE?autoplay=1&vq=hd1080" },
   { title: "OG of Film Photo", url: "https://www.youtube.com/embed/BDi1hjH8oEs?autoplay=1&vq=hd1080" },
-  { title: "Hairpin Circus", url: "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080" },
+  { title: "My Vest", url: "https://www.youtube.com/embed/zwjYiBatJsQ?autoplay=1&vq=hd1080" },
   { title: "Crack", url: "https://www.youtube.com/embed/dxW8kHl5Q_I?autoplay=1&vq=hd1080" },
+  { title: "Costco Fahrenheit", url: "https://www.youtube.com/embed/jNiAy8T-MdE?autoplay=1&vq=hd1080" },
+  { title: "Hairpin Circus", url: "https://www.youtube.com/embed/P0jJhwPjyok?autoplay=1&vq=hd1080" },
   { title: "Overwhelming Harmony", url: "https://www.youtube.com/embed/ze9-ARjL-ZA?autoplay=1&vq=hd1080" },
   { title: "JRJRJRJR", url: "https://www.youtube.com/embed/QgyW9qjgIf4?autoplay=1&vq=hd1080" },
   { title: "MNR", url: "https://www.youtube.com/embed/rnvSs3HEz2o?autoplay=1&vq=hd1080" },
