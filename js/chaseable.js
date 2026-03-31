@@ -667,8 +667,14 @@ if (spotifyButton) {
   });
 
   spotifyButton.addEventListener("click", (event) => {
+    updateMouse(event.clientX, event.clientY);
+
     event.preventDefault();
     event.stopPropagation();
+
+    if (!isFree) {
+      freeSpotify(event);
+    }
   });
 
   window.addEventListener("resize", keepInsideViewport);
