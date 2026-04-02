@@ -136,12 +136,12 @@
   .dropkickd-button    { grid-area: 1 / 5; }
   .letterboxd          { grid-area: 2 / 2; }
 
-  .statsfm             { grid-area: 2 / 5; }
+  .statsfm             { grid-area: 2 / 4; }
   .news-button         { grid-area: 2 / 1; }
   .kiss-button         { grid-area: 2 / 3; }
-  .spotify             { grid-area: 2 / 5; }
+  .spotify             { grid-area: 2 / 4; }
   .propaganda-link     { grid-area: 1 / 1; }
-  .games-like-button   { grid-area: 2 / 4; }
+  .games-like-button   { grid-area: 2 / 5; }
 
   .photo               { grid-area: 3 / 1; }
   .vinyl               { grid-area: 3 / 5; }
