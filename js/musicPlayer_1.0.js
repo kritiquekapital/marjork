@@ -281,6 +281,26 @@ let videoIndex = 0;
 let videoPinned = false;
 const videoDraggable = new Draggable(videoPlayer);
 
+function recenterVideoPlayer() {
+  if (!videoPlayer || videoPlayer.style.display === "none") return;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const rect = videoPlayer.getBoundingClientRect();
+
+  const left = Math.max(0, (vw - rect.width) / 2);
+  const top = Math.max(0, (vh - rect.height) / 2);
+
+  videoPlayer.style.left = `${left}px`;
+  videoPlayer.style.top = `${top}px`;
+  videoPlayer.style.transform = "none";
+}
+
+window.addEventListener("resize", recenterVideoPlayer);
+window.addEventListener("orientationchange", () => {
+  setTimeout(recenterVideoPlayer, 120);
+});
+
 function updateVideoSource() {
   videoFrame.src = videoLinks[videoIndex].url;
 }
@@ -288,10 +308,12 @@ function updateVideoSource() {
 function showVideoPlayer() {
   updateVideoSource();
   videoPlayer.style.display = "block";
-
-  // Bring to front
   videoPlayer.style.zIndex = "999";
   videoPlayer.style.opacity = "1";
+
+  requestAnimationFrame(() => {
+    recenterVideoPlayer();
+  });
 
   track("video_player_open", {
     title: videoLinks[videoIndex]?.title
