@@ -25,26 +25,12 @@ export class Bounceable {
     this.lockSnapDistance = 6;
     this.slipSpeed = 3.5;
 
-    // Home / hole anchor tracking
-    this.homeRect = null;
-    this.hole = null;
-    this.holeRadius = 60;
-    this.holePosition = { left: 0, top: 0 };
-
     Bounceable.instances.push(this);
 
     this.element.style.position = 'absolute';
 
     this.createHole();
-    this.captureHomeRect();
-    this.updateHolePosition();
-
     this.element.addEventListener('click', this.handleClick.bind(this));
-
-    this.boundRefreshHoleAnchor = this.refreshHoleAnchor.bind(this);
-    window.addEventListener('resize', this.boundRefreshHoleAnchor);
-    window.addEventListener('orientationchange', this.boundRefreshHoleAnchor);
-    document.addEventListener('themeChange', this.boundRefreshHoleAnchor);
   }
 
   createHole() {
@@ -59,42 +45,16 @@ export class Bounceable {
     document.body.appendChild(hole);
 
     this.hole = hole;
-    this.holeRadius = 60;
-  }
-
-  captureHomeRect() {
-    if (this.isFree) return;
+    this.holeRadius = hole.offsetWidth / 2;
 
     const rect = this.element.getBoundingClientRect();
-    this.homeRect = {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height
-    };
-
-    this.radius = Math.max(rect.width, rect.height) / 2;
-  }
-
-  updateHolePosition() {
-    if (!this.homeRect || !this.hole) return;
-
     this.holePosition = {
-      left: this.homeRect.left + this.homeRect.width / 2,
-      top: this.homeRect.top + this.homeRect.height / 2
+      left: rect.left + rect.width / 2,
+      top: rect.top + rect.height / 2
     };
 
-    this.hole.style.left = `${this.holePosition.left - this.holeRadius}px`;
-    this.hole.style.top = `${this.holePosition.top - this.holeRadius}px`;
-  }
-
-  refreshHoleAnchor() {
-    if (this.isFree) return;
-
-    requestAnimationFrame(() => {
-      this.captureHomeRect();
-      this.updateHolePosition();
-    });
+    hole.style.left = `${this.holePosition.left - this.holeRadius}px`;
+    hole.style.top = `${this.holePosition.top - this.holeRadius}px`;
   }
 
   handleClick(e) {
@@ -106,9 +66,6 @@ export class Bounceable {
     }
 
     if (!this.isFree) {
-      this.captureHomeRect();
-      this.updateHolePosition();
-
       this.isFree = true;
       this.velocity = { x: 0, y: 0 };
       this.element.classList.add('free');
