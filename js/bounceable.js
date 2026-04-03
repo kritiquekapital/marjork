@@ -12,7 +12,7 @@ export class Bounceable {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
     this.friction = 0.92;
-    this.glitchFriction = 0.992;
+    this.glitchFriction = 0.84;
     this.isFree = false;
     this.isLockedInHole = false;
     this.animationFrame = null;
@@ -24,7 +24,6 @@ export class Bounceable {
 
     this.nextGlitchJumpAt = performance.now() + this.getNextGlitchDelay();
 
-    // Hole behavior
     this.snapRadius = 34;
     this.lockSnapDistance = 6;
     this.slipSpeed = 3.5;
@@ -171,7 +170,7 @@ export class Bounceable {
   }
 
   getNextGlitchDelay() {
-    return 180 + Math.random() * 820;
+    return 120 + Math.random() * 360;
   }
 
   resetGlitchTimer(now = performance.now()) {
@@ -179,6 +178,9 @@ export class Bounceable {
   }
 
   applyGlitchJump(now) {
+    const speed = Math.hypot(this.velocity.x, this.velocity.y);
+
+    if (speed < 7) return;
     if (now < this.nextGlitchJumpAt) return;
 
     const maxX = window.innerWidth - this.element.offsetWidth;
@@ -187,7 +189,7 @@ export class Bounceable {
     const currentTop = parseFloat(this.element.style.top || '0');
 
     const jumpTier = Math.random();
-    const jumpRange = jumpTier < 0.7 ? 90 : jumpTier < 0.93 ? 180 : 320;
+    const jumpRange = jumpTier < 0.75 ? 50 : jumpTier < 0.95 ? 110 : 180;
 
     let nextLeft = currentLeft + (Math.random() * 2 - 1) * jumpRange;
     let nextTop = currentTop + (Math.random() * 2 - 1) * jumpRange;
@@ -198,16 +200,10 @@ export class Bounceable {
     this.element.style.left = `${nextLeft}px`;
     this.element.style.top = `${nextTop}px`;
 
-    this.velocity.x += (Math.random() * 2 - 1) * 10;
-    this.velocity.y += (Math.random() * 2 - 1) * 10;
-
-    const speed = Math.hypot(this.velocity.x, this.velocity.y);
-    if (speed < 8) {
-      const angle = Math.random() * Math.PI * 2;
-      const boost = 8 + Math.random() * 10;
-      this.velocity.x = Math.cos(angle) * boost;
-      this.velocity.y = Math.sin(angle) * boost;
-    }
+    this.velocity.x *= 0.72;
+    this.velocity.y *= 0.72;
+    this.velocity.x += (Math.random() * 2 - 1) * 3;
+    this.velocity.y += (Math.random() * 2 - 1) * 3;
 
     this.resetGlitchTimer(now);
   }
@@ -292,7 +288,6 @@ export class Bounceable {
       const speed = Math.hypot(this.velocity.x, this.velocity.y);
       if (
         this.currentMode !== Bounceable.modes.ZERO_GRAVITY &&
-        this.currentMode !== Bounceable.modes.GLITCH &&
         speed < 0.35 &&
         !this.isLockedInHole
       ) {
