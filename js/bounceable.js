@@ -4,13 +4,15 @@ export class Bounceable {
   static modes = {
     NORMAL: 'normal',
     RETRO: 'retro',
-    ZERO_GRAVITY: 'zero-gravity'
+    ZERO_GRAVITY: 'zero-gravity',
+    GLITCH: 'glitch'
   };
 
   constructor(element) {
     this.element = element;
     this.velocity = { x: 0, y: 0 };
     this.friction = 0.92;
+    this.glitchFriction = 0.992;
     this.isFree = false;
     this.isLockedInHole = false;
     this.animationFrame = null;
@@ -19,6 +21,8 @@ export class Bounceable {
 
     this.radius = Math.max(element.offsetWidth, element.offsetHeight) / 2;
     this.strokeCount = 0;
+
+    this.nextGlitchJumpAt = performance.now() + this.getNextGlitchDelay();
 
     // Hole behavior
     this.snapRadius = 34;
@@ -78,6 +82,7 @@ export class Bounceable {
     }
 
     this.moveOppositeDirection(e.clientX, e.clientY);
+    this.resetGlitchTimer();
 
     this.ignoreHoleDetection = true;
     setTimeout(() => {
@@ -112,7 +117,6 @@ export class Bounceable {
     const nx = dx / length;
     const ny = dy / length;
 
-    // Stronger contrast between center and edge clicks
     const maxRelevantDistance = this.radius;
     const clampedDistance = Math.min(length, maxRelevantDistance);
     const powerRatio = clampedDistance / maxRelevantDistance;
@@ -123,8 +127,6 @@ export class Bounceable {
   moveOppositeDirection(clickX, clickY) {
     const { nx, ny, powerRatio } = this.getClickVectorAndPower(clickX, clickY);
 
-    // center click = weak
-    // edge click = strong
     const minSpeed = 6;
     const maxSpeed = 50;
     const curvedPower = Math.pow(powerRatio, 2.6);
@@ -149,6 +151,8 @@ export class Bounceable {
     this.velocity.x = Math.cos(angle) * speed;
     this.velocity.y = Math.sin(angle) * speed;
 
+    this.resetGlitchTimer();
+
     this.ignoreHoleDetection = true;
     setTimeout(() => {
       this.ignoreHoleDetection = false;
@@ -164,6 +168,48 @@ export class Bounceable {
     const distance = Math.hypot(dx, dy);
 
     return { distance, dx, dy };
+  }
+
+  getNextGlitchDelay() {
+    return 180 + Math.random() * 820;
+  }
+
+  resetGlitchTimer(now = performance.now()) {
+    this.nextGlitchJumpAt = now + this.getNextGlitchDelay();
+  }
+
+  applyGlitchJump(now) {
+    if (now < this.nextGlitchJumpAt) return;
+
+    const maxX = window.innerWidth - this.element.offsetWidth;
+    const maxY = window.innerHeight - this.element.offsetHeight;
+    const currentLeft = parseFloat(this.element.style.left || '0');
+    const currentTop = parseFloat(this.element.style.top || '0');
+
+    const jumpTier = Math.random();
+    const jumpRange = jumpTier < 0.7 ? 90 : jumpTier < 0.93 ? 180 : 320;
+
+    let nextLeft = currentLeft + (Math.random() * 2 - 1) * jumpRange;
+    let nextTop = currentTop + (Math.random() * 2 - 1) * jumpRange;
+
+    nextLeft = Math.max(0, Math.min(maxX, nextLeft));
+    nextTop = Math.max(0, Math.min(maxY, nextTop));
+
+    this.element.style.left = `${nextLeft}px`;
+    this.element.style.top = `${nextTop}px`;
+
+    this.velocity.x += (Math.random() * 2 - 1) * 10;
+    this.velocity.y += (Math.random() * 2 - 1) * 10;
+
+    const speed = Math.hypot(this.velocity.x, this.velocity.y);
+    if (speed < 8) {
+      const angle = Math.random() * Math.PI * 2;
+      const boost = 8 + Math.random() * 10;
+      this.velocity.x = Math.cos(angle) * boost;
+      this.velocity.y = Math.sin(angle) * boost;
+    }
+
+    this.resetGlitchTimer(now);
   }
 
   applyMovement() {
@@ -219,6 +265,9 @@ export class Bounceable {
         case Bounceable.modes.ZERO_GRAVITY:
           this.applyZeroGravityMovement(newLeft, newTop);
           break;
+        case Bounceable.modes.GLITCH:
+          this.applyGlitchMovement(newLeft, newTop, time);
+          break;
         default:
           this.applyNormalMovement(newLeft, newTop);
           break;
@@ -243,6 +292,7 @@ export class Bounceable {
       const speed = Math.hypot(this.velocity.x, this.velocity.y);
       if (
         this.currentMode !== Bounceable.modes.ZERO_GRAVITY &&
+        this.currentMode !== Bounceable.modes.GLITCH &&
         speed < 0.35 &&
         !this.isLockedInHole
       ) {
@@ -277,6 +327,14 @@ export class Bounceable {
     this.element.style.top = `${newTop}px`;
   }
 
+  applyGlitchMovement(newLeft, newTop, time) {
+    this.velocity.x *= this.glitchFriction;
+    this.velocity.y *= this.glitchFriction;
+    this.element.style.left = `${newLeft}px`;
+    this.element.style.top = `${newTop}px`;
+    this.applyGlitchJump(time);
+  }
+
   lockIntoHole() {
     const completedStrokeCount = this.strokeCount;
 
@@ -308,7 +366,12 @@ export class Bounceable {
   static switchMode(newMode) {
     this.instances.forEach((inst) => {
       inst.currentMode = newMode;
-      if (newMode === Bounceable.modes.ZERO_GRAVITY && inst.isFree && !inst.isLockedInHole) {
+      inst.resetGlitchTimer();
+      if (
+        (newMode === Bounceable.modes.ZERO_GRAVITY || newMode === Bounceable.modes.GLITCH) &&
+        inst.isFree &&
+        !inst.isLockedInHole
+      ) {
         inst.applyMovement();
       }
     });
