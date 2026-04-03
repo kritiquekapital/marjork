@@ -174,6 +174,26 @@ document.addEventListener('DOMContentLoaded', () => {
   rainAudio.loop = true;
   rainAudio.volume = initialSiteWideVolume;
 
+  const GLITCH_GIF_SRC =
+    "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/SIG.DECAY_01.gif";
+
+  const glitchBackground = document.createElement("div");
+  glitchBackground.classList.add("glitch-background-gif");
+  glitchBackground.style.display = "none";
+  glitchBackground.style.position = "fixed";
+  glitchBackground.style.top = "50%";
+  glitchBackground.style.left = "50%";
+  glitchBackground.style.width = "100vw";
+  glitchBackground.style.height = "100dvh";
+  glitchBackground.style.transform = "translate(-50%, -50%)";
+  glitchBackground.style.backgroundImage = `url("${GLITCH_GIF_SRC}")`;
+  glitchBackground.style.backgroundSize = "cover";
+  glitchBackground.style.backgroundPosition = "center center";
+  glitchBackground.style.backgroundRepeat = "no-repeat";
+  glitchBackground.style.pointerEvents = "none";
+  glitchBackground.style.zIndex = "-1";
+  glitchBackground.style.transition = "opacity 0.25s ease-in-out";
+
   const LOFI_MUTED_SRC =
     "https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&vq=hd1080";
 
@@ -243,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.prepend(natureVideo);
   document.body.appendChild(natureAudio);
   document.body.prepend(rainVideo);
+  document.body.prepend(glitchBackground);
   document.body.appendChild(rainAudio);
 
   const themeButton = document.getElementById("themeButton");
@@ -361,6 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'theme-nature',
     'theme-space',
     'theme-rain',
+    'theme-glitch',
     'theme-art',
     'theme-logistics',
     'theme-lofi'
@@ -404,6 +426,14 @@ document.addEventListener('DOMContentLoaded', () => {
       rainVideo.style.display = "none";
       rainVideo.pause();
       rainAudio.pause();
+    }
+
+    if (currentTheme.name === "glitch") {
+      glitchBackground.style.display = "block";
+      glitchBackground.style.opacity = "1";
+    } else {
+      glitchBackground.style.opacity = "0";
+      glitchBackground.style.display = "none";
     }
 
     if (currentTheme.name === "space") {
