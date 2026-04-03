@@ -65,7 +65,7 @@ const FRENCHRAIN_ROLL = {
 
 const THEME_MAP = {
   classic: CLASSIC_ROLL,
-  retro: CLASSIC_ROL,
+  retro: CLASSIC_ROLL,
   art: DUDEHELLOCAMERON,
   modern: DUDEHELLOCAMERON,
   nature: DUDEHELLOCAMERON,
