@@ -11,6 +11,7 @@ if (spotifyButton) {
   let lastMouseTime = performance.now();
   let goalResetTimer = null;
   let hasOpenedOnGoal = false;
+  let nextGlitchJumpAt = performance.now() + getNextGlitchDelay();
 
   const isCoarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
@@ -28,6 +29,7 @@ if (spotifyButton) {
   };
 
   const friction = 0.996;
+  const glitchFriction = 0.998;
   const bounce = 0.94;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
@@ -54,7 +56,16 @@ if (spotifyButton) {
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
     if (document.body.classList.contains("theme-retro")) return "retro";
+    if (document.body.classList.contains("theme-glitch")) return "glitch";
     return "normal";
+  }
+
+  function getNextGlitchDelay() {
+    return 180 + Math.random() * 900;
+  }
+
+  function resetGlitchTimer(now = performance.now()) {
+    nextGlitchJumpAt = now + getNextGlitchDelay();
   }
 
   function clamp(value, min, max) {
@@ -96,7 +107,7 @@ if (spotifyButton) {
     origin.height = rect.height;
   }
 
-    function styleGoal() {
+  function styleGoal() {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
@@ -126,14 +137,14 @@ if (spotifyButton) {
     goal.style.backdropFilter = "blur(1.5px)";
     goal.style.transformOrigin = "center center";
 
-  if (isCoarsePointer) {
-    goal.style.width = "272px";
-    goal.style.height = "118px";
-    goal.style.left = "50%";
-    goal.style.right = "auto";
-    goal.style.top = "auto";
-    goal.style.bottom = "-30px";
-    goal.style.transform = "translateX(-50%)";
+    if (isCoarsePointer) {
+      goal.style.width = "272px";
+      goal.style.height = "118px";
+      goal.style.left = "50%";
+      goal.style.right = "auto";
+      goal.style.top = "auto";
+      goal.style.bottom = "-30px";
+      goal.style.transform = "translateX(-50%)";
     } else {
       goal.style.width = "110px";
       goal.style.height = "276px";
@@ -249,6 +260,7 @@ if (spotifyButton) {
     const cy = event?.clientY ?? mouse.y ?? (rect.top + rect.height / 2);
 
     applyInitialImpulseFromCursor(cx, cy);
+    resetGlitchTimer();
     styleGoal();
     startAnimation();
   }
@@ -289,6 +301,42 @@ if (spotifyButton) {
     }
 
     capSpeed(MAX_SPEED);
+  }
+
+  function applyGlitchJump(now) {
+    if (!isFree || isScored || now < nextGlitchJumpAt) return;
+
+    const rect = getRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+    const currentLeft = parseFloat(spotifyButton.style.left || "0");
+    const currentTop = parseFloat(spotifyButton.style.top || "0");
+
+    const jumpTier = Math.random();
+    const jumpRange = jumpTier < 0.72 ? 100 : jumpTier < 0.94 ? 190 : 320;
+
+    let nextLeft = currentLeft + (Math.random() * 2 - 1) * jumpRange;
+    let nextTop = currentTop + (Math.random() * 2 - 1) * jumpRange;
+
+    nextLeft = clamp(nextLeft, 0, maxX);
+    nextTop = clamp(nextTop, 0, maxY);
+
+    spotifyButton.style.left = `${nextLeft}px`;
+    spotifyButton.style.top = `${nextTop}px`;
+
+    velocity.x += (Math.random() * 2 - 1) * 9;
+    velocity.y += (Math.random() * 2 - 1) * 9;
+
+    const speed = Math.hypot(velocity.x, velocity.y);
+    if (speed < 7) {
+      const angle = Math.random() * Math.PI * 2;
+      const boost = 7 + Math.random() * 9;
+      velocity.x = Math.cos(angle) * boost;
+      velocity.y = Math.sin(angle) * boost;
+    }
+
+    capSpeed(isCoarsePointer ? 26 : MAX_SPEED);
+    resetGlitchTimer(now);
   }
 
   function showFloatingMessage(text) {
@@ -348,6 +396,7 @@ if (spotifyButton) {
     isScored = false;
     velocity.x = 0;
     velocity.y = 0;
+    hasOpenedOnGoal = false;
 
     if (animationFrame) {
       cancelAnimationFrame(animationFrame);
@@ -365,9 +414,10 @@ if (spotifyButton) {
 
     styleGoal();
     saveOrigin();
+    resetGlitchTimer();
   }
 
-    function handleGoal() {
+  function handleGoal() {
     if (isScored) return;
 
     isScored = true;
@@ -381,6 +431,8 @@ if (spotifyButton) {
           ? "space"
           : document.body.classList.contains("theme-retro")
           ? "retro"
+          : document.body.classList.contains("theme-glitch")
+          ? "glitch"
           : "normal"
     });
 
@@ -429,7 +481,8 @@ if (spotifyButton) {
       handleGoal();
     }
   }
-    function circleIntersectsRect(circleX, circleY, circleRadius, rect) {
+
+  function circleIntersectsRect(circleX, circleY, circleRadius, rect) {
     const closestX = clamp(circleX, rect.left, rect.right);
     const closestY = clamp(circleY, rect.top, rect.bottom);
 
@@ -567,7 +620,11 @@ if (spotifyButton) {
 
     applyCursorEscapePhysics();
 
-    if (mode !== "zero-gravity") {
+    if (mode === "glitch") {
+      const localFriction = isCoarsePointer ? 0.992 : glitchFriction;
+      velocity.x *= localFriction;
+      velocity.y *= localFriction;
+    } else if (mode !== "zero-gravity") {
       const localFriction = isCoarsePointer ? 0.985 : friction;
       velocity.x *= localFriction;
       velocity.y *= localFriction;
@@ -601,6 +658,10 @@ if (spotifyButton) {
 
     spotifyButton.style.left = `${left}px`;
     spotifyButton.style.top = `${top}px`;
+
+    if (mode === "glitch") {
+      applyGlitchJump(time);
+    }
     
     applyGoalPostCollision();
     checkGoalCollision();
@@ -681,6 +742,7 @@ if (spotifyButton) {
 
   document.addEventListener("themeChange", () => {
     styleGoal();
+    resetGlitchTimer();
     if (isFree) startAnimation();
   });
 
