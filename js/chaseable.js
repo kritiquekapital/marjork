@@ -29,7 +29,6 @@ if (spotifyButton) {
   };
 
   const friction = 0.996;
-  const glitchFriction = 0.998;
   const bounce = 0.94;
   const hoverBreakDelay = 5000;
   const retroFrameInterval = 1000 / 15;
@@ -55,13 +54,13 @@ if (spotifyButton) {
 
   function getMode() {
     if (document.body.classList.contains("theme-space")) return "zero-gravity";
-    if (document.body.classList.contains("theme-retro")) return "retro";
     if (document.body.classList.contains("theme-glitch")) return "glitch";
-    return "normal";
+    if (document.body.classList.contains("theme-retro")) return "retro";
+    return "base";
   }
 
   function getNextGlitchDelay() {
-    return 180 + Math.random() * 900;
+    return 110 + Math.random() * 260;
   }
 
   function resetGlitchTimer(now = performance.now()) {
@@ -87,15 +86,6 @@ if (spotifyButton) {
 
   function getGoalRect() {
     return goal.getBoundingClientRect();
-  }
-
-  function getGoalCenter() {
-    const rect = getGoalRect();
-    return {
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-      radius: Math.min(rect.width, rect.height) / 2
-    };
   }
 
   function saveOrigin() {
@@ -304,7 +294,8 @@ if (spotifyButton) {
   }
 
   function applyGlitchJump(now) {
-    if (!isFree || isScored || now < nextGlitchJumpAt) return;
+    if (!isFree || isScored) return;
+    if (now < nextGlitchJumpAt) return;
 
     const rect = getRect();
     const maxX = window.innerWidth - rect.width;
@@ -313,7 +304,7 @@ if (spotifyButton) {
     const currentTop = parseFloat(spotifyButton.style.top || "0");
 
     const jumpTier = Math.random();
-    const jumpRange = jumpTier < 0.72 ? 100 : jumpTier < 0.94 ? 190 : 320;
+    const jumpRange = jumpTier < 0.72 ? 70 : jumpTier < 0.94 ? 140 : 220;
 
     let nextLeft = currentLeft + (Math.random() * 2 - 1) * jumpRange;
     let nextTop = currentTop + (Math.random() * 2 - 1) * jumpRange;
@@ -324,16 +315,10 @@ if (spotifyButton) {
     spotifyButton.style.left = `${nextLeft}px`;
     spotifyButton.style.top = `${nextTop}px`;
 
-    velocity.x += (Math.random() * 2 - 1) * 9;
-    velocity.y += (Math.random() * 2 - 1) * 9;
-
-    const speed = Math.hypot(velocity.x, velocity.y);
-    if (speed < 7) {
-      const angle = Math.random() * Math.PI * 2;
-      const boost = 7 + Math.random() * 9;
-      velocity.x = Math.cos(angle) * boost;
-      velocity.y = Math.sin(angle) * boost;
-    }
+    velocity.x *= 0.78;
+    velocity.y *= 0.78;
+    velocity.x += (Math.random() * 2 - 1) * 3.5;
+    velocity.y += (Math.random() * 2 - 1) * 3.5;
 
     capSpeed(isCoarsePointer ? 26 : MAX_SPEED);
     resetGlitchTimer(now);
@@ -620,11 +605,7 @@ if (spotifyButton) {
 
     applyCursorEscapePhysics();
 
-    if (mode === "glitch") {
-      const localFriction = isCoarsePointer ? 0.992 : glitchFriction;
-      velocity.x *= localFriction;
-      velocity.y *= localFriction;
-    } else if (mode !== "zero-gravity") {
+    if (mode !== "zero-gravity") {
       const localFriction = isCoarsePointer ? 0.985 : friction;
       velocity.x *= localFriction;
       velocity.y *= localFriction;
