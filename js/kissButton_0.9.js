@@ -28,6 +28,8 @@ if (kissButton) {
       ? "space"
       : document.body.classList.contains("theme-retro")
       ? "retro"
+      : document.body.classList.contains("theme-glitch")
+      ? "glitch"
       : "normal";
 
     switch (currentTheme) {
@@ -36,6 +38,9 @@ if (kissButton) {
         break;
       case "space":
         Bounceable.switchMode(Bounceable.modes.ZERO_GRAVITY);
+        break;
+      case "glitch":
+        Bounceable.switchMode(Bounceable.modes.GLITCH);
         break;
       default:
         Bounceable.switchMode(Bounceable.modes.NORMAL);
