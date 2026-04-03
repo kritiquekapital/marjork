@@ -1,6 +1,7 @@
 import { track } from './analytics.js';
 
 const photoButton = document.querySelector(".photo");
+const PHOTO_BASE = "https://pub-8650efffd80b4f968cb70c0cee274715.r2.dev/suprises";
 
 const CLASSIC_ROLL = {
   folder: "roll_03",
@@ -101,7 +102,7 @@ function getImageURL() {
   const index = getCurrentThemeIndex();
   const file = roll.files[index];
 
-  return `https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/${roll.folder}/${file}`;
+  return `${PHOTO_BASE}/${roll.folder}/${encodeURIComponent(file)}`;
 }
 
 function advanceIndex() {
