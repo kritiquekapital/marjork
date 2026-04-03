@@ -7,7 +7,6 @@ const CLASSIC_ROLL = {
   files: [
     "roll_03_(11).jpg",
     "roll_03_(12).jpg",
-    "roll_03_(13).jpg",
     "roll_03_(15).jpg",
     "roll_03_(17).jpg",
     "roll_03_(21).jpg",
