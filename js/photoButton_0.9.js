@@ -55,7 +55,7 @@ const DISTORT_ROLL = {
 const FRENCHRAIN_ROLL = {
   folder: "frenchrain",
   files: [
-    "cordes en boyaux.png",
+    "cordes-en-boyaux.png",
     "brella.png",
     "crowdd.png",
     "net.png",
@@ -72,6 +72,7 @@ const THEME_MAP = {
   nature: DUDEHELLOCAMERON,
   lofi: DUDEHELLOCAMERON,
   space: DISTORT_ROLL,
+  glitch: DISTORT_ROLL,
   rain: FRENCHRAIN_ROLL,
   logistics: DUDEHELLOCAMERON
 };
