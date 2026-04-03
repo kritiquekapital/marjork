@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: "art", displayName: "🎨" },
     { name: "space", displayName: "🚀" },
     { name: "rain", displayName: "🌧️" },
+    { name: "glitch", displayName: "🥴" },
     { name: "modern", displayName: "🌚" },
     { name: "nature", displayName: "🌞" },
     { name: "classic", displayName: "😎" },
@@ -38,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function getBaseThemes() {
     if (isPhone) {
-      return allThemes.filter(t => ["retro", "art", "space", "rain"].includes(t.name) || t.name === savedThemeName);
+      return allThemes.filter(t => ["retro", "art", "space", "rain", "glitch"].includes(t.name) || t.name === savedThemeName);
     }
 
     if (isTablet) {
-      return allThemes.filter(t => ["retro", "art", "rain", "modern", "classic", "space"].includes(t.name));
+      return allThemes.filter(t => ["retro", "art", "space", "rain", "glitch", "modern", "classic"].includes(t.name));
     }
 
     return allThemes;
