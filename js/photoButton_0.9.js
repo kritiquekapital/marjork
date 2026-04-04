@@ -42,9 +42,11 @@ const DUDEHELLOCAMERON = {
 const DISTORT_ROLL = {
   folder: "DISTORT_ROLL",
   files: [
+    "industry.jpg",
     "blindingportal.jpg",
     "branchesinthedark.jpg",
     "gheist.jpg",
+    "afterimage.jpg",
     "idkeeeeek.jpg",
     "lightsonthewater.jpg",
     "PIKED.jpg",
