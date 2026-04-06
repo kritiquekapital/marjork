@@ -1422,7 +1422,8 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   align-items: center;
   position: relative;
   overflow: hidden;
-  z-index: 1000; /* directly under spotify */
+  z-index: 1000;
+  pointer-events: none; 
 }
 
 .statsfm img {
@@ -1452,18 +1453,26 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   opacity: 0;
 }
 
-.statsfm:hover .overlay {
-  visibility: visible;
-  opacity: 1;
-}
-
 .statsfm .overlay img {
   width: 50%;
   height: auto;
   object-fit: contain;
 }
 
-.statsfm:hover img {
+.statsfm.is-unlocked img {
+  opacity: 1;
+}
+
+.statsfm.is-clickable {
+  pointer-events: auto;
+}
+
+.statsfm.is-clickable:hover .overlay {
+  visibility: visible;
+  opacity: 1;
+}
+
+.statsfm.is-clickable:hover img {
   opacity: 1;
 }
 
