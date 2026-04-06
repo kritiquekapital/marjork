@@ -3,6 +3,7 @@ import { track } from './analytics.js';
 document.addEventListener("DOMContentLoaded", function () {
   const STORAGE_KEY = "disableUrlLinks";
   const SESSION_KEY = "openedLinkButtonsThisSession";
+  const STATSFM_CLICK_DELAY = 500;
 
   const HARD_BLOCK_SELECTOR = [
     ".substack-button",
@@ -20,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ".wip",
     ".spotify"
   ].join(", ");
+
+  let statsUnlocked = false;
+  let statsClickable = false;
+  let statsClickableTimer = null;
 
   function urlLinksDisabled() {
     return localStorage.getItem(STORAGE_KEY) === "true";
@@ -82,15 +87,134 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
+  function getSpotifyButton() {
+    return document.querySelector(".spotify");
+  }
+
+  function getStatsfmButton() {
+    return document.querySelector(".statsfm");
+  }
+
+  function isSpotifyFree() {
+    const spotifyButton = getSpotifyButton();
+    return !!spotifyButton && spotifyButton.classList.contains("free");
+  }
+
+  function clearStatsfmClickableTimer() {
+    if (!statsClickableTimer) return;
+    clearTimeout(statsClickableTimer);
+    statsClickableTimer = null;
+  }
+
+  function applyStatsfmState() {
+    const statsfmButton = getStatsfmButton();
+    if (!statsfmButton) return;
+
+    statsfmButton.classList.toggle("is-unlocked", statsUnlocked);
+    statsfmButton.classList.toggle("is-clickable", statsClickable);
+
+    statsfmButton.setAttribute(
+      "aria-disabled",
+      statsClickable ? "false" : "true"
+    );
+
+    if (statsClickable) {
+      statsfmButton.removeAttribute("tabindex");
+    } else {
+      statsfmButton.tabIndex = -1;
+    }
+  }
+
+  function disableStatsfmClickability() {
+    clearStatsfmClickableTimer();
+    statsClickable = false;
+    applyStatsfmState();
+  }
+
+  function enableStatsfmClickabilityWithDelay() {
+    clearStatsfmClickableTimer();
+
+    if (!statsUnlocked || !isSpotifyFree()) {
+      statsClickable = false;
+      applyStatsfmState();
+      return;
+    }
+
+    statsClickable = false;
+    applyStatsfmState();
+
+    statsClickableTimer = setTimeout(() => {
+      if (!statsUnlocked || !isSpotifyFree()) {
+        statsClickable = false;
+        applyStatsfmState();
+        return;
+      }
+
+      statsClickable = true;
+      applyStatsfmState();
+    }, STATSFM_CLICK_DELAY);
+  }
+
+  function unlockStatsfmVisual() {
+    statsUnlocked = true;
+    applyStatsfmState();
+
+    if (isSpotifyFree()) {
+      enableStatsfmClickabilityWithDelay();
+    }
+  }
+
+  function lockStatsfmVisual() {
+    statsUnlocked = false;
+    disableStatsfmClickability();
+    applyStatsfmState();
+  }
+
+  function syncStatsfmWithSpotifyState() {
+    if (!statsUnlocked) {
+      disableStatsfmClickability();
+      return;
+    }
+
+    if (isSpotifyFree()) {
+      enableStatsfmClickabilityWithDelay();
+    } else {
+      disableStatsfmClickability();
+    }
+  }
+
+  const spotifyButton = getSpotifyButton();
+  if (spotifyButton) {
+    const spotifyObserver = new MutationObserver(() => {
+      syncStatsfmWithSpotifyState();
+    });
+
+    spotifyObserver.observe(spotifyButton, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+  }
+
+  document.addEventListener("statsfm:unlock", unlockStatsfmVisual);
+  document.addEventListener("statsfm:lock", lockStatsfmVisual);
+
   document.addEventListener(
     "click",
     function (event) {
       const button = event.target.closest(HARD_BLOCK_SELECTOR);
       if (!button) return;
 
+      const isStatsfmButton = button.classList.contains("statsfm");
       const url = button.getAttribute("href");
 
       if (urlLinksDisabled()) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        return;
+      }
+
+      if (isStatsfmButton && !statsClickable) {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
@@ -117,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (isInAppBrowser()) {
         event.preventDefault();
         window.location.href = url;
-        return;
       }
     },
     true
@@ -126,8 +249,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("urlLinksSettingChanged", () => {
     syncDisabledVisualState();
     syncSessionOpenedVisualState();
+    applyStatsfmState();
   });
 
   syncDisabledVisualState();
   syncSessionOpenedVisualState();
+  disableStatsfmClickability();
+  applyStatsfmState();
 });
