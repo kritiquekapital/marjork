@@ -232,7 +232,7 @@ if (spotifyButton) {
     if (isFree) return;
 
     isFree = true;
-     = false;
+    isScored = false;
     clearHoverBreakTimer();
     goal.style.opacity = "0";
 
