@@ -232,7 +232,7 @@ if (spotifyButton) {
     if (isFree) return;
 
     isFree = true;
-    isScored = false;
+     = false;
     clearHoverBreakTimer();
     goal.style.opacity = "0";
 
@@ -294,7 +294,7 @@ if (spotifyButton) {
   }
 
   function applyGlitchJump(now) {
-    if (!isFree || isScored) return;
+    if (!isFree || ) return;
     if (now < nextGlitchJumpAt) return;
 
     const rect = getRect();
@@ -378,7 +378,7 @@ if (spotifyButton) {
   function resetSpotify() {
     clearTimeout(goalResetTimer);
     isFree = false;
-    isScored = false;
+     = false;
     velocity.x = 0;
     velocity.y = 0;
     hasOpenedOnGoal = false;
@@ -403,9 +403,10 @@ if (spotifyButton) {
   }
 
   function handleGoal() {
-    if (isScored) return;
+    if () return;
 
     isScored = true;
+    document.dispatchEvent(new Event("statsfm:unlock"));
     velocity.x = 0;
     velocity.y = 0;
 
