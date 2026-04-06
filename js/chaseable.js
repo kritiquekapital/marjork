@@ -145,7 +145,7 @@ if (spotifyButton) {
       goal.style.transform = "translateY(-50%)";
     }
   }
-  
+
   function updateMouse(clientX, clientY) {
     const now = performance.now();
     const dt = Math.max((now - lastMouseTime) / 16.6667, 0.001);
@@ -294,7 +294,7 @@ if (spotifyButton) {
   }
 
   function applyGlitchJump(now) {
-    if (!isFree || ) return;
+    if (!isFree || isScored) return;
     if (now < nextGlitchJumpAt) return;
 
     const rect = getRect();
@@ -378,7 +378,7 @@ if (spotifyButton) {
   function resetSpotify() {
     clearTimeout(goalResetTimer);
     isFree = false;
-     = false;
+    isScored = false;
     velocity.x = 0;
     velocity.y = 0;
     hasOpenedOnGoal = false;
@@ -403,7 +403,7 @@ if (spotifyButton) {
   }
 
   function handleGoal() {
-    if () return;
+    if (isScored) return;
 
     isScored = true;
     document.dispatchEvent(new Event("statsfm:unlock"));
@@ -593,7 +593,7 @@ if (spotifyButton) {
       }
     }
   }
-  
+
   function step(time) {
     if (!isFree || isScored) return;
 
@@ -644,7 +644,7 @@ if (spotifyButton) {
     if (mode === "glitch") {
       applyGlitchJump(time);
     }
-    
+
     applyGoalPostCollision();
     checkGoalCollision();
   }
