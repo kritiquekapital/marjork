@@ -1,137 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=1, user-scalable=no">
   <title>.oCam</title>
 
-  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
-  <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
-  <link rel="icon" href="/assets/icons/favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
-  <link rel="manifest" href="/assets/icons/site.webmanifest">
-  <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+  <!-- Fonts & Core CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/web.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/popups.css">
+  <link rel="stylesheet" href="css/mobile.css"> <!-- ALWAYS load, media queries handled internally -->
+  <link rel="stylesheet" href="css/logistics.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="2828c034-f1fe-4f26-9807-8cfe87875bd7"></script>
 
-  <script
-    defer
-    src="https://cloud.umami.is/script.js"
-    data-website-id="0744fc35-c1fb-4515-9fa3-0c503c77a110"
-    data-domains="kritiquekapital.com,www.kritiquekapital.com"
-    data-exclude-search="true"
-    data-exclude-hash="true"
-    data-do-not-track="true"
-    data-performance="true"
-  ></script>
-
-  <meta name="msapplication-TileColor" content="#0c0d11">
-  <meta name="theme-color" content="#0c0d11">
-
-  <link rel="stylesheet" href="css/radial.css">
-  <link rel="stylesheet" href="css/sections/resume-section.css">
-  <link rel="stylesheet" href="css/sections/writing-section.css">
-  <link rel="stylesheet" href="css/sections/marketing-section.css">
-  <link rel="stylesheet" href="css/sections/creative-section.css">
-  <link rel="stylesheet" href="css/sections/film-section.css">
-  <link rel="stylesheet" href="css/sections/music-section.css">
-  <link rel="stylesheet" href="css/mobile.css">
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/favicon.ico"> 
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/apple-touch-icon.png">
+  <link rel="mask-icon" href="https://raw.githubusercontent.com/kritiquekapital/marjork/main/suprises/icon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 </head>
+
 <body>
-  <main class="site-shell">
-    <section class="space-view" id="spaceView" aria-label="Portfolio navigation space">
-      <div class="space-camera" id="spaceCamera">
-        <section class="section-panel" data-slot="1" data-section="marketing" aria-labelledby="panel-title-marketing"></section>
-        <section class="section-panel" data-slot="2" data-section="creative" aria-labelledby="panel-title-creative"></section>
-        <section class="section-panel" data-slot="3" data-section="music" aria-labelledby="panel-title-music"></section>
-        <section class="section-panel" data-slot="4" data-section="resume" aria-labelledby="panel-title-resume"></section>
-        <section class="section-panel" data-slot="5" data-section="film" aria-labelledby="panel-title-film"></section>
-        <section class="section-panel" data-slot="6" data-section="writing" aria-labelledby="panel-title-writing"></section>
-        <div id="radial" class="radial" aria-label="Portfolio wheel">
-          <svg
-            class="radial-svg"
-            viewBox="0 0 100 100"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <circle class="radial-ring-base" cx="50" cy="50" r="49"></circle>
-            <circle class="radial-ring-cutout" cx="50" cy="50" r="25.5"></circle>
+  <div class="container">
+    <div class="grid-container">
+      <div id="space-background"></div>
+      <div class="grid-backdrop"></div>
 
-            <g class="slice-group slice-marketing" data-slot="1" data-section="marketing" tabindex="0" role="button" aria-label="Open marketing section">
-              <path class="slice-path" d="M 50.000 24.500 L 50.000 0.000 A 50.000 50.000 0 0 1 93.301 25.000 L 71.218 37.750 A 24.500 24.500 0 0 0 50.000 24.500 Z"></path>
-            </g>
+      <!-- First Row -->
+      <a href="https://substack.com/@camglhf?utm_source=user-menu" target="_blank" class="substack-button">
+        <img src="https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png" alt="Substack">
+      </a>
+      <a href="https://x.com/cameron_glhf" target="_blank" class="twitter">
+        <img src="https://pbs.twimg.com/profile_images/1778281333531234305/6Vj_j3iH_400x400.jpg" alt="Twitter">
+      </a>
+      <a href="https://invite.duolingo.com/BDHTZTB5CWWKTAEVODZTZEGOCM" target="_blank" class="duolingo">
+        <img src="https://simg-ssl.duolingo.com/ssr-avatars/825995047/SSR-KngIoLV5cH/xlarge" alt="Duolingo">
+      </a>
 
-            <g class="slice-group slice-creative" data-slot="2" data-section="creative" tabindex="0" role="button" aria-label="Open creative section">
-              <path class="slice-path" d="M 71.218 37.750 L 93.301 25.000 A 50.000 50.000 0 0 1 93.301 75.000 L 71.218 62.250 A 24.500 24.500 0 0 0 71.218 37.750 Z"></path>
-            </g>
-
-            <g class="slice-group slice-resume" data-slot="3" data-section="music" tabindex="0" role="button" aria-label="Open music section">
-              <path class="slice-path" d="M 71.218 62.250 L 93.301 75.000 A 50.000 50.000 0 0 1 50.000 100.000 L 50.000 75.500 A 24.500 24.500 0 0 0 71.218 62.250 Z"></path>
-            </g>
-
-            <g class="slice-group slice-writing" data-slot="4" data-section="resume" tabindex="0" role="button" aria-label="Open resume section">
-              <path class="slice-path" d="M 50.000 75.500 L 50.000 100.000 A 50.000 50.000 0 0 1 6.699 75.000 L 28.782 62.250 A 24.500 24.500 0 0 0 50.000 75.500 Z"></path>
-            </g>
-
-            <g class="slice-group slice-film" data-slot="5" data-section="film" tabindex="0" role="button" aria-label="Open film section">
-              <path class="slice-path" d="M 28.782 62.250 L 6.699 75.000 A 50.000 50.000 0 0 1 6.699 25.000 L 28.782 37.750 A 24.500 24.500 0 0 0 28.782 62.250 Z"></path>
-            </g>
-
-            <g class="slice-group slice-about" data-slot="6" data-section="writing" tabindex="0" role="button" aria-label="Open writing section">
-              <path class="slice-path" d="M 28.782 37.750 L 6.699 25.000 A 50.000 50.000 0 0 1 50.000 0.000 L 50.000 24.500 A 24.500 24.500 0 0 0 28.782 37.750 Z"></path>
-            </g>
-          </svg>
-
-          <div class="slice-labels" aria-hidden="true">
-            <span class="slice-label" data-slot="1" data-section="marketing">marketing</span>
-            <span class="slice-label" data-slot="2" data-section="creative">creative</span>
-            <span class="slice-label" data-slot="3" data-section="music">music</span>
-            <span class="slice-label" data-slot="4" data-section="resume">resume</span>
-            <span class="slice-label" data-slot="5" data-section="film">film</span>
-            <span class="slice-label" data-slot="6" data-section="writing">writing</span>
-          </div>
-
-          <button class="center" id="centerHub" aria-label="Return to home view">
-            <span class="center-core">.oCam</span>
-
-            <span class="center-greetings" aria-hidden="true">
-              <span class="center-greeting" style="--greeting-delay: 0s;">hello!</span>
-              <span class="center-greeting" style="--greeting-delay: 3.5s;">привет!</span>
-              <span class="center-greeting" style="--greeting-delay: 7s;">olá!</span>
-              <span class="center-greeting" style="--greeting-delay: 10.5s;">hola!</span>
-            </span>
-          </button>
+      <!-- Second Row -->
+      <a href="https://stats.fm/marjork" target="_blank" class="statsfm">
+        <img src="https://stats.fm/api/image?url=https%3A%2F%2Fcdn.stats.fm%2Ffile%2Fstatsfm%2Fimages%2Fusers%2F31m6yxbmqxjd6zq3eg6kk3aefuae%2Fdc140bda1efee5a6acf1d7e33a38d46c.webp&w=256&q=75&fallbackImg=https://cdn.stats.fm/file/statsfm/images/placeholders/users/private.webp" alt="StatsFM">
+        <div class="overlay">
+          <img src="https://em-content.zobj.net/source/apple/391/goose_1fabf.png" alt="goose">
         </div>
+      </a>
+      <a href="https://letterboxd.com/marjork/" target="_blank" class="letterboxd"></a>
+      <a href="https://dropkickd.com/profile/majork" target="_blank" class="dropkickd-button">
+        <span class="logo"></span>
+      </a>
+      <a href="https://open.spotify.com/user/31m6yxbmqxjd6zq3eg6kk3aefuae" target="_blank" class="spotify">
+        <div class="bar top"></div>
+        <div class="bar middle"></div>
+        <div class="bar bottom"></div>
+      </a>
+
+      <!-- Third Row -->
+      <a href="https://backloggd.com/u/majork/" target="_blank" class="backlog-button" aria-label="Backlog">
+        <span class="backlog-emoji">💾</span>
+      </a>
+      <div class="kiss-hole" aria-hidden="true"></div>
+        <button class="kiss-button"></button>
+      <button class="games-like-button surprise" id="games-like-button" aria-label="Games I Like">
+        <span class="joystick-base"></span>
+
+        <span class="joystick-assembly">
+          <span class="joystick-shaft"></span>
+          <span class="joystick-knob"></span>
+        </span>
+      </button>
+
+      <!-- Fourth Row -->
+      <a href="#" class="propaganda-link" target="_blank">
+        <div class="propaganda">
+          <span class="symbol">LIVE</span>
+        </div>
+      </a>
+      <a href="#" class="photo">
+        <div class="lens"></div>
+      </a>
+      <div class="vinyl">
+        <a href="javascript:void(0);" class="vinyl-link">
+          <div class="wood-box"></div>
+          <div class="record"></div>
+          <div class="arm">
+            <div class="stylus-base"></div>
+          </div>
+        </a>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="site-footer-left">
-      <span class="site-footer-warning">WIP / Not Mobile Optimized</span>
-    </div>
-
-    <div class="site-footer-center">
-      <button id="homeButton" class="home-button" aria-label="Return to center">
-        home
+  
+      <!-- Fifth Row -->
+      <button class="wip">🔜</button>
+      <button class="theme-button" id="themeButton">🌓</button>
+      <button class="secret-button" aria-label="Minesweeper">
+        <span class="mine-fuse"></span>
+        <span class="mine-mark">!</span>
       </button>
     </div>
+  </div>
 
-    <div class="site-footer-right">
-      <span class="site-footer-brand">© .oCam Studios</span>
+  <!-- Floating Components -->
+  <div id="musicPlayer" class="ipod-popup draggable">
+    <div class="ipod-screen">
+      <iframe id="musicFrame" width="100%" height="100%" frameborder="0" allow="autoplay"></iframe>
     </div>
-  </footer>
+    <div class="ipod-controls">
+      <button class="ipod-btn menu-btn">MENU</button>
+      <div class="click-wheel">
+        <button class="ipod-btn prev-btn">◀◀</button>
+        <button class="ipod-btn next-btn">▶▶</button>
+        <button class="ipod-btn playpause">▶/❚❚</button>
+      </div>
+    </div>
+  </div>
 
-  <script type="module" src="js/mobile.js"></script>
-  <script type="module" src="js/radial.js"></script>
-  <script type="module" src="js/sections/resume-section.js"></script>
-  <script type="module" src="js/sections/film-section.js"></script>
-  <script type="module" src="js/sections/music-section.js"></script>
-  <script type="module" src="js/sections/writing-section.js"></script>
-  <script type="module" src="js/sections/marketing-section.js"></script>
-  <script type="module" src="js/sections/creative-section.js"></script>
+  <div id="videoPlayer" class="draggable" style="display: none;">
+    <div class="video-resize-bar"></div>
+    <iframe id="videoFrame" allow="autoplay; fullscreen"></iframe>
+    <div class="video-controls">
+      <button id="videoPrev">◀ Prev</button>
+      <button id="videoPin" class="pin-btn">📌</button>
+      <button id="videoNext">Next ▶</button>
+    </div>
+  </div>
 
+  <div id="gamesShelfOverlay" class="games-shelf-overlay" aria-hidden="true">
+   <div class="games-shelf-modal" role="dialog" aria-modal="true" aria-labelledby="gamesShelfTitle">
+     <div class="games-shelf-header">
+        <h2 id="gamesShelfTitle">Games I Like</h2>
+        <button id="closeGamesShelf" class="close-button games-shelf-close" aria-label="Close games shelf">×</button>
+     </div>
+
+     <div class="games-shelf-frame">
+       <div id="gamesShelfRow" class="games-shelf-row"></div>
+      </div>
+   </div>
+  </div>
+
+  <div class="popup-game" id="minesweeper-game" style="display: none;">
+    <div class="minesweeper-header">
+      <div class="minesweeper-controls">
+        <select class="difficulty-select" id="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+        <button class="new-game-button">New Game</button>
+        <button class="fullscreen-button mobile-only">⛶</button>
+      </div>
+      <button class="close-button" id="close-minesweeper">×</button>
+    </div>
+    <div id="minesweeper-grid"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/bounceable.js" defer></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script type="module" src="js/themeSwitcher_0.9.js" defer></script> 
+  <script type="module" src="js/photoButton_0.9.js" defer></script>
+  <script type="module" src="js/chaseable.js" defer></script>
+  <script type="module" src="js/kissButton_0.9.js" defer></script>
+  <script type="module" src="js/musicPlayer_1.0.js" defer></script>
+  <script type="module" src="js/cinema.js" defer></script>
+  <script src="js/vinylButton_0.9.js" defer></script>
+  <script type="module" src="js/coolgamesilike.js" defer></script>
+  <script type="module" src="js/minesweeper.js" defer></script>
+  <script src="js/touch-events.js" defer></script>
+  <script type="module" src="js/handleLinks.js"></script>
+  <script src="js/spinna.js"></script>
+  <script type="module" src="js/settingsPanel.js" defer></script>
+  <script type="module" src="js/library.js" defer></script>
+
+  <!-- Bookcase / Library Shelf -->
+  <div id="bookcaseWrapper" class="bookcase-wrapper" style="display:none;">
+    <div id="bookcaseBackdrop" class="bookcase-backdrop"></div>
+    <div id="bookcase" class="popup-bookcase">
+      <div class="bookcase-header">
+        <h2>Library</h2>
+        <button id="closeBookcase" class="close-button">×</button>
+      </div>
+      <div id="bookGrid" class="book-grid"></div> <!-- JS injects books here -->
+    </div>
+  </div>
+
+  <!-- PDF Reader -->
+  <div id="pdfReader" class="popup-pdfreader" style="display:none;">
+    <div class="pdf-header">
+      <div class="pdf-title">
+        <span id="pdfSection"></span> – <span id="pdfWorkTitle"></span>
+      </div>
+      <button id="closeReader" class="close-button">×</button>
+    </div>
+    <iframe id="pdfFrame" class="pdf-frame" src="" frameborder="0"></iframe>
+  </div>
+
+<div id="siteSettings" class="site-settings" aria-label="Site settings">
+  <button id="settingsCog" class="settings-cog" aria-label="Open site settings" aria-expanded="false">
+    <span class="settings-cog-icon">⚙</span>
+  </button>
+
+  <div id="settingsDropdown" class="settings-dropdown" aria-hidden="true">
+    <button
+      type="button"
+      id="siteVolumeOrb"
+      class="settings-volume-orb"
+      aria-label="Site volume"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="40"
+      style="--volume-fill: 40%;"
+    >
+      <span class="settings-volume-label">🔊</span>
+    </button>
+  </div>
+</div>
+  
+<footer class="site-footer">
+  <span>© .oCam Studios</span>
+</footer>
+  
 </body>
 </html>
