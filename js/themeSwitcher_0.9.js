@@ -272,6 +272,21 @@ document.addEventListener('DOMContentLoaded', () => {
     return `css/themes/theme-${themeName}.css`;
   }
 
+  function updateSubstackFlower() {
+    const flower = document.querySelector(".substack-flower");
+    if (!flower) return;
+
+    if (document.body.classList.contains("theme-retro")) {
+      flower.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png";
+    } else if (document.body.classList.contains("theme-space")) {
+      flower.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/YOUR_SPACE_FLOWER.png";
+    } else if (document.body.classList.contains("theme-rain")) {
+      flower.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/YOUR_RAIN_FLOWER.png";
+    } else {
+      flower.src = "https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png";
+    }
+  }
+
   function getOrCreateThemeLink() {
     let themeLink = document.querySelector('link[data-theme="true"]');
 
