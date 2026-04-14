@@ -1666,7 +1666,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   opacity: 1;
 }
 
-.substack-button {
+.substack-button > img:not(.substack-overlay) {
   background-color: #FF6A13;
   color: white;
   border-radius: 50%;
