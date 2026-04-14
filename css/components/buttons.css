@@ -1714,11 +1714,13 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 }
 
 body.theme-space .substack-button,
+body.theme-rain .substack-button,
 body.theme-retro .substack-button {
   background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png');
 }
 
 body.theme-space .substack-button > img:first-of-type,
+body.theme-rain .substack-button > img:first-of-type,
 body.theme-retro .substack-button > img:first-of-type {
   opacity: 0;
 }
