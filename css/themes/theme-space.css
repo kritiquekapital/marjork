@@ -60,10 +60,6 @@ body.theme-space .settings-volume-orb::before {
     linear-gradient(45deg, #2e4df2, #1cc7a1, #b249f9) border-box; /* Gradient border */
 }
 
-.theme-space .substack-button img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png'); /* Space-themed image */
-}
-
 /* Space Theme Inactivity Tint */
 .space-tint {
   position: fixed;
