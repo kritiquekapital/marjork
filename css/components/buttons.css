@@ -1713,6 +1713,16 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   display: block;
 }
 
+body.theme-space .substack-button,
+body.theme-retro .substack-button {
+  background-image: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2304.png');
+}
+
+body.theme-space .substack-button > img:first-of-type,
+body.theme-retro .substack-button > img:first-of-type {
+  opacity: 0;
+}
+
 @keyframes rainbow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
