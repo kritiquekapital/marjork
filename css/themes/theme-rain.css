@@ -1,10 +1,6 @@
 /* ==================== */
 /* Rain Theme */
 /* ==================== */
-.theme-rain .substack-button img {
-  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png');
-}
-
 .theme-rain {
   position: relative;
   background: #0f1720;
@@ -49,6 +45,11 @@ body.theme-rain .grid-container {
 body.theme-rain .settings-volume-orb::before {
   background: linear-gradient(180deg, #d7e9f8 0%, #8db2d1 100%) !important;
   box-shadow: 0 0 12px rgba(194, 225, 255, 0.45);
+}
+
+body.theme-rain .substack-button > img:not(.substack-overlay) {
+  content: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/Psych-Flower%20%2301.png');
+  filter: saturate(0.9) brightness(0.92) contrast(1.05);
 }
 
 .theme-rain .substack-button {
