@@ -1693,9 +1693,8 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
-  display: block;
-  position: relative;
-  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .substack-overlay {
