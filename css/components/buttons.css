@@ -1666,7 +1666,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   opacity: 1;
 }
 
-.substack-button > img:not(.substack-overlay) {
+.substack-button {
   background-color: #FF6A13;
   color: white;
   border-radius: 50%;
@@ -1681,12 +1681,9 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   transform-style: preserve-3d;
   position: relative;
   border: 2px solid #FF6A13;
-  background-image: url('https://github.com/kritiquekapital/marjork/blob/main/css/pic/Psych-Flower%20%2304.png');
-  background-size: cover;
-  background-position: center;
 }
 
-.substack-button img {
+.substack-button > img:not(.substack-overlay) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1694,6 +1691,7 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   border-radius: 50%;
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
+  display: block;
 }
 
 .substack-overlay {
@@ -1704,7 +1702,9 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   height: 40%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
+  object-fit: contain;
+  display: block;
 }
 
 @keyframes rainbow {
