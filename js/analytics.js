@@ -16,7 +16,15 @@ function allowed() {
 export function track(eventName, data) {
   if (!allowed()) return;
   if (typeof window.umami?.track !== "function") return;
-  window.umami.track(eventName, data);
+  try {
+    if (data && Object.keys(data).length > 0) {
+      window.umami.track(eventName, data);
+    } else {
+      window.umami.track(eventName);
+    }
+  } catch (err) {
+    console.warn("Umami track failed:", eventName, err);
+  }
 }
 
 // ─── identifySession() ───────────────────────────────────────────────────────
