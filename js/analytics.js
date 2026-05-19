@@ -170,7 +170,7 @@ export function trackTimeOnSite() {
       fireExit();
       onBecomeHidden();
     } else {
-      exitFired = false; 
+      exitFired = false;
       onBecomeVisible();
     }
   });
