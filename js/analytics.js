@@ -177,3 +177,9 @@ export function trackTimeOnSite() {
 
   window.addEventListener("beforeunload", fireExit);
 }
+
+// ─── Auto-init ───────────────────────────────────────────────────────────────
+
+trackPageLoad();
+identifySession();
+trackTimeOnSite();
