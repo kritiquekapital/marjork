@@ -38,32 +38,55 @@ body {
   transition: opacity 2s ease-in-out;
 }
 
-/* First Row */
+/* P1 First Row */
 .substack-button     { grid-area: 1 / 1; }
 .twitter             { grid-area: 1 / 2; }
 .duolingo            { grid-area: 1 / 3; }
 
-/* Second Row */
+/* P1 Second Row */
 .dropkickd-button    { grid-area: 2 / 1; }
 .letterboxd          { grid-area: 2 / 2; }
 .statsfm             { grid-area: 2 / 3; }
 .spotify             { grid-area: 2 / 3; }
 
-/* Third Row */
-.backlog-button      { grid-area: 3 / 1; }
+/* P1 Third Row */
+.soundcloud-button   { grid-area: 3 / 1; }
 .news-button         { display: none !important; }
 .kiss-button         { grid-area: 3 / 2; }
 .games-like-button   { grid-area: 3 / 3; }
 
-/* Fourth Row */
+/* P1 Fourth Row */
 .propaganda-link     { grid-area: 4 / 1; }
 .photo               { grid-area: 4 / 2; }
 .vinyl               { grid-area: 4 / 3; }
 
-/* Fifth Row */
+/* P1 Fifth Row */
 .wip                 { grid-area: 5 / 1; }
 #themeButton         { grid-area: 5 / 2; }
 .secret-button       { grid-area: 5 / 3; }
+
+/* P2 First Row */
+.grid-container .backlog-button { grid-area: 1 / 1; display: none; }
+
+.grid-container.page-2 .substack-button,
+.grid-container.page-2 .twitter,
+.grid-container.page-2 .duolingo,
+.grid-container.page-2 .dropkickd-button,
+.grid-container.page-2 .letterboxd,
+.grid-container.page-2 .statsfm,
+.grid-container.page-2 .spotify,
+.grid-container.page-2 .soundcloud-button,
+.grid-container.page-2 .kiss-button,
+.grid-container.page-2 .games-like-button,
+.grid-container.page-2 .propaganda-link,
+.grid-container.page-2 .photo,
+.grid-container.page-2 .vinyl {
+  display: none;
+}
+
+.grid-container.page-2 .backlog-button {
+  display: flex;
+}
 
 /* Backdrop Element */
 .grid-backdrop {
