@@ -57,13 +57,13 @@ body {
 
 /* P1 Fourth Row */
 .propaganda-link     { grid-area: 4 / 1; }
-.photo               { grid-area: 4 / 2; }
-.vinyl               { grid-area: 4 / 3; }
+.vinyl               { grid-area: 4 / 2; }
+.secret-button       { grid-area: 4 / 3; }
 
 /* P1 Fifth Row */
 .wip                 { grid-area: 5 / 1; }
 #themeButton         { grid-area: 5 / 2; }
-.secret-button       { grid-area: 5 / 3; }
+.photo               { grid-area: 5 / 3; }
 
 /* P2 First Row */
 .grid-container .backlog-button { grid-area: 1 / 1; display: none; }
@@ -76,10 +76,8 @@ body {
 .grid-container.page-2 .statsfm,
 .grid-container.page-2 .spotify,
 .grid-container.page-2 .soundcloud-button,
-.grid-container.page-2 .kiss-button,
 .grid-container.page-2 .games-like-button,
 .grid-container.page-2 .propaganda-link,
-.grid-container.page-2 .photo,
 .grid-container.page-2 .vinyl {
   display: none;
 }
