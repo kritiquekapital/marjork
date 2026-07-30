@@ -863,6 +863,53 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 }  
 
 /* ==================== */
+/* SoundCloud Button */
+/* ==================== */
+.soundcloud-button {
+  background-color: #FF5500 !important;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  overflow: hidden;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-decoration: none;
+  transition: transform 0.18s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  z-index: 1001;
+  mix-blend-mode: normal !important;
+  will-change: left, top, transform;
+}
+
+.soundcloud-button:not(.free):hover,
+.soundcloud-button.free {
+  background-color: black !important;
+  box-shadow: 0 0 30px rgba(255, 85, 0, 0.7) !important;
+  animation: boomBoxPulse 1s ease-in-out infinite !important;
+}
+
+.soundcloud-button.free {
+  position: fixed !important;
+  z-index: 1010 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: none !important;
+}
+
+.soundcloud-emoji {
+  position: relative;
+  z-index: 2;
+  font-size: 2.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+}
+
+/* ==================== */
 /* Backlog Button */
 /* ==================== */
 .backlog-button {
