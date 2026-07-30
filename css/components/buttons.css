@@ -901,12 +901,29 @@ body.theme-space .settings-dropdown > .settings-theme-option {
   transition: none !important;
 }
 
-.soundcloud-emoji {
-  position: relative;
+.soundcloud-logo {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  pointer-events: none;
   z-index: 2;
-  font-size: 2.4rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+  transition: opacity 0.2s ease;
+}
+
+.soundcloud-logo-b { opacity: 1; }
+.soundcloud-logo-o { opacity: 0; }
+
+.soundcloud-button:not(.free):hover .soundcloud-logo-b,
+.soundcloud-button.free .soundcloud-logo-b {
+  opacity: 0;
+}
+
+.soundcloud-button:not(.free):hover .soundcloud-logo-o,
+.soundcloud-button.free .soundcloud-logo-o {
+  opacity: 1;
 }
 
 /* ==================== */
