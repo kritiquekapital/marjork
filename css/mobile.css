@@ -58,8 +58,10 @@
   .kiss-button,
   .vinyl,
   .backlog-button,
+  .soundcloud-button,
   .games-like-button,
   .spotify.free,
+  .soundcloud-button.free,
   .kiss-button.free {
     width: 100px !important;
     height: 100px !important;
@@ -126,8 +128,10 @@
   .kiss-button,
   .vinyl,
   .backlog-button,
+  .soundcloud-button,
   .games-like-button,
   .spotify.free,
+  .soundcloud-button.free,
   .kiss-button.free {
     width: 100px !important;
     height: 100px !important;
@@ -159,10 +163,5 @@
     right: 10px;
     bottom: 10px;
     font-size: 11px;
-  }
-
-  .soundcloud-button {
-    width: 100px !important;
-    height: 100px !important;
   }
 }
