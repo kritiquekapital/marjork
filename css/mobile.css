@@ -160,4 +160,9 @@
     bottom: 10px;
     font-size: 11px;
   }
+
+  .soundcloud-button {
+    width: 100px !important;
+    height: 100px !important;
+  }
 }
