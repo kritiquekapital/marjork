@@ -1,8 +1,15 @@
 import { track } from './analytics.js';
 
-const spotifyButton = document.querySelector(".spotify");
+function initChaseable({
+  selector,
+  goalClass,
+  trackPrefix,
+  glowColor,
+  dispatchStatsfmUnlock = false
+}) {
+  const button = document.querySelector(selector);
+  if (!button) return;
 
-if (spotifyButton) {
   let isFree = false;
   let isScored = false;
   let hoverTimer = null;
@@ -36,15 +43,10 @@ if (spotifyButton) {
   const HARD_PADDING = 8;
   const MAX_SPEED = 42;
 
-  const origin = {
-    left: 0,
-    top: 0,
-    width: 0,
-    height: 0
-  };
+  const origin = { left: 0, top: 0, width: 0, height: 0 };
 
   const goal = document.createElement("div");
-  goal.className = "spotify-goal";
+  goal.className = goalClass;
   goal.setAttribute("aria-hidden", "true");
   document.body.appendChild(goal);
 
@@ -72,7 +74,7 @@ if (spotifyButton) {
   }
 
   function getRect() {
-    return spotifyButton.getBoundingClientRect();
+    return button.getBoundingClientRect();
   }
 
   function getCenter() {
@@ -90,7 +92,7 @@ if (spotifyButton) {
 
   function saveOrigin() {
     if (isFree) return;
-    const rect = spotifyButton.getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
     origin.left = rect.left;
     origin.top = rect.top;
     origin.width = rect.width;
@@ -101,7 +103,6 @@ if (spotifyButton) {
     goal.style.position = "fixed";
     goal.style.zIndex = "1005";
     goal.style.pointerEvents = "none";
-
     goal.style.opacity = isFree ? "1" : "0";
     goal.style.transition = "opacity 0.18s ease-out";
 
@@ -173,7 +174,7 @@ if (spotifyButton) {
 
   function startHoverBreakTimer() {
     if (isFree || hoverTimer || isCoarsePointer) return;
-    hoverTimer = setTimeout(() => freeSpotify(), hoverBreakDelay);
+    hoverTimer = setTimeout(() => freeButton(), hoverBreakDelay);
   }
 
   function clearHoverBreakTimer() {
@@ -228,7 +229,7 @@ if (spotifyButton) {
     capSpeed(isCoarsePointer ? 26 : MAX_SPEED);
   }
 
-  function freeSpotify(event = null) {
+  function freeButton(event = null) {
     if (isFree) return;
 
     isFree = true;
@@ -236,15 +237,15 @@ if (spotifyButton) {
     clearHoverBreakTimer();
     goal.style.opacity = "0";
 
-    const rect = spotifyButton.getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
 
-    spotifyButton.classList.add("free", "fleeing");
-    spotifyButton.style.position = "fixed";
-    spotifyButton.style.left = `${rect.left}px`;
-    spotifyButton.style.top = `${rect.top}px`;
-    spotifyButton.style.width = `${rect.width}px`;
-    spotifyButton.style.height = `${rect.height}px`;
-    spotifyButton.style.margin = "0";
+    button.classList.add("free", "fleeing");
+    button.style.position = "fixed";
+    button.style.left = `${rect.left}px`;
+    button.style.top = `${rect.top}px`;
+    button.style.width = `${rect.width}px`;
+    button.style.height = `${rect.height}px`;
+    button.style.margin = "0";
 
     const cx = event?.clientX ?? mouse.x ?? (rect.left + rect.width / 2);
     const cy = event?.clientY ?? mouse.y ?? (rect.top + rect.height / 2);
@@ -273,10 +274,9 @@ if (spotifyButton) {
     const ny = dy / distance;
 
     const overlap = Math.max(0, triggerRadius - distance);
-    const overlapRatio =
-      triggerRadius > 0
-        ? overlap / Math.max(triggerRadius, 1)
-        : 1 - Math.min(distance / Math.max(center.radius, 1), 1);
+    const overlapRatio = triggerRadius > 0
+      ? overlap / Math.max(triggerRadius, 1)
+      : 1 - Math.min(distance / Math.max(center.radius, 1), 1);
 
     const pushFromMouseMotionX = mouse.vx * 0.55;
     const pushFromMouseMotionY = mouse.vy * 0.55;
@@ -300,8 +300,8 @@ if (spotifyButton) {
     const rect = getRect();
     const maxX = window.innerWidth - rect.width;
     const maxY = window.innerHeight - rect.height;
-    const currentLeft = parseFloat(spotifyButton.style.left || "0");
-    const currentTop = parseFloat(spotifyButton.style.top || "0");
+    const currentLeft = parseFloat(button.style.left || "0");
+    const currentTop = parseFloat(button.style.top || "0");
 
     const jumpTier = Math.random();
     const jumpRange = jumpTier < 0.72 ? 70 : jumpTier < 0.94 ? 140 : 220;
@@ -312,8 +312,8 @@ if (spotifyButton) {
     nextLeft = clamp(nextLeft, 0, maxX);
     nextTop = clamp(nextTop, 0, maxY);
 
-    spotifyButton.style.left = `${nextLeft}px`;
-    spotifyButton.style.top = `${nextTop}px`;
+    button.style.left = `${nextLeft}px`;
+    button.style.top = `${nextTop}px`;
 
     velocity.x *= 0.78;
     velocity.y *= 0.78;
@@ -335,7 +335,7 @@ if (spotifyButton) {
     message.style.fontWeight = "900";
     message.style.fontSize = isCoarsePointer ? "2rem" : "2.4rem";
     message.style.letterSpacing = "0.08em";
-    message.style.textShadow = "0 0 10px rgba(0,255,0,0.55), 0 0 20px rgba(255,255,255,0.5)";
+    message.style.textShadow = `0 0 10px rgba(${glowColor},0.55), 0 0 20px rgba(255,255,255,0.5)`;
     message.style.zIndex = "20000";
     message.style.pointerEvents = "none";
     message.style.opacity = "1";
@@ -353,16 +353,16 @@ if (spotifyButton) {
     }, 950);
   }
 
-  function openSpotifyLink() {
+  function openLink() {
     if (urlLinksDisabled()) return false;
     if (hasOpenedOnGoal) return false;
 
-    const url = spotifyButton.getAttribute("href");
+    const url = button.getAttribute("href");
     if (!url) return false;
 
     hasOpenedOnGoal = true;
 
-    track("spotify_goal_open", {
+    track(`${trackPrefix}_goal_open`, {
       device: isCoarsePointer ? "mobile" : "desktop"
     });
 
@@ -375,7 +375,7 @@ if (spotifyButton) {
     return true;
   }
 
-  function resetSpotify() {
+  function resetButton() {
     clearTimeout(goalResetTimer);
     isFree = false;
     isScored = false;
@@ -388,14 +388,14 @@ if (spotifyButton) {
       animationFrame = null;
     }
 
-    spotifyButton.classList.remove("free", "fleeing");
-    spotifyButton.style.position = "";
-    spotifyButton.style.left = "";
-    spotifyButton.style.top = "";
-    spotifyButton.style.width = "";
-    spotifyButton.style.height = "";
-    spotifyButton.style.margin = "";
-    spotifyButton.style.zIndex = "";
+    button.classList.remove("free", "fleeing");
+    button.style.position = "";
+    button.style.left = "";
+    button.style.top = "";
+    button.style.width = "";
+    button.style.height = "";
+    button.style.margin = "";
+    button.style.zIndex = "";
 
     styleGoal();
     saveOrigin();
@@ -406,11 +406,15 @@ if (spotifyButton) {
     if (isScored) return;
 
     isScored = true;
-    document.dispatchEvent(new Event("statsfm:unlock"));
+
+    if (dispatchStatsfmUnlock) {
+      document.dispatchEvent(new Event("statsfm:unlock"));
+    }
+
     velocity.x = 0;
     velocity.y = 0;
 
-    track("spotify_goal_scored", {
+    track(`${trackPrefix}_goal_scored`, {
       device: isCoarsePointer ? "mobile" : "desktop",
       theme:
         document.body.classList.contains("theme-space")
@@ -428,12 +432,12 @@ if (spotifyButton) {
 
     if (!linksDisabled) {
       setTimeout(() => {
-        openSpotifyLink();
+        openLink();
       }, 140);
     }
 
     goalResetTimer = setTimeout(() => {
-      resetSpotify();
+      resetButton();
     }, 900);
   }
 
@@ -504,8 +508,8 @@ if (spotifyButton) {
     if (overlap > 0) {
       const push = overlap + 2;
 
-      spotifyButton.style.left = `${parseFloat(spotifyButton.style.left || "0") + nx * push}px`;
-      spotifyButton.style.top = `${parseFloat(spotifyButton.style.top || "0") + ny * push}px`;
+      button.style.left = `${parseFloat(button.style.left || "0") + nx * push}px`;
+      button.style.top = `${parseFloat(button.style.top || "0") + ny * push}px`;
 
       const dot = velocity.x * nx + velocity.y * ny;
 
@@ -520,8 +524,8 @@ if (spotifyButton) {
       const maxX = window.innerWidth - rect.width;
       const maxY = window.innerHeight - rect.height;
 
-      spotifyButton.style.left = `${clamp(parseFloat(spotifyButton.style.left || "0"), 0, maxX)}px`;
-      spotifyButton.style.top = `${clamp(parseFloat(spotifyButton.style.top || "0"), 0, maxY)}px`;
+      button.style.left = `${clamp(parseFloat(button.style.left || "0"), 0, maxX)}px`;
+      button.style.top = `${clamp(parseFloat(button.style.top || "0"), 0, maxY)}px`;
 
       return true;
     }
@@ -542,48 +546,18 @@ if (spotifyButton) {
       const crossbarHeight = 14;
 
       posts = [
-        {
-          left: goalRect.left,
-          right: goalRect.left + postWidth,
-          top: goalRect.top,
-          bottom: goalRect.bottom
-        },
-        {
-          left: goalRect.right - postWidth,
-          right: goalRect.right,
-          top: goalRect.top,
-          bottom: goalRect.bottom
-        },
-        {
-          left: goalRect.left,
-          right: goalRect.right,
-          top: goalRect.bottom - crossbarHeight,
-          bottom: goalRect.bottom
-        }
+        { left: goalRect.left, right: goalRect.left + postWidth, top: goalRect.top, bottom: goalRect.bottom },
+        { left: goalRect.right - postWidth, right: goalRect.right, top: goalRect.top, bottom: goalRect.bottom },
+        { left: goalRect.left, right: goalRect.right, top: goalRect.bottom - crossbarHeight, bottom: goalRect.bottom }
       ];
     } else {
       const postWidth = 18;
       const crossbarHeight = 14;
 
       posts = [
-        {
-          left: goalRect.left,
-          right: goalRect.right,
-          top: goalRect.top,
-          bottom: goalRect.top + postWidth
-        },
-        {
-          left: goalRect.left,
-          right: goalRect.right,
-          top: goalRect.bottom - postWidth,
-          bottom: goalRect.bottom
-        },
-        {
-          left: goalRect.left,
-          right: goalRect.left + crossbarHeight,
-          top: goalRect.top,
-          bottom: goalRect.bottom
-        }
+        { left: goalRect.left, right: goalRect.right, top: goalRect.top, bottom: goalRect.top + postWidth },
+        { left: goalRect.left, right: goalRect.right, top: goalRect.bottom - postWidth, bottom: goalRect.bottom },
+        { left: goalRect.left, right: goalRect.left + crossbarHeight, top: goalRect.top, bottom: goalRect.bottom }
       ];
     }
 
@@ -616,8 +590,8 @@ if (spotifyButton) {
     const width = rect.width;
     const height = rect.height;
 
-    let left = parseFloat(spotifyButton.style.left || "0") + velocity.x;
-    let top = parseFloat(spotifyButton.style.top || "0") + velocity.y;
+    let left = parseFloat(button.style.left || "0") + velocity.x;
+    let top = parseFloat(button.style.top || "0") + velocity.y;
 
     const maxX = window.innerWidth - width;
     const maxY = window.innerHeight - height;
@@ -638,8 +612,8 @@ if (spotifyButton) {
       velocity.y = -Math.abs(velocity.y) * bounce;
     }
 
-    spotifyButton.style.left = `${left}px`;
-    spotifyButton.style.top = `${top}px`;
+    button.style.left = `${left}px`;
+    button.style.top = `${top}px`;
 
     if (mode === "glitch") {
       applyGlitchJump(time);
@@ -671,35 +645,35 @@ if (spotifyButton) {
     const maxX = window.innerWidth - rect.width;
     const maxY = window.innerHeight - rect.height;
 
-    spotifyButton.style.left = `${clamp(parseFloat(spotifyButton.style.left || "0"), 0, maxX)}px`;
-    spotifyButton.style.top = `${clamp(parseFloat(spotifyButton.style.top || "0"), 0, maxY)}px`;
+    button.style.left = `${clamp(parseFloat(button.style.left || "0"), 0, maxX)}px`;
+    button.style.top = `${clamp(parseFloat(button.style.top || "0"), 0, maxY)}px`;
   }
 
-  spotifyButton.addEventListener("mouseenter", (event) => {
+  button.addEventListener("mouseenter", (event) => {
     updateMouse(event.clientX, event.clientY);
     startHoverBreakTimer();
   });
 
-  spotifyButton.addEventListener("mousemove", (event) => {
+  button.addEventListener("mousemove", (event) => {
     updateMouse(event.clientX, event.clientY);
     if (isFree) startAnimation();
   });
 
-  spotifyButton.addEventListener("mouseleave", clearHoverBreakTimer);
+  button.addEventListener("mouseleave", clearHoverBreakTimer);
 
   document.addEventListener("mousemove", (event) => {
     updateMouse(event.clientX, event.clientY);
     if (isFree) startAnimation();
   });
 
-  spotifyButton.addEventListener("pointerdown", (event) => {
+  button.addEventListener("pointerdown", (event) => {
     const clientX = event.clientX ?? window.innerWidth / 2;
     const clientY = event.clientY ?? window.innerHeight / 2;
 
     updateMouse(clientX, clientY);
 
     if (!isFree) {
-      freeSpotify({ clientX, clientY });
+      freeButton({ clientX, clientY });
     } else if (!isScored) {
       nudgeFromPointer(clientX, clientY);
       startAnimation();
@@ -709,14 +683,14 @@ if (spotifyButton) {
     event.stopPropagation();
   });
 
-  spotifyButton.addEventListener("click", (event) => {
+  button.addEventListener("click", (event) => {
     updateMouse(event.clientX, event.clientY);
 
     event.preventDefault();
     event.stopPropagation();
 
     if (!isFree) {
-      freeSpotify(event);
+      freeButton(event);
     }
   });
 
@@ -735,3 +709,19 @@ if (spotifyButton) {
     });
   });
 }
+
+initChaseable({
+  selector: ".spotify",
+  goalClass: "spotify-goal",
+  trackPrefix: "spotify",
+  glowColor: "0,255,0",
+  dispatchStatsfmUnlock: true
+});
+
+initChaseable({
+  selector: ".soundcloud-button",
+  goalClass: "soundcloud-goal",
+  trackPrefix: "soundcloud",
+  glowColor: "255,85,0",
+  dispatchStatsfmUnlock: false
+});
