@@ -1,3 +1,5 @@
+import { track } from './analytics.js';
+
 document.addEventListener("DOMContentLoaded", function () {
   document.body.style.touchAction = "manipulation";
 });
@@ -34,3 +36,58 @@ document.addEventListener(
   },
   { passive: false }
 );
+
+/* ==================== */
+/* Grid page switching (wip click + swipe right) */
+/* ==================== */
+document.addEventListener("DOMContentLoaded", function () {
+  const gridContainer = document.querySelector(".grid-container");
+  const wipButton = document.querySelector(".wip");
+  if (!gridContainer) return;
+
+  let onPage2 = false;
+
+  function goToPage(pageNum) {
+    const shouldBeOnPage2 = pageNum === 2;
+    if (shouldBeOnPage2 === onPage2) return;
+    onPage2 = shouldBeOnPage2;
+    gridContainer.classList.toggle("page-2", onPage2);
+    track("page_switch", { page: onPage2 ? 2 : 1 });
+  }
+
+  wipButton?.addEventListener("click", () => {
+    goToPage(onPage2 ? 1 : 2);
+  });
+
+  let touchStartX = null;
+  let touchStartY = null;
+
+  gridContainer.addEventListener(
+    "touchstart",
+    (event) => {
+      const t = event.changedTouches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+    },
+    { passive: true }
+  );
+
+  gridContainer.addEventListener(
+    "touchend",
+    (event) => {
+      if (touchStartX === null) return;
+      const t = event.changedTouches[0];
+      const deltaX = t.clientX - touchStartX;
+      const deltaY = t.clientY - touchStartY;
+      touchStartX = null;
+      touchStartY = null;
+
+      const SWIPE_THRESHOLD = 50;
+      if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+      if (Math.abs(deltaY) > Math.abs(deltaX)) return; // mostly vertical, ignore
+
+      goToPage(deltaX > 0 ? 2 : 1); // swipe right → page 2, swipe left → back
+    },
+    { passive: true }
+  );
+});
