@@ -55,8 +55,34 @@ body.theme-space::before {
   background: linear-gradient(0deg, #4a5058, #16181c 60%, #0a0b0d);
 }
 
-/* Theme-specific adjustments */
-.theme-space button {
+/* Theme-specific adjustments — off by default, flashes yellow on click, fades out slowly */
+.theme-space button:not(.wip):not(.kiss-button) {
+  background-color: transparent;
+  color: inherit;
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition:
+    background-color 1.4s ease,
+    border-color 1.4s ease,
+    box-shadow 1.4s ease,
+    color 1.4s ease;
+}
+
+.theme-space button:not(.wip):not(.kiss-button).theme-flash {
+  background-color: #ffd700;
+  color: #0b3d91;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px #ffd700;
+  transition:
+    background-color 0.06s ease,
+    border-color 0.06s ease,
+    box-shadow 0.06s ease,
+    color 0.06s ease;
+}
+
+/* wip and kiss-button keep the original always-on yellow fill, untouched */
+.theme-space button.wip,
+.theme-space button.kiss-button {
   background-color: #ffd700;
   color: #0b3d91;
   border: 1px solid #ffffff;
