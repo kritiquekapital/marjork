@@ -1,6 +1,19 @@
 body.theme-art {
-  background:
-    url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') center center / cover no-repeat fixed;
+  position: relative;
+  background: #0a0a0a;
+}
+
+body.theme-art::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100dvh;
+  transform: translate(-50%, -50%);
+  background: url('https://raw.githubusercontent.com/kritiquekapital/marjork/main/css/pic/fromtheheart.jpg') center center / cover no-repeat;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .paint-splatter {
