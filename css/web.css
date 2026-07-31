@@ -119,6 +119,19 @@ body {
   z-index: -1; /* Place it behind the grid container's content */
 }
 
+#space-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.kiss-hole {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 * {
     -webkit-user-select: none; /* Safari/Chrome */
     -moz-user-select: none; /* Firefox */
