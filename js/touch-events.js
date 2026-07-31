@@ -105,3 +105,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.addEventListener("click", (event) => {
+  const btn = event.target.closest("button:not(.wip):not(.kiss-button)");
+  if (!btn) return;
+  btn.classList.add("theme-flash");
+  clearTimeout(btn._themeFlashTimer);
+  btn._themeFlashTimer = setTimeout(() => {
+    btn.classList.remove("theme-flash");
+  }, 150);
+});
