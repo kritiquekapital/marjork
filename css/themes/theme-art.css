@@ -46,29 +46,29 @@ body.theme-art::before {
 }
 
 /* ==================== */
-/* Art Theme — Placeholder Buttons (pastel paint dabs) */
+/* Art Theme — Placeholder Buttons (paint palette, click = splash) */
 /* ==================== */
-.theme-art .ph-1 { --ph-pastel: #ffd6e8; } /* pink */
-.theme-art .ph-2 { --ph-pastel: #d6f0ff; } /* sky blue */
-.theme-art .ph-3 { --ph-pastel: #fff3c4; } /* butter yellow */
-.theme-art .ph-4 { --ph-pastel: #d9ffd6; } /* mint */
-.theme-art .ph-5 { --ph-pastel: #e6d6ff; } /* lavender */
-.theme-art .ph-6 { --ph-pastel: #ffe0c2; } /* peach */
-.theme-art .ph-7 { --ph-pastel: #c2fff0; } /* seafoam */
-.theme-art .ph-8 { --ph-pastel: #ffd6d6; } /* blush */
-.theme-art .ph-9 { --ph-pastel: #e0e0ff; } /* periwinkle */
+.theme-art .ph-1 { --ph-color: #ff8fa3; --ph-accent: #ffe3ea; }
+.theme-art .ph-2 { --ph-color: #4fb4ff; --ph-accent: #d6f0ff; }
+.theme-art .ph-3 { --ph-color: #ffcb4d; --ph-accent: #fff3c4; }
+.theme-art .ph-4 { --ph-color: #43d1b8; --ph-accent: #d9fff5; }
+.theme-art .ph-5 { --ph-color: #b48cff; --ph-accent: #ecdcff; }
+.theme-art .ph-6 { --ph-color: #ff9a5a; --ph-accent: #ffe4cc; }
+.theme-art .ph-7 { --ph-color: #52d9c3; --ph-accent: #d2fff5; }
+.theme-art .ph-8 { --ph-color: #ff6f9c; --ph-accent: #ffd9e6; }
+.theme-art .ph-9 { --ph-color: #7c83fd; --ph-accent: #e2e3ff; }
 
 .theme-art .placeholder-button {
-  background: #f7f3ea;
-  border: 3px solid rgba(20, 20, 20, 0.85);
+  background: var(--ph-color, #ff8fa3);
+  border: 3px solid rgba(20, 20, 20, 0.88);
   box-shadow: 0 4px 0 rgba(20, 20, 20, 0.85);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .theme-art .placeholder-button::before {
-  background: var(--ph-pastel, #ffd6e8);
-  opacity: 0.85;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  background: var(--ph-accent, #ffe3ea);
+  opacity: 0.55;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .theme-art .placeholder-button:hover {
@@ -76,14 +76,35 @@ body.theme-art::before {
   box-shadow: 0 5px 0 rgba(20, 20, 20, 0.85), 0 10px 16px rgba(0, 0, 0, 0.12);
 }
 
-.theme-art .placeholder-button:hover::before {
-  opacity: 1;
-  transform: scale(1.1);
+/* the splash lives entirely on click, not hover or rest */
+.theme-art .placeholder-button::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 42% 58% 61% 39% / 45% 40% 60% 55%;
+  background: var(--ph-accent, #ffe3ea);
+  opacity: 0;
+  transform: scale(0.4) rotate(0deg);
+  pointer-events: none;
 }
 
-.theme-art .placeholder-button:active,
+.theme-art .placeholder-button.popped::after {
+  animation: paintSplash 1s ease-out;
+}
+
+.theme-art .placeholder-button.popped::before {
+  opacity: 1;
+  transform: scale(1.25);
+}
+
 .theme-art .placeholder-button.popped {
-  transform: scale(0.92) rotate(1deg);
+  transform: scale(0.9) rotate(-2deg);
+}
+
+@keyframes paintSplash {
+  0%   { opacity: 0.9; transform: scale(0.4) rotate(0deg); border-radius: 42% 58% 61% 39% / 45% 40% 60% 55%; }
+  55%  { opacity: 0.45; transform: scale(1.2) rotate(8deg); border-radius: 58% 42% 39% 61% / 55% 60% 40% 45%; }
+  100% { opacity: 0; transform: scale(1.5) rotate(14deg); border-radius: 50%; }
 }
 
 /* ==================== */
