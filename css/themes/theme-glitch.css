@@ -1,11 +1,23 @@
 body.theme-glitch::after {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top, 0px);
   z-index: 0;
   pointer-events: none;
-  box-sizing: border-box;
-  border: min(5vw, 34px) solid transparent;
-  border-image: repeating-linear-gradient(135deg, #1a1a1a 0 14px, #ffcc00 14px 20px, #1a1a1a 20px 34px) 1;
-  box-shadow: inset 0 0 44px 16px rgba(0, 0, 0, 0.75);
+  background: repeating-linear-gradient(135deg, #1a1a1a 0 14px, #ffcc00 14px 20px, #1a1a1a 20px 34px);
+}
+
+body.theme-glitch::before {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-bottom, 0px);
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(135deg, #1a1a1a 0 14px, #ffcc00 14px 20px, #1a1a1a 20px 34px);
 }
