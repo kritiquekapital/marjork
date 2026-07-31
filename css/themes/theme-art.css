@@ -46,6 +46,47 @@ body.theme-art::before {
 }
 
 /* ==================== */
+/* Art Theme — Placeholder Buttons (pastel paint dabs) */
+/* ==================== */
+.theme-art .ph-1 { --ph-pastel: #ffd6e8; } /* pink */
+.theme-art .ph-2 { --ph-pastel: #d6f0ff; } /* sky blue */
+.theme-art .ph-3 { --ph-pastel: #fff3c4; } /* butter yellow */
+.theme-art .ph-4 { --ph-pastel: #d9ffd6; } /* mint */
+.theme-art .ph-5 { --ph-pastel: #e6d6ff; } /* lavender */
+.theme-art .ph-6 { --ph-pastel: #ffe0c2; } /* peach */
+.theme-art .ph-7 { --ph-pastel: #c2fff0; } /* seafoam */
+.theme-art .ph-8 { --ph-pastel: #ffd6d6; } /* blush */
+.theme-art .ph-9 { --ph-pastel: #e0e0ff; } /* periwinkle */
+
+.theme-art .placeholder-button {
+  background: #f7f3ea;
+  border: 3px solid rgba(20, 20, 20, 0.85);
+  box-shadow: 0 4px 0 rgba(20, 20, 20, 0.85);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-art .placeholder-button::before {
+  background: var(--ph-pastel, #ffd6e8);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.theme-art .placeholder-button:hover {
+  transform: translateY(-2px) rotate(-1.5deg);
+  box-shadow: 0 5px 0 rgba(20, 20, 20, 0.85), 0 10px 16px rgba(0, 0, 0, 0.12);
+}
+
+.theme-art .placeholder-button:hover::before {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.theme-art .placeholder-button:active,
+.theme-art .placeholder-button.popped {
+  transform: scale(0.92) rotate(1deg);
+}
+
+/* ==================== */
 /* Art Theme Minesweeper */
 /* uses .paint as the art-theme styling hook */
 /* ==================== */
