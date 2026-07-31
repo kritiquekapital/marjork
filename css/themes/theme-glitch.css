@@ -25,3 +25,46 @@ body.theme-glitch::before {
   pointer-events: none;
   background: repeating-linear-gradient(135deg, #1a1a1a 0 14px, #ffcc00 14px 20px, #1a1a1a 20px 34px);
 }
+
+/* ==================== */
+/* Glitch Theme — Placeholder Buttons (chromatic jitter) */
+/* ==================== */
+.theme-glitch .placeholder-button {
+  background: #111;
+  border: 1px solid rgba(255, 204, 0, 0.4);
+  box-shadow: 0 0 6px rgba(255, 204, 0, 0.15);
+  overflow: hidden;
+}
+
+.theme-glitch .placeholder-button::before {
+  background: rgba(255, 204, 0, 0.12);
+}
+
+.theme-glitch .placeholder-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+  background-size: 400% 400%;
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.theme-glitch .placeholder-button.popped::after {
+  animation: glitchFlicker 0.35s steps(2, end);
+}
+
+@keyframes glitchFlicker {
+  0%   { opacity: 0.9; background-position: 0% 50%;    transform: translate(0, 0); }
+  20%  { opacity: 0.4; background-position: 60% 20%;   transform: translate(-2px, 1px); }
+  40%  { opacity: 0.9; background-position: 30% 80%;   transform: translate(2px, -1px); }
+  60%  { opacity: 0.3; background-position: 90% 10%;   transform: translate(-1px, 2px); }
+  80%  { opacity: 0.7; background-position: 10% 60%;   transform: translate(1px, -2px); }
+  100% { opacity: 0;   background-position: 100% 100%; transform: translate(0, 0); }
+}
+
+.theme-glitch .placeholder-button:hover {
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.25), 0 0 10px rgba(0, 255, 204, 0.2);
+}
