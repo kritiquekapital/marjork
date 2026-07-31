@@ -91,3 +91,17 @@ document.addEventListener("DOMContentLoaded", function () {
     { passive: true }
   );
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const placeholders = document.querySelectorAll(".placeholder-button");
+
+  placeholders.forEach((button) => {
+    button.addEventListener("click", () => {
+      button.classList.add("popped");
+      setTimeout(() => button.classList.remove("popped"), 150);
+
+      const slot = Array.from(button.classList).find((c) => c.startsWith("ph-")) || "unknown";
+      track("placeholder_click", { slot });
+    });
+  });
+});
