@@ -1,3 +1,7 @@
+body.theme-glitch {
+  background: #0d0d0d;
+}
+
 body.theme-glitch::after {
   content: "";
   position: fixed;
