@@ -83,8 +83,8 @@
 /* fuse hidden by default */
 .secret-button .mine-fuse {
   position: absolute;
-  top: 1px;
-  left: 74%;
+  top: 2px;
+  left: 70%;
   width: 9px;
   height: 30px;
   background: linear-gradient(180deg, #7d5a35 0%, #3f2b17 100%);
