@@ -59,8 +59,8 @@ body {
 
 /* P1 Fourth Row */
 .propaganda-link     { grid-area: 4 / 1; }
-.vinyl               { grid-area: 4 / 2; }
-.ph-1                { grid-area: 4 / 3; }
+.ph-1                { grid-area: 4 / 2; }
+.vinyl               { grid-area: 4 / 3; }
 
 /* P1 Fifth Row */
 .wip                 { grid-area: 5 / 1; }
