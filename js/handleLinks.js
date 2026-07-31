@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     ".statsfm",
     ".backlog-button",
     ".propaganda-link",
+    ".arena-button",
+    ".soundcloud-button",
     ".vinyl-link",
     "#games-like-button",
     ".secret-button",
