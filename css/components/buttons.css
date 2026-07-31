@@ -135,30 +135,9 @@
     0 0 14px rgba(255, 90, 0, 0.45);
 }
 
-/* inner mark hidden by default */
-.secret-button .mine-mark {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 900;
-  color: rgba(255,255,255,0.9);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-  pointer-events: none;
-  opacity: 0;
-  transform: scale(0.88);
-  transition:
-    opacity 0.22s ease,
-    transform 0.22s ease;
-}
-
 /* reveal smaller bomb + fuse on hover */
 .secret-button:hover::before,
-.secret-button:hover .mine-fuse,
-.secret-button:hover .mine-mark {
+.secret-button:hover .mine-fuse {
   opacity: 1;
 }
 
