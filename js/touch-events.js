@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
   placeholders.forEach((button) => {
     button.addEventListener("click", () => {
       button.classList.add("popped");
-      setTimeout(() => button.classList.remove("popped"), 150);
+      setTimeout(() => button.classList.remove("popped"), 1400);
 
       const slot = Array.from(button.classList).find((c) => c.startsWith("ph-")) || "unknown";
       track("placeholder_click", { slot });
