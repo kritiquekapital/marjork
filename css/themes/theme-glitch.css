@@ -53,16 +53,30 @@ body.theme-glitch::before {
 }
 
 .theme-glitch .placeholder-button.popped::after {
-  animation: glitchFlicker 0.35s steps(2, end);
+  animation: glitchFlicker 1.1s steps(2, end);
 }
 
+/* per-slot variation so each button glitches on its own rhythm, not in unison */
+.theme-glitch .ph-1.popped::after { animation-duration: 0.9s; }
+.theme-glitch .ph-2.popped::after { animation-duration: 1.3s; }
+.theme-glitch .ph-3.popped::after { animation-duration: 1.05s; animation-timing-function: steps(3, end); }
+.theme-glitch .ph-4.popped::after { animation-duration: 1.4s; }
+.theme-glitch .ph-5.popped::after { animation-duration: 0.95s; animation-timing-function: steps(4, end); }
+.theme-glitch .ph-6.popped::after { animation-duration: 1.2s; }
+.theme-glitch .ph-7.popped::after { animation-duration: 1.35s; animation-timing-function: steps(3, end); }
+.theme-glitch .ph-8.popped::after { animation-duration: 1.0s; }
+.theme-glitch .ph-9.popped::after { animation-duration: 1.25s; animation-timing-function: steps(4, end); }
+
 @keyframes glitchFlicker {
-  0%   { opacity: 0.9; background-position: 0% 50%;    transform: translate(0, 0); }
-  20%  { opacity: 0.4; background-position: 60% 20%;   transform: translate(-2px, 1px); }
-  40%  { opacity: 0.9; background-position: 30% 80%;   transform: translate(2px, -1px); }
-  60%  { opacity: 0.3; background-position: 90% 10%;   transform: translate(-1px, 2px); }
-  80%  { opacity: 0.7; background-position: 10% 60%;   transform: translate(1px, -2px); }
-  100% { opacity: 0;   background-position: 100% 100%; transform: translate(0, 0); }
+  0%   { opacity: 0.95; background-position: 0% 50%;    transform: translate(0, 0); }
+  10%  { opacity: 0.3;  background-position: 70% 15%;   transform: translate(-3px, 2px); }
+  22%  { opacity: 0.9;  background-position: 20% 85%;   transform: translate(2px, -2px); }
+  35%  { opacity: 0.2;  background-position: 95% 5%;    transform: translate(-2px, 1px); }
+  48%  { opacity: 0.85; background-position: 40% 60%;   transform: translate(3px, -1px); }
+  60%  { opacity: 0.15; background-position: 80% 30%;   transform: translate(-1px, 3px); }
+  72%  { opacity: 0.75; background-position: 10% 90%;   transform: translate(2px, -3px); }
+  85%  { opacity: 0.35; background-position: 60% 10%;   transform: translate(-2px, 1px); }
+  100% { opacity: 0;    background-position: 100% 100%; transform: translate(0, 0); }
 }
 
 .theme-glitch .placeholder-button:hover {
