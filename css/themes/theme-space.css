@@ -55,12 +55,8 @@ body.theme-space::before {
   background: linear-gradient(0deg, #4a5058, #16181c 60%, #0a0b0d);
 }
 
-/* Theme-specific adjustments — off by default, flashes yellow on click, fades out slowly */
-.theme-space button:not(.wip):not(.kiss-button) {
-  background-color: transparent;
-  color: inherit;
-  border: 1px solid transparent;
-  box-shadow: none;
+/* Theme-specific adjustments, flashes yellow on click, fades out slowly */
+.theme-space button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button) {
   transition:
     background-color 1.4s ease,
     border-color 1.4s ease,
@@ -68,7 +64,7 @@ body.theme-space::before {
     color 1.4s ease;
 }
 
-.theme-space button:not(.wip):not(.kiss-button).theme-flash {
+.theme-space button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button).theme-flash {
   background-color: #ffd700;
   color: #0b3d91;
   border-color: #ffffff;
@@ -80,7 +76,7 @@ body.theme-space::before {
     color 0.06s ease;
 }
 
-/* wip and kiss-button keep the original always-on yellow fill, untouched */
+/* wip and kiss-button keep the original always-on yellow fill*/
 .theme-space button.wip,
 .theme-space button.kiss-button {
   background-color: #ffd700;
