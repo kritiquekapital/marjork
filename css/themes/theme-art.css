@@ -16,11 +16,6 @@ body.theme-art::before {
   pointer-events: none;
 }
 
-body.theme-art .grid-backdrop {
-  inset: -40px;
-  backdrop-filter: blur(18px);
-}
-
 .paint-splatter {
   position: fixed;
   pointer-events: none;
