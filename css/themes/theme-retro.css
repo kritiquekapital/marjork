@@ -12,17 +12,58 @@ body.theme-retro .grid-backdrop {
   backdrop-filter: blur(5px); /* Retro blur effect */
 }
 
-/* Retro Button Styling */
-body.theme-retro button {
-  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00); /* Rainbow gradient background */
-  background-size: 400% 400%; /* Set the size for the background gradient */
-  animation: rainbow 5s ease infinite; /* Apply the rainbow animation */
-  color: #000000; /* Black text */
-  border: 2px solid #00ffcc; /* Teal border */
-  box-shadow: 0 0 10px #ff00ff; /* Neon glow effect */
-  font-family: "Press Start 2P", cursive; /* Retro pixel font */
-  text-transform: uppercase; /* Uppercase text */
-  background-clip: padding-box; /* Ensure the background applies only to the button */
+/* Retro Button Styling — off by default, flashes rainbow on click, fades out slowly */
+body.theme-retro button:not(.wip):not(.kiss-button) {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  color: inherit;
+  border: 2px solid transparent;
+  box-shadow: none;
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
+  transition: border-color 1.4s ease, color 1.4s ease;
+}
+
+body.theme-retro button:not(.wip):not(.kiss-button)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+  background-size: 400% 400%;
+  background-clip: padding-box;
+  box-shadow: 0 0 10px #ff00ff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s ease;
+}
+
+body.theme-retro button:not(.wip):not(.kiss-button).theme-flash {
+  border-color: #00ffcc;
+  color: #000000;
+  transition: border-color 0.06s ease, color 0.06s ease;
+}
+
+body.theme-retro button:not(.wip):not(.kiss-button).theme-flash::before {
+  opacity: 1;
+  animation: rainbow 5s ease infinite;
+  transition: opacity 0.06s ease;
+}
+
+/* wip and kiss-button keep the original always-on rainbow, untouched */
+body.theme-retro button.wip,
+body.theme-retro button.kiss-button {
+  background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
+  background-size: 400% 400%;
+  animation: rainbow 5s ease infinite;
+  color: #000000;
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 10px #ff00ff;
+  font-family: "Press Start 2P", cursive;
+  text-transform: uppercase;
+  background-clip: padding-box;
 }
 
 body.theme-retro .settings-volume-orb::before {
