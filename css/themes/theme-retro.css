@@ -12,20 +12,14 @@ body.theme-retro .grid-backdrop {
   backdrop-filter: blur(5px); /* Retro blur effect */
 }
 
-/* Retro Button Styling — off by default, flashes rainbow on click, fades out slowly */
-body.theme-retro button:not(.wip):not(.kiss-button) {
+/* Retro Button Styling, flashes rainbow on click, fades out slowly */
+body.theme-retro button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button) {
   position: relative;
   isolation: isolate;
-  background: transparent;
-  color: inherit;
-  border: 2px solid transparent;
-  box-shadow: none;
-  font-family: "Press Start 2P", cursive;
-  text-transform: uppercase;
   transition: border-color 1.4s ease, color 1.4s ease;
 }
 
-body.theme-retro button:not(.wip):not(.kiss-button)::before {
+body.theme-retro button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button)::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -40,19 +34,19 @@ body.theme-retro button:not(.wip):not(.kiss-button)::before {
   transition: opacity 1.4s ease;
 }
 
-body.theme-retro button:not(.wip):not(.kiss-button).theme-flash {
+body.theme-retro button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button).theme-flash {
   border-color: #00ffcc;
   color: #000000;
   transition: border-color 0.06s ease, color 0.06s ease;
 }
 
-body.theme-retro button:not(.wip):not(.kiss-button).theme-flash::before {
+body.theme-retro button:not(.wip):not(.kiss-button):not(.games-like-button):not(.secret-button).theme-flash::after {
   opacity: 1;
   animation: rainbow 5s ease infinite;
   transition: opacity 0.06s ease;
 }
 
-/* wip and kiss-button keep the original always-on rainbow, untouched */
+/* wip and kiss-button keep the original always-on rainbow */
 body.theme-retro button.wip,
 body.theme-retro button.kiss-button {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00);
@@ -65,7 +59,6 @@ body.theme-retro button.kiss-button {
   text-transform: uppercase;
   background-clip: padding-box;
 }
-
 body.theme-retro .settings-volume-orb::before {
   background: linear-gradient(45deg, #ff00ff, #00ffcc, #ffcc00) !important;
   background-size: 400% 400% !important;
