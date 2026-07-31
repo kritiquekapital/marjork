@@ -3,9 +3,12 @@
 /* ==================== */
 .theme-space {
   position: relative; /* Required for z-index context */
-  background: transparent;
   color: #ffffff;
   font-family: "Orbitron", sans-serif;
+}
+
+body.theme-space {
+  background: #000000;
 }
 
 /* Target the iframe created by JS */
