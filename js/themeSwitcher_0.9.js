@@ -126,17 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (phoneNow && portraitNow) {
       spaceBackground.style.top = "50%";
       spaceBackground.style.left = "50%";
-      spaceBackground.style.width = "100vh";
+      spaceBackground.style.width = "100dvh";
       spaceBackground.style.height = "100vw";
       spaceBackground.style.transform = "translate(-50%, -50%) rotate(90deg)";
       spaceBackground.style.transformOrigin = "center center";
       spaceBackground.style.objectFit = "cover";
     } else {
-      spaceBackground.style.top = "0";
-      spaceBackground.style.left = "0";
-      spaceBackground.style.width = "100%";
-      spaceBackground.style.height = "100%";
-      spaceBackground.style.transform = "none";
+      spaceBackground.style.top = "50%";
+      spaceBackground.style.left = "50%";
+      spaceBackground.style.width = "100vw";
+      spaceBackground.style.height = "100dvh";
+      spaceBackground.style.transform = "translate(-50%, -50%)";
       spaceBackground.style.transformOrigin = "center center";
       spaceBackground.style.objectFit = "cover";
     }
