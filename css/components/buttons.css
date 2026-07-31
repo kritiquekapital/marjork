@@ -149,10 +149,6 @@
   transform: translateX(-50%) rotate(18deg) scale(1);
 }
 
-.secret-button:hover .mine-mark {
-  transform: scale(1);
-}
-
 /* overall hover */
 .secret-button:hover {
   transform: scale(1.08);
