@@ -60,7 +60,6 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  overflow: hidden;
   isolation: isolate;
   background:
     radial-gradient(circle at 35% 35%, #6d6d6d 0 10%, #545454 11% 26%, #2f2f2f 27% 62%, #181818 63% 100%);
@@ -81,12 +80,11 @@
   display: none !important;
 }
 
-/* replace with */
 /* fuse hidden by default */
 .secret-button .mine-fuse {
   position: absolute;
-  top: 4px;
-  left: 66%;
+  top: 1px;
+  left: 74%;
   width: 9px;
   height: 30px;
   background: linear-gradient(180deg, #7d5a35 0%, #3f2b17 100%);
@@ -1280,7 +1278,6 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 /* ==================== */
 /* Vinyl and Video Popup Styles */
 /* ==================== */
-
 .vinyl-link {
   text-decoration: none;
   display: block;
@@ -1414,6 +1411,10 @@ body.theme-space .settings-dropdown > .settings-theme-option {
 /* Vinyl hover effects - These parts appear when hovered */
 .vinyl:hover .wood-box {
   opacity: 1;
+}
+
+.vinyl:hover {
+  overflow: visible;
 }
 
 .vinyl:hover .arm {
