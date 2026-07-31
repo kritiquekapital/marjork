@@ -12,6 +12,30 @@ body.theme-rain {
   background: #0b1118 !important;
 }
 
+body.theme-rain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: min(4vw, 28px) solid rgba(232, 238, 244, 0.92);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.18),
+    0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-rain::before {
+  content: "";
+  position: fixed;
+  inset: min(4vw, 28px);
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(232, 238, 244, 0.82), rgba(232, 238, 244, 0.82)) center / 100% min(1.1vw, 9px) no-repeat,
+    linear-gradient(rgba(232, 238, 244, 0.82), rgba(232, 238, 244, 0.82)) center / min(1.1vw, 9px) 100% no-repeat;
+}
+
 .rain-background-video {
   position: fixed;
   top: 0;
