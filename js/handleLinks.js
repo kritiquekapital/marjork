@@ -15,13 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ".backlog-button",
     ".propaganda-link",
     ".arena-button",
-    ".soundcloud-button",
     ".vinyl-link",
     "#games-like-button",
     ".secret-button",
-    "#themeButton",
-    ".wip",
-    ".spotify"
   ].join(", ");
 
   let statsUnlocked = false;
