@@ -12,6 +12,7 @@ function initChaseable({
 
   let isFree = false;
   let isScored = false;
+  let goalArmedAt = 0;
   let hoverTimer = null;
   let animationFrame = null;
   let lastFrameTime = 0;
@@ -20,6 +21,7 @@ function initChaseable({
   let hasOpenedOnGoal = false;
   let nextGlitchJumpAt = performance.now() + getNextGlitchDelay();
 
+  const GOAL_ARM_DELAY = 250; // ms grace period
   const isCoarsePointer = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
   const velocity = { x: 0, y: 0 };
@@ -237,6 +239,20 @@ function initChaseable({
     clearHoverBreakTimer();
     goal.style.opacity = "0";
 
+    goalArmedAt = performance.now() + GOAL_ARM_DELAY;
+
+    track(`${trackPrefix}_freed`, {
+      device: isCoarsePointer ? "mobile" : "desktop",
+      theme:
+        document.body.classList.contains("theme-space")
+          ? "space"
+          : document.body.classList.contains("theme-retro")
+          ? "retro"
+          : document.body.classList.contains("theme-glitch")
+          ? "glitch"
+          : "normal"
+    });
+
     const rect = button.getBoundingClientRect();
 
     button.classList.add("free", "fleeing");
@@ -443,6 +459,7 @@ function initChaseable({
 
   function checkGoalCollision() {
     if (!isFree || isScored) return;
+    if (performance.now() < goalArmedAt) return;
 
     const buttonRect = getRect();
     const goalRect = getGoalRect();
