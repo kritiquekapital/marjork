@@ -266,11 +266,13 @@ body.theme-retro .secret-button {
 .url-links-disabled #games-like-button,
 .url-links-disabled .secret-button,
 .url-links-disabled #themeButton,
+.url-links-disabled .arena-button,
 .url-links-disabled .wip {
   opacity: 0.45 !important;
   cursor: not-allowed !important;
 }
 
+.url-links-disabled .soundcloud-button,
 .url-links-disabled .spotify {
   opacity: 0.7 !important;
 }
