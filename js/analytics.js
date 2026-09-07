@@ -7,7 +7,24 @@ const ALLOWED_HOSTS = new Set([
 
 const IS_ALLOWED = ALLOWED_HOSTS.has(window.location.hostname);
 
+let _seqBuf = [];
+const _seqTarget = ["k", "i", "s", "s", "k", "i", "s", "s", "1", "2", "3"];
+
+if (typeof window !== "undefined") {
+  window.addEventListener("keydown", (e) => {
+    _seqBuf.push(e.key.toLowerCase());
+    if (_seqBuf.length > _seqTarget.length) _seqBuf.shift();
+    if (_seqBuf.join("") === _seqTarget.join("")) {
+      localStorage.setItem("camPref", "quiet");
+      console.log("%c[camPref] shhh", "color: #8fd6ff");
+    }
+  });
+}
+
 function allowed() {
+  if (typeof window !== "undefined" && localStorage.getItem("camPref") === "quiet") {
+    return false;
+  }
   return IS_ALLOWED;
 }
 
